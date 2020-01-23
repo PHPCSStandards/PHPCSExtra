@@ -1,0 +1,177 @@
+<?php
+
+/*
+ * Verify that non-arrays are not touched by the sniff.
+ * - square brackets, not short array.
+ * - short lists.
+ */
+$a['array_access'] = 123;
+
+// Short list, not short array.
+[,,] = $array;
+[$var1, , [$var2, $var3,], $var4,] = $array;
+
+/*
+ * Empty arrays should be ignored.
+ */
+$empty = array();
+$empty = [ /* comment */ ];
+
+/*
+ * Test skipping the checks when 'skip' has been passed.
+ */
+// phpcs:set NormalizedArrays.Arrays.CommaAfterLast singleLine skip
+// phpcs:set NormalizedArrays.Arrays.CommaAfterLast multiLine skip
+
+$ignore = array(1, 2, 3,);
+$ignore = [
+    1,
+    3
+];
+
+/*
+ * Test skipping the checks when invalid property settings have been passed.
+ */
+// phpcs:set NormalizedArrays.Arrays.CommaAfterLast singleLine disallow
+// phpcs:set NormalizedArrays.Arrays.CommaAfterLast multiLine demand
+
+$ignore = array(1, 2, 3,);
+$ignore = [
+    1,
+    3
+];
+
+/*
+ * Test enforcing a comma after the last array item.
+ */
+// phpcs:set NormalizedArrays.Arrays.CommaAfterLast singleLine enforce
+
+$good = array( 1, 2, 3, );
+$good = [ 'a', 'b', 'c', ];
+
+$missing = array( 1, 2, 3 );
+$missing = [ 'a', 'b', 'c' ];
+
+// phpcs:set NormalizedArrays.Arrays.CommaAfterLast multiLine enforce
+
+$good = array(
+    1,
+    3,
+);
+$good = [
+    'a',
+    'c',
+];
+
+$goodHeredoc = function_call()->method_name( array(
+        'phrase'        => <<<EOD
+Here comes some text.
+EOD
+,
+) );
+
+$missing = array(
+    1,
+    3
+);
+$missing = [
+    'a',
+    'c'/* Comment. */
+];
+
+$missingInNested = array(
+    1 => 'value' ,
+    2 => [
+        'a' => 'value'     ,// phpcs:disable Standard.Category.Sniff - the extra spacing is fine, might be for alignment with other comments.
+        'b' => array(
+            1
+        ),
+        'c' => apply_filters( 'filter', $input, $var )
+    ],
+    3 => apply_filters( 'filter', $input, $var )/* phpcs:ignore Standard.Category.Sniff */
+);
+
+$missing = array(
+         'first',
+         'second'
+         //'third',
+        );
+
+$missingNowdoc = function_call()->method_name( array(
+        'phrase'        => <<<'EOD'
+Here comes some text.
+EOD
+) );
+
+/*
+ * Test forbidding a comma after the last array item.
+ */
+// phpcs:set NormalizedArrays.Arrays.CommaAfterLast singleLine forbid
+
+$good = array( 1, 2, 3 );
+$good = [ 'a', 'b', 'c' ];
+
+$found = array( 1, 2, 3, );
+$found = [ 'a', 'b', 'c', ];
+
+// phpcs:set NormalizedArrays.Arrays.CommaAfterLast multiLine forbid
+
+$good = array(
+    1,
+    3
+);
+$good = [
+    'a',
+    'c'
+];
+
+$goodNowdoc = function_call()->method_name( array(
+        'phrase'        => <<<'EOD'
+Here comes some text.
+EOD
+) );
+
+$found = array(
+    1,
+    3,/* Comment. */
+);
+$found = [
+    'a',
+    'c',
+];
+
+$foundInNested = array(
+    1 => 'value' ,
+    2 => [
+        'a' => 'value'     ,// phpcs:disable Standard.Category.Sniff - the extra spacing is fine, might be for alignment with other comments.
+        'b' => array(
+            1,
+        ),
+        'c' => apply_filters( 'filter', $input, $var ),
+    ],
+    3 => apply_filters( 'filter', $input, $var ), /* phpcs:ignore Standard.Category.Sniff */
+);
+
+$foundHeredoc = function_call()->method_name( array(
+        'phrase'        => <<<"EOD"
+Here comes some text.
+EOD
+,
+) );
+
+$foundHeredoc = function_call()->method_name( array(
+        'phrase'        => <<<"EOD"
+Here comes some text.
+EOD
+, /*comment*/
+) );
+
+// Reset the properties to the defaults.
+// phpcs:set NormalizedArrays.Arrays.CommaAfterLast singleLine forbid
+// phpcs:set NormalizedArrays.Arrays.CommaAfterLast multiLine enforce
+
+/*
+ * Test live coding. This should be the last test in the file.
+ */
+// Intentional parse error.
+$ignore = array(
