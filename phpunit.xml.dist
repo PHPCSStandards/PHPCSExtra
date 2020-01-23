@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/7.5/phpunit.xsd"
+    backupGlobals="true"
+    bootstrap="./phpunit-bootstrap.php"
+    beStrictAboutTestsThatDoNotTestAnything="false"
+    colors="true"
+    forceCoversAnnotation="true">
+
+    <testsuites>
+        <testsuite name="PHPCSExtra">
+            <directory suffix="UnitTest.php">./NormalizedArrays/Tests/</directory>
+            <directory suffix="UnitTest.php">./Universal/Tests/</directory>
+        </testsuite>
+    </testsuites>
+
+</phpunit>
