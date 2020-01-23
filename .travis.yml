@@ -1,0 +1,142 @@
+dist: trusty
+
+language: php
+
+## Cache composer and apt downloads.
+cache:
+  apt: true
+  directories:
+    # Cache directory for older Composer versions.
+    - $HOME/.composer/cache/files
+    # Cache directory for more recent Composer versions.
+    - $HOME/.cache/composer/files
+
+php:
+  - 5.4
+  - 5.5
+  - 5.6
+  - 7.0
+  - 7.1
+  - 7.2
+  - 7.3
+
+env:
+  jobs:
+    # `master`
+    - PHPCS_VERSION="dev-master" LINT=1
+    # Lowest supported PHPCS version.
+    - PHPCS_VERSION="3.3.1"
+
+# Define the stages used.
+# For non-PRs, only the sniff and quicktest stages are run.
+# For pull requests and merges, the full script is run (skipping quicktest).
+# Note: for pull requests, "develop" is the base branch name.
+# See: https://docs.travis-ci.com/user/conditions-v1
+stages:
+  - name: sniff
+  - name: quicktest
+    if: type = push AND branch NOT IN (master, develop)
+  - name: test
+    if: branch IN (master, develop)
+
+jobs:
+  fast_finish: true
+
+  include:
+    #### SNIFF STAGE ####
+    - stage: sniff
+      php: 7.4
+      env: PHPCS_VERSION="dev-master"
+      addons:
+        apt:
+          packages:
+            - libxml2-utils
+      script:
+        # Validate the composer.json file.
+        # @link https://getcomposer.org/doc/03-cli.md#validate
+        - composer validate --no-check-all --strict
+
+        # Check the code style of the code base.
+        - composer checkcs
+
+        # Validate the xml files.
+        # @link http://xmlsoft.org/xmllint.html
+        - xmllint --noout --schema ./vendor/squizlabs/php_codesniffer/phpcs.xsd ./NormalizedArrays/ruleset.xml
+        - xmllint --noout --schema ./vendor/squizlabs/php_codesniffer/phpcs.xsd ./Universal/ruleset.xml
+
+        # Check the code-style consistency of the xml files.
+        - diff -B ./NormalizedArrays/ruleset.xml <(xmllint --format "./NormalizedArrays/ruleset.xml")
+        - diff -B ./Universal/ruleset.xml <(xmllint --format "./Universal/ruleset.xml")
+
+        # Check that the sniffs available are feature complete.
+        - composer check-complete
+
+    #### QUICK TEST STAGE ####
+    # This is a much quicker test which only runs the unit tests and linting against the low/high
+    # supported PHP/PHPCS combinations.
+    - stage: quicktest
+      php: 7.4
+      env: PHPCS_VERSION="dev-master" LINT=1
+    - php: 7.3
+      env: PHPCS_VERSION="3.3.1"
+
+    - php: 5.4
+      env: PHPCS_VERSION="dev-master" LINT=1
+    - php: 5.4
+      env: PHPCS_VERSION="3.3.1"
+
+    #### TEST STAGE ####
+    # Additional builds to prevent issues with PHPCS versions incompatible with certain PHP versions.
+    - stage: test
+      php: 7.4
+      env: PHPCS_VERSION="dev-master" LINT=1
+    # PHPCS is only compatible with PHP 7.4 as of version 3.5.0.
+    - php: 7.4
+      env: PHPCS_VERSION="3.5.0"
+
+    - php: "nightly"
+      env: PHPCS_VERSION="n/a" LINT=1
+
+  allow_failures:
+    # Allow failures for unstable builds.
+    - php: "nightly"
+
+
+before_install:
+  # Speed up build time by disabling Xdebug when its not needed.
+  - phpenv config-rm xdebug.ini || echo 'No xdebug config.'
+
+  - export XMLLINT_INDENT="    "
+
+  # On stable PHPCS versions, allow for PHP deprecation notices.
+  # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
+  - |
+    if [[ "$TRAVIS_BUILD_STAGE_NAME" != "Sniff" && $PHPCS_BRANCH != "dev-master" && "$PHPCS_VERSION" != "n/a" ]]; then
+      echo 'error_reporting = E_ALL & ~E_DEPRECATED' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+    fi
+
+
+install:
+  # Set up test environment using Composer.
+  - |
+    if [[ $PHPCS_VERSION != "n/a" ]]; then
+      composer require --no-update --no-scripts squizlabs/php_codesniffer:${PHPCS_VERSION}
+    fi
+  - |
+    if [[ "$TRAVIS_BUILD_STAGE_NAME" == "Sniff" || $PHPCS_VERSION == "n/a" ]]; then
+      # The sniff stage doesn't run the unit tests, so no need for PHPUnit.
+      # The build on nightly also doesn't run the tests (yet).
+      composer remove --dev phpunit/phpunit --no-update --no-scripts
+    fi
+
+  # --prefer-dist will allow for optimal use of the travis caching ability.
+  # The Composer PHPCS plugin takes care of setting the installed_paths for PHPCS.
+  - composer install --prefer-dist --no-suggest
+
+
+script:
+  # Lint PHP files against parse errors.
+  - if [[ "$LINT" == "1" ]]; then composer lint; fi
+
+  # Run the tests.
+  - if [[ $PHPCS_VERSION != "n/a" ]]; then composer test; fi

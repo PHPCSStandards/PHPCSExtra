@@ -1,0 +1,57 @@
+{
+    "name" : "phpcsstandards/phpcsextra",
+    "description" : "A collection of sniffs and standards for use with PHP_CodeSniffer.",
+    "type" : "phpcodesniffer-standard",
+    "keywords" : [ "phpcs", "phpcbf", "standards", "php_codesniffer", "phpcodesniffer-standard" ],
+    "license" : "LGPL-3.0-or-later",
+    "authors" : [
+        {
+            "name" : "Juliette Reinders Folmer",
+            "role" : "lead",
+            "homepage" : "https://github.com/jrfnl"
+        },
+        {
+            "name" : "Contributors",
+            "homepage" : "https://github.com/PHPCSStandards/PHPCSExtra/graphs/contributors"
+        }
+    ],
+    "support" : {
+        "issues" : "https://github.com/PHPCSStandards/PHPCSExtra/issues",
+        "source" : "https://github.com/PHPCSStandards/PHPCSExtra"
+    },
+    "require" : {
+        "php" : ">=5.4",
+        "squizlabs/php_codesniffer" : "^3.3.1",
+        "dealerdirect/phpcodesniffer-composer-installer" : "^0.3 || ^0.4.1 || ^0.5 || ^0.6",
+        "phpcsstandards/phpcsutils" : "^1.0 || dev-develop"
+    },
+    "require-dev" : {
+        "jakub-onderka/php-parallel-lint": "^1.0",
+        "jakub-onderka/php-console-highlighter": "^0.4",
+        "phpcsstandards/phpcsdevtools": "^1.0 || dev-develop",
+        "phpunit/phpunit": "^4.5 || ^5.0 || ^6.0 || ^7.0"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "scripts" : {
+        "install-standards": [
+            "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run"
+        ],
+        "lint": [
+            "@php ./vendor/jakub-onderka/php-parallel-lint/parallel-lint . -e php --exclude vendor --exclude .git"
+        ],
+        "checkcs": [
+            "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs"
+        ],
+        "fixcs": [
+            "@php ./vendor/squizlabs/php_codesniffer/bin/phpcbf"
+        ],
+        "check-complete": [
+            "@php ./vendor/phpcsstandards/phpcsdevtools/bin/phpcs-check-feature-completeness ./NormalizedArrays ./Universal"
+        ],
+        "test": [
+            "@php ./vendor/phpunit/phpunit/phpunit --filter NormalizedArrays ./vendor/squizlabs/php_codesniffer/tests/AllTests.php",
+            "@php ./vendor/phpunit/phpunit/phpunit --filter Universal ./vendor/squizlabs/php_codesniffer/tests/AllTests.php"
+        ]
+    }
+}
