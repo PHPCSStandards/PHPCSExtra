@@ -14,6 +14,7 @@ cache:
 php:
   - 5.4
   - 7.3
+  - "nightly"
 
 # Define the stages used.
 stages:
@@ -41,6 +42,10 @@ jobs:
         - diff -B ./NormalizedArrays/ruleset.xml <(xmllint --format "./NormalizedArrays/ruleset.xml")
         - diff -B ./Universal/ruleset.xml <(xmllint --format "./Universal/ruleset.xml")
 
+  allow_failures:
+    # Allow failures for unstable builds.
+    - php: "nightly"
+
 before_install:
   # Speed up build time by disabling Xdebug when its not needed.
   - phpenv config-rm xdebug.ini || echo 'No xdebug config.'
@@ -52,6 +57,9 @@ before_install:
 
 
 script:
+  # Lint PHP files against parse errors.
+  - composer lint
+
   # Validate the composer.json file on low/high PHP versions.
   # @link https://getcomposer.org/doc/03-cli.md#validate
   - composer validate --no-check-all --strict

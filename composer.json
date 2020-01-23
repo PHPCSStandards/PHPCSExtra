@@ -25,9 +25,16 @@
         "dealerdirect/phpcodesniffer-composer-installer" : "^0.3 || ^0.4.1 || ^0.5 || ^0.6",
         "phpcsstandards/phpcsutils" : "^1.0 || dev-develop"
     },
+    "require-dev" : {
+        "jakub-onderka/php-parallel-lint": "^1.0",
+        "jakub-onderka/php-console-highlighter": "^0.4"
+    },
     "scripts" : {
         "install-standards": [
             "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run"
+        ],
+        "lint": [
+            "@php ./vendor/jakub-onderka/php-parallel-lint/parallel-lint . -e php --exclude vendor --exclude .git"
         ]
     }
 }
