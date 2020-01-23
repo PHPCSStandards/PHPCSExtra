@@ -1,4 +1,7 @@
+build/
 vendor/
-composer.lock
+/composer.lock
 /.phpcs.xml
 /phpcs.xml
+/phpunit.xml
+/.phpunit.result.cache

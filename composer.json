@@ -28,7 +28,8 @@
     "require-dev" : {
         "jakub-onderka/php-parallel-lint": "^1.0",
         "jakub-onderka/php-console-highlighter": "^0.4",
-        "phpcsstandards/phpcsdevtools": "^1.0 || dev-develop"
+        "phpcsstandards/phpcsdevtools": "^1.0 || dev-develop",
+        "phpunit/phpunit": "^4.5 || ^5.0 || ^6.0 || ^7.0"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
@@ -47,6 +48,10 @@
         ],
         "check-complete": [
             "@php ./vendor/phpcsstandards/phpcsdevtools/bin/phpcs-check-feature-completeness ./NormalizedArrays ./Universal"
+        ],
+        "test": [
+            "@php ./vendor/phpunit/phpunit/phpunit --filter NormalizedArrays ./vendor/squizlabs/php_codesniffer/tests/AllTests.php",
+            "@php ./vendor/phpunit/phpunit/phpunit --filter Universal ./vendor/squizlabs/php_codesniffer/tests/AllTests.php"
         ]
     }
 }
