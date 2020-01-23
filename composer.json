@@ -27,14 +27,23 @@
     },
     "require-dev" : {
         "jakub-onderka/php-parallel-lint": "^1.0",
-        "jakub-onderka/php-console-highlighter": "^0.4"
+        "jakub-onderka/php-console-highlighter": "^0.4",
+        "phpcsstandards/phpcsdevtools": "^1.0 || dev-develop"
     },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "scripts" : {
         "install-standards": [
             "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run"
         ],
         "lint": [
             "@php ./vendor/jakub-onderka/php-parallel-lint/parallel-lint . -e php --exclude vendor --exclude .git"
+        ],
+        "checkcs": [
+            "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs"
+        ],
+        "fixcs": [
+            "@php ./vendor/squizlabs/php_codesniffer/bin/phpcbf"
         ]
     }
 }
