@@ -44,6 +44,9 @@
         ],
         "fixcs": [
             "@php ./vendor/squizlabs/php_codesniffer/bin/phpcbf"
+        ],
+        "check-complete": [
+            "@php ./vendor/phpcsstandards/phpcsdevtools/bin/phpcs-check-feature-completeness ./NormalizedArrays ./Universal"
         ]
     }
 }

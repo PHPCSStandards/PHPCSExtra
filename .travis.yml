@@ -49,6 +49,9 @@ jobs:
         - diff -B ./NormalizedArrays/ruleset.xml <(xmllint --format "./NormalizedArrays/ruleset.xml")
         - diff -B ./Universal/ruleset.xml <(xmllint --format "./Universal/ruleset.xml")
 
+        # Check that the sniffs available are feature complete.
+        - composer check-complete
+
   allow_failures:
     # Allow failures for unstable builds.
     - php: "nightly"
