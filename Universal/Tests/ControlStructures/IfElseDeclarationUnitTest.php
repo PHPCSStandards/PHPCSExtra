@@ -42,6 +42,7 @@ class IfElseDeclarationUnitTest extends AbstractSniffUnitTest
             119 => 1,
             126 => 1,
             131 => 2,
+            136 => 1,
         ];
     }
 

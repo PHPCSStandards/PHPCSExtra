@@ -130,6 +130,13 @@ if ( true ) {
     // Test fixer with single-line control structure.
     if ( $a === 1 ) { echo $a; } elseif ( $a === 2 ) { echo $b; } else { echo $c; } // Error x 2.
 
+	// Test fixer with TAB indentation.
+	if ( true ) {
+		// Code.
+	} else { // Error.
+		// Code.
+	}
+
 // Live coding.
 // Intentional parse error. This test has to be the last in the file.
     if ($a) {
