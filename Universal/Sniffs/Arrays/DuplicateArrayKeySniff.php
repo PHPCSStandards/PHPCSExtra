@@ -103,7 +103,6 @@ class DuplicateArrayKeySniff extends AbstractArrayDeclarationSniff
             $data = [
                 ($integerKey === true) ? 'integer' : 'string',
                 $key,
-                $firstSeen['item'],
                 $this->tokens[$firstNonEmptyFirstSeen]['line'],
             ];
 
