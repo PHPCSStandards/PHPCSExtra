@@ -14,7 +14,7 @@ $args = array(
 
 $args = array(
     <em>0</em> => 22,
-	<em>1</em> => 25,
+    <em>1</em> => 25,
 );
         ]]>
         </code>
