@@ -25,10 +25,10 @@ if (true)
 if ( true ) {
     // Code.
 }
-elseif {
+elseif (false) {
     // Code.
 }
-else if {
+else if (false) {
     // Code.
 }
 else {
