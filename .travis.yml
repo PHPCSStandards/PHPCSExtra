@@ -57,7 +57,7 @@ jobs:
         - composer validate --no-check-all --strict
 
         # Check the code style of the code base.
-        - composer checkcs
+        - composer travis-checkcs
 
         # Validate the xml files.
         # @link http://xmlsoft.org/xmllint.html
