@@ -116,7 +116,7 @@ if ( true ) {
             && 5
         ) {
             // Code.
-        } else( 3 ) { // Error.
+        } else { // Error.
             // Code.
         }
 
