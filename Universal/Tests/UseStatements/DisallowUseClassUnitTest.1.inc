@@ -10,7 +10,7 @@ use My\NS\SomeClass as OtherClass;
 
 use Vendor\Foo\ClassA as ClassABC,
     Vendor\Bar\InterfaceB,
-	Vendor\Bar\Bar, // Testing finding the correct line to report on.
+    Vendor\Bar\Bar, // Testing finding the correct line to report on.
     Vendor\Baz\ClassC;
 
 use some\namespacing\{
@@ -27,6 +27,13 @@ use Some\NS\{
     function SubLevel\AnotherName,
     AnotherLevel, // Error.
 };
+
+// Test handling of alias as part of the last leaf of the imported name, including case-insensitivity.
+// While aliasing to itself doesn't make much sense, the sniff should handle it correctly.
+use My\AwesomeClassA as classa;
+use My\AwesomeClassB as AweSomeclassB;
+use AwesomeClassC as someclassc; // Alias for global import.
+use AwesomeClassD as AWESOMECLASSD; // Alias for global import to same name.
 
 // Ignore as not import use.
 $closure = function() use($bar) {

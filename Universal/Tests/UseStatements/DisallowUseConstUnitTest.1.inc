@@ -25,6 +25,13 @@ use Some\NS\{
     AnotherLevel,
 };
 
+// Test handling of alias as part of the last leaf of the imported name, including case-insensitivity.
+// While aliasing to itself doesn't make much sense, the sniff should handle it correctly.
+use const My\PHP_MINOR_VERSION as Minor_version;
+use const My\PHP_MAJOR_VERSION as Php_Major_Version;
+use const PHP_VERSION_ID as version_id; // Alias for global import.
+use const PHP_VERSION as php_version; // Alias for global import to same name.
+
 // Ignore as not import use.
 $closure = function() use($bar) {
     return $bar;
