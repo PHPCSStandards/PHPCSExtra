@@ -15,6 +15,25 @@ This projects adheres to [Keep a CHANGELOG](https://keepachangelog.com/) and use
 _Nothing yet._
 
 
+## [1.3.1] - 2025-06-08
+
+### Changed
+
+#### Other
+
+* Composer: The minimum `PHPCSUtils` requirement has been updated to `^1.0.12` (was `^1.0.9`). [#346]
+* Various housekeeping.
+
+### Fixed
+
+#### Universal
+
+* `Universal.UseStatements.DisallowMixedGroupUse`: the fixer could get confused when the "base" name for the group name contained a leading backslash, leading to parse errors in the fixed code. [#350]
+
+[#346]: https://github.com/PHPCSStandards/PHPCSExtra/pull/346
+[#350]: https://github.com/PHPCSStandards/PHPCSExtra/pull/350
+
+
 ## [1.3.0] - 2025-04-21
 
 ### Added
@@ -608,6 +627,7 @@ This initial alpha release contains the following sniffs:
 [php_version-config]:    https://github.com/PHPCSStandards/PHP_CodeSniffer/wiki/Configuration-Options#setting-the-php-version
 
 [Unreleased]: https://github.com/PHPCSStandards/PHPCSExtra/compare/stable...HEAD
+[1.3.1]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.3.0...1.3.1
 [1.3.0]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.2.1...1.3.0
 [1.2.1]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.2.0...1.2.1
 [1.2.0]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.1.2...1.2.0
