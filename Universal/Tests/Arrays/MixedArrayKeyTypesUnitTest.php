@@ -32,7 +32,7 @@ class MixedArrayKeyTypesUnitTest extends AbstractSniffUnitTest
         return [
             34 => 1,
             41 => 1,
-            47 => 1,
+            48 => 1,
         ];
     }
 
