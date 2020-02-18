@@ -12,13 +12,11 @@ cache:
     - $HOME/.cache/composer/files
 
 php:
-  - 5.4
   - 5.5
   - 5.6
   - 7.0
   - 7.1
   - 7.2
-  - 7.3
 
 env:
   jobs:
@@ -37,6 +35,8 @@ stages:
   - name: quicktest
     if: type = push AND branch NOT IN (master, develop)
   - name: test
+    if: branch IN (master, develop)
+  - name: coverage
     if: branch IN (master, develop)
 
 jobs:
@@ -74,6 +74,8 @@ jobs:
     #### QUICK TEST STAGE ####
     # This is a much quicker test which only runs the unit tests and linting against the low/high
     # supported PHP/PHPCS combinations.
+    # These are basically the same builds as in the Coverage stage, but then without doing
+    # the code-coverage.
     - stage: quicktest
       php: 7.4
       env: PHPCS_VERSION="dev-master" LINT=1
@@ -88,14 +90,29 @@ jobs:
     #### TEST STAGE ####
     # Additional builds to prevent issues with PHPCS versions incompatible with certain PHP versions.
     - stage: test
+      # PHPCS is only compatible with PHP 7.4 as of version 3.5.0.
       php: 7.4
-      env: PHPCS_VERSION="dev-master" LINT=1
-    # PHPCS is only compatible with PHP 7.4 as of version 3.5.0.
-    - php: 7.4
       env: PHPCS_VERSION="3.5.0"
+    - php: 7.3
+      env: PHPCS_VERSION="dev-master" LINT=1
 
     - php: "nightly"
       env: PHPCS_VERSION="n/a" LINT=1
+
+    #### CODE COVERAGE STAGE ####
+    # N.B.: Coverage is only checked on the lowest and highest stable PHP versions for all PHPCS versions.
+    # These builds are left out off the "test" stage so as not to duplicate test runs.
+    # The script used is the default script below, the same as for the `test` stage.
+    - stage: coverage
+      php: 7.4
+      env: PHPCS_VERSION="dev-master" LINT=1 COVERALLS_VERSION="^2.0"
+    - php: 7.3
+      env: PHPCS_VERSION="3.3.1" COVERALLS_VERSION="^2.0"
+
+    - php: 5.4
+      env: PHPCS_VERSION="dev-master" LINT=1 COVERALLS_VERSION="^1.0"
+    - php: 5.4
+      env: PHPCS_VERSION="3.3.1" COVERALLS_VERSION="^1.0"
 
   allow_failures:
     # Allow failures for unstable builds.
@@ -104,7 +121,10 @@ jobs:
 
 before_install:
   # Speed up build time by disabling Xdebug when its not needed.
-  - phpenv config-rm xdebug.ini || echo 'No xdebug config.'
+  - |
+    if [[ "$TRAVIS_BUILD_STAGE_NAME" != "Coverage" ]]; then
+      phpenv config-rm xdebug.ini || echo 'No xdebug config.'
+    fi
 
   - export XMLLINT_INDENT="    "
 
@@ -123,6 +143,10 @@ install:
       composer require --no-update --no-scripts squizlabs/php_codesniffer:${PHPCS_VERSION}
     fi
   - |
+    if [[ "$TRAVIS_BUILD_STAGE_NAME" == "Coverage" ]]; then
+      composer require --no-update --no-suggest --no-scripts php-coveralls/php-coveralls:${COVERALLS_VERSION}
+    fi
+  - |
     if [[ "$TRAVIS_BUILD_STAGE_NAME" == "Sniff" || $PHPCS_VERSION == "n/a" ]]; then
       # The sniff stage doesn't run the unit tests, so no need for PHPUnit.
       # The build on nightly also doesn't run the tests (yet).
@@ -134,9 +158,29 @@ install:
   - composer install --prefer-dist --no-suggest
 
 
+before_script:
+  - if [[ "$TRAVIS_BUILD_STAGE_NAME" == "Coverage" ]]; then mkdir -p build/logs; fi
+  - phpenv rehash
+
+
 script:
   # Lint PHP files against parse errors.
   - if [[ "$LINT" == "1" ]]; then composer lint; fi
 
-  # Run the tests.
-  - if [[ $PHPCS_VERSION != "n/a" ]]; then composer test; fi
+  # Run the unit tests.
+  - |
+    if [[ $PHPCS_VERSION != "n/a" && "$TRAVIS_BUILD_STAGE_NAME" != "Coverage" ]]; then
+      composer test
+    elif [[ $PHPCS_VERSION != "n/a" && "$TRAVIS_BUILD_STAGE_NAME" == "Coverage" ]]; then
+      composer coverage
+    fi
+
+after_success:
+  - |
+    if [[ "$TRAVIS_BUILD_STAGE_NAME" == "Coverage" && $COVERALLS_VERSION == "^1.0" ]]; then
+      php vendor/bin/coveralls -v -x build/logs/clover.xml
+    fi
+  - |
+    if [[ "$TRAVIS_BUILD_STAGE_NAME" == "Coverage" && $COVERALLS_VERSION == "^2.0" ]]; then
+      php vendor/bin/php-coveralls -v -x build/logs/clover.xml
+    fi

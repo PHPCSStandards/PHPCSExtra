@@ -64,8 +64,13 @@
             "@php ./vendor/phpcsstandards/phpcsdevtools/bin/phpcs-check-feature-completeness ./NormalizedArrays ./Universal"
         ],
         "test": [
-            "@php ./vendor/phpunit/phpunit/phpunit --filter NormalizedArrays ./vendor/squizlabs/php_codesniffer/tests/AllTests.php",
-            "@php ./vendor/phpunit/phpunit/phpunit --filter Universal ./vendor/squizlabs/php_codesniffer/tests/AllTests.php"
+            "@php ./vendor/phpunit/phpunit/phpunit --filter PHPCSExtra --no-coverage ./vendor/squizlabs/php_codesniffer/tests/AllTests.php"
+        ],
+        "coverage": [
+            "@php ./vendor/phpunit/phpunit/phpunit --filter PHPCSExtra ./vendor/squizlabs/php_codesniffer/tests/AllTests.php"
+        ],
+        "coverage-local": [
+            "@php ./vendor/phpunit/phpunit/phpunit --filter PHPCSExtra ./vendor/squizlabs/php_codesniffer/tests/AllTests.php --coverage-html ./build/coverage-html"
         ]
     }
 }
