@@ -15,4 +15,15 @@
         </testsuite>
     </testsuites>
 
+    <filter>
+        <whitelist addUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./NormalizedArrays/Sniffs/</directory>
+            <directory suffix=".php">./Universal/Sniffs/</directory>
+        </whitelist>
+    </filter>
+
+    <logging>
+        <log type="coverage-clover" target="build/logs/clover.xml"/>
+    </logging>
+
 </phpunit>
