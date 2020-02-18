@@ -23,6 +23,19 @@ class IfElseDeclarationUnitTest extends AbstractSniffUnitTest
 {
 
     /**
+     * Set the tabWidth to make sure that the "respecting tab indentation" feature is also tested.
+     *
+     * @param string                  $testFile The name of the file being tested.
+     * @param \PHP_CodeSniffer\Config $config   The config data for the test run.
+     *
+     * @return void
+     */
+    public function setCliValues($testFile, $config)
+    {
+        $config->tabWidth = 4;
+    }
+
+    /**
      * Returns the lines where errors should occur.
      *
      * @return array <int line number> => <int number of errors>
