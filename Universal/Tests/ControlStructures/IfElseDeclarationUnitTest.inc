@@ -25,10 +25,10 @@ if (true)
 if ( true ) {
     // Code.
 }
-elseif {
+elseif (false) {
     // Code.
 }
-else if {
+else if (false) {
     // Code.
 }
 else {
@@ -116,7 +116,7 @@ if ( true ) {
             && 5
         ) {
             // Code.
-        } else( 3 ) { // Error.
+        } else { // Error.
             // Code.
         }
 
@@ -129,6 +129,21 @@ if ( true ) {
 
     // Test fixer with single-line control structure.
     if ( $a === 1 ) { echo $a; } elseif ( $a === 2 ) { echo $b; } else { echo $c; } // Error x 2.
+
+	// Test fixer with TAB indentation.
+	if ( true ) {
+		// Code.
+	} else { // Error.
+		// Code.
+	}
+
+// Test mixing inline control structures with control structures with curly braces.
+if ($a === 10)
+    echo 'success';
+elseif ($a > 5 ) {
+    echo 'more than 5';
+} else
+    echo 'failure';
 
 // Live coding.
 // Intentional parse error. This test has to be the last in the file.

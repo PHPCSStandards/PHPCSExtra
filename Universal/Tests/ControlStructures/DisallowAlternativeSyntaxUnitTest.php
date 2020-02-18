@@ -13,27 +13,14 @@ namespace PHPCSExtra\Universal\Tests\ControlStructures;
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 /**
- * Unit test class for the IfElseDeclaration sniff.
+ * Unit test class for the DisallowAlternativeSyntax sniff.
  *
- * @covers PHPCSExtra\Universal\Sniffs\ControlStructures\IfElseDeclarationSniff
+ * @covers PHPCSExtra\Universal\Sniffs\ControlStructures\DisallowAlternativeSyntaxSniff
  *
  * @since 1.0.0
  */
-class IfElseDeclarationUnitTest extends AbstractSniffUnitTest
+class DisallowAlternativeSyntaxUnitTest extends AbstractSniffUnitTest
 {
-
-    /**
-     * Set the tabWidth to make sure that the "respecting tab indentation" feature is also tested.
-     *
-     * @param string                  $testFile The name of the file being tested.
-     * @param \PHP_CodeSniffer\Config $config   The config data for the test run.
-     *
-     * @return void
-     */
-    public function setCliValues($testFile, $config)
-    {
-        $config->tabWidth = 4;
-    }
 
     /**
      * Returns the lines where errors should occur.
@@ -43,19 +30,22 @@ class IfElseDeclarationUnitTest extends AbstractSniffUnitTest
     public function getErrorList()
     {
         return [
-            79  => 1,
-            85  => 1,
-            87  => 1,
-            91  => 1,
+            73  => 1,
+            75  => 1,
+            77  => 1,
+            82  => 1,
+            86  => 1,
+            90  => 1,
             94  => 1,
-            96  => 1,
-            107 => 1,
+            103 => 1,
+            111 => 1,
             113 => 1,
             115 => 1,
             119 => 1,
-            126 => 1,
-            131 => 2,
-            136 => 1,
+            123 => 1,
+            127 => 1,
+            131 => 1,
+            138 => 1,
         ];
     }
 

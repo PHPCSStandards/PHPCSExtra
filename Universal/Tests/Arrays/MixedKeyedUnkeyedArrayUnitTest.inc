@@ -18,3 +18,9 @@ $array = [
     'string' => 'string key',
     'value',
 ];
+
+// Test handling of empty array item.
+$array = [
+    'value', /*comment*/,
+    'another value',
+];

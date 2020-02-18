@@ -83,10 +83,7 @@ $args = array(1,
     2);
 
 $args = [1,
-    2<em>
-
-
-</em>];
+    2];
         ]]>
         </code>
     </code_comparison>

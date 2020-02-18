@@ -28,7 +28,7 @@
     "require-dev" : {
         "jakub-onderka/php-parallel-lint": "^1.0",
         "jakub-onderka/php-console-highlighter": "^0.4",
-        "phpcsstandards/phpcsdevtools": "^1.0 || dev-develop",
+        "phpcsstandards/phpcsdevtools": "^1.0",
         "phpunit/phpunit": "^4.5 || ^5.0 || ^6.0 || ^7.0"
     },
     "minimum-stability": "dev",
@@ -40,18 +40,37 @@
         "lint": [
             "@php ./vendor/jakub-onderka/php-parallel-lint/parallel-lint . -e php --exclude vendor --exclude .git"
         ],
+        "install-devcs": [
+            "composer require --dev phpcsstandards/phpcsdevcs:\"^1.0\" --no-suggest"
+        ],
+        "remove-devcs": [
+            "composer remove --dev phpcsstandards/phpcsdevcs"
+        ],
         "checkcs": [
-            "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs"
+            "@install-devcs",
+            "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs",
+            "@remove-devcs"
         ],
         "fixcs": [
-            "@php ./vendor/squizlabs/php_codesniffer/bin/phpcbf"
+            "@install-devcs",
+            "@php ./vendor/squizlabs/php_codesniffer/bin/phpcbf",
+            "@remove-devcs"
+        ],
+        "travis-checkcs": [
+            "@install-devcs",
+            "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs"
         ],
         "check-complete": [
             "@php ./vendor/phpcsstandards/phpcsdevtools/bin/phpcs-check-feature-completeness ./NormalizedArrays ./Universal"
         ],
         "test": [
-            "@php ./vendor/phpunit/phpunit/phpunit --filter NormalizedArrays ./vendor/squizlabs/php_codesniffer/tests/AllTests.php",
-            "@php ./vendor/phpunit/phpunit/phpunit --filter Universal ./vendor/squizlabs/php_codesniffer/tests/AllTests.php"
+            "@php ./vendor/phpunit/phpunit/phpunit --filter PHPCSExtra --no-coverage ./vendor/squizlabs/php_codesniffer/tests/AllTests.php"
+        ],
+        "coverage": [
+            "@php ./vendor/phpunit/phpunit/phpunit --filter PHPCSExtra ./vendor/squizlabs/php_codesniffer/tests/AllTests.php"
+        ],
+        "coverage-local": [
+            "@php ./vendor/phpunit/phpunit/phpunit --filter PHPCSExtra ./vendor/squizlabs/php_codesniffer/tests/AllTests.php --coverage-html ./build/coverage-html"
         ]
     }
 }

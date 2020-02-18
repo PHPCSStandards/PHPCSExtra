@@ -134,6 +134,11 @@ class IfElseDeclarationSniff implements Sniff
 
             if ($tokens[$firstOnIndentLine]['code'] === \T_WHITESPACE) {
                 $indent = $tokens[$firstOnIndentLine]['content'];
+
+                // If tabs were replaced, use the original content.
+                if (isset($tokens[$firstOnIndentLine]['orig_content']) === true) {
+                    $indent = $tokens[$firstOnIndentLine]['orig_content'];
+                }
             }
         }
 

@@ -43,6 +43,7 @@ $array = [
 
 // Mixed string first, implicit numeric.
 $array = [
+    $var      => 'unknown key',
     'stringA' => 'string key',
     'numeric key', // Error.
     'stringB' => 'string key',

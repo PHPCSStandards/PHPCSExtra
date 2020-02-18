@@ -195,5 +195,18 @@ $array = array($a,
     $b
 );
 
+// Test behaviour with all checks turned off.
+// phpcs:set NormalizedArrays.Arrays.ArrayBraceSpacing keywordSpacing false
+// phpcs:set NormalizedArrays.Arrays.ArrayBraceSpacing spacesWhenEmpty false
+// phpcs:set NormalizedArrays.Arrays.ArrayBraceSpacing spacesSingleLine false
+// phpcs:set NormalizedArrays.Arrays.ArrayBraceSpacing spacesMultiLine false
+$foo = array (   );
+$foo = array (  $a   );
+$array = array($a,
+    $b);
+
 // Reset to default.
+// phpcs:set NormalizedArrays.Arrays.ArrayBraceSpacing keywordSpacing 0
+// phpcs:set NormalizedArrays.Arrays.ArrayBraceSpacing spacesWhenEmpty 0
+// phpcs:set NormalizedArrays.Arrays.ArrayBraceSpacing spacesSingleLine 0
 // phpcs:set NormalizedArrays.Arrays.ArrayBraceSpacing spacesMultiLine newline

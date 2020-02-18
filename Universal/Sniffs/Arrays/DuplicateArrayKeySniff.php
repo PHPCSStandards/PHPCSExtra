@@ -103,13 +103,12 @@ class DuplicateArrayKeySniff extends AbstractArrayDeclarationSniff
             $data = [
                 ($integerKey === true) ? 'integer' : 'string',
                 $key,
-                $firstSeen['item'],
                 $this->tokens[$firstNonEmptyFirstSeen]['line'],
             ];
 
             $phpcsFile->addError(
                 'Duplicate array key found. The value will be overwritten.'
-                    . ' The %s array key "%s" was first seen for array item %d on line %d',
+                    . ' The %s array key "%s" was first seen on line %d',
                 $firstNonEmpty,
                 'Found',
                 $data
