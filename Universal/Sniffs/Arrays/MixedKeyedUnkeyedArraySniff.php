@@ -112,8 +112,8 @@ class MixedKeyedUnkeyedArraySniff extends AbstractArrayDeclarationSniff
     public function processNoKey(File $phpcsFile, $startPtr, $itemNr)
     {
         $firstNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, $startPtr, null, true);
-        if ($firstNonEmpty === false) {
-            // Shouldn't be possible.
+        if ($firstNonEmpty === false || $this->tokens[$firstNonEmpty]['code'] === \T_COMMA) {
+            // Shouldn't really be possible, but this must be a parse error (empty array item).
             return;
         }
 
