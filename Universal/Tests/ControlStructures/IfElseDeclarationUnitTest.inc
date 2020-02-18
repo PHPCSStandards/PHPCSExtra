@@ -137,6 +137,14 @@ if ( true ) {
 		// Code.
 	}
 
+// Test mixing inline control structures with control structures with curly braces.
+if ($a === 10)
+    echo 'success';
+elseif ($a > 5 ) {
+    echo 'more than 5';
+} else
+    echo 'failure';
+
 // Live coding.
 // Intentional parse error. This test has to be the last in the file.
     if ($a) {
