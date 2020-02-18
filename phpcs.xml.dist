@@ -59,20 +59,4 @@
         <exclude-pattern>/phpunit-bootstrap\.php$</exclude-pattern>
     </rule>
 
-
-    <!--
-    #############################################################################
-    TEMPORARY ADJUSTMENTS
-    Adjustments which should be removed once the associated issue has been resolved.
-    #############################################################################
-    -->
-
-    <!-- Bug in PHPCS. This exclusion can be removed once the fix has been merged.
-         Ref: https://github.com/squizlabs/PHP_CodeSniffer/issues/2822
-         Ref: https://github.com/squizlabs/PHP_CodeSniffer/pull/2827
-    -->
-    <rule ref="Generic.ControlStructures.InlineControlStructure">
-        <exclude-pattern>/Universal/Sniffs/ControlStructures/IfElseDeclarationSniff\.php$</exclude-pattern>
-    </rule>
-
 </ruleset>
