@@ -35,6 +35,12 @@ use function My\preg_replace as Preg_Replace;
 use function str_pos as Pos; // Alias for global import.
 use function \str_pad as STR_PAD; // Alias for global import to same name.
 
+// Test reporting on the correct line. Contrived example, but is valid PHP.
+use function My
+    \function_name
+    \sub
+    \function_name;
+
 // Ignore as not import use.
 $closure = function() use($bar) {
     return $bar;
