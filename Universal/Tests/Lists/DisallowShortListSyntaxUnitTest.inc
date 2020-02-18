@@ -18,3 +18,6 @@ list($a, list($b, $c, $d)) = $array;
         $d,
     ],
 ] = $array;
+
+// Intentional parse error. This has to be the last test in the file.
+[ $a, $b
