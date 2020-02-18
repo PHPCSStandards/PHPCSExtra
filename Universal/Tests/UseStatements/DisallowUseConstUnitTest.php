@@ -48,6 +48,7 @@ class DisallowUseConstUnitTest extends AbstractSniffUnitTest
                     31 => 1, // Note: alias same as name, so not counted as aliased.
                     32 => 1, // GlobalNamespaceWithAlias.
                     33 => 1, // GlobalNamespace. Note: alias same as name, so not counted as aliased.
+                    38 => 1,
                 ];
 
             case 'DisallowUseConstUnitTest.2.inc':
