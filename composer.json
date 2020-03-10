@@ -26,8 +26,8 @@
         "phpcsstandards/phpcsutils" : "^1.0 || dev-develop"
     },
     "require-dev" : {
-        "jakub-onderka/php-parallel-lint": "^1.0",
-        "jakub-onderka/php-console-highlighter": "^0.4",
+        "php-parallel-lint/php-parallel-lint": "^1.0",
+        "php-parallel-lint/php-console-highlighter": "^0.4",
         "phpcsstandards/phpcsdevtools": "^1.0",
         "phpunit/phpunit": "^4.5 || ^5.0 || ^6.0 || ^7.0"
     },
@@ -38,7 +38,7 @@
             "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run"
         ],
         "lint": [
-            "@php ./vendor/jakub-onderka/php-parallel-lint/parallel-lint . -e php --exclude vendor --exclude .git"
+            "@php ./vendor/php-parallel-lint/php-parallel-lint/parallel-lint . -e php --exclude vendor --exclude .git"
         ],
         "install-devcs": [
             "composer require --dev phpcsstandards/phpcsdevcs:\"^1.0\" --no-suggest"
