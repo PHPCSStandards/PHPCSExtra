@@ -96,6 +96,9 @@ jobs:
     - php: 7.3
       env: PHPCS_VERSION="dev-master" LINT=1
 
+    - php: 7.4
+      env: PHPCS_VERSION="4.0.x-dev@dev"
+
     - php: "nightly"
       env: PHPCS_VERSION="n/a" LINT=1
 
@@ -117,6 +120,7 @@ jobs:
   allow_failures:
     # Allow failures for unstable builds.
     - php: "nightly"
+    - env: PHPCS_VERSION="4.0.x-dev@dev"
 
 
 before_install:
@@ -153,9 +157,18 @@ install:
       composer remove --dev phpunit/phpunit --no-update --no-scripts
     fi
 
-  # --prefer-dist will allow for optimal use of the travis caching ability.
-  # The Composer PHPCS plugin takes care of setting the installed_paths for PHPCS.
-  - composer install --prefer-dist --no-suggest
+  - |
+    if [[ "${PHPCS_VERSION:0:3}" == "4.0" ]]; then
+      # Remove devtools as it will not (yet) install on PHPCS 4.x.
+      composer remove --dev phpcsstandards/phpcsdevtools --no-update
+      # --prefer-source ensures that the PHPCS native unit test framework will be available in PHPCS 4.x.
+      # The Composer PHPCS plugin takes care of setting the installed_paths for PHPCS.
+      composer install --prefer-source --no-suggest
+    else
+      # --prefer-dist will allow for optimal use of the travis caching ability.
+      # The Composer PHPCS plugin takes care of setting the installed_paths for PHPCS.
+      composer install --prefer-dist --no-suggest
+    fi
 
 
 before_script:
