@@ -1,0 +1,21 @@
+<documentation title="Disallow Inline Tabs">
+    <standard>
+    <![CDATA[
+    Spaces must be used for mid-line alignment.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: Spaces used for alignment.">
+        <![CDATA[
+echo $title;<em> </em>// Comment.
+echo $text;<em>  </em>// Comment.
+        ]]>
+        </code>
+        <code title="Invalid: Tabs used for alignment.">
+        <![CDATA[
+echo $title;<em>[tab]</em>// Comment.
+echo $text;<em>[tab]</em>// Comment.
+        ]]>
+        </code>
+    </code_comparison>
+</documentation>
