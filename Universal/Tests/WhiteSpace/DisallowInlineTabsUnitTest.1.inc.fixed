@@ -51,3 +51,11 @@ $aaaaaaaa = true;
 
 		// Tab indented     and inline tabs.
 		// Tab indented     and inline tabs.
+
+		/*
+		 * @phpcs:ignore Stnd.Cat.SniffName -- testing mixed comment + annotations don't trigger on indentation.
+		 */
+
+		// Tab indented, no tabs.
+		// phpcs:ignore Stnd.Cat.SniffName -- testing mixed comment + annotations don't trigger on indentation.
+		// Tab indented, no tabs.
