@@ -12,6 +12,7 @@ namespace PHPCSExtra\Universal\Sniffs\WhiteSpace;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 use PHPCSExtra\Universal\Helpers\DummyTokenizer;
 use PHPCSUtils\BackCompat\Helper;
 
@@ -117,9 +118,11 @@ class DisallowInlineTabsSniff implements Sniff
             $origContent = $token['orig_content'];
 
             $multiLineComment = false;
-            if ($tokens[$i]['code'] === \T_COMMENT
+            if (($tokens[$i]['code'] === \T_COMMENT
+                || isset(Tokens::$phpcsCommentTokens[$tokens[$i]['code']]))
                  && $tokens[$i]['column'] === 1
-                 && $tokens[($i - 1)]['code'] === \T_COMMENT
+                 && ($tokens[($i - 1)]['code'] === \T_COMMENT
+                 || isset(Tokens::$phpcsCommentTokens[$tokens[($i - 1)]['code']]))
             ) {
                 $multiLineComment = true;
             }
