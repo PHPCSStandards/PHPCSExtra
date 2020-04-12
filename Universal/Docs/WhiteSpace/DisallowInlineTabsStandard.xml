@@ -7,14 +7,14 @@
     <code_comparison>
         <code title="Valid: Spaces used for alignment.">
         <![CDATA[
-echo $title;<em> </em>// Comment.
-echo $text;<em>  </em>// Comment.
+$title<em>[space]</em>= 'text';
+$text<em>[space][space]</em>= 'more text';
         ]]>
         </code>
         <code title="Invalid: Tabs used for alignment.">
         <![CDATA[
-echo $title;<em>[tab]</em>// Comment.
-echo $text;<em>[tab]</em>// Comment.
+$title<em>[tab]</em>= 'text';
+$text<em>[tab]</em>= 'more text';
         ]]>
         </code>
     </code_comparison>
