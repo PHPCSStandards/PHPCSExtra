@@ -28,6 +28,15 @@ class NoLeadingBackslashSniff implements Sniff
 {
 
     /**
+     * Name of the metric.
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
+    const METRIC_NAME = 'Import use with leading backslash';
+
+    /**
      * Returns an array of tokens this test wants to listen for.
      *
      * @since 1.0.0
@@ -86,6 +95,8 @@ class NoLeadingBackslashSniff implements Sniff
             }
 
             if ($tokens[$nextNonEmpty]['code'] === \T_NS_SEPARATOR) {
+                $phpcsFile->recordMetric($nextNonEmpty, self::METRIC_NAME, 'yes');
+
                 $error = 'An import use statement should never start with a leading backslash';
                 $fix   = $phpcsFile->addFixableError($error, $nextNonEmpty, 'LeadingBackslashFound');
 
@@ -96,6 +107,8 @@ class NoLeadingBackslashSniff implements Sniff
                         $phpcsFile->fixer->replaceToken($nextNonEmpty, '');
                     }
                 }
+            } else {
+                $phpcsFile->recordMetric($nextNonEmpty, self::METRIC_NAME, 'no');
             }
 
             // Move the stackPtr forward to the next part of the use statement, if any.
