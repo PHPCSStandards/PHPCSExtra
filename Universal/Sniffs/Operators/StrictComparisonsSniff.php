@@ -25,6 +25,20 @@ class StrictComparisonsSniff implements Sniff
 {
 
     /**
+     * The tokens this sniff records metrics for.
+     *
+     * @since 1.0.0
+     *
+     * @var array
+     */
+    private $metricType = [
+        \T_IS_EQUAL         => 'loose',
+        \T_IS_NOT_EQUAL     => 'loose',
+        \T_IS_IDENTICAL     => 'strict',
+        \T_IS_NOT_IDENTICAL => 'strict',
+    ];
+
+    /**
      * The tokens this sniff targets with error code and replacements.
      *
      * @since 1.0.0
@@ -51,7 +65,7 @@ class StrictComparisonsSniff implements Sniff
      */
     public function register()
     {
-        return \array_keys($this->targetTokenInfo);
+        return \array_keys($this->metricType);
     }
 
     /**
@@ -69,6 +83,13 @@ class StrictComparisonsSniff implements Sniff
     {
         $tokens    = $phpcsFile->getTokens();
         $tokenCode = $tokens[$stackPtr]['code'];
+
+        $phpcsFile->recordMetric($stackPtr, 'Type of comparison used', $this->metricType[$tokenCode]);
+
+        if (isset($this->targetTokenInfo[$tokenCode]) === false) {
+            // Already using strict comparison operator.
+            return;
+        }
 
         $error = 'Loose comparisons are not allowed. Expected: "%s"; Found: "%s"';
         $data  = [
