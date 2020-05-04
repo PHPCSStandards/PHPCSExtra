@@ -11,6 +11,7 @@
 namespace PHPCSExtra\Universal\Tests\Arrays;
 
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
+use PHPCSUtils\BackCompat\Helper;
 
 /**
  * Unit test class for the DuplicateArrayKey sniff.
@@ -109,6 +110,12 @@ final class DuplicateArrayKeyUnitTest extends AbstractSniffUnitTest
             147 => 1,
             148 => 1,
             151 => 1,
+            161 => 1,
+            162 => 1,
+            163 => 1,
+            164 => 1,
+            165 => 1,
+            166 => 1,
         ];
     }
 
