@@ -4,7 +4,7 @@ PHPCSExtra
 <div aria-hidden="true">
 
 [![Latest Stable Version](https://poser.pugx.org/phpcsstandards/phpcsextra/v/stable)](https://packagist.org/packages/phpcsstandards/phpcsextra)
-[![Travis Build Status](https://travis-ci.com/PHPCSStandards/PHPCSExtra.svg?branch=master)](https://travis-ci.com/PHPCSStandards/PHPCSExtra/branches)
+[![Travis Build Status](https://travis-ci.com/PHPCSStandards/PHPCSExtra.svg?branch=stable)](https://travis-ci.com/PHPCSStandards/PHPCSExtra/branches)
 [![Release Date of the Latest Version](https://img.shields.io/github/release-date/PHPCSStandards/PHPCSExtra.svg?maxAge=1800)](https://github.com/PHPCSStandards/PHPCSExtra/releases)
 :construction:
 [![Latest Unstable Version](https://img.shields.io/badge/unstable-dev--develop-e68718.svg?maxAge=2419200)](https://packagist.org/packages/phpcsstandards/phpcsextra#dev-develop)
@@ -15,7 +15,7 @@ PHPCSExtra
 [![Tested on PHP 5.4 to 7.4](https://img.shields.io/badge/tested%20on-PHP%205.4%20|%205.5%20|%205.6%20|%207.0%20|%207.1%20|%207.2%20|%207.3%20|%207.4-brightgreen.svg?maxAge=2419200)](https://travis-ci.com/PHPCSStandards/PHPCSExtra)
 [![Coverage Status](https://coveralls.io/repos/github/PHPCSStandards/PHPCSExtra/badge.svg)](https://coveralls.io/github/PHPCSStandards/PHPCSExtra)
 
-[![License: LGPLv3](https://poser.pugx.org/phpcsstandards/phpcsextra/license)](https://github.com/PHPCSStandards/PHPCSExtra/blob/master/LICENSE)
+[![License: LGPLv3](https://poser.pugx.org/phpcsstandards/phpcsextra/license)](https://github.com/PHPCSStandards/PHPCSExtra/blob/stable/LICENSE)
 ![Awesome](https://img.shields.io/badge/awesome%3F-yes!-brightgreen.svg)
 
 </div>
