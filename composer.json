@@ -41,24 +41,24 @@
             "@php ./vendor/php-parallel-lint/php-parallel-lint/parallel-lint . -e php --exclude vendor --exclude .git"
         ],
         "install-devcs": [
-            "composer require --dev phpcsstandards/phpcsdevcs:\"^1.0\" --no-suggest"
+            "composer global require --dev phpcsstandards/phpcsdevcs:\"^1.0\" --no-suggest"
         ],
         "remove-devcs": [
-            "composer remove --dev phpcsstandards/phpcsdevcs"
+            "composer global remove --dev phpcsstandards/phpcsdevcs"
         ],
         "checkcs": [
             "@install-devcs",
-            "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs",
+            "phpcs",
             "@remove-devcs"
         ],
         "fixcs": [
             "@install-devcs",
-            "@php ./vendor/squizlabs/php_codesniffer/bin/phpcbf",
+            "phpcbf",
             "@remove-devcs"
         ],
         "travis-checkcs": [
             "@install-devcs",
-            "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs"
+            "/home/travis/.composer/vendor/bin/phpcs"
         ],
         "check-complete": [
             "@php ./vendor/phpcsstandards/phpcsdevtools/bin/phpcs-check-feature-completeness ./NormalizedArrays ./Universal"
