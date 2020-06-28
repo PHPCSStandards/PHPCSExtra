@@ -32,6 +32,7 @@ env:
 # See: https://docs.travis-ci.com/user/conditions-v1
 stages:
   - name: sniff
+  - name: validate
   - name: quicktest
     if: type = push AND branch NOT IN (master, develop)
   - name: test
@@ -46,6 +47,14 @@ jobs:
     #### SNIFF STAGE ####
     - stage: sniff
       php: 7.4
+      install: skip
+      before_script: skip
+      script:
+        # Check the code style of the code base.
+        - composer travis-checkcs
+
+    - stage: validate
+      php: 7.4
       env: PHPCS_VERSION="dev-master"
       addons:
         apt:
@@ -55,9 +64,6 @@ jobs:
         # Validate the composer.json file.
         # @link https://getcomposer.org/doc/03-cli.md#validate
         - composer validate --no-check-all --strict
-
-        # Check the code style of the code base.
-        - composer travis-checkcs
 
         # Validate the xml files.
         # @link http://xmlsoft.org/xmllint.html
@@ -151,8 +157,7 @@ install:
       composer require --no-update --no-suggest --no-scripts php-coveralls/php-coveralls:${COVERALLS_VERSION}
     fi
   - |
-    if [[ "${TRAVIS_BUILD_STAGE_NAME^}" == "Sniff" || $PHPCS_VERSION == "n/a" ]]; then
-      # The sniff stage doesn't run the unit tests, so no need for PHPUnit.
+    if [[ $PHPCS_VERSION == "n/a" ]]; then
       # The build on nightly also doesn't run the tests (yet).
       composer remove --dev phpunit/phpunit --no-update --no-scripts
     fi
