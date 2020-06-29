@@ -6,12 +6,18 @@
  *
  * - Load the PHPCS PHPUnit bootstrap file providing cross-version PHPUnit support.
  *   {@link https://github.com/squizlabs/PHP_CodeSniffer/pull/1384}
+ * - Allows for a `PHPCS_DIR` environment variable to be set to point to a different
+ *   PHPCS install than the one in the `vendor` directory to allow for testing with
+ *   a git clone of PHPCS.
+ * - Prevent attempting to run unit tests of other external PHPCS standards installed.
  *
  * @package   PHPCSExtra
  * @copyright 2020 PHPCSExtra Contributors
  * @license   https://opensource.org/licenses/LGPL-3.0 LGPL3
  * @link      https://github.com/PHPCSStandards/PHPCSExtra
  */
+
+use PHP_CodeSniffer\Util\Standards;
 
 if (\defined('PHP_CODESNIFFER_IN_TESTS') === false) {
     \define('PHP_CODESNIFFER_IN_TESTS', true);
@@ -49,21 +55,23 @@ if ($phpcsDir !== false
 
 If you use Composer, please run `composer install`.
 Otherwise, make sure you set a `PHPCS_DIR` environment variable in your phpunit.xml file
-pointing to the PHPCS directory.
+pointing to the PHPCS directory and that PHPCSUtils is included in the `installed_paths`
+for that PHPCS install.
 ';
 
     die(1);
 }
 
 /*
- * Set the PHPCS_IGNORE_TEST environmen variable to ignore tests from other standards.
+ * Set the PHPCS_IGNORE_TEST environment variable to ignore tests from other standards.
+ * Ref: https://github.com/squizlabs/PHP_CodeSniffer/pull/1146
  */
 $phpcsExtraStandards = [
     'NormalizedArrays' => true,
     'Universal'        => true,
 ];
 
-$allStandards   = PHP_CodeSniffer\Util\Standards::getInstalledStandards();
+$allStandards   = Standards::getInstalledStandards();
 $allStandards[] = 'Generic';
 
 $standardsToIgnore = [];
