@@ -106,7 +106,7 @@ jobs:
       env: PHPCS_VERSION="4.0.x-dev@dev"
 
     - php: "nightly"
-      env: PHPCS_VERSION="n/a" LINT=1
+      env: PHPCS_VERSION="dev-master" LINT=1
 
     #### CODE COVERAGE STAGE ####
     # N.B.: Coverage is only checked on the lowest and highest stable PHP versions for all PHPCS versions.
@@ -141,25 +141,17 @@ before_install:
   # On stable PHPCS versions, allow for PHP deprecation notices.
   # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
   - |
-    if [[ "${TRAVIS_BUILD_STAGE_NAME^}" != "Sniff" && $PHPCS_BRANCH != "dev-master" && "$PHPCS_VERSION" != "n/a" ]]; then
+    if [[ "${TRAVIS_BUILD_STAGE_NAME^}" != "Sniff" && $PHPCS_BRANCH != "dev-master" ]]; then
       echo 'error_reporting = E_ALL & ~E_DEPRECATED' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
     fi
 
 
 install:
   # Set up test environment using Composer.
-  - |
-    if [[ $PHPCS_VERSION != "n/a" ]]; then
-      composer require --no-update --no-scripts squizlabs/php_codesniffer:${PHPCS_VERSION}
-    fi
+  - composer require --no-update --no-scripts squizlabs/php_codesniffer:${PHPCS_VERSION}
   - |
     if [[ "${TRAVIS_BUILD_STAGE_NAME^}" == "Coverage" ]]; then
       composer require --no-update --no-suggest --no-scripts php-coveralls/php-coveralls:${COVERALLS_VERSION}
-    fi
-  - |
-    if [[ $PHPCS_VERSION == "n/a" ]]; then
-      # The build on nightly also doesn't run the tests (yet).
-      composer remove --dev phpunit/phpunit --no-update --no-scripts
     fi
 
   - |
@@ -167,13 +159,15 @@ install:
       # Remove devtools as it will not (yet) install on PHPCS 4.x.
       composer remove --dev phpcsstandards/phpcsdevtools --no-update
       # --prefer-source ensures that the PHPCS native unit test framework will be available in PHPCS 4.x.
-      # The Composer PHPCS plugin takes care of setting the installed_paths for PHPCS.
       composer install --prefer-source --no-suggest
+    elif [[ $TRAVIS_PHP_VERSION == "nightly" ]]; then
+      # Ignore PHPUnit platform requirements for installing on nightly.
+      composer install --prefer-dist --no-suggest --ignore-platform-reqs
     else
       # --prefer-dist will allow for optimal use of the travis caching ability.
-      # The Composer PHPCS plugin takes care of setting the installed_paths for PHPCS.
       composer install --prefer-dist --no-suggest
     fi
+    # The Composer PHPCS plugin takes care of setting the installed_paths for PHPCS.
 
 
 before_script:
@@ -187,9 +181,9 @@ script:
 
   # Run the unit tests.
   - |
-    if [[ $PHPCS_VERSION != "n/a" && "${TRAVIS_BUILD_STAGE_NAME^}" != "Coverage" ]]; then
+    if [[ "${TRAVIS_BUILD_STAGE_NAME^}" != "Coverage" ]]; then
       composer test
-    elif [[ $PHPCS_VERSION != "n/a" && "${TRAVIS_BUILD_STAGE_NAME^}" == "Coverage" ]]; then
+    elif [[ "${TRAVIS_BUILD_STAGE_NAME^}" == "Coverage" ]]; then
       composer coverage
     fi
 
