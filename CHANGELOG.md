@@ -14,8 +14,54 @@ This projects adheres to [Keep a CHANGELOG](http://keepachangelog.com/) and uses
 
 _Nothing yet._
 
+## [1.0.0-alpha3] - 2020-06-29
 
-## 1.0.0-alpha2 - 2020-02-18
+### Added
+
+#### Universal
+
+* :wrench: :books: New `Universal.Arrays.DisallowShortArraySyntax` sniff to disallow short array syntax. [#40](https://github.com/PHPCSStandards/PHPCSExtra/pull/40)
+    In contrast to the PHPCS native `Generic.Arrays.DisallowShortArraySyntax` sniff, this sniff will ignore short list syntax and not cause parse errors when the fixer is used.
+* :wrench: :bar_chart: :books: New `Universal.Constants.UppercaseMagicConstants` sniff to enforce that PHP native magic constants are in uppercase. [#64](https://github.com/PHPCSStandards/PHPCSExtra/pull/64)
+* :bar_chart: :books: New `Universal.Namespaces.DisallowDeclarationWithoutName` sniff to disallow namespace declarations without a namespace name. [#50](https://github.com/PHPCSStandards/PHPCSExtra/pull/50)
+* :bar_chart: :books: New `Universal.Operators.DisallowLogicalAndOr` sniff to enforce the use of the boolean `&&` and `||` operators instead of the logical `and`/`or` operators. [#52](https://github.com/PHPCSStandards/PHPCSExtra/pull/52)
+    Note: as the [operator precedence](https://www.php.net/manual/en/language.operators.precedence.php) of the logical operators is significantly lower than the operator precedence of boolean operators, this sniff does not contain an auto-fixer.
+* :bar_chart: :books: New `Universal.Operators.DisallowShortTernary` sniff to disallow the use of short ternaries `?:`. [#42](https://github.com/PHPCSStandards/PHPCSExtra/pull/42)
+    While short ternaries are useful when used correctly, the principle of them is often misunderstood and they are more often than not used incorrectly, leading to hard to debug issues and/or PHP warnings/notices.
+* :wrench: :bar_chart: :books: New `Universal.Operators.DisallowStandalonePostIncrementDecrement` sniff disallow the use of post-in/decrements in stand-alone statements and discourage the use of multiple increment/decrement operators in a stand-alone statement. [#65](https://github.com/PHPCSStandards/PHPCSExtra/pull/65)
+* :wrench: :bar_chart: :books: New `Universal.Operators.StrictComparisons` sniff to enforce the use of strict comparisons. [#48](https://github.com/PHPCSStandards/PHPCSExtra/pull/48)
+    Warning: the auto-fixer for this sniff _may_ cause bugs in applications and should be used with care! This is considered a _risky_ fixer.
+* :wrench: :bar_chart: :books: New `Universal.OOStructures.AlphabeticExtendsImplements` sniff to verify that the names used in a class "implements" statement or an interface "extends" statement are listed in alphabetic order. [#55](https://github.com/PHPCSStandards/PHPCSExtra/pull/55)
+    * This sniff contains a public `orderby` property to determine the sort order to use for the statement.
+        If all names used are unqualified, the sort order won't make a difference.
+        However, if one or more of the names are partially or fully qualified, the chosen sort order will determine how the sorting between unqualified, partially and fully qualified names is handled.
+        The sniff supports two sort order options:
+        - _'name'_ : sort by the interface name only (default);
+        - _'full'_ : sort by the full name as used in the statement (without leading backslash).
+        In both cases, the sorting will be done using natural sort, case-insensitive.
+    * The sniff has modular error codes to allow for selective inclusion/exclusion:
+        - `ImplementsWrongOrder` - for "class implements" statements.
+        - `ImplementsWrongOrderWithComments` - for "class implements" statements interlaced with comments. These will not be auto-fixed.
+        - `ExtendsWrongOrder` - for "interface extends" statements.
+        - `ExtendsWrongOrderWithComments` - for "interface extends" statements interlaced with comments. These will not be auto-fixed.
+    * When fixing, the existing spacing between the names in an `implements`/`extends` statement will not be maintained.
+        The fixer will separate each name with a comma and one space.
+        If alternative formatting is desired, a sniff which will check and fix the formatting should be added to the ruleset.
+* :wrench: :bar_chart: :books: New `Universal.UseStatements.LowercaseFunctionConst` sniff to enforce that `function` and `const` keywords when used in an import `use` statement are always lowercase. [#58](https://github.com/PHPCSStandards/PHPCSExtra/pull/58)
+* :wrench: :bar_chart: :books: New `Universal.UseStatements.NoLeadingBackslash` sniff to verify that a name being imported in an import `use` statement does not start with a leading backslash. [#46](https://github.com/PHPCSStandards/PHPCSExtra/pull/46)
+    Names in import `use` statements should always be fully qualified, so a leading backslash is not needed and it is strongly recommended not to use one.
+    This sniff handles all types of import use statements supported by PHP, in contrast to other sniffs for the same in, for instance, the PSR12 or the Slevomat standard, which are incomplete.
+* :wrench: :books: New `Universal.WhiteSpace.DisallowInlineTabs` sniff to enforce using spaces for mid-line alignment. [#43](https://github.com/PHPCSStandards/PHPCSExtra/pull/43)
+
+### Changed
+
+#### Other
+* The `master` branch has been renamed to `stable`.
+* Composer: The version requirements for the [DealerDirect Composer PHPCS plugin] have been widened to allow for version 0.7.0 which supports Composer 2.0.0. [#62](https://github.com/PHPCSStandards/PHPCSExtra/pull/62)
+* Various housekeeping.
+
+
+## [1.0.0-alpha2] - 2020-02-18
 
 ### Added
 
@@ -104,5 +150,6 @@ This initial alpha release contains the following sniffs:
     Individual sub-types can be allowed by excluding specific error codes.
 
 
-[Unreleased]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.0-alpha2...HEAD
+[Unreleased]: https://github.com/PHPCSStandards/PHPCSExtra/compare/stable...HEAD
+[1.0.0-alpha3]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.0-alpha2...1.0.0-alpha3
 [1.0.0-alpha2]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.0-alpha1...1.0.0-alpha2
