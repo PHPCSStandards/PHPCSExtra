@@ -1,0 +1,32 @@
+<?php
+
+// Class import use statements.
+use Util\MyClass;
+use \Util\MyOtherClass;
+
+// Function/const import use statements.
+use function Util\functionA;
+use function\Util\functionB;
+use function \Util\functionC;
+
+use const Util\MyClass\CONSTANT_X;
+use const\Util\MyClass\CONSTANT_Y;
+use const Util\MyClass\CONSTANT_Z;
+
+use \some\namespacing\{
+    function another\level\function_name,
+    SomeClassA,
+    const another\level\CONSTANT_NAME,
+};
+
+// Not the use statements we're looking for.
+class ClassUsingTrait {
+    use \SomeTrait;
+    use AnotherTrait;
+}
+
+$closure = function($param) use ($var) {};
+
+// Not the const/function keywords we're looking for.
+const ABC = false;
+function Foo() {}

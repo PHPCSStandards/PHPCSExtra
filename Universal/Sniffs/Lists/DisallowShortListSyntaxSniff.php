@@ -31,10 +31,7 @@ class DisallowShortListSyntaxSniff implements Sniff
      */
     public function register()
     {
-        return [
-            \T_OPEN_SHORT_ARRAY,
-            \T_OPEN_SQUARE_BRACKET, // BC for PHPCS < 3.3.0.
-        ];
+        return [\T_OPEN_SHORT_ARRAY];
     }
 
     /**

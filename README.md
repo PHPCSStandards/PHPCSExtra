@@ -4,7 +4,7 @@ PHPCSExtra
 <div aria-hidden="true">
 
 [![Latest Stable Version](https://poser.pugx.org/phpcsstandards/phpcsextra/v/stable)](https://packagist.org/packages/phpcsstandards/phpcsextra)
-[![Travis Build Status](https://travis-ci.com/PHPCSStandards/PHPCSExtra.svg?branch=master)](https://travis-ci.com/PHPCSStandards/PHPCSExtra/branches)
+[![Travis Build Status](https://travis-ci.com/PHPCSStandards/PHPCSExtra.svg?branch=stable)](https://travis-ci.com/PHPCSStandards/PHPCSExtra/branches)
 [![Release Date of the Latest Version](https://img.shields.io/github/release-date/PHPCSStandards/PHPCSExtra.svg?maxAge=1800)](https://github.com/PHPCSStandards/PHPCSExtra/releases)
 :construction:
 [![Latest Unstable Version](https://img.shields.io/badge/unstable-dev--develop-e68718.svg?maxAge=2419200)](https://packagist.org/packages/phpcsstandards/phpcsextra#dev-develop)
@@ -15,7 +15,7 @@ PHPCSExtra
 [![Tested on PHP 5.4 to 7.4](https://img.shields.io/badge/tested%20on-PHP%205.4%20|%205.5%20|%205.6%20|%207.0%20|%207.1%20|%207.2%20|%207.3%20|%207.4-brightgreen.svg?maxAge=2419200)](https://travis-ci.com/PHPCSStandards/PHPCSExtra)
 [![Coverage Status](https://coveralls.io/repos/github/PHPCSStandards/PHPCSExtra/badge.svg)](https://coveralls.io/github/PHPCSStandards/PHPCSExtra)
 
-[![License: LGPLv3](https://poser.pugx.org/phpcsstandards/phpcsextra/license)](https://github.com/PHPCSStandards/PHPCSExtra/blob/master/LICENSE)
+[![License: LGPLv3](https://poser.pugx.org/phpcsstandards/phpcsextra/license)](https://github.com/PHPCSStandards/PHPCSExtra/blob/stable/LICENSE)
 ![Awesome](https://img.shields.io/badge/awesome%3F-yes!-brightgreen.svg)
 
 </div>
@@ -115,12 +115,19 @@ By default, this sniff will:
 * Forbid a comma after the last array item for single-line arrays.
 * Enforce a comma after the last array item for multi-line arrays.
 
-This can be changed for each type or array individually by setting the `singleLine` or `multiLine` properties in a custom ruleset.
+This can be changed for each type or array individually by setting the `singleLine` and/or `multiLine` properties in a custom ruleset.
 
 Use any of the following values to change the properties: `enforce`, `forbid` or `skip` to not check the comma after the last array item for a particular type of array.
 
+The default for the `singleLine` property is `forbid`. The default for the `multiLine` property is `enforce`.
 
 ### Universal
+
+#### `Universal.Arrays.DisallowShortArraySyntax` :wrench: :books:
+
+Disallow short array syntax.
+
+In contrast to the PHPCS native `Generic.Arrays.DisallowShortArraySyntax` sniff, this sniff will ignore short list syntax and not cause parse errors when the fixer is used.
 
 #### `Universal.Arrays.DuplicateArrayKey` :books:
 
@@ -134,12 +141,18 @@ Best practice sniff: don't use a mix of integer and numeric keys for array items
 
 Best practice sniff: don't use a mix of keyed and unkeyed array items.
 
+#### `Universal.Constants.UppercaseMagicConstants` :wrench: :bar_chart: :books:
+
+Enforce uppercase when using PHP native magic constants, like `__FILE__` et al.
+
 #### `Universal.ControlStructures.DisallowAlternativeSyntax` :wrench: :bar_chart: :books:
 
 Disallow using the alternative syntax for control structures.
 
-* This sniff contains a `allowWithInlineHTML` property to allow alternative syntax when inline HTML is used within the control structure. In all other cases, the use of the alternative syntax will still be disallowed.
+* This sniff contains an `allowWithInlineHTML` property to allow alternative syntax when inline HTML is used within the control structure. In all other cases, the use of the alternative syntax will still be disallowed.
+    Acceped values: (bool) `true`|`false`. Defaults to `false`.
 * The sniff has modular error codes to allow for making exceptions based on specific control structures and/or specific control structures in combination with inline HTML.
+    The error codes follow the following pattern: `Found[ControlStructure][WithInlineHTML]`. Examples: `FoundIf`, `FoundSwitchWithInlineHTML`.
 
 #### `Universal.ControlStructures.IfElseDeclaration` :wrench: :bar_chart: :books:
 
@@ -153,6 +166,12 @@ Disallow the use of long `list`s.
 
 Disallow the use of short lists.
 
+#### `Universal.Namespaces.DisallowDeclarationWithoutName` :bar_chart: :books:
+
+Disallow namespace declarations without a namespace name.
+
+This sniff only applies to namespace declarations using the curly brace syntax.
+
 #### `Universal.Namespaces.DisallowCurlyBraceSyntax` :bar_chart: :books:
 
 Disallow the use of the alternative namespace declaration syntax using curly braces.
@@ -165,24 +184,101 @@ Enforce the use of the alternative namespace syntax using curly braces.
 
 Disallow the use of multiple namespaces within a file.
 
+#### `Universal.OOStructures.AlphabeticExtendsImplements` :wrench: :bar_chart: :books:
+
+Enforce that the names used in a class "implements" statement or an interface "extends" statement are listed in alphabetic order.
+
+* This sniff contains a `orderby` property to determine the sort order to use for the statement.
+    If all names used are unqualified, the sort order won't make a difference.
+    However, if one or more of the names are partially or fully qualified, the chosen sort order will determine how the sorting between unqualified, partially and fully qualified names is handled.
+    The sniff supports two sort order options:
+    - _'name'_ : sort by the interface name only (default);
+    - _'full'_ : sort by the full name as used in the statement (without leading backslash).
+    In both cases, the sorting will be done using natural sort, case-insensitive.
+* The sniff has modular error codes to allow for selective inclusion/exclusion:
+    - `ImplementsWrongOrder` - for "class implements" statements.
+    - `ImplementsWrongOrderWithComments` - for "class implements" statements interlaced with comments. These will not be auto-fixed.
+    - `ExtendsWrongOrder` - for "interface extends" statements.
+    - `ExtendsWrongOrderWithComments` - for "interface extends" statements interlaced with comments. These will not be auto-fixed.
+* When fixing, the existing spacing between the names in an `implements`/`extends` statement will not be maintained.
+    The fixer will separate each name with a comma and one space.
+    If alternative formatting is desired, a sniff which will check and fix the formatting should be added to the ruleset.
+
+#### `Universal.Operators.DisallowLogicalAndOr` :bar_chart: :books:
+
+Enforce the use of the boolean `&&` and `||` operators instead of the logical `and`/`or` operators.
+
+:information_source: Note: as the [operator precedence](https://www.php.net/manual/en/language.operators.precedence.php) of the logical operators is significantly lower than the operator precedence of boolean operators, this sniff does not contain an auto-fixer.
+
+#### `Universal.Operators.DisallowShortTernary` :bar_chart: :books:
+
+Disallow the use of short ternaries `?:`.
+
+While short ternaries are useful when used correctly, the principle of them is often misunderstood and they are more often than not used incorrectly, leading to hard to debug issues and/or PHP warnings/notices.
+
+#### `Universal.Operators.DisallowStandalonePostIncrementDecrement` :wrench: :bar_chart: :books:
+
+* Disallow the use of post-in/decrements in stand-alone statements - error codes: `PostDecrementFound` and `PostIncrementFound`.
+    Using pre-in/decrement is more in line with the principle of least astonishment and prevents bugs when code gets moved around at a later point in time.
+* Discourages the use of multiple increment/decrement operators in a stand-alone statement - error code: `MultipleOperatorsFound`.
+
+#### `Universal.Operators.StrictComparisons` :wrench: :bar_chart: :books:
+
+Enforce the use of strict comparisons.
+
+:warning: **Warning**: the auto-fixer for this sniff _may_ cause bugs in applications and should be used with care!
+This is considered a **_risky_ fixer**.
+
 #### `Universal.UseStatements.DisallowUseClass` :bar_chart: :books:
 
 Forbid using import `use` statements for classes/traits/interfaces.
 
-Individual sub-types - with/without alias, global imports, imports from the same namespace - can be forbidden by just including that specific error code and/or allowed including the whole sniff and excluding specific error codes.
+Individual sub-types - with/without alias, global imports, imports from the same namespace - can be forbidden by including that specific error code and/or allowed including the whole sniff and excluding specific error codes.
+
+The available error codes are: `FoundWithoutAlias`, `FoundWithAlias`, `FromGlobalNamespace`, `FromGlobalNamespaceWithAlias`, `FromSameNamespace` and `FromSameNamespaceWithAlias`.
 
 #### `Universal.UseStatements.DisallowUseConst` :bar_chart: :books:
 
 Forbid using import `use` statements for constants.
 
-Individual sub-types - with/without alias, global imports, imports from the same namespace - can be forbidden by just including that specific error code and/or allowed including the whole sniff and excluding specific error codes.
+See [`Universal.UseStatements.DisallowUseClass`](#universalusestatementsdisallowuseclass-bar_chart-books) for information on the error codes.
 
 #### `Universal.UseStatements.DisallowUseFunction` :bar_chart: :books:
 
 Forbid using import `use` statements for functions.
 
-Individual sub-types - with/without alias, global imports, imports from the same namespace - can be forbidden by just including that specific error code and/or allowed including the whole sniff and excluding specific error codes.
+See [`Universal.UseStatements.DisallowUseClass`](#universalusestatementsdisallowuseclass-bar_chart-books)  for information on the error codes.
 
+#### `Universal.UseStatements.LowercaseFunctionConst` :wrench: :bar_chart: :books:
+
+Enforce that `function` and `const` keywords when used in an import `use` statement are always lowercase.
+
+Companion sniff to the PHPCS native `Generic.PHP.LowerCaseKeyword` sniff which doesn't cover these keywords when used in an import `use` statement.
+
+#### `Universal.UseStatements.NoLeadingBackslash` :wrench: :bar_chart: :books:
+
+Verify that a name being imported in an import `use` statement does not start with a leading backslash.
+
+Names in import `use` statements should always be fully qualified, so a leading backslash is not needed and it is strongly recommended not to use one.
+
+This sniff handles all types of import use statements supported by PHP, in contrast to other sniffs for the same in, for instance, the PHPCS native `PSR12` or the Slevomat standard, which are incomplete.
+
+#### `Universal.WhiteSpace.DisallowInlineTabs` :wrench: :books:
+
+Enforce using spaces for mid-line alignment.
+
+While tab versus space based indentation is a question of preference, for mid-line alignment, spaces should always be preferred, as using tabs will result in inconsistent formatting depending on the dev-user's chosen tab width.
+
+> _This sniff is especially useful for tab-indentation based standards which use the `Generic.Whitespace.DisallowSpaceIndent` sniff to enforce this._
+>
+> **DO** make sure to set the PHPCS native `tab-width` configuration for the best results.
+> ```xml
+>    <arg name="tab-width" value="4"/>
+> ```
+>
+> The PHPCS native `Generic.Whitespace.DisallowTabIndent` sniff (used for space-based standards) oversteps its reach and silently does mid-line tab to space replacements as well.
+> However, the sister-sniff `Generic.Whitespace.DisallowSpaceIndent` leaves mid-line tabs/spaces alone.
+> This sniff fills that gap.
 
 
 Contributing

@@ -22,12 +22,12 @@
     "require" : {
         "php" : ">=5.4",
         "squizlabs/php_codesniffer" : "^3.3.1",
-        "dealerdirect/phpcodesniffer-composer-installer" : "^0.3 || ^0.4.1 || ^0.5 || ^0.6",
+        "dealerdirect/phpcodesniffer-composer-installer" : "^0.4.1 || ^0.5 || ^0.6.2 || ^0.7",
         "phpcsstandards/phpcsutils" : "^1.0 || dev-develop"
     },
     "require-dev" : {
-        "jakub-onderka/php-parallel-lint": "^1.0",
-        "jakub-onderka/php-console-highlighter": "^0.4",
+        "php-parallel-lint/php-parallel-lint": "^1.0",
+        "php-parallel-lint/php-console-highlighter": "^0.5",
         "phpcsstandards/phpcsdevtools": "^1.0",
         "phpunit/phpunit": "^4.5 || ^5.0 || ^6.0 || ^7.0"
     },
@@ -38,27 +38,27 @@
             "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run"
         ],
         "lint": [
-            "@php ./vendor/jakub-onderka/php-parallel-lint/parallel-lint . -e php --exclude vendor --exclude .git"
+            "@php ./vendor/php-parallel-lint/php-parallel-lint/parallel-lint . -e php --exclude vendor --exclude .git"
         ],
         "install-devcs": [
-            "composer require --dev phpcsstandards/phpcsdevcs:\"^1.0\" --no-suggest"
+            "composer global require --dev phpcsstandards/phpcsdevcs:\"^1.0\" --no-suggest"
         ],
         "remove-devcs": [
-            "composer remove --dev phpcsstandards/phpcsdevcs"
+            "composer global remove --dev phpcsstandards/phpcsdevcs"
         ],
         "checkcs": [
             "@install-devcs",
-            "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs",
+            "phpcs",
             "@remove-devcs"
         ],
         "fixcs": [
             "@install-devcs",
-            "@php ./vendor/squizlabs/php_codesniffer/bin/phpcbf",
+            "phpcbf",
             "@remove-devcs"
         ],
         "travis-checkcs": [
             "@install-devcs",
-            "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs"
+            "/home/travis/.composer/vendor/bin/phpcs"
         ],
         "check-complete": [
             "@php ./vendor/phpcsstandards/phpcsdevtools/bin/phpcs-check-feature-completeness ./NormalizedArrays ./Universal"
