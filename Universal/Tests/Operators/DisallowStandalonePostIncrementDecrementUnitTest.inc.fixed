@@ -70,5 +70,8 @@ $a = 10 + $i++ - 5;
 
 return $a['key'][$i++];
 
+// Intentional parse error. Nullsafe operator not allowed in write-context. Ignore.
+$obj?->prop++;
+
 // Intentional parse error.
 ++;
