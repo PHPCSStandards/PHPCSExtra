@@ -159,24 +159,24 @@ before_install:
 
 install:
   # Set up test environment using Composer.
-  - composer require --no-update --no-scripts squizlabs/php_codesniffer:${PHPCS_VERSION}
+  - travis_retry composer require --no-update --no-scripts squizlabs/php_codesniffer:${PHPCS_VERSION}
   - |
     if [[ "${TRAVIS_BUILD_STAGE_NAME^}" == "Coverage" ]]; then
-      composer require --no-update --no-suggest --no-scripts php-coveralls/php-coveralls:${COVERALLS_VERSION}
+      travis_retry composer require --no-update --no-suggest --no-scripts php-coveralls/php-coveralls:${COVERALLS_VERSION}
     fi
 
   - |
     if [[ "${PHPCS_VERSION:0:3}" == "4.0" ]]; then
       # Remove devtools as it will not (yet) install on PHPCS 4.x.
-      composer remove --dev phpcsstandards/phpcsdevtools --no-update
+      travis_retry composer remove --dev phpcsstandards/phpcsdevtools --no-update
       # --prefer-source ensures that the PHPCS native unit test framework will be available in PHPCS 4.x.
-      composer install --prefer-source --no-suggest
+      travis_retry composer install --prefer-source --no-suggest
     elif [[ $TRAVIS_PHP_VERSION == "nightly" ]]; then
       # Ignore PHPUnit platform requirements for installing on nightly.
-      composer install --prefer-dist --no-suggest --ignore-platform-reqs
+      travis_retry composer install --prefer-dist --no-suggest --ignore-platform-reqs
     else
       # --prefer-dist will allow for optimal use of the travis caching ability.
-      composer install --prefer-dist --no-suggest
+      travis_retry composer install --prefer-dist --no-suggest
     fi
     # The Composer PHPCS plugin takes care of setting the installed_paths for PHPCS.
 
