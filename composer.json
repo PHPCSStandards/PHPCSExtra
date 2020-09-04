@@ -31,34 +31,33 @@
         "phpcsstandards/phpcsdevtools": "^1.0",
         "phpunit/phpunit": "^4.5 || ^5.0 || ^6.0 || ^7.0"
     },
+    "extra": {
+        "branch-alias": {
+            "dev-stable": "1.x-dev",
+            "dev-develop": "1.x-dev"
+        }
+    },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "scripts" : {
-        "install-standards": [
-            "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run"
-        ],
         "lint": [
             "@php ./vendor/php-parallel-lint/php-parallel-lint/parallel-lint . -e php --exclude vendor --exclude .git"
         ],
         "install-devcs": [
-            "composer global require --dev phpcsstandards/phpcsdevcs:\"^1.1\" --no-suggest"
+            "composer require --dev phpcsstandards/phpcsdevcs:\"^1.1\" --no-suggest"
         ],
         "remove-devcs": [
-            "composer global remove --dev phpcsstandards/phpcsdevcs"
+            "composer remove --dev phpcsstandards/phpcsdevcs"
         ],
         "checkcs": [
             "@install-devcs",
-            "phpcs",
+            "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs",
             "@remove-devcs"
         ],
         "fixcs": [
             "@install-devcs",
-            "phpcbf",
+            "@php ./vendor/squizlabs/php_codesniffer/bin/phpcbf",
             "@remove-devcs"
-        ],
-        "travis-checkcs": [
-            "@install-devcs",
-            "/home/travis/.composer/vendor/bin/phpcs"
         ],
         "check-complete": [
             "@php ./vendor/phpcsstandards/phpcsdevtools/bin/phpcs-check-feature-completeness ./NormalizedArrays ./Universal"
