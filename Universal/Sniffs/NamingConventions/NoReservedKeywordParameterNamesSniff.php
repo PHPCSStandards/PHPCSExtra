@@ -123,6 +123,13 @@ class NoReservedKeywordParameterNamesSniff implements Sniff
         'resource'      => true,
         'mixed'         => true,
         'numeric'       => true,
+
+        /*
+         * Not reserved keywords, but equally confusing when used in the context of function calls
+         * with named parameters.
+         */
+        'parent'        => true,
+        'self'          => true,
     ];
 
     /**
