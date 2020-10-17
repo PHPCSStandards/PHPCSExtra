@@ -43,7 +43,7 @@ class NoReservedKeywordParameterNamesUnitTest extends AbstractSniffUnitTest
             5  => 2,
             6  => 3,
             7  => 2,
-            10 => 2,
+            10 => 3,
         ];
     }
 }
