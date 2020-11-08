@@ -306,3 +306,8 @@ $array = array($a,
 // phpcs:set NormalizedArrays.Arrays.ArrayBraceSpacing spacesWhenEmpty 0
 // phpcs:set NormalizedArrays.Arrays.ArrayBraceSpacing spacesSingleLine 0
 // phpcs:set NormalizedArrays.Arrays.ArrayBraceSpacing spacesMultiLine newline
+
+$foo = array(
+    'key' => 'value', // Comment.
+    // Comment.
+);
