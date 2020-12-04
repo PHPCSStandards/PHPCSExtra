@@ -107,8 +107,13 @@ jobs:
     #### TEST STAGE ####
     # Additional builds to prevent issues with PHPCS versions incompatible with certain PHP versions.
     - stage: test
+      php: 8.0
+      env: PHPCS_VERSION="dev-master" LINT=1
+      # PHPCS is only compatible with PHP 8.0 as of version 3.5.7.
+    - php: 8.0
+      env: PHPCS_VERSION="3.5.7"
       # PHPCS is only compatible with PHP 7.4 as of version 3.5.0.
-      php: 7.4
+    - php: 7.4
       env: PHPCS_VERSION="3.5.0"
     - php: 7.3
       env: PHPCS_VERSION="dev-master" LINT=1
@@ -180,7 +185,7 @@ install:
       travis_retry composer remove --dev phpcsstandards/phpcsdevtools --no-update
       # --prefer-source ensures that the PHPCS native unit test framework will be available in PHPCS 4.x.
       travis_retry composer install --prefer-source --no-suggest
-    elif [[ $TRAVIS_PHP_VERSION == "nightly" ]]; then
+    elif [[ $TRAVIS_PHP_VERSION == "nightly" || $TRAVIS_PHP_VERSION == "8.0" ]]; then
       # Ignore PHPUnit platform requirements for installing on nightly.
       travis_retry composer install --prefer-dist --no-suggest --ignore-platform-reqs
     else
