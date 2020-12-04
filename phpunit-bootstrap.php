@@ -23,6 +23,22 @@ if (\defined('PHP_CODESNIFFER_IN_TESTS') === false) {
     \define('PHP_CODESNIFFER_IN_TESTS', true);
 }
 
+/*
+ * PHPUnit 9.3 is the first version which supports Xdebug 3, but we're using PHPUnit 9.2
+ * for code coverage due to PHP_Parser interfering with our tests.
+ *
+ * For now, until a fix is pulled to allow us to use PHPUnit 9.3, this will allow
+ * PHPUnit 9.2 to run with Xdebug 3 for code coverage.
+ */
+if (\extension_loaded('xdebug') && \version_compare(\phpversion('xdebug'), '3', '>=')) {
+    if (defined('XDEBUG_CC_UNUSED') === false) {
+        define('XDEBUG_CC_UNUSED', null);
+    }
+    if (defined('XDEBUG_CC_DEAD_CODE') === false) {
+        define('XDEBUG_CC_DEAD_CODE', null);
+    }
+}
+
 $ds = \DIRECTORY_SEPARATOR;
 
 /*

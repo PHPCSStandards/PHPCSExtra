@@ -170,6 +170,12 @@ before_install:
       echo 'error_reporting = E_ALL & ~E_DEPRECATED' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
     fi
 
+  # Turn on Xdebug code coverage mode in case Xdebug 3 is being used.
+  - |
+    if [[ "${TRAVIS_BUILD_STAGE_NAME^}" == "Coverage" ]]; then
+      echo 'xdebug.mode = coverage' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+    fi
+
 
 install:
   # Set up test environment using Composer.
