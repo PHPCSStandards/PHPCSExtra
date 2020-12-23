@@ -26,13 +26,11 @@ env:
     - PHPCS_VERSION="3.3.1"
 
 # Define the stages used.
-# For non-PRs, only the sniff and quicktest stages are run.
+# For non-PRs, only the quicktest stage is run.
 # For pull requests and merges, the full script is run (skipping quicktest).
 # Note: for pull requests, "develop" is the base branch name.
 # See: https://docs.travis-ci.com/user/conditions-v1
 stages:
-  - name: sniff
-  - name: validate
   - name: quicktest
     if: type = push AND branch NOT IN (stable, develop)
   - name: test
@@ -44,48 +42,6 @@ jobs:
   fast_finish: true
 
   include:
-    #### SNIFF STAGE ####
-    - stage: sniff
-      php: 7.4
-      install:
-        # Set up CS check.
-        # - Using PHPCS `master` as an early detection system for bugs upstream.
-        # - COMPOSER_ROOT_VERSION is needed to get round the (upcoming) recursive dependency when using CI.
-        - export COMPOSER_ROOT_VERSION="1.99.99"
-        - travis_retry composer remove --dev phpunit/phpunit --no-update --no-scripts
-        - travis_retry composer require --no-update squizlabs/php_codesniffer:"dev-master"
-        - travis_retry composer install-devcs
-      before_script: skip
-      script:
-        # Check the code style of the code base.
-        - vendor/bin/phpcs
-      after_success: skip
-
-    - stage: validate
-      php: 7.4
-      addons:
-        apt:
-          packages:
-            - libxml2-utils
-      before_script: skip
-      script:
-        # Validate the composer.json file.
-        # @link https://getcomposer.org/doc/03-cli.md#validate
-        - composer validate --no-check-all --strict
-
-        # Validate the xml files.
-        # @link http://xmlsoft.org/xmllint.html
-        - xmllint --noout --schema ./vendor/squizlabs/php_codesniffer/phpcs.xsd ./NormalizedArrays/ruleset.xml
-        - xmllint --noout --schema ./vendor/squizlabs/php_codesniffer/phpcs.xsd ./Universal/ruleset.xml
-
-        # Check the code-style consistency of the xml files.
-        - diff -B ./NormalizedArrays/ruleset.xml <(xmllint --format "./NormalizedArrays/ruleset.xml")
-        - diff -B ./Universal/ruleset.xml <(xmllint --format "./Universal/ruleset.xml")
-
-        # Check that the sniffs available are feature complete.
-        - composer check-complete
-      after_success: skip
-
     #### QUICK TEST STAGE ####
     # This is a much quicker test which only runs the unit tests and linting against the low/high
     # supported PHP/PHPCS combinations.
@@ -155,8 +111,6 @@ before_install:
     if [[ "${TRAVIS_BUILD_STAGE_NAME^}" != "Coverage" ]]; then
       phpenv config-rm xdebug.ini || echo 'No xdebug config.'
     fi
-
-  - export XMLLINT_INDENT="    "
 
   # On stable PHPCS versions, allow for PHP deprecation notices.
   # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
