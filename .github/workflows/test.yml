@@ -90,6 +90,7 @@ jobs:
           php-version: ${{ matrix.php }}
           ini-values: ${{ steps.set_ini.outputs.PHP_INI }}
           coverage: none
+          tools: cs2pr
 
       - name: 'Composer: set PHPCS version for tests'
         run: composer require --no-update squizlabs/php_codesniffer:"${{ matrix.phpcs_version }}"
@@ -119,7 +120,7 @@ jobs:
 
       - name: Lint against parse errors
         if: matrix.phpcs_version == 'dev-master'
-        run: composer lint
+        run: composer lint -- --checkstyle | cs2pr
 
       - name: Run the unit tests
         run: composer test
@@ -169,6 +170,7 @@ jobs:
           php-version: ${{ matrix.php }}
           ini-values: ${{ steps.set_ini.outputs.PHP_INI }}
           coverage: xdebug
+          tools: cs2pr
 
       - name: 'Composer: adjust dependencies'
         run: |
@@ -185,7 +187,7 @@ jobs:
 
       - name: Lint against parse errors
         if: matrix.phpcs_version == 'dev-master'
-        run: composer lint
+        run: composer lint -- --checkstyle | cs2pr
 
       - name: Run the unit tests with code coverage
         run: composer coverage
