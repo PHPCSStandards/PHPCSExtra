@@ -91,6 +91,9 @@ jobs:
           ini-values: ${{ steps.set_ini.outputs.PHP_INI }}
           coverage: none
           tools: cs2pr
+        env:
+          # Token is needed for the PHPCS 4.x run against source.
+          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 'Composer: set PHPCS version for tests'
         run: composer require --no-update squizlabs/php_codesniffer:"${{ matrix.phpcs_version }}"
