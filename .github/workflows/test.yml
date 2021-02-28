@@ -90,7 +90,6 @@ jobs:
           php-version: ${{ matrix.php }}
           ini-values: ${{ steps.set_ini.outputs.PHP_INI }}
           coverage: none
-          tools: cs2pr
         env:
           # Token is needed for the PHPCS 4.x run against source.
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -123,7 +122,7 @@ jobs:
 
       - name: Lint against parse errors
         if: matrix.phpcs_version == 'dev-master'
-        run: composer lint -- --checkstyle | cs2pr
+        run: composer lint
 
       - name: Run the unit tests - PHP 5.4 - 8.0
         if: ${{ matrix.php != '8.1' }}
