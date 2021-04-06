@@ -61,9 +61,9 @@ jobs:
             phpcs_version: 'dev-master'
             experimental: true
 
-          - php: '7.4'
-            phpcs_version: '4.0.x-dev'
-            experimental: true
+          #- php: '7.4'
+          #  phpcs_version: '4.0.x-dev'
+          #  experimental: true
 
     name: "Test${{ matrix.phpcs_version == 'dev-master' && ' + Lint' || '' }}: PHP ${{ matrix.php }} - PHPCS ${{ matrix.phpcs_version }}"
 
