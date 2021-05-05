@@ -46,6 +46,14 @@ class DisallowAlternativeSyntaxUnitTest extends AbstractSniffUnitTest
             127 => 1,
             131 => 1,
             138 => 1,
+            144 => 1,
+            146 => 1,
+            148 => 1,
+            153 => 1,
+            157 => 1,
+            161 => 1,
+            165 => 1,
+            174 => 1,
         ];
     }
 

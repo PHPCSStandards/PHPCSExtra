@@ -131,7 +131,7 @@ class DisallowAlternativeSyntaxSniff implements Sniff
             $phpcsFile->recordMetric($stackPtr, 'Control structure style', 'alternative syntax');
         }
 
-        if ($this->allowWithInlineHTML === true) {
+        if ($hasInlineHTML !== false && $this->allowWithInlineHTML === true) {
             return;
         }
 

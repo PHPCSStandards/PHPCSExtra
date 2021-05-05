@@ -141,6 +141,40 @@ A is something else
 
 <?php
 // phpcs:set Universal.ControlStructures.DisallowAlternativeSyntax allowWithInlineHTML true
+if (true){
+    // Code.
+} elseif (false){
+    // Code.
+} else{
+    // Code.
+}
+
+for ($i = 1; $i <= 10; $i++)
+    {
+    echo $i;
+}
+
+foreach ($a as $k => $v){
+    echo "Key: $k; Current value of \$a: $v.\n";
+}
+
+while (++$i <= 10){
+    echo $i;
+} /*comment*/ 
+
+switch ($foo) {
+    case 1:
+        echo '<div>something</div>';
+        break;
+    default;
+        echo '<div>something</div>';
+        break;
+}
+
+declare (ticks = 1){
+    echo 'ticking';
+}
+
 ?>
 <?php if ($a == 5): ?>
 A is equal to 5
