@@ -5,6 +5,10 @@
     backupGlobals="true"
     bootstrap="./phpunit-bootstrap.php"
     beStrictAboutTestsThatDoNotTestAnything="false"
+    convertErrorsToExceptions="true"
+    convertWarningsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertDeprecationsToExceptions="true"
     colors="true"
     forceCoversAnnotation="true">
 
