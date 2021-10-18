@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<documentation title="Class Name Restrictions">
+    <standard>
+    <![CDATA[
+    Description of the sniff
+    ]]>
+    </standard>
+    <!-- Note: you can add multiple code samples, each set in its own code_comparison block -->
+    <code_comparison>
+        <code title="Valid: description of valid example.">
+        <![CDATA[
+code sample
+        ]]>
+        </code>
+        <code title="Invalid: description of invalid example.">
+        <![CDATA[
+code sample
+        ]]>
+        </code>
+    </code_comparison>
+</documentation>
