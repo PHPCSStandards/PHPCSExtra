@@ -1,10 +1,34 @@
 <?php
 
 // Set up the class name rules property for the tests.
-// phpcs:set Universal.NamingConventions.NamespaceBasedClassnameRestrictions rules[] key=>value,key2=>value2
+// phpcs:set Universal.NamingConventions.NamespaceBasedClassnameRestrictions rules[] /^App\\Migrations/=>/^Version\d{14}\w{4,}/,/^App\\Repositories/=>/Repository$/
 
+namespace App\Migrations;
 
+class Version20200101090000ItDoesThings {} // OK.
+class Versions20200101090000ItDoesThings {} // Error.
+class Version20200101090000I {} // Error.
+class Version20200101090000 {} // Error.
 
+namespace MyApp\Migrations;
+
+class Version20200101090000ItDoesThings {} // OK.
+class Versions20200101090000ItDoesThings {} // OK.
+class Version20200101090000I {} // OK.
+class Version20200101090000 {} // OK.
+
+namespace App\Repositories;
+
+class ProductRepository {} // OK.
+class Categories {} // Error.
+class RepositoryProduct {} // Error.
+
+namespace App\OtherThing;
+
+class Version20200101090000ItDoesThings {} // OK.
+class Versions20200101090000ItDoesThings {} // OK.
+class Version20200101090000I {} // OK.
+class Version20200101090000 {} // OK.
 
 // Reset the property at the end of this file
 // phpcs:set Universal.NamingConventions.NamespaceBasedClassnameRestrictions rules[]
