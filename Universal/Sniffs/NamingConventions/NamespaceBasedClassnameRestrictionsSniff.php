@@ -20,7 +20,7 @@ use PHP_CodeSniffer\Sniffs\Sniff;
  *
  * @since 1.0.0
  */
-class ClassnameRestrictionsSniff implements Sniff
+class NamespaceBasedClassnameRestrictionsSniff implements Sniff
 {
 
     /**

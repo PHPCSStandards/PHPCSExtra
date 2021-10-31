@@ -15,11 +15,11 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 /**
  * Unit test class for the ClassnameRestrictions sniff.
  *
- * @covers PHPCSExtra\Universal\Sniffs\NamingConventions\ClassnameRestrictionsSniff
+ * @covers PHPCSExtra\Universal\Sniffs\NamingConventions\NamespaceBasedClassnameRestrictionsSniff
  *
  * @since 1.0.0
  */
-class ClassnameRestrictionsUnitTest extends AbstractSniffUnitTest
+class NamespaceBasedClassnameRestrictionsUnitTest extends AbstractSniffUnitTest
 {
 
 /*
@@ -103,7 +103,7 @@ Open questions:
     {
         $sep       = \DIRECTORY_SEPARATOR;
         $testFiles = \glob(
-            \dirname($testFileBase) . $sep . 'ClassnameRestrictionsUnitTest{' . $sep . ',' . $sep . '*' . $sep . '}*.inc',
+            \dirname($testFileBase) . $sep . 'NamespaceBasedClassnameRestrictionsUnitTest{' . $sep . ',' . $sep . '*' . $sep . '}*.inc',
             \GLOB_BRACE
         );
 
