@@ -100,8 +100,10 @@ class NamespaceBasedClassnameRestrictionsSniff implements Sniff
      */
     private function isNamespaceRegexValid($namespaceRegex, File $phpcsFile)
     {
-        // We suppress with @ here because not having an ending delimiter causes preg_match to trigger a warning too
-        // @see https://3v4l.org/tMCD2
+        /*
+         * We suppress with @ here because not having an ending delimiter causes preg_match to trigger a warning too.
+         * @link https://3v4l.org/tMCD2
+         */
         if (is_int(@preg_match($namespaceRegex, '')) === false) {
             $phpcsFile->addError('Namespace regex is not valid: ' . $namespaceRegex, 0, 'InvalidRegex');
 
@@ -118,8 +120,10 @@ class NamespaceBasedClassnameRestrictionsSniff implements Sniff
      */
     private function isClassnameRegexValid($classnameRegex, File $phpcsFile)
     {
-        // We suppress with @ here because not having an ending delimiter causes preg_match to trigger a warning too
-        // @see https://3v4l.org/tMCD2
+        /*
+         * We suppress with @ here because not having an ending delimiter causes preg_match to trigger a warning too.
+         * @link https://3v4l.org/tMCD2
+         */
         if (is_int(@preg_match($classnameRegex, '')) === false) {
             $phpcsFile->addError('Classname regex is not valid: ' . $classnameRegex, 0, 'InvalidRegex');
 
