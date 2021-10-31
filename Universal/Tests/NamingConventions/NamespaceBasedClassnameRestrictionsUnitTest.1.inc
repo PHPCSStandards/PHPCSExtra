@@ -1,6 +1,6 @@
 <?php
 
-// Set up the class name rules property for the tests.
+// Testing the matching rules against namespaces.
 // phpcs:set Universal.NamingConventions.NamespaceBasedClassnameRestrictions rules[] /^App\\Migrations/=>/^Version\d{14}\w{4,}/,/^App\\Repositories/=>/Repository$/
 
 namespace App\Migrations;
