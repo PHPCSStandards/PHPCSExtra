@@ -18,7 +18,7 @@ namespace Foo\Bar {
     class Bar {} // Error on first matching rule.
 }
 
-namespace App/Bar {
+namespace App\Bar {
     class Foo {} // Error on second matching rule.
     class Bar {} // Okay.
 }
