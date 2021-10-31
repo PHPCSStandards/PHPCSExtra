@@ -19,7 +19,7 @@ namespace Bar {
 }
 
 // The sniff should error out on an invalid property - broken regex (syntax error).
-// phpcs:set Universal.NamingConventions.NamespaceBasedClassnameRestrictions rules[] `[0-9`=>`\w{3,`
+// phpcs:set Universal.NamingConventions.NamespaceBasedClassnameRestrictions rules[] `[0-9`=>`\w{3`
 
 namespace Baz {
     class Foo {} // Error, invalid regex.
