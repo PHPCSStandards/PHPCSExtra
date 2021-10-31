@@ -37,8 +37,9 @@ class NamespaceBasedClassnameRestrictionsSniff implements Sniff
     private $current_file;
     private $current_namespace;
     private $current_namespace_end;
-
     private $regexes_validated = false;
+    private $last_regexes_validated = [];
+    private $validated_regexes = [];
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -68,7 +69,13 @@ class NamespaceBasedClassnameRestrictionsSniff implements Sniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
-//var_dump($this->rules);
+        //var_dump($this->rules);
+        // PHP_CODESNIFFER_IN_TESTS
+
+        if ($this->last_regexes_validated !== $this->rules) {
+            $this->validateAndStoreRegexes($phpcsFile);
+            $this->last_regexes_validated = $this->rules;
+        }
 
         // NOTES TO SELF:
         // Just some notes about what I currently think the sniff will need to look like:
@@ -84,5 +91,54 @@ class NamespaceBasedClassnameRestrictionsSniff implements Sniff
         // If class token, get classname
         // Match against matched namespace rule.
         // Throw error if no match.
+    }
+
+    /**
+     * @param $namespaceRegex
+     * @param File $phpcsFile
+     * @return bool
+     */
+    private function isNamespaceRegexValid($namespaceRegex, File $phpcsFile)
+    {
+        if (preg_match($namespaceRegex, '') === false) {
+            $phpcsFile->addError('Namespace regex is not valid: ' . $namespaceRegex, 0, 'InvalidRegex');
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param $classnameRegex
+     * @param File $phpcsFile
+     * @return bool
+     */
+    private function isClassnameRegexValid($classnameRegex, File $phpcsFile)
+    {
+        if (preg_match($classnameRegex, '') === false) {
+            $phpcsFile->addError('Classname regex is not valid: ' . $classnameRegex, 0, 'InvalidRegex');
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param File $phpcsFile
+     */
+    private function validateAndStoreRegexes(File $phpcsFile)
+    {
+        $this->validated_regexes = [];
+
+        foreach ($this->rules as $namespaceRegex => $classnameRegex) {
+            $namespaceRegexValid = $this->isNamespaceRegexValid($namespaceRegex, $phpcsFile);
+            $classnameRegexValid = $this->isClassnameRegexValid($classnameRegex, $phpcsFile);
+
+            if ($namespaceRegexValid && $classnameRegexValid) {
+                $this->validated_regexes[$namespaceRegex] = $classnameRegex;
+            }
+        }
     }
 }
