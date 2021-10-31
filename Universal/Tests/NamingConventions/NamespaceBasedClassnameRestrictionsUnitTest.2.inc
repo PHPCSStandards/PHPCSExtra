@@ -1,7 +1,7 @@
 <?php
 
 // Testing the matching rules against scoped namespaces
-// phpcs:set Universal.NamingConventions.NamespaceBasedClassnameRestrictions rules[] /^App\\Migrations/=>/^Version\d{14}\w{4,}/,/^App\\Repositories/=>/Repository$/
+// phpcs:set Universal.NamingConventions.NamespaceBasedClassnameRestrictions rules[] `^App\\Migrations`=>`^Version\d{14}\w{4}`,`^App\\Repositories`=>`Repository$`
 
 namespace App\Migrations {
     class Version20200101090000ItDoesThings {} // OK.

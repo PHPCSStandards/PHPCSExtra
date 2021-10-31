@@ -1,7 +1,7 @@
 <?php
 
 // Testing the matching rules against namespaces.
-// phpcs:set Universal.NamingConventions.NamespaceBasedClassnameRestrictions rules[] /^App\\Migrations/=>/^Version\d{14}\w+/,/^App\\Repositories/=>/Repository$/
+// phpcs:set Universal.NamingConventions.NamespaceBasedClassnameRestrictions rules[] `^App\\Migrations`=>`^Version\d{14}\w+`,`^App\\Repositories`=>`Repository$`
 
 namespace App\Migrations;
 

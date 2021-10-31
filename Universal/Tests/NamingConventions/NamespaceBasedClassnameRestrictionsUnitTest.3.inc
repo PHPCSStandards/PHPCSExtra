@@ -1,7 +1,7 @@
 <?php
 
 // Testing the rule order handling.
-// phpcs:set Universal.NamingConventions.NamespaceBasedClassnameRestrictions rules[] /Foo/=>/Foo/,/^App\\/=>/Bar$/
+// phpcs:set Universal.NamingConventions.NamespaceBasedClassnameRestrictions rules[] `Foo`=>`Foo`,`^App\\`=>`Bar$`
 
 namespace Foo {
     class Foo {} // Okay.
@@ -23,7 +23,7 @@ namespace App\Bar {
     class Bar {} // Okay.
 }
 
-// phpcs:set Universal.NamingConventions.NamespaceBasedClassnameRestrictions rules[] /^App\\/=>/Bar$/,/Foo/=>/Foo/
+// phpcs:set Universal.NamingConventions.NamespaceBasedClassnameRestrictions rules[] `^App\\`=>`Bar$`,`Foo`=>`Foo`
 
 namespace App\Fool {
     class Foo {} // Error on first matching rule.
