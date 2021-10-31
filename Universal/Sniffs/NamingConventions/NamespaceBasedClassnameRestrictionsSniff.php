@@ -30,6 +30,16 @@ class NamespaceBasedClassnameRestrictionsSniff implements Sniff
      */
     public $rules = [];
 
+//    public $include_interfaces = false;
+
+//    public $include_traits = false;
+
+    private $current_file;
+    private $current_namespace;
+    private $current_namespace_end;
+
+    private $regexes_validated = false;
+
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -39,7 +49,10 @@ class NamespaceBasedClassnameRestrictionsSniff implements Sniff
      */
     public function register()
     {
-        return [];
+        return [
+            \T_NAMESPACE,
+            \T_CLASS,
+        ];
     }
 
     /**
@@ -55,18 +68,21 @@ class NamespaceBasedClassnameRestrictionsSniff implements Sniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
+//var_dump($this->rules);
+
         // NOTES TO SELF:
         // Just some notes about what I currently think the sniff will need to look like:
 
         // First time the sniff is hit only: Validate regexes
         // Set private property to indicate this check has been done.
 
-        // Get filename
-        // Loop through regex patterns to see if path matches any, break at first one matched.
-        // If not, bow out
+        // Always: check if we're still in the same file, if not clear out previously remembered namespace
 
-        // Get classname
-        // Match against matched file path.
+        // If namespace token: get namespace name, but only if namespace declaration (not operator)
+        // Loop through regex patterns to see if the namespace name matches any, if not, skip to end of namespace (only scoped).
+
+        // If class token, get classname
+        // Match against matched namespace rule.
         // Throw error if no match.
     }
 }
