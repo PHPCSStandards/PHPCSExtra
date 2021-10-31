@@ -13,13 +13,13 @@ namespace PHPCSExtra\Universal\Tests\NamingConventions;
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 /**
- * Unit test class for the NamespaceBasedClassnameRestrictions sniff.
+ * Unit test class for the PathBasedClassnameRestrictions sniff.
  *
- * @covers PHPCSExtra\Universal\Sniffs\NamingConventions\NamespaceBasedClassnameRestrictionsSniff
+ * @covers PHPCSExtra\Universal\Sniffs\NamingConventions\PathBasedClassnameRestrictionsSniff
  *
  * @since 1.0.0
  */
-class NamespaceBasedClassnameRestrictionsUnitTest extends AbstractSniffUnitTest
+class PathBasedClassnameRestrictionsUnitTest extends AbstractSniffUnitTest
 {
 
 /*
@@ -91,6 +91,30 @@ Open questions:
  */
 
 
+
+    /**
+     * Get a list of all test files to check.
+     *
+     * @param string $testFileBase The base path that the unit tests files will have.
+     *
+     * @return string[]
+     */
+    protected function getTestFiles($testFileBase)
+    {
+        $sep       = \DIRECTORY_SEPARATOR;
+        $testFiles = \glob(
+            \dirname($testFileBase) . $sep . 'PathBasedClassnameRestrictionsUnitTest{' . $sep . ',' . $sep . '*' . $sep . '}*.inc',
+            \GLOB_BRACE
+        );
+
+        // Add a file containing the property setting for the tests as the first file.
+        \array_unshift($testFiles, $testFileBase . '1.inc');
+
+        // Add a file resetting the property setting for the tests as the last file.
+        $testFiles[] = $testFileBase . '2.inc';
+
+        return $testFiles;
+    }
 
     /**
      * Returns the lines where errors should occur.

@@ -4,7 +4,7 @@
  *
  * - Each test for this sniff is basically just be a simple PHP file with a class declaration in it.
  * - The test files (for the purposes of this sniff as we want to check file paths) need to be somewhere
- *   in the `Universal/Tests/NamingConventions/ClassnameRestrictionsUnitTest` directory.
+ *   in the `Universal/Tests/NamingConventions/PathBasedClassnameRestrictionsUnitTest` directory.
  * - The test files can have an arbitrary file name, as long as the file extension is `.inc`.
  *
  * About this example:

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<documentation title="Namespaced Based Class Name Restrictions">
+<documentation title="Path Based Class Name Restrictions">
     <standard>
     <![CDATA[
     Description of the sniff
