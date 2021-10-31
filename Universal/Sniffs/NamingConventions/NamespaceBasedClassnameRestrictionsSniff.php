@@ -100,7 +100,7 @@ class NamespaceBasedClassnameRestrictionsSniff implements Sniff
      */
     private function isNamespaceRegexValid($namespaceRegex, File $phpcsFile)
     {
-        if (preg_match($namespaceRegex, '') === false) {
+        if (is_int(@preg_match($namespaceRegex, '')) === false) {
             $phpcsFile->addError('Namespace regex is not valid: ' . $namespaceRegex, 0, 'InvalidRegex');
 
             return false;
@@ -116,7 +116,7 @@ class NamespaceBasedClassnameRestrictionsSniff implements Sniff
      */
     private function isClassnameRegexValid($classnameRegex, File $phpcsFile)
     {
-        if (preg_match($classnameRegex, '') === false) {
+        if (is_int(@preg_match($classnameRegex, '')) === false) {
             $phpcsFile->addError('Classname regex is not valid: ' . $classnameRegex, 0, 'InvalidRegex');
 
             return false;
