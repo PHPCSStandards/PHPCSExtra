@@ -53,6 +53,43 @@ Open questions:
 */
 
 
+/*
+ * Matt's case:
+ *
+ * - It's not the concern of this sniff to ensure that the class name matches the file (we have other things in place
+ *   in our codebase to catch this sort of thing)
+ * - It should only match class names within a specified namespace (the namespace isn't part of the regex but should be
+ *   configurable)
+ * - I have some old classes that aren't correct and they *could* be adjusted, but it would be nice to have a baseline
+ *   to ignore these existing issues (is this possible?)
+ *
+ * Other points:
+ * - Similar to the first point above, if it *also* checked that the class name matched the file name, then it wouldn't
+ *   support multiple classes in a single file
+ * - Should any anonymous classes in that namespace pass?
+ * - Invalid regex should fail
+ *
+ *
+ *
+ * https://regexr.com/68ik1
+ *
+ * Configurable options:
+ * - /Version\d{14}\w{4,}/g
+ * - For the `App\Migrations` namespace
+ *
+ * Would produce the following results:
+ *
+ * namespace App\Migrations;
+ *
+ * class Version20200101090000ItDoesThings {} // pass
+ * class Versions20200101090000ItDoesThings {} // fail
+ * class Version20200101090000I {} // fail
+ * class Version20200101090000 {} // fail
+ *
+ * namespace App\OtherThings;
+ * class Version20200101090000 {} // pass
+ */
+
 
 
     /**
