@@ -71,5 +71,10 @@
         "coverage-local": [
             "@php ./vendor/phpunit/phpunit/phpunit --filter PHPCSExtra ./vendor/squizlabs/php_codesniffer/tests/AllTests.php --coverage-html ./build/coverage-html"
         ]
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
     }
 }
