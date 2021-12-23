@@ -11,6 +11,12 @@ on:
   # Allow manually triggering the workflow.
   workflow_dispatch:
 
+# Cancels all previous workflow runs for the same branch that have not yet completed.
+concurrency:
+  # The concurrency group contains the workflow name and the branch name.
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   #### QUICK TEST STAGE ####
   # This is a much quicker test which only runs the unit tests and linting against the low/high
@@ -45,7 +51,7 @@ jobs:
           if [ "${{ matrix.phpcs_version }}" != "dev-master" ]; then
             echo '::set-output name=PHP_INI::error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On'
           else
-            echo '::set-output name=PHP_INI::error_reporting=E_ALL, display_errors=On'
+            echo '::set-output name=PHP_INI::error_reporting=-1, display_errors=On'
           fi
 
       - name: Install PHP
@@ -64,7 +70,7 @@ jobs:
         if: matrix.php != 'latest'
         uses: "ramsey/composer-install@v1"
 
-      # For the PHP "nightly", we need to install with ignore platform reqs as not all dependencies allow it yet.
+      # For the PHP "latest", we need to install with ignore platform reqs as not all dependencies allow it yet.
       - name: Install Composer dependencies - with ignore platform
         if: matrix.php == 'latest'
         uses: "ramsey/composer-install@v1"
@@ -75,5 +81,10 @@ jobs:
         if: matrix.phpcs_version == 'dev-master'
         run: composer lint
 
-      - name: Run the unit tests
+      - name: Run the unit tests - PHP 5.4 - 8.0
+        if: matrix.php != 'latest'
         run: composer test
+
+      - name: Run the unit tests - PHP > 8.1
+        if: matrix.php == 'latest'
+        run: composer test -- --no-configuration --bootstrap=phpunit-bootstrap.php --dont-report-useless-tests
