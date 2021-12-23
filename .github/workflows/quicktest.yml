@@ -70,7 +70,7 @@ jobs:
         if: matrix.php != 'latest'
         uses: "ramsey/composer-install@v1"
 
-      # For the PHP "nightly", we need to install with ignore platform reqs as not all dependencies allow it yet.
+      # For the PHP "latest", we need to install with ignore platform reqs as not all dependencies allow it yet.
       - name: Install Composer dependencies - with ignore platform
         if: matrix.php == 'latest'
         uses: "ramsey/composer-install@v1"
@@ -81,5 +81,10 @@ jobs:
         if: matrix.phpcs_version == 'dev-master'
         run: composer lint
 
-      - name: Run the unit tests
+      - name: Run the unit tests - PHP 5.4 - 8.0
+        if: matrix.php != 'latest'
         run: composer test
+
+      - name: Run the unit tests - PHP > 8.1
+        if: matrix.php == 'latest'
+        run: composer test -- --no-configuration --bootstrap=phpunit-bootstrap.php --dont-report-useless-tests

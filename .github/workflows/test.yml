@@ -37,6 +37,7 @@ jobs:
         # - PHPCS will run without errors on PHP 5.4 - 7.2 on any supported version.
         # - PHP 7.4 needs PHPCS 3.5.0+ to run without errors.
         # - PHP 8.0 needs PHPCS 3.5.7+ to run without errors.
+        # - PHP 8.1 needs PHPCS 3.6.1+ to run without errors.
         #
         # The matrix is set up so as not to duplicate the builds which are run for code coverage.
         php: ['5.5', '5.6', '7.0', '7.1', '7.2']
@@ -46,6 +47,13 @@ jobs:
         include:
           # Complement the builds run in code coverage to complete the matrix and prevent issues
           # with PHPCS versions incompatible with certain PHP versions.
+          - php: '8.1'
+            phpcs_version: 'dev-master'
+            experimental: false
+          - php: '8.1'
+            phpcs_version: '3.6.1'
+            experimental: false
+
           - php: '8.0'
             phpcs_version: 'dev-master'
             experimental: false
@@ -62,10 +70,7 @@ jobs:
             experimental: false
 
           # Experimental builds. These are allowed to fail.
-
-          # Current lowest PHPCS version which _may_ run on PHP 8 is 3.5.7, so don't even try
-          # to test against older versions.
-          - php: '8.1'
+          - php: '8.2'
             phpcs_version: 'dev-master'
             experimental: true
 
@@ -133,11 +138,11 @@ jobs:
         run: composer lint
 
       - name: Run the unit tests - PHP 5.4 - 8.0
-        if: ${{ matrix.php != '8.1' }}
+        if: ${{ matrix.php < '8.1' }}
         run: composer test
 
-      - name: Run the unit tests - PHP 8.1
-        if: ${{ matrix.php == '8.1' }}
+      - name: Run the unit tests - PHP > 8.1
+        if: ${{ matrix.php >= '8.1' }}
         run: composer test -- --no-configuration --bootstrap=phpunit-bootstrap.php --dont-report-useless-tests
 
   #### CODE COVERAGE STAGE ####
