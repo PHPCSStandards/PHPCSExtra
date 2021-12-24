@@ -108,7 +108,7 @@ jobs:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 'Composer: set PHPCS version for tests'
-        run: composer require --no-update squizlabs/php_codesniffer:"${{ matrix.phpcs_version }}"
+        run: composer require --no-update squizlabs/php_codesniffer:"${{ matrix.phpcs_version }}" --no-interaction
 
       - name: 'Composer: conditionally prefer source for PHPCS'
         if: ${{ startsWith( matrix.phpcs_version, '4' ) }}
@@ -118,18 +118,18 @@ jobs:
       - name: 'Composer: conditionally remove PHPCSDevtools'
         if: ${{ startsWith( matrix.phpcs_version, '4' ) }}
         # Remove devtools as it will not (yet) install on PHPCS 4.x.
-        run: composer remove --no-update --dev phpcsstandards/phpcsdevtools
+        run: composer remove --no-update --dev phpcsstandards/phpcsdevtools --no-interaction
 
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-composer-dependencies
       - name: Install Composer dependencies - normal
         if: ${{ startsWith( matrix.php, '8' ) == false }}
-        uses: "ramsey/composer-install@v1"
+        uses: "ramsey/composer-install@v2"
 
       # For the PHP 8/"nightly", we need to install with ignore platform reqs as we're still using PHPUnit 7.
       - name: Install Composer dependencies - with ignore platform
         if: ${{ startsWith( matrix.php, '8' ) }}
-        uses: "ramsey/composer-install@v1"
+        uses: "ramsey/composer-install@v2"
         with:
           composer-options: --ignore-platform-reqs
 
@@ -197,15 +197,15 @@ jobs:
       - name: 'Composer: adjust dependencies'
         run: |
           # Set a specific PHPCS version.
-          composer require --no-update squizlabs/php_codesniffer:"${{ matrix.phpcs_version }}" --no-scripts
+          composer require --no-update squizlabs/php_codesniffer:"${{ matrix.phpcs_version }}" --no-scripts --no-interaction
 
       - name: Install Composer dependencies - normal
-        uses: "ramsey/composer-install@v1"
+        uses: "ramsey/composer-install@v2"
 
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-composer-dependencies
       - name: Install Composer dependencies
-        uses: "ramsey/composer-install@v1"
+        uses: "ramsey/composer-install@v2"
 
       - name: Lint against parse errors
         if: matrix.phpcs_version == 'dev-master'
