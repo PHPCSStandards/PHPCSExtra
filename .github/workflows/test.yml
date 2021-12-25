@@ -224,7 +224,7 @@ jobs:
 
       - name: Install Coveralls
         if: ${{ success() }}
-        run: composer require php-coveralls/php-coveralls:"^2.4.2"
+        run: composer require php-coveralls/php-coveralls:"^2.4.2" --no-interaction
 
       - name: Upload coverage results to Coveralls
         if: ${{ success() }}
