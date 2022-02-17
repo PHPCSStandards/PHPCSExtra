@@ -52,7 +52,7 @@ Installation
 
 Installing via Composer is highly recommended.
 
-[Composer](http://getcomposer.org/) will automatically install the project dependencies and register the rulesets from PHPCSExtra and other external standards with PHP_CodeSniffer using the [DealerDirect Composer PHPCS plugin](https://github.com/Dealerdirect/phpcodesniffer-composer-installer/).
+[Composer](http://getcomposer.org/) will automatically install the project dependencies and register the rulesets from PHPCSExtra and other external standards with PHP_CodeSniffer using the [Composer PHPCS plugin](https://github.com/PHPCSStandards/composer-installer).
 
 ### Composer Project-based Installation
 
