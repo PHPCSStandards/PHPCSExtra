@@ -57,7 +57,7 @@ _Nothing yet._
 
 #### Other
 * The `master` branch has been renamed to `stable`.
-* Composer: The version requirements for the [DealerDirect Composer PHPCS plugin] have been widened to allow for version 0.7.0 which supports Composer 2.0.0. [#62](https://github.com/PHPCSStandards/PHPCSExtra/pull/62)
+* Composer: The version requirements for the [Composer PHPCS plugin] have been widened to allow for version 0.7.0 which supports Composer 2.0.0. [#62](https://github.com/PHPCSStandards/PHPCSExtra/pull/62)
 * Various housekeeping.
 
 
@@ -149,6 +149,7 @@ This initial alpha release contains the following sniffs:
 * :bar_chart: :books: `Universal.UseStatements.DisallowUseFunction`: forbid using import use statements for functions.
     Individual sub-types can be allowed by excluding specific error codes.
 
+[Composer PHPCS plugin]: https://github.com/PHPCSStandards/composer-installer
 
 [Unreleased]: https://github.com/PHPCSStandards/PHPCSExtra/compare/stable...HEAD
 [1.0.0-alpha3]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.0-alpha2...1.0.0-alpha3
