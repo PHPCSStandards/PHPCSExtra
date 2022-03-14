@@ -60,6 +60,7 @@ class NoReservedKeywordParameterNamesSniff implements Sniff
         'endif'         => true,
         'endswitch'     => true,
         'endwhile'      => true,
+        'enum'          => true,
         'eval'          => true,
         'exit'          => true,
         'extends'       => true,
@@ -88,6 +89,7 @@ class NoReservedKeywordParameterNamesSniff implements Sniff
         'private'       => true,
         'protected'     => true,
         'public'        => true,
+        'readonly'      => true,
         'require'       => true,
         'require_once'  => true,
         'return'        => true,
@@ -123,6 +125,7 @@ class NoReservedKeywordParameterNamesSniff implements Sniff
         'resource'      => true,
         'mixed'         => true,
         'numeric'       => true,
+        'never'         => true,
 
         /*
          * Not reserved keywords, but equally confusing when used in the context of function calls
