@@ -181,7 +181,7 @@ class NoReservedKeywordParameterNamesSniff implements Sniff
             if (isset($this->reservedNames[$name]) === true) {
                 $phpcsFile->addWarning(
                     'It is recommended not to use reserved keywords as function parameter names. Found: %s',
-                    $stackPtr,
+                    $param['token'],
                     $name . 'Found',
                     [$param['name']]
                 );
