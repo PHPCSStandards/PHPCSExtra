@@ -1,0 +1,37 @@
+<?php
+
+/*
+ * OK.
+ */
+class FooA {}
+
+class FooB extends Something {}
+
+abstract class AbstractBarC implements MyInterface {}
+
+$a = new MyClass() {}
+
+class FooC {
+    // Constant, not class (PHP 8.1).
+    final const BAZ = 10;
+
+    // Method, not class.
+    final function bar() {}
+}
+
+/*
+ * Bad.
+ */
+class BazA {}
+
+class CheckHandlingOfSuperfluousWhitespace extends Something {}
+
+    class CheckHandlingOfIndentation {}
+
+/*comment*/ class BazC implements MyInterface {}
+
+// Parse error. Remove the final keyword.
+abstract class BazD {}
+
+// Live coding. Ignore. This must be the last test in the file.
+final class
