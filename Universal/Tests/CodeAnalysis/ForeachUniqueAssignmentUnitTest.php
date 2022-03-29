@@ -19,7 +19,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @since 1.0.0
  */
-class ForeachUniqueAssignmentUnitTest extends AbstractSniffUnitTest
+final class ForeachUniqueAssignmentUnitTest extends AbstractSniffUnitTest
 {
 
     /**

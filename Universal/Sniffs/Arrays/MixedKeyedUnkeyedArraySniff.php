@@ -19,7 +19,7 @@ use PHPCSUtils\AbstractSniffs\AbstractArrayDeclarationSniff;
  *
  * @since 1.0.0
  */
-class MixedKeyedUnkeyedArraySniff extends AbstractArrayDeclarationSniff
+final class MixedKeyedUnkeyedArraySniff extends AbstractArrayDeclarationSniff
 {
 
     /**

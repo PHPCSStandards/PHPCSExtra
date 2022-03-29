@@ -23,7 +23,7 @@ use PHPCSUtils\Utils\Operators;
  *
  * @since 1.0.0
  */
-class DisallowShortTernarySniff implements Sniff
+final class DisallowShortTernarySniff implements Sniff
 {
 
     /**

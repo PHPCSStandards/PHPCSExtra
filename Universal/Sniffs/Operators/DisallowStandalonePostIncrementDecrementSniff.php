@@ -28,7 +28,7 @@ use PHPCSUtils\Utils\GetTokensAsString;
  *
  * @since 1.0.0
  */
-class DisallowStandalonePostIncrementDecrementSniff implements Sniff
+final class DisallowStandalonePostIncrementDecrementSniff implements Sniff
 {
 
     /**

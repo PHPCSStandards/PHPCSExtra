@@ -31,7 +31,7 @@ use PHPCSUtils\Utils\Arrays;
  *
  * @since 1.0.0
  */
-class ArrayBraceSpacingSniff implements Sniff
+final class ArrayBraceSpacingSniff implements Sniff
 {
 
     /**

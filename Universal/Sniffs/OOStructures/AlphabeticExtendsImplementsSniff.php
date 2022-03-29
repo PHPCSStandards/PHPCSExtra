@@ -22,7 +22,7 @@ use PHPCSUtils\Utils\ObjectDeclarations;
  *
  * @since 1.0.0
  */
-class AlphabeticExtendsImplementsSniff implements Sniff
+final class AlphabeticExtendsImplementsSniff implements Sniff
 {
 
     /**

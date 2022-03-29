@@ -26,7 +26,7 @@ use PHPCSUtils\Utils\UseStatements;
  *
  * @since 1.0.0
  */
-class DisallowUseClassSniff implements Sniff
+final class DisallowUseClassSniff implements Sniff
 {
 
     /**

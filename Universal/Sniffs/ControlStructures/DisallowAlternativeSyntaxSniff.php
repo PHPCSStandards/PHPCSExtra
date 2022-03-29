@@ -21,7 +21,7 @@ use PHPCSUtils\Utils\ControlStructures;
  *
  * @since 1.0.0
  */
-class DisallowAlternativeSyntaxSniff implements Sniff
+final class DisallowAlternativeSyntaxSniff implements Sniff
 {
 
     /**

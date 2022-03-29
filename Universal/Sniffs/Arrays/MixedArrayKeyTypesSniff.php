@@ -19,7 +19,7 @@ use PHPCSUtils\AbstractSniffs\AbstractArrayDeclarationSniff;
  *
  * @since 1.0.0
  */
-class MixedArrayKeyTypesSniff extends AbstractArrayDeclarationSniff
+final class MixedArrayKeyTypesSniff extends AbstractArrayDeclarationSniff
 {
 
     /**

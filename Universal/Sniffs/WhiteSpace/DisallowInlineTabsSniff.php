@@ -38,7 +38,7 @@ use PHPCSUtils\BackCompat\Helper;
  *
  * @since 1.0.0
  */
-class DisallowInlineTabsSniff implements Sniff
+final class DisallowInlineTabsSniff implements Sniff
 {
 
     /**

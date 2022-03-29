@@ -24,7 +24,7 @@ use PHPCSUtils\Utils\UseStatements;
  *
  * @since 1.0.0
  */
-class NoLeadingBackslashSniff implements Sniff
+final class NoLeadingBackslashSniff implements Sniff
 {
 
     /**
