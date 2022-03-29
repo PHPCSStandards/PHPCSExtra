@@ -20,7 +20,7 @@ use PHPCSUtils\Utils\ObjectDeclarations;
  *
  * @since 1.0.0
  */
-class RequireFinalClassSniff implements Sniff
+final class RequireFinalClassSniff implements Sniff
 {
 
     /**

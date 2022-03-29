@@ -19,7 +19,7 @@ use PHP_CodeSniffer\Util\Tokens;
  *
  * @since 1.0.0
  */
-class RequireAnonClassParenthesesSniff implements Sniff
+final class RequireAnonClassParenthesesSniff implements Sniff
 {
 
     /**

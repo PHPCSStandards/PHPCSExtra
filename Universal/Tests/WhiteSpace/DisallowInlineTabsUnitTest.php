@@ -19,7 +19,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @since 1.0.0
  */
-class DisallowInlineTabsUnitTest extends AbstractSniffUnitTest
+final class DisallowInlineTabsUnitTest extends AbstractSniffUnitTest
 {
 
     /**

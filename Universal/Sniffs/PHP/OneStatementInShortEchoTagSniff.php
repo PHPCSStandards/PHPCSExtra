@@ -24,7 +24,7 @@ use PHP_CodeSniffer\Util\Tokens;
  *
  * @since 1.0.0
  */
-class OneStatementInShortEchoTagSniff implements Sniff
+final class OneStatementInShortEchoTagSniff implements Sniff
 {
 
     /**

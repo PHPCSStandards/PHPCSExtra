@@ -20,7 +20,7 @@ use PHP_CodeSniffer\Util\Tokens;
  *
  * @since 1.0.0
  */
-class DisallowAnonClassParenthesesSniff implements Sniff
+final class DisallowAnonClassParenthesesSniff implements Sniff
 {
 
     /**

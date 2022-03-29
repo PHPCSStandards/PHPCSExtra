@@ -20,7 +20,7 @@ use PHPCSUtils\Utils\GetTokensAsString;
  *
  * @since 1.0.0
  */
-class DisallowFinalClassSniff implements Sniff
+final class DisallowFinalClassSniff implements Sniff
 {
 
     /**

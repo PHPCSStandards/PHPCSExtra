@@ -21,7 +21,7 @@ use PHP_CodeSniffer\Files\File;
  *
  * @since 1.0.0
  */
-class StrictComparisonsSniff implements Sniff
+final class StrictComparisonsSniff implements Sniff
 {
 
     /**

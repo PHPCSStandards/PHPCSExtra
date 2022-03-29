@@ -27,7 +27,7 @@ use PHPCSUtils\Utils\GetTokensAsString;
  *
  * @since 1.0.0
  */
-class DisallowLonelyIfSniff implements Sniff
+final class DisallowLonelyIfSniff implements Sniff
 {
 
     /**

@@ -21,7 +21,7 @@ use PHPCSUtils\Tokens\Collections;
  *
  * @since 1.0.0
  */
-class UppercaseMagicConstantsSniff implements Sniff
+final class UppercaseMagicConstantsSniff implements Sniff
 {
 
     /**

@@ -19,7 +19,7 @@ use PHPCSUtils\Utils\Namespaces;
  *
  * @since 1.0.0
  */
-class EnforceCurlyBraceSyntaxSniff implements Sniff
+final class EnforceCurlyBraceSyntaxSniff implements Sniff
 {
 
     /**
