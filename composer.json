@@ -41,7 +41,7 @@
     "prefer-stable": true,
     "scripts" : {
         "lint": [
-            "@php ./vendor/php-parallel-lint/php-parallel-lint/parallel-lint . -e php --exclude vendor --exclude .git"
+            "@php ./vendor/php-parallel-lint/php-parallel-lint/parallel-lint . --show-deprecated -e php --exclude vendor --exclude .git"
         ],
         "install-devcs": [
             "composer require --dev phpcsstandards/phpcsdevcs:\"^1.1.3\" --no-suggest --no-interaction"
