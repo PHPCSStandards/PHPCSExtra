@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
-<documentation title="Disallow Lonely If">
+<documentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://phpcsstandards.github.io/PHPCSDevTools/phpcsdocs.xsd"
+    title="Disallow Lonely If"
+    >
     <standard>
     <![CDATA[
     Disallows `if` statements as the only statement in an `else` block.

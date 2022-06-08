@@ -1,4 +1,8 @@
-<documentation title="Mixed Keyed Unkeyed Array">
+<?xml version="1.0"?>
+<documentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://phpcsstandards.github.io/PHPCSDevTools/phpcsdocs.xsd"
+    title="Mixed Keyed Unkeyed Array"
+    >
     <standard>
     <![CDATA[
         All items in an array should either have an explicit key assigned or none. A mix of keyed and unkeyed items is not allowed.

@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
-<documentation title="Lowercase Class Resolution Keyword">
+<documentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://phpcsstandards.github.io/PHPCSDevTools/phpcsdocs.xsd"
+    title="Lowercase Class Resolution Keyword"
+    >
     <standard>
     <![CDATA[
     The "class" keyword when used for class name resolution, i.e. `::class`, must be in lowercase.

@@ -1,4 +1,8 @@
-<documentation title="Comma After Last Array Item">
+<?xml version="1.0"?>
+<documentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://phpcsstandards.github.io/PHPCSDevTools/phpcsdocs.xsd"
+    title="Comma After Last Array Item"
+    >
     <standard>
     <![CDATA[
       For single-line arrays, there should be <em>no</em> comma after the last array item.

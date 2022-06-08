@@ -1,4 +1,8 @@
-<documentation title="Disallow Short Array Syntax">
+<?xml version="1.0"?>
+<documentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://phpcsstandards.github.io/PHPCSDevTools/phpcsdocs.xsd"
+    title="Disallow Short Array Syntax"
+    >
     <standard>
     <![CDATA[
     The array keyword must be used to define arrays.
