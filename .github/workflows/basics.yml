@@ -61,7 +61,7 @@ jobs:
       # @link https://github.com/marketplace/actions/xmllint-problem-matcher
       - uses: korelstar/xmllint-problem-matcher@v1
 
-      # Validate the XML file.
+      # Validate the Ruleset XML file.
       # @link http://xmlsoft.org/xmllint.html
       - name: Validate rulesets against schema
         run: xmllint --noout --schema vendor/squizlabs/php_codesniffer/phpcs.xsd ./*/ruleset.xml
@@ -71,6 +71,10 @@ jobs:
         run: |
           diff -B ./NormalizedArrays/ruleset.xml <(xmllint --format "./NormalizedArrays/ruleset.xml")
           diff -B ./Universal/ruleset.xml <(xmllint --format "./Universal/ruleset.xml")
+
+      # Validate the Documentation XML files.
+      - name: Validate documentation against schema
+        run: xmllint --noout --schema vendor/phpcsstandards/phpcsdevtools/DocsXsd/phpcsdocs.xsd ./*/Docs/*/*Standard.xml
 
       # Check the code-style consistency of the PHP files.
       - name: Check PHP code style
