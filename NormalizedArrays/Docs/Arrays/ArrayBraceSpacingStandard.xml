@@ -1,4 +1,8 @@
-<documentation title="Array Brace Spacing">
+<?xml version="1.0"?>
+<documentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://phpcsstandards.github.io/PHPCSDevTools/phpcsdocs.xsd"
+    title="Array Brace Spacing"
+    >
     <standard>
     <![CDATA[
         There should be no space between the "array" keyword and the array open brace.

@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
-<documentation title="Disallow Use Const">
+<documentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://phpcsstandards.github.io/PHPCSDevTools/phpcsdocs.xsd"
+    title="Disallow Use Const"
+    >
     <standard>
     <![CDATA[
     Disallow the use of `use const` import statements, with or without alias.

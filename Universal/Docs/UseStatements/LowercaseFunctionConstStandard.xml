@@ -1,4 +1,8 @@
-<documentation title="Lowercase Function Const">
+<?xml version="1.0"?>
+<documentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://phpcsstandards.github.io/PHPCSDevTools/phpcsdocs.xsd"
+    title="Lowercase Function Const"
+    >
     <standard>
     <![CDATA[
     `function` and `const` keywords in import `use` statements should be in lowercase.

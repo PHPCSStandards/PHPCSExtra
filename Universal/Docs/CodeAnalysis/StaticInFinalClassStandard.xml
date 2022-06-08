@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
-<documentation title="Static in Final Class">
+<documentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://phpcsstandards.github.io/PHPCSDevTools/phpcsdocs.xsd"
+    title="Static in Final Class"
+    >
     <standard>
     <![CDATA[
     When a class is declared as final, using the `static` keyword for late static binding is unnecessary and redundant.

@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
-<documentation title="Anonymous Class Keyword Spacing">
+<documentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://phpcsstandards.github.io/PHPCSDevTools/phpcsdocs.xsd"
+    title="Anonymous Class Keyword Spacing"
+    >
     <standard>
     <![CDATA[
     Checks the spacing between the "class" keyword and the open parenthesis for anonymous classes with parentheses.
