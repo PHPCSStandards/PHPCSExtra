@@ -160,10 +160,6 @@ final class NoReservedKeywordParameterNamesSniff implements Sniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
-        $tokens    = $phpcsFile->getTokens();
-        $content   = $tokens[$stackPtr]['content'];
-        $contentLC = \strtolower($content);
-
         // Get all parameters from method signature.
         try {
             $parameters = FunctionDeclarations::getParameters($phpcsFile, $stackPtr);
