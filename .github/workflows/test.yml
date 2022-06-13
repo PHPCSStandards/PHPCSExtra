@@ -40,35 +40,11 @@ jobs:
         # - PHP 8.1 needs PHPCS 3.6.1+ to run without errors.
         #
         # The matrix is set up so as not to duplicate the builds which are run for code coverage.
-        php: ['5.5', '5.6', '7.0', '7.1', '7.2']
-        phpcs_version: ['3.3.1', 'dev-master']
+        php: ['5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '8.0', '8.1']
+        phpcs_version: ['3.7.0', 'dev-master']
         experimental: [false]
 
         include:
-          # Complement the builds run in code coverage to complete the matrix and prevent issues
-          # with PHPCS versions incompatible with certain PHP versions.
-          - php: '8.1'
-            phpcs_version: 'dev-master'
-            experimental: false
-          - php: '8.1'
-            phpcs_version: '3.6.1'
-            experimental: false
-
-          - php: '8.0'
-            phpcs_version: 'dev-master'
-            experimental: false
-          - php: '8.0'
-            phpcs_version: '3.5.7'
-            experimental: false
-
-          - php: '7.4'
-            phpcs_version: '3.5.0'
-            experimental: false
-
-          - php: '7.3'
-            phpcs_version: 'dev-master'
-            experimental: false
-
           # Experimental builds. These are allowed to fail.
           - php: '8.2'
             phpcs_version: 'dev-master'
@@ -161,13 +137,7 @@ jobs:
       matrix:
         # 7.4 should be updated to 8.0 when higher PHPUnit versions can be supported.
         php: ['5.4', '7.4']
-        phpcs_version: ['dev-master']
-
-        include:
-          - php: '7.3'
-            phpcs_version: '3.3.1'
-          - php: '5.4'
-            phpcs_version: '3.3.1'
+        phpcs_version: ['3.7.0', 'dev-master']
 
     name: "Coverage${{ matrix.phpcs_version == 'dev-master' && ' + Lint' || '' }}: PHP ${{ matrix.php }} - PHPCS ${{ matrix.phpcs_version }}"
 

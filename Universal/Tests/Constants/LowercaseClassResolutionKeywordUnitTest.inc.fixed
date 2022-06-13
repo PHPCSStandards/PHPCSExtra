@@ -4,7 +4,7 @@
  * Not our concern.
  */
 echo bar::classProp; // Not the keyword.
-$anon = new class {}; // Anonymous class, not the keyword.
+function class() {} // Function name, not the keyword.
 
 /*
  * OK.
