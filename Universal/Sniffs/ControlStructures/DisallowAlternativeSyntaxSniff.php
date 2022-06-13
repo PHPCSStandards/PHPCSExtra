@@ -87,22 +87,7 @@ class DisallowAlternativeSyntaxSniff implements Sniff
         }
 
         /*
-         * Deal with declare. Declare with alternative syntax does not get the scope opener/closer
-         * assigned in the tokens array prior to PHPCS 3.5.4, so let's set those ourselves.
-         *
-         * @link https://github.com/squizlabs/PHP_CodeSniffer/pull/2843
-         */
-        if ($tokens[$stackPtr]['code'] === \T_DECLARE && isset($tokens[$stackPtr]['scope_opener']) === false) {
-            $declareOpenClose = ControlStructures::getDeclareScopeOpenClose($phpcsFile, $stackPtr);
-            if ($declareOpenClose !== false) {
-                // Overrule the scope indexes in our local copy of the $tokens array.
-                $tokens[$stackPtr]['scope_opener'] = $declareOpenClose['opener'];
-                $tokens[$stackPtr]['scope_closer'] = $declareOpenClose['closer'];
-            }
-        }
-
-        /*
-         * Now check if the control structure uses alternative syntax.
+         * Check if the control structure uses alternative syntax.
          */
         if (isset($tokens[$stackPtr]['scope_opener'], $tokens[$stackPtr]['scope_closer']) === false) {
             // No scope opener found: inline control structure or parse error.
