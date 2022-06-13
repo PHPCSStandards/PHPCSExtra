@@ -29,13 +29,7 @@ jobs:
     strategy:
       matrix:
         php: ['5.4', 'latest']
-        phpcs_version: ['dev-master']
-
-        include:
-          - php: '7.3'
-            phpcs_version: '3.3.1'
-          - php: '5.4'
-            phpcs_version: '3.3.1'
+        phpcs_version: ['3.7.0', 'dev-master']
 
     name: "QTest${{ matrix.phpcs_version == 'dev-master' && ' + Lint' || '' }}: PHP ${{ matrix.php }} - PHPCS ${{ matrix.phpcs_version }}"
 
@@ -70,7 +64,7 @@ jobs:
         if: matrix.php != 'latest'
         uses: "ramsey/composer-install@v2"
 
-      # For the PHP "latest", we need to install with ignore platform reqs as not all dependencies allow it yet.
+      # For the PHP "latest", we need to install with ignore platform reqs as not all PHPUnit 7.x dependencies allow it.
       - name: Install Composer dependencies - with ignore platform
         if: matrix.php == 'latest'
         uses: "ramsey/composer-install@v2"

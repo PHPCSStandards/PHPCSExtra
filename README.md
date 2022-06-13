@@ -43,7 +43,7 @@ Minimum Requirements
 -------------------------------------------
 
 * PHP 5.4 or higher.
-* [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer) version **3.3.1** or higher.
+* [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer) version **3.7.0** or higher.
 * [PHPCSUtils](https://github.com/PHPCSStandards/PHPCSUtils) version **1.0.0** or higher.
 
 
