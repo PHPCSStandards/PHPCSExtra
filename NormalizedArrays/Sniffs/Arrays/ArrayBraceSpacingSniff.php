@@ -12,6 +12,7 @@ namespace PHPCSExtra\NormalizedArrays\Sniffs\Arrays;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\Fixers\SpacesFixer;
 use PHPCSUtils\Utils\Arrays;
 
@@ -156,7 +157,7 @@ class ArrayBraceSpacingSniff implements Sniff
 
         $openClose = Arrays::getOpenClose($phpcsFile, $stackPtr);
         if ($openClose === false) {
-            // Short list or real square brackets.
+            // Live coding, short list or real square brackets.
             return;
         }
 
@@ -264,10 +265,23 @@ class ArrayBraceSpacingSniff implements Sniff
         $error = 'Expected %s after the array opener in a multi line array. Found: %s';
         $code  = 'SpaceAfterArrayOpenerMultiLine';
 
+        $nextNonWhitespace = $phpcsFile->findNext(\T_WHITESPACE, ($opener + 1), null, true);
+        if ($this->spacesMultiLine === 'newline') {
+            // Check for a trailing comment after the array opener and allow for it.
+            if (($tokens[$nextNonWhitespace]['code'] === \T_COMMENT
+                || isset(Tokens::$phpcsCommentTokens[$tokens[$nextNonWhitespace]['code']]) === true)
+                && $tokens[$nextNonWhitespace]['line'] === $tokens[$opener]['line']
+            ) {
+                // We found a trailing comment after array opener. Treat that as the opener instead.
+                $opener            = $nextNonWhitespace;
+                $nextNonWhitespace = $phpcsFile->findNext(\T_WHITESPACE, ($opener + 1), null, true);
+            }
+        }
+
         SpacesFixer::checkAndFix(
             $phpcsFile,
             $opener,
-            $phpcsFile->findNext(\T_WHITESPACE, ($opener + 1), null, true),
+            $nextNonWhitespace,
             $this->spacesMultiLine,
             $error,
             $code,

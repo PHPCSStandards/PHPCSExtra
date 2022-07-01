@@ -134,11 +134,57 @@ $array = [
 
 
     $a,
-    $b]; // Error x 2.
+    $b]; // Error x 1.
 
 $array = array($a,
     $b
 ); // Error x 1.
+
+$array = array(
+    // Comment at the first line is always fine.
+    $a,
+    $b
+);
+
+$array = array( // Allow trailing comment after opener.
+    $a,
+    $b
+);
+
+$array = array( /* Allow trailing comment after opener. */
+    $a,
+    $b
+);
+
+$array = array( // phpcs:ignore Stdn.Cat.Sniff -- Allow trailing annotation after opener.
+    $a,
+    $b
+);
+
+$array = array( /* Allow trailing comment after opener. */ /* But don't allow a second one */
+    $a,
+    $b
+); // Error x 1.
+
+$array = array( /* This is still an error */ $a,
+    $b
+); // Error x 1.
+
+$array = [ // Allow trailing comment after opener.
+
+
+
+    $a,
+    $b
+];
+
+$array = [ /* Allow trailing comment after opener */
+
+
+
+    $a,
+    $b
+];
 
 // phpcs:set NormalizedArrays.Arrays.ArrayBraceSpacing spacesMultiLine 0
 
@@ -163,6 +209,30 @@ $array = array($a,
     $b
 ); // Error x 1.
 
+$array = array( // Comment. Error x 1.
+    $a,
+    $b);
+
+$array = array( /* Comment. Error x 1. */
+    $a,
+    $b);
+
+$array = array( // phpcs:ignore Stdn.Cat.Sniff -- Error x 1.
+    $a,
+    $b);
+
+$array = array(// Comment. No space, this is fine.
+    $a,
+    $b);
+
+$array = array(/* Comment. No space, this is fine. */
+    $a,
+    $b);
+
+$array = array(// phpcs:ignore Stdn.Cat.Sniff -- No space, this is fine.
+    $a,
+    $b);
+
 // phpcs:set NormalizedArrays.Arrays.ArrayBraceSpacing spacesMultiLine 1
 
 $array = [ $a,
@@ -185,6 +255,30 @@ $array = [
 $array = array($a,
     $b
 ); // Error x 2.
+
+$array = array( // Comment. One space, this is fine.
+    $a,
+    $b );
+
+$array = array( /* Comment. One space, this is fine. */
+    $a,
+    $b );
+
+$array = array( // phpcs:ignore Stdn.Cat.Sniff -- One space, this is fine.
+    $a,
+    $b );
+
+$array = array(// Comment. No space, error x 1.
+    $a,
+    $b );
+
+$array = array(/* Comment. No space, error x 1. */
+    $a,
+    $b );
+
+$array = array(// phpcs:ignore Stdn.Cat.Sniff -- No space, error x 1.
+    $a,
+    $b );
 
 // phpcs:set NormalizedArrays.Arrays.ArrayBraceSpacing spacesMultiLine false
 
