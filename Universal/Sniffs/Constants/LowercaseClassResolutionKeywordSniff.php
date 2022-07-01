@@ -35,7 +35,7 @@ final class LowercaseClassResolutionKeywordSniff implements Sniff
     public function register()
     {
         return [
-            \T_STRING
+            \T_STRING,
         ];
     }
 
