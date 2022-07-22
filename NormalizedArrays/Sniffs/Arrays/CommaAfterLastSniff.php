@@ -22,7 +22,7 @@ use PHPCSUtils\Utils\Arrays;
  *
  * @since 1.0.0
  */
-class CommaAfterLastSniff implements Sniff
+final class CommaAfterLastSniff implements Sniff
 {
 
     /**

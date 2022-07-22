@@ -19,7 +19,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @since 1.0.0
  */
-class EnforceCurlyBraceSyntaxUnitTest extends AbstractSniffUnitTest
+final class EnforceCurlyBraceSyntaxUnitTest extends AbstractSniffUnitTest
 {
 
     /**

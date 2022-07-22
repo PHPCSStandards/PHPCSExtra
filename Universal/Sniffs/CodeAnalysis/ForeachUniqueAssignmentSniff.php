@@ -23,7 +23,7 @@ use PHPCSUtils\Utils\GetTokensAsString;
  *
  * @since 1.0.0
  */
-class ForeachUniqueAssignmentSniff implements Sniff
+final class ForeachUniqueAssignmentSniff implements Sniff
 {
 
     /**

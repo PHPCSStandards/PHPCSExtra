@@ -19,7 +19,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @since 1.0.0
  */
-class LowercaseClassResolutionKeywordUnitTest extends AbstractSniffUnitTest
+final class LowercaseClassResolutionKeywordUnitTest extends AbstractSniffUnitTest
 {
 
     /**

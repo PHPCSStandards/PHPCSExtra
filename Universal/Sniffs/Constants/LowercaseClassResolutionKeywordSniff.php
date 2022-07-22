@@ -22,7 +22,7 @@ use PHP_CodeSniffer\Util\Tokens;
  *
  * @since 1.0.0
  */
-class LowercaseClassResolutionKeywordSniff implements Sniff
+final class LowercaseClassResolutionKeywordSniff implements Sniff
 {
 
     /**

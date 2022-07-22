@@ -22,7 +22,7 @@ use PHPCSUtils\AbstractSniffs\AbstractArrayDeclarationSniff;
  *
  * @since 1.0.0
  */
-class DuplicateArrayKeySniff extends AbstractArrayDeclarationSniff
+final class DuplicateArrayKeySniff extends AbstractArrayDeclarationSniff
 {
 
     /**

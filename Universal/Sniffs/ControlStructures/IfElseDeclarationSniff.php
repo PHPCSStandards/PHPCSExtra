@@ -28,7 +28,7 @@ use PHP_CodeSniffer\Util\Tokens;
  *
  * @since 1.0.0
  */
-class IfElseDeclarationSniff implements Sniff
+final class IfElseDeclarationSniff implements Sniff
 {
 
     /**

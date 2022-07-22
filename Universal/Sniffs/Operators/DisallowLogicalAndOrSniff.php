@@ -22,7 +22,7 @@ use PHP_CodeSniffer\Files\File;
  *
  * @since 1.0.0
  */
-class DisallowLogicalAndOrSniff implements Sniff
+final class DisallowLogicalAndOrSniff implements Sniff
 {
 
     /**

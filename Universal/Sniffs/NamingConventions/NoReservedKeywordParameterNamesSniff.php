@@ -23,7 +23,7 @@ use PHPCSUtils\Utils\FunctionDeclarations;
  *
  * @since 1.0.0
  */
-class NoReservedKeywordParameterNamesSniff implements Sniff
+final class NoReservedKeywordParameterNamesSniff implements Sniff
 {
 
     /**

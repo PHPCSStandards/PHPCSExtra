@@ -19,7 +19,7 @@ use PHP_CodeSniffer\Tokenizers\Tokenizer;
  *
  * @since 1.0.0
  */
-class DummyTokenizer extends Tokenizer
+final class DummyTokenizer extends Tokenizer
 {
 
     /**

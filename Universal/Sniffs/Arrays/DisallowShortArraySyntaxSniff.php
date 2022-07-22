@@ -26,7 +26,7 @@ use PHPCSUtils\Utils\Arrays;
  * @since 1.0.0 This sniff is loosely based on and inspired by the upstream
  *              `Generic.Arrays.DisallowShortArraySyntax` sniff.
  */
-class DisallowShortArraySyntaxSniff implements Sniff
+final class DisallowShortArraySyntaxSniff implements Sniff
 {
 
     /**

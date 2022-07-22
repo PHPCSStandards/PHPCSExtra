@@ -19,7 +19,7 @@ use PHPCSUtils\Utils\Lists;
  *
  * @since 1.0.0
  */
-class DisallowLongListSyntaxSniff implements Sniff
+final class DisallowLongListSyntaxSniff implements Sniff
 {
 
     /**

@@ -23,7 +23,7 @@ use PHPCSUtils\Utils\UseStatements;
  *
  * @since 1.0.0
  */
-class LowercaseFunctionConstSniff implements Sniff
+final class LowercaseFunctionConstSniff implements Sniff
 {
 
     /**

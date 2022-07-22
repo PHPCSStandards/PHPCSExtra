@@ -19,7 +19,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @since 1.0.0
  */
-class MixedArrayKeyTypesUnitTest extends AbstractSniffUnitTest
+final class MixedArrayKeyTypesUnitTest extends AbstractSniffUnitTest
 {
 
     /**

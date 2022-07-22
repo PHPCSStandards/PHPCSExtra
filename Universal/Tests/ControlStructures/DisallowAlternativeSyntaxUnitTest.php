@@ -19,7 +19,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @since 1.0.0
  */
-class DisallowAlternativeSyntaxUnitTest extends AbstractSniffUnitTest
+final class DisallowAlternativeSyntaxUnitTest extends AbstractSniffUnitTest
 {
 
     /**
