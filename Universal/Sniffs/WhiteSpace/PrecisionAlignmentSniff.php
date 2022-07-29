@@ -312,7 +312,7 @@ final class PrecisionAlignmentSniff implements Sniff
             );
 
             if ($fix === true) {
-                $round = (int) \round($spaces / $indent, 0);
+                $tabstops = (int) \round($spaces / $indent, 0);
 
                 switch ($tokens[$i]['code']) {
                     case \T_WHITESPACE:
@@ -320,7 +320,7 @@ final class PrecisionAlignmentSniff implements Sniff
                          * More complex than you'd think as "length" doesn't include new lines,
                          * but we don't want to remove new lines either.
                          */
-                        $replaceLength = (((int) ($tokens[$i]['length'] / $indent) + $round) * $indent);
+                        $replaceLength = (((int) ($tokens[$i]['length'] / $indent) + $tabstops) * $indent);
                         $replace       = \str_repeat(' ', $replaceLength);
                         $newContent    = \substr_replace($tokens[$i]['content'], $replace, 0, $tokens[$i]['length']);
 
@@ -328,13 +328,13 @@ final class PrecisionAlignmentSniff implements Sniff
                         break;
 
                     case \T_DOC_COMMENT_WHITESPACE:
-                        $replaceLength = (((int) ($tokens[$i]['length'] / $indent) + $round) * $indent);
+                        $replaceLength = (((int) ($tokens[$i]['length'] / $indent) + $tabstops) * $indent);
                         $replace       = \str_repeat(' ', $replaceLength);
 
                         if (isset($tokens[($i + 1)]) === true
                             && ($tokens[($i + 1)]['code'] === \T_DOC_COMMENT_STAR
                                 || $tokens[($i + 1)]['code'] === \T_DOC_COMMENT_CLOSE_TAG)
-                            && $round === 0
+                            && $tabstops === 0
                         ) {
                             // Maintain the extra space before the star.
                             $replace .= ' ';
@@ -354,10 +354,10 @@ final class PrecisionAlignmentSniff implements Sniff
                     case \T_PHPCS_IGNORE_FILE:
                     case \T_END_HEREDOC:
                     case \T_END_NOWDOC:
-                        $replaceLength = (((int) ($length / $indent) + $round) * $indent);
+                        $replaceLength = (((int) ($length / $indent) + $tabstops) * $indent);
                         $replace       = \str_repeat(' ', $replaceLength);
 
-                        if (isset($content[0]) === true && $content[0] === '*' && $round === 0) {
+                        if (isset($content[0]) === true && $content[0] === '*' && $tabstops === 0) {
                             // Maintain the extra space before the star.
                             $replace .= ' ';
                         }
