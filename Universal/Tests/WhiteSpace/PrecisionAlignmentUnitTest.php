@@ -34,6 +34,7 @@ final class PrecisionAlignmentUnitTest extends AbstractSniffUnitTest
         'PrecisionAlignmentUnitTest.7.inc'  => 3,
         'PrecisionAlignmentUnitTest.8.inc'  => 2,
         'PrecisionAlignmentUnitTest.10.inc' => 4,
+        'PrecisionAlignmentUnitTest.11.inc' => 4,
         'PrecisionAlignmentUnitTest.15.inc' => 4,
         'PrecisionAlignmentUnitTest.17.inc' => 4,
         'PrecisionAlignmentUnitTest.2.css'  => 4,
@@ -138,8 +139,14 @@ final class PrecisionAlignmentUnitTest extends AbstractSniffUnitTest
             case 'PrecisionAlignmentUnitTest.11.inc':
                 if (\PHP_VERSION_ID >= 70300) {
                     return [
-                        54 => 1,
-                        60 => 1,
+                        77  => 1,
+                        83  => 1,
+                        88  => 1,
+                        93  => 1,
+                        112 => 1,
+                        118 => 1,
+                        123 => 1,
+                        128 => 1,
                     ];
                 }
 
