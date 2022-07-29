@@ -78,7 +78,7 @@ phpcs:set Universal.WhiteSpace.PrecisionAlignment indent 2
      * Multi-line javascript comment should not trigger this sniff.
      */
     alert('OK');
-     alert('bad'); <!-- Warning. -->
+     alert('bad');	<!-- Warning. -->
 </script>
 
 <?php
