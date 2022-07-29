@@ -20,38 +20,38 @@
 	/**
 	 * OK: Doc comment is indented with tabs and one space for the star alignment.
 	 *
-     * @var string  <= Warning.
+	 * @var string  <= Warning.
 	 * @access private
 	 */
 
 	/*
 		OK: Multi-line comment is indented with 2 tabs for the text alignment.
-    <= Warning, no star, but also not indented by multiples of 4 spaces.
+	<= Warning, no star, but also not indented by multiples of 4 spaces.
 	    OK: Another line of text [tab][space][space][space][space].
 	 */
 
 	/*
 	 * OK: Multi-line comment is indented with tabs and one space for the star alignment.
 	 *
-        * <= Warning.
+		* <= Warning.
 	 */
 
-    function exampleFunctionD() {} // Warning: [tab][space].
-        function exampleFunctionE() {} // Warning: [tab][space][space].
-        function exampleFunctionF() {} // Warning: [tab][space][space][space].
+	function exampleFunctionD() {} // Warning: [tab][space].
+		function exampleFunctionE() {} // Warning: [tab][space][space].
+		function exampleFunctionF() {} // Warning: [tab][space][space][space].
 
 	$object->functioncall()
 		-> chained()
 		-> anothermethod();
 
 	$object->functioncall()
-            -> chained()        // Warning: [tab][tab][space][space][space].
-            -> anothermethod(); // Warning: [tab][tab][space][space][space].
+			-> chained()        // Warning: [tab][tab][space][space][space].
+			-> anothermethod(); // Warning: [tab][tab][space][space][space].
 
     ?> <!-- Warning: three spaces. -->
 
 	<p>
-        Warning: Some inline HTML with precision alignment.
+		Warning: Some inline HTML with precision alignment.
 	</p>
 
 <?php // Warning: one space.
@@ -78,7 +78,7 @@
 	 * Multi-line javascript comment should not trigger this sniff.
 	 */
 	alert('OK');
-        alert('bad'); <!-- Warning. -->
+		alert('bad'); <!-- Warning. -->
 </script>
 
 <?php

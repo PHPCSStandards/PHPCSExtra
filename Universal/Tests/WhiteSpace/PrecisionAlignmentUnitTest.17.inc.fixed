@@ -36,17 +36,17 @@ phpcs:set Universal.WhiteSpace.PrecisionAlignment ignoreAlignmentBefore[] T_DOC_
 	   * <= Ignored.
 	 */
 
-    function exampleFunctionD() {} // Warning: [tab][space].
-        function exampleFunctionE() {} // Warning: [tab][space][space].
-        function exampleFunctionF() {} // Warning: [tab][space][space][space].
+	function exampleFunctionD() {} // Warning: [tab][space].
+		function exampleFunctionE() {} // Warning: [tab][space][space].
+		function exampleFunctionF() {} // Warning: [tab][space][space][space].
 
 	$object->functioncall()
 		-> chained()
 		-> anothermethod();
 
 	$object->functioncall()
-            -> chained()        // Warning: [tab][tab][space][space][space].
-            -> anothermethod(); // Warning: [tab][tab][space][space][space].
+			-> chained()        // Warning: [tab][tab][space][space][space].
+			-> anothermethod(); // Warning: [tab][tab][space][space][space].
 
     ?> <!-- Warning: three spaces. -->
 

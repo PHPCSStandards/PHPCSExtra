@@ -20,7 +20,7 @@ phpcs:set Universal.WhiteSpace.PrecisionAlignment indent 3
    /**
     * OK: Doc comment is indented with 3 spaces + one space for the star alignment.
     *
-     * @var string  <= Warning.
+     * @var string	<= Warning.
     * @access private
     */
 
