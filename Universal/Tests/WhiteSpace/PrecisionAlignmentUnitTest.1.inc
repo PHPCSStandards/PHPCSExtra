@@ -20,7 +20,7 @@
     /**
      * OK: Doc comment is indented with 4 spaces + one space for the star alignment.
      *
-      * @var string  <= Warning.
+      * @var string	<= Warning.
      * @access private
      */
 

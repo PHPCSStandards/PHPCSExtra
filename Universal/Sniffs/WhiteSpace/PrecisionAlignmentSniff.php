@@ -27,9 +27,9 @@ use PHPCSUtils\BackCompat\Helper;
  * - Precision alignment *within* text strings (multi-line text strings, heredocs, nowdocs)
  *   will NOT be flagged by this sniff.
  * - The fixer works based on "best guess" and may not always result in the desired indentation.
- * - This sniff does not concern itself with tabs versus spaces.
+ * - This fixer will use tabs or spaces based on whether tabs where present in the original indent.
  *   Use the PHPCS native `Generic.WhiteSpace.DisallowTabIndent` or the
- *   `Generic.WhiteSpace.DisallowSpaceIndent` sniffs for that.
+ *   `Generic.WhiteSpace.DisallowSpaceIndent` sniff to clean up the results if so desired.
  *
  * @since 1.0.0
  */
@@ -205,6 +205,11 @@ final class PrecisionAlignmentSniff implements Sniff
                 continue;
             }
 
+            $origContent = null;
+            if (isset($tokens[$i]['orig_content']) === true) {
+                $origContent = $tokens[$i]['orig_content'];
+            }
+
             $spaces = 0;
             switch ($tokens[$i]['code']) {
                 case \T_WHITESPACE:
@@ -321,7 +326,7 @@ final class PrecisionAlignmentSniff implements Sniff
                          * but we don't want to remove new lines either.
                          */
                         $replaceLength = (((int) ($tokens[$i]['length'] / $indent) + $tabstops) * $indent);
-                        $replace       = \str_repeat(' ', $replaceLength);
+                        $replace       = $this->getReplacement($replaceLength, $origContent);
                         $newContent    = \substr_replace($tokens[$i]['content'], $replace, 0, $tokens[$i]['length']);
 
                         $phpcsFile->fixer->replaceToken($i, $newContent);
@@ -329,7 +334,7 @@ final class PrecisionAlignmentSniff implements Sniff
 
                     case \T_DOC_COMMENT_WHITESPACE:
                         $replaceLength = (((int) ($tokens[$i]['length'] / $indent) + $tabstops) * $indent);
-                        $replace       = \str_repeat(' ', $replaceLength);
+                        $replace       = $this->getReplacement($replaceLength, $origContent);
 
                         if (isset($tokens[($i + 1)]) === true
                             && ($tokens[($i + 1)]['code'] === \T_DOC_COMMENT_STAR
@@ -355,7 +360,7 @@ final class PrecisionAlignmentSniff implements Sniff
                     case \T_END_HEREDOC:
                     case \T_END_NOWDOC:
                         $replaceLength = (((int) ($length / $indent) + $tabstops) * $indent);
-                        $replace       = \str_repeat(' ', $replaceLength);
+                        $replace       = $this->getReplacement($replaceLength, $origContent);
 
                         if (isset($content[0]) === true && $content[0] === '*' && $tabstops === 0) {
                             // Maintain the extra space before the star.
@@ -377,5 +382,31 @@ final class PrecisionAlignmentSniff implements Sniff
 
         // No need to look at this file again.
         return $phpcsFile->numTokens;
+    }
+
+    /**
+     * Get the whitespace replacement. Respect tabs vs spaces.
+     *
+     * @param int         $length      The target length of the replacement.
+     * @param string|null $origContent The original token content without tabs replaced (if available).
+     *
+     * @return string
+     */
+    private function getReplacement($length, $origContent)
+    {
+        if ($origContent !== null) {
+            // Check whether tabs were part of the indent or inline alignment.
+            $content    = \ltrim($origContent);
+            $whitespace = \str_replace($content, '', $origContent);
+
+            if (\strpos($whitespace, "\t") !== false) {
+                // Original indent used tabs. Use tabs in replacement too.
+                $tabs   = (int) ($length / $this->tabWidth);
+                $spaces = $length % $this->tabWidth;
+                return \str_repeat("\t", $tabs) . \str_repeat(' ', (int) $spaces);
+            }
+        }
+
+        return \str_repeat(' ', $length);
     }
 }
