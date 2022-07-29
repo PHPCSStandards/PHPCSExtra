@@ -270,12 +270,10 @@ final class PrecisionAlignmentSniff implements Sniff
                 case \T_PHPCS_SET:
                 case \T_PHPCS_IGNORE:
                 case \T_PHPCS_IGNORE_FILE:
-                case \T_END_HEREDOC:
-                case \T_END_NOWDOC:
                     /*
                      * Indentation is included in the contents of the token for:
                      * - inline HTML
-                     * - PHP 7.3+ flexible heredoc/nowdoc closer identifiers;
+                     * - PHP 7.3+ flexible heredoc/nowdoc closer identifiers (see below);
                      * - subsequent lines of multi-line comments;
                      * - PHPCS native annotations when part of a multi-line comment.
                      */
@@ -303,6 +301,24 @@ final class PrecisionAlignmentSniff implements Sniff
                         --$spaces;
                     }
                     break;
+
+                case \T_END_HEREDOC:
+                case \T_END_NOWDOC:
+                    /*
+                     * PHPCS does not execute tab replacement in heredoc/nowdoc closer
+                     * tokens (last checked: PHPCS 3.7.1), so handle this ourselves.
+                     */
+                    $content = $tokens[$i]['content'];
+                    if (\strpos($tokens[$i]['content'], "\t") !== false) {
+                        $origContent = $content;
+                        $content     = \str_replace("\t", \str_repeat(' ', $this->tabWidth), $content);
+                    }
+
+                    $closer     = \ltrim($content);
+                    $whitespace = \str_replace($closer, '', $content);
+                    $length     = \strlen($whitespace);
+                    $spaces     = ($length % $indent);
+                    break;
             }
 
             if ($spaces === 0) {
@@ -317,7 +333,13 @@ final class PrecisionAlignmentSniff implements Sniff
             );
 
             if ($fix === true) {
-                $tabstops = (int) \round($spaces / $indent, 0);
+                if ($tokens[$i]['code'] === \T_END_HEREDOC || $tokens[$i]['code'] === \T_END_NOWDOC) {
+                    // For heredoc/nowdoc, always round down to prevent introducing parse errors.
+                    $tabstops = (int) \floor($spaces / $indent);
+                } else {
+                    // For everything else, use "best guess".
+                    $tabstops = (int) \round($spaces / $indent, 0);
+                }
 
                 switch ($tokens[$i]['code']) {
                     case \T_WHITESPACE:
@@ -357,8 +379,6 @@ final class PrecisionAlignmentSniff implements Sniff
                     case \T_PHPCS_SET:
                     case \T_PHPCS_IGNORE:
                     case \T_PHPCS_IGNORE_FILE:
-                    case \T_END_HEREDOC:
-                    case \T_END_NOWDOC:
                         $replaceLength = (((int) ($length / $indent) + $tabstops) * $indent);
                         $replace       = $this->getReplacement($replaceLength, $origContent);
 
@@ -375,6 +395,14 @@ final class PrecisionAlignmentSniff implements Sniff
                         }
 
                         $phpcsFile->fixer->replaceToken($i, $newContent);
+                        break;
+
+                    case \T_END_HEREDOC:
+                    case \T_END_NOWDOC:
+                        $replaceLength = (((int) ($length / $indent) + $tabstops) * $indent);
+                        $replace       = $this->getReplacement($replaceLength, $origContent);
+
+                        $phpcsFile->fixer->replaceToken($i, $replace . $closer);
                         break;
                 }
             }
@@ -397,7 +425,10 @@ final class PrecisionAlignmentSniff implements Sniff
         if ($origContent !== null) {
             // Check whether tabs were part of the indent or inline alignment.
             $content    = \ltrim($origContent);
-            $whitespace = \str_replace($content, '', $origContent);
+            $whitespace = $origContent;
+            if ($content !== '') {
+                $whitespace = \str_replace($content, '', $origContent);
+            }
 
             if (\strpos($whitespace, "\t") !== false) {
                 // Original indent used tabs. Use tabs in replacement too.
