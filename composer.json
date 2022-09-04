@@ -2,7 +2,7 @@
     "name" : "phpcsstandards/phpcsextra",
     "description" : "A collection of sniffs and standards for use with PHP_CodeSniffer.",
     "type" : "phpcodesniffer-standard",
-    "keywords" : [ "phpcs", "phpcbf", "standards", "php_codesniffer", "phpcodesniffer-standard" ],
+    "keywords" : [ "phpcs", "phpcbf", "standards", "static analysis", "php_codesniffer", "phpcodesniffer-standard" ],
     "license" : "LGPL-3.0-or-later",
     "authors" : [
         {
