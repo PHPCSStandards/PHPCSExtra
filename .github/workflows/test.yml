@@ -186,3 +186,14 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           parallel-finished: true
+
+  coveralls-rerun:
+    needs: coveralls-finish
+    if: always() && needs.coverage.result == 'success'
+
+    runs-on: ubuntu-latest
+
+    steps:
+      # See: https://github.com/lemurheavy/coveralls-public/issues/1631
+      - name: Rerun coveralls to get more accurate results
+        run: curl --location --request GET 'https://coveralls.io/rerun_build?repo_token=${{ secrets.COVERALLS_TOKEN }}&build_num=${{ github.run_id }}'
