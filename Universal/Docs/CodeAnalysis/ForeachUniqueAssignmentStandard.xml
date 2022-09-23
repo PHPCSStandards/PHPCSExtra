@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
-<documentation title="Foreach Unique Assignment">
+<documentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://phpcsstandards.github.io/PHPCSDevTools/phpcsdocs.xsd"
+    title="Foreach Unique Assignment"
+    >
     <standard>
     <![CDATA[
     When a foreach control structure uses the same variable for both the $key as well as the $value assignment, the key will be disregarded and be inaccessible and the variable will contain the value.
