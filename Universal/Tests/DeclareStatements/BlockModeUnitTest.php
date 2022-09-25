@@ -25,45 +25,36 @@ class DeclareStatementsStyleUnitTest extends AbstractSniffUnitTest
     /**
      * Returns the lines where errors should occur.
      *
+     * @param string $testFile The name of the file being tested.
+     *
      * @return array <int line number> => <int number of errors>
      */
-    public function getErrorList()
+    public function getErrorList($testFile = '')
     {
-        return [
-            15  => 1,
-            19  => 1,
-            23  => 1,
-            32  => 1,
-            41  => 1,
-            45  => 1,
-            49  => 1,
-            50  => 1,
-            55  => 1,
-            56  => 1,
-            63  => 1,
-            67  => 1,
-            76  => 1,
-            85  => 1,
-            89  => 1,
-            95  => 1,
-            104 => 1,
-            185 => 1,
-            187 => 1,
-            189 => 1,
-            191 => 1,
-            217 => 1,
-            226 => 1,
-            261 => 1,
-            271 => 1,
-            331 => 1,
-            340 => 1,
-            375 => 1,
-            385 => 1,
-            445 => 1,
-            454 => 1,
-            463 => 1,
-            472 => 1,
-        ];
+        switch ($testFile) {
+            case 'DeclareStatementsStyleUnitTest.1.inc':
+                return [
+                ];
+
+            case 'DeclareStatementsStyleUnitTest.2.inc':
+                return [
+                ];
+
+            case 'DeclareStatementsStyleUnitTest.3.inc':
+                return [
+                ];
+
+            case 'DeclareStatementsStyleUnitTest.4.inc':
+                return [
+                ];
+
+            case 'DeclareStatementsStyleUnitTest.5.inc':
+                return [
+                ];
+
+            default:
+                return [];
+        }
     }
 
     /**
