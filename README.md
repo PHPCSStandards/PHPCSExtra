@@ -27,6 +27,7 @@ PHPCSExtra
     + [Composer Global Installation](#composer-global-installation)
 * [Features](#features)
 * [Sniffs](#sniffs)
+    + [Modernize](#modernize)
     + [NormalizedArrays](#normalizedarrays)
     + [Universal](#universal)
 * [Contributing](#contributing)
@@ -74,8 +75,9 @@ composer global require --dev phpcsstandards/phpcsextra:"^1.0"
 Features
 -------------------------------------------
 
-Once this project is installed, you will see two new rulesets in the list of installed standards when you run `phpcs -i`: `NormalizedArrays` and `Universal`.
+Once this project is installed, you will see three new rulesets in the list of installed standards when you run `vendor/bin/phpcs -i`: `Modernize`, `NormalizedArrays` and `Universal`.
 
+* The `Modernize` ruleset is a standard which checks code for modernization opportunaties.
 * The `NormalizedArrays` ruleset is a standard to check the formatting of array declarations.
 * The `Universal` ruleset is **NOT** a standard, but a sniff collection.
     It should **NOT** be included in custom rulesets as a standard as it contains contradictory rules.
@@ -89,6 +91,17 @@ Sniffs
 * :wrench: = Includes auto-fixer.
 * :bar_chart: = Includes metrics.
 * :books: = Includes CLI documentation.
+
+
+### Modernize
+
+#### `Modernize.FunctionCalls.Dirname` :wrench: :books:
+
+This sniff will detect and auto-fix two typical code modernizations which can be made related to the `dirname()` function:
+1. Since PHP 5.3, calls to `dirname(__FILE__)` can be replaced by `__DIR__`.
+    Errorcode: `Modernize.FunctionCalls.Dirname.FileConstant`.
+2. Since PHP 7.0, nested function calls to `dirname()` can be changed to use the `$levels` parameter.
+    Errorcode: `Modernize.FunctionCalls.Dirname.Nested`.
 
 
 ### NormalizedArrays
@@ -123,9 +136,10 @@ Use any of the following values to change the properties: `enforce`, `forbid` or
 
 The default for the `singleLine` property is `forbid`. The default for the `multiLine` property is `enforce`.
 
+
 ### Universal
 
-#### `Universal.Arrays.DisallowShortArraySyntax` :wrench: :books:
+#### `Universal.Arrays.DisallowShortArraySyntax` :wrench: :bar_chart: :books:
 
 Disallow short array syntax.
 
@@ -135,6 +149,13 @@ In contrast to the PHPCS native `Generic.Arrays.DisallowShortArraySyntax` sniff,
 
 Detects duplicate array keys in array declarations.
 
+The sniff will make a distinction between keys which will be duplicate in all PHP version and (numeric) keys which will only be a duplicate key in [PHP < 8.0 or PHP >= 8.0][php-rfc-negative_array_index].
+
+If a [`php_version` configuration option][php_version-config] has been passed to PHPCS using either `--config-set` or `--runtime-set`, it will be respected by the sniff and only report duplicate keys for the configured PHP version.
+
+[php-rfc-negative_array_index]: https://wiki.php.net/rfc/negative_array_index
+[php_version-config]:           https://github.com/squizlabs/PHP_CodeSniffer/wiki/Configuration-Options#setting-the-php-version
+
 #### `Universal.Arrays.MixedArrayKeyTypes` :books:
 
 Best practice sniff: don't use a mix of integer and string keys for array items.
@@ -142,6 +163,61 @@ Best practice sniff: don't use a mix of integer and string keys for array items.
 #### `Universal.Arrays.MixedKeyedUnkeyedArray` :books:
 
 Best practice sniff: don't use a mix of keyed and unkeyed array items.
+
+#### `Universal.Classes.DisallowAnonClassParentheses` :wrench: :bar_chart: :books:
+
+Disallow the use of parentheses when declaring an anonymous class without passing parameters.
+
+#### `Universal.Classes.RequireAnonClassParentheses` :wrench: :bar_chart: :books:
+
+Require the use of parentheses when declaring an anonymous class, whether parameters are passed or not.
+
+#### `Universal.Classes.DisallowFinalClass` :wrench: :bar_chart: :books:
+
+Disallow classes being declared `final`.
+
+#### `Universal.Classes.RequireFinalClass` :wrench: :bar_chart: :books:
+
+Require all non-`abstract` classes to be declared `final`.
+
+:warning: **Warning**: the auto-fixer for this sniff _may_ have unintended side-effects for applications and should be used with care!
+This is considered a **_risky_ fixer**.
+
+#### `Universal.Classes.ModifierKeywordOrder` :wrench: :bar_chart: :books:
+
+Require a consistent modifier keyword order for class declarations.
+
+* This sniff contains an `order` property to specify the preferred order.
+    Accepted values: (string) `'extendability readonly'`|`'readonly extendability'`. Defaults to `'extendability readonly'`.
+
+#### `Universal.CodeAnalysis.ConstructorDestructorReturn` :wrench: :books:
+
+* Disallows return type declarations on constructor/destructor methods - error code: `ReturnTypeFound`, auto-fixable.
+* Discourages constructor/destructor methods returning a value - error code: `ReturnValueFound`.
+
+#### `Universal.CodeAnalysis.ForeachUniqueAssignment` :wrench: :books:
+
+Detects `foreach` control structures which use the same variable for both the key as well as the value assignment as this will lead to unexpected - and most likely unintended - behaviour.
+
+Note: The fixer will maintain the existing behaviour of the code. This may not be the _intended_ behaviour.
+
+#### `Universal.CodeAnalysis.StaticInFinalClass` :wrench: :books:
+
+Detects using `static` instead of `self` in OO constructs which are `final`.
+
+* The sniff has modular error codes to allow for making exceptions based on the type of use for `static`.
+    The available error codes are: `ReturnType`, `InstanceOf`, `NewInstance`, `ScopeResolution`.
+
+#### `Universal.Constants.LowercaseClassResolutionKeyword` :wrench: :bar_chart: :books:
+
+Enforce that the `class` keyword when used for class name resolution, i.e. `::class`, is in lowercase.
+
+#### `Universal.Constants.ModifierKeywordOrder` :wrench: :bar_chart: :books:
+
+Require a consistent modifier keyword order for OO constant declarations.
+
+* This sniff contains an `order` property to specify the preferred order.
+    Accepted values: (string) `'final visibility'`|`'visibility final'`. Defaults to `'final visibility'`.
 
 #### `Universal.Constants.UppercaseMagicConstants` :wrench: :bar_chart: :books:
 
@@ -156,13 +232,32 @@ Disallow using the alternative syntax for control structures.
 * The sniff has modular error codes to allow for making exceptions based on specific control structures and/or specific control structures in combination with inline HTML.
     The error codes follow the following pattern: `Found[ControlStructure][WithInlineHTML]`. Examples: `FoundIf`, `FoundSwitchWithInlineHTML`.
 
+#### `Universal.ControlStructures.DisallowLonelyIf` :wrench: :books:
+
+Disallow `if` statements as the only statement in an `else` block.
+
+Note: This sniff will not fix the indentation of the "inner" code.
+It is strongly recommended to run this sniff together with the `Generic.WhiteSpace.ScopeIndent` sniff to get the correct indentation.
+
 #### `Universal.ControlStructures.IfElseDeclaration` :wrench: :bar_chart: :books:
 
 Verify that else(if) statements with braces are on a new line.
 
-#### `Universal.Lists.DisallowLongListSyntax` :wrench: :bar_chart: :books:
+#### `Universal.Files.SeparateFunctionsFromOO` :bar_chart: :books:
+
+Enforce for a file to either declare (global/namespaced) functions or declare OO structures, but not both.
+
+* Nested function declarations, i.e. functions declared within a function/method will be disregarded for the purposes of this sniff.
+    The same goes for anonymous classes, closures and arrow functions.
+* Note: This sniff has no opinion on side effects. If you want to sniff for those, use the PHPCS native `PSR1.Files.SideEffects` sniff.
+* Also note: This sniff has no opinion on multiple OO structures being declared in one file.
+    If you want to sniff for that, use the PHPCS native `Generic.Files.OneObjectStructurePerFile` sniff.
+
+#### `Universal.Lists.DisallowLongListSyntax` :wrench: :books:
 
 Disallow the use of long `list`s.
+
+> For metrics about the use of long lists vs short lists, please use the `Universal.Lists.DisallowShortListSyntax` sniff.
 
 #### `Universal.Lists.DisallowShortListSyntax` :wrench: :bar_chart: :books:
 
@@ -185,6 +280,13 @@ Enforce the use of the alternative namespace syntax using curly braces.
 #### `Universal.Namespaces.OneDeclarationPerFile` :books:
 
 Disallow the use of multiple namespaces within a file.
+
+#### `Universal.NamingConventions.NoReservedKeywordParameterNames` :books:
+
+Disallow function parameters using reserved keywords as names, as this can quickly become confusing when people use them in function calls using named parameters
+
+* The sniff has modular error codes to allow for making exceptions for specific keywords.
+    The error codes follow the following pattern: `[keyword]Found`.
 
 #### `Universal.OOStructures.AlphabeticExtendsImplements` :wrench: :bar_chart: :books:
 
@@ -231,6 +333,16 @@ Enforce the use of strict comparisons.
 :warning: **Warning**: the auto-fixer for this sniff _may_ cause bugs in applications and should be used with care!
 This is considered a **_risky_ fixer**.
 
+#### `Universal.Operators.TypeSeparatorSpacing` :wrench: :bar_chart: :books:
+
+Enforce no spaces around the union type and intersection type operators.
+
+The available error codes are: `UnionTypeSpacesBefore`, `UnionTypeSpacesAfter`, `IntersectionTypeSpacesBefore`, `IntersectionTypeSpacesAfter`.
+
+#### `Universal.PHP.OneStatementInShortEchoTag` :wrench: :books:
+
+Disallow short open echo tags `<?=` containing more than one PHP statement.
+
 #### `Universal.UseStatements.DisallowUseClass` :bar_chart: :books:
 
 Forbid using import `use` statements for classes/traits/interfaces/enums.
@@ -265,6 +377,13 @@ Names in import `use` statements should always be fully qualified, so a leading 
 
 This sniff handles all types of import use statements supported by PHP, in contrast to other sniffs for the same in, for instance, the PHPCS native `PSR12` or the Slevomat standard, which are incomplete.
 
+#### `Universal.WhiteSpace.AnonClassKeywordSpacing` :wrench: :bar_chart: :books:
+
+Standardize the amount of spacing between the `class` keyword and the open parenthesis (if any) for anonymous class declarations.
+
+* This sniff contains an `spacing` property to set the amount of spaces the sniff should check for.
+    Accepted values: (int) number of spaces. Defaults to `0` (spaces).
+
 #### `Universal.WhiteSpace.DisallowInlineTabs` :wrench: :books:
 
 Enforce using spaces for mid-line alignment.
@@ -281,6 +400,41 @@ While tab versus space based indentation is a question of preference, for mid-li
 > The PHPCS native `Generic.Whitespace.DisallowTabIndent` sniff (used for space-based standards) oversteps its reach and silently does mid-line tab to space replacements as well.
 > However, the sister-sniff `Generic.Whitespace.DisallowSpaceIndent` leaves mid-line tabs/spaces alone.
 > This sniff fills that gap.
+
+#### `Universal.WhiteSpace.PrecisionAlignment` :wrench: :books:
+
+Enforce code indentation to always be a multiple of a tabstop, i.e. disallow precision alignment.
+
+Note:
+* This sniff does not concern itself with tabs versus spaces.
+    It is recommended to use the sniff in combination with the PHPCS native `Generic.WhiteSpace.DisallowTabIndent` or the `Generic.WhiteSpace.DisallowSpaceIndent` sniff.
+* When using this sniff with tab-based standards, please ensure that the `tab-width` is set and either don't set the `$indent` property or set it to the tab-width (or a multiple thereof).
+* The fixer works based on "best guess" and may not always result in the desired indentation. Combine this sniff with the `Generic.WhiteSpace.ScopeIndent` sniff for more precise indentation fixes.
+
+The behaviour of the sniff is customizable via the following properties:
+* `indent`: the indent used for the codebase.
+    Accepted values: (int|null) number of spaces. Defaults to `null`.
+    If this property is not set, the sniff will look to the `--tab-width` CLI value.
+    If that also isn't set, the default tab-width of `4` will be used.
+* `ignoreAlignmentBefore`: allows for providing a list of token names for which (preceding) precision alignment should be ignored.
+    Accepted values: (array<string>) token constant names. Defaults to an empty array.
+    Usage example:
+    ```xml
+    <rule ref="Universal.WhiteSpace.PrecisionAlignment">
+       <properties>
+           <property name="ignoreAlignmentBefore" type="array">
+               <!-- Ignore precision alignment in inline HTML -->
+               <element value="T_INLINE_HTML"/>
+               <!-- Ignore precision alignment in multiline chained method calls. -->
+               <element value="T_OBJECT_OPERATOR"/>
+               <element value="T_NULLSAFE_OBJECT_OPERATOR"/>
+           </property>
+       </properties>
+    </rule>
+   ```
+* `ignoreBlankLines`: whether or not potential trailing whitespace on otherwise blank lines should be examined or ignored.
+    It is recommended to only set this to `false` if the standard including this sniff does not include the `Squiz.WhiteSpace.SuperfluousWhitespace` sniff (which is included in most standards).
+    Accepted values: (bool)`true`|`false`. Defaults to `true`.
 
 
 Contributing
