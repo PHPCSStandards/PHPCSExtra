@@ -12,8 +12,8 @@ namespace PHPCSExtra\Universal\Sniffs\Classes;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
-use PHPCSUtils\BackCompat\BCFile;
 use PHPCSUtils\Utils\GetTokensAsString;
+use PHPCSUtils\Utils\ObjectDeclarations;
 
 /**
  * Forbids classes from being declared as "final".
@@ -50,11 +50,7 @@ final class DisallowFinalClassSniff implements Sniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
-        /*
-         * Deliberately using the BCFile version of getClassProperties to allow
-         * for handling the parse error of classes declared as both final + abstract.
-         */
-        $classProp = BCFile::getClassProperties($phpcsFile, $stackPtr);
+        $classProp = ObjectDeclarations::getClassProperties($phpcsFile, $stackPtr);
         if ($classProp['is_final'] === false) {
             if ($classProp['is_abstract'] === true) {
                 $phpcsFile->recordMetric($stackPtr, 'Class declaration type', 'abstract');

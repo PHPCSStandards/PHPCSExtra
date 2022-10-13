@@ -144,7 +144,7 @@ final class NoReservedKeywordParameterNamesSniff implements Sniff
      */
     public function register()
     {
-        return Collections::functionDeclarationTokensBC();
+        return Collections::functionDeclarationTokens();
     }
 
     /**
@@ -171,7 +171,6 @@ final class NoReservedKeywordParameterNamesSniff implements Sniff
                 return;
             }
         } catch (RuntimeException $e) {
-            // Most likely a T_STRING which wasn't an arrow function.
             return;
         }
 

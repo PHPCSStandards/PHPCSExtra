@@ -41,16 +41,7 @@ final class DisallowAlternativeSyntaxSniff implements Sniff
      */
     public function register()
     {
-        return [
-            \T_IF,
-            \T_ELSE,
-            \T_ELSEIF,
-            \T_FOR,
-            \T_FOREACH,
-            \T_SWITCH,
-            \T_WHILE,
-            \T_DECLARE,
-        ];
+        return Collections::alternativeControlStructureSyntaxes();
     }
 
     /**
@@ -142,7 +133,7 @@ final class DisallowAlternativeSyntaxSniff implements Sniff
         $phpcsFile->fixer->beginChangeset();
         $phpcsFile->fixer->replaceToken($opener, '{');
 
-        if (isset(Collections::$alternativeControlStructureSyntaxCloserTokens[$tokens[$closer]['code']]) === true) {
+        if (isset(Collections::alternativeControlStructureSyntaxClosers()[$tokens[$closer]['code']]) === true) {
             $phpcsFile->fixer->replaceToken($closer, '}');
 
             $semicolon = $phpcsFile->findNext(Tokens::$emptyTokens, ($closer + 1), null, true);
