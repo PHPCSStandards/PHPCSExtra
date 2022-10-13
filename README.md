@@ -25,6 +25,7 @@ PHPCSExtra
 * [Installation](#installation)
     + [Composer Project-based Installation](#composer-project-based-installation)
     + [Composer Global Installation](#composer-global-installation)
+    + [Updating to a newer version](#updating-to-a-newer-version)
 * [Features](#features)
 * [Sniffs](#sniffs)
     + [Modernize](#modernize)
@@ -70,6 +71,25 @@ Alternatively, you may want to install this standard globally:
 composer global config allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
 composer global require --dev phpcsstandards/phpcsextra:"^1.0"
 ```
+
+### Updating to a newer version
+
+If you installed PHPCSExtra using either of the above commands, you can update to a newer version as follows:
+```bash
+# Project local install
+composer update phpcsstandards/phpcsextra --with-dependencies
+
+# Global install
+composer global update phpcsstandards/phpcsextra --with-dependencies
+```
+
+> If your project includes `require[-dev]`s for the `squizlabs/php_codesniffer`, `phpcsstandards/phpcsutils` or
+> `dealerdirect/phpcodesniffer-composer-installer` packages in its `composer.json` file, you may need to use
+> `--with-all-dependencies` instead of `--with-dependencies`.
+>
+> :bulb: **Pro-tip**: Unless your project is a PHPCS standard which actually uses any of these packages directly,
+> it is recommended to remove these packages from your own `composer.json` file, in favour of letting PHPCSExtra
+> (and potential other external PHPCS standards you use), manage the version requirements for these packages.
 
 
 Features
