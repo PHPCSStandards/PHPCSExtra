@@ -53,11 +53,11 @@ final class DisallowStandalonePostIncrementDecrementSniff implements Sniff
      */
     public function register()
     {
-        $this->allowedTokens += Collections::$OOHierarchyKeywords;
-        $this->allowedTokens += Collections::$objectOperators;
-        $this->allowedTokens += Collections::$OONameTokens;
+        $this->allowedTokens += Collections::ooHierarchyKeywords();
+        $this->allowedTokens += Collections::objectOperators();
+        $this->allowedTokens += Collections::namespacedNameTokens();
 
-        return Collections::$incrementDecrementOperators;
+        return Collections::incrementDecrementOperators();
     }
 
     /**
@@ -88,14 +88,15 @@ final class DisallowStandalonePostIncrementDecrementSniff implements Sniff
             return $end;
         }
 
-        $counter  = 0;
-        $lastCode = null;
+        $counter   = 0;
+        $lastCode  = null;
+        $operators = Collections::incrementDecrementOperators();
         for ($i = $start; $i < $end; $i++) {
             if (isset(Tokens::$emptyTokens[$tokens[$i]['code']]) === true) {
                 continue;
             }
 
-            if (isset(Collections::$incrementDecrementOperators[$tokens[$i]['code']]) === true) {
+            if (isset($operators[$tokens[$i]['code']]) === true) {
                 $lastCode = $tokens[$i]['code'];
                 ++$counter;
                 continue;
