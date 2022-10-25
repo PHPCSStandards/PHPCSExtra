@@ -12,7 +12,7 @@ namespace PHPCSExtra\Universal\Sniffs\Constants;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
-use PHPCSUtils\Tokens\Collections;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * Verifies that PHP native `__...__` magic constants are in uppercase when used.
@@ -33,7 +33,7 @@ final class UppercaseMagicConstantsSniff implements Sniff
      */
     public function register()
     {
-        return Collections::$magicConstants;
+        return Tokens::$magicConstants;
     }
 
     /**

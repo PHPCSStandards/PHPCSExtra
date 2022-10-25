@@ -13,6 +13,7 @@ namespace PHPCSExtra\NormalizedArrays\Sniffs\Arrays;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Tokens\Collections;
 use PHPCSUtils\Utils\Arrays;
 
 /**
@@ -81,11 +82,7 @@ final class CommaAfterLastSniff implements Sniff
      */
     public function register()
     {
-        return [
-            \T_ARRAY,
-            \T_OPEN_SHORT_ARRAY,
-            \T_OPEN_SQUARE_BRACKET,
-        ];
+        return Collections::arrayOpenTokensBC();
     }
 
     /**

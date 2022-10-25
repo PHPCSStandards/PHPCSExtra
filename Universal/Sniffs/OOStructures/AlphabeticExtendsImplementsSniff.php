@@ -86,7 +86,7 @@ final class AlphabeticExtendsImplementsSniff implements Sniff
      */
     public function register()
     {
-        return (Collections::$OOCanExtend + Collections::$OOCanImplement);
+        return (Collections::ooCanExtend() + Collections::ooCanImplement());
     }
 
     /**
@@ -122,7 +122,7 @@ final class AlphabeticExtendsImplementsSniff implements Sniff
         /*
          * Get the names.
          */
-        if (isset(Collections::$OOCanImplement[$tokens[$stackPtr]['code']]) === true) {
+        if (isset(Collections::ooCanImplement()[$tokens[$stackPtr]['code']]) === true) {
             $names = ObjectDeclarations::findImplementedInterfaceNames($phpcsFile, $stackPtr);
         } else {
             $names = ObjectDeclarations::findExtendedInterfaceNames($phpcsFile, $stackPtr);
@@ -165,7 +165,7 @@ final class AlphabeticExtendsImplementsSniff implements Sniff
          * Throw the error.
          */
         $keyword = \T_IMPLEMENTS;
-        if (isset(Collections::$OOCanImplement[$tokens[$stackPtr]['code']]) === false) {
+        if (isset(Collections::ooCanImplement()[$tokens[$stackPtr]['code']]) === false) {
             $keyword = \T_EXTENDS;
         }
 

@@ -14,6 +14,7 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\BackCompat\Helper;
+use PHPCSUtils\Tokens\Collections;
 
 /**
  * Detects when the indentation is not a multiple of a tab-width, i.e. when precision alignment is used.
@@ -140,10 +141,7 @@ final class PrecisionAlignmentSniff implements Sniff
         // Add the ignore annotation tokens to the list of tokens to check.
         $this->tokensToCheck += Tokens::$phpcsCommentTokens;
 
-        return [
-            \T_OPEN_TAG,
-            \T_OPEN_TAG_WITH_ECHO,
-        ];
+        return Collections::phpOpenTags();
     }
 
     /**
