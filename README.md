@@ -137,7 +137,7 @@ Detects duplicate array keys in array declarations.
 
 #### `Universal.Arrays.MixedArrayKeyTypes` :books:
 
-Best practice sniff: don't use a mix of integer and numeric keys for array items.
+Best practice sniff: don't use a mix of integer and string keys for array items.
 
 #### `Universal.Arrays.MixedKeyedUnkeyedArray` :books:
 
@@ -152,7 +152,7 @@ Enforce uppercase when using PHP native magic constants, like `__FILE__` et al.
 Disallow using the alternative syntax for control structures.
 
 * This sniff contains an `allowWithInlineHTML` property to allow alternative syntax when inline HTML is used within the control structure. In all other cases, the use of the alternative syntax will still be disallowed.
-    Acceped values: (bool) `true`|`false`. Defaults to `false`.
+    Accepted values: (bool) `true`|`false`. Defaults to `false`.
 * The sniff has modular error codes to allow for making exceptions based on specific control structures and/or specific control structures in combination with inline HTML.
     The error codes follow the following pattern: `Found[ControlStructure][WithInlineHTML]`. Examples: `FoundIf`, `FoundSwitchWithInlineHTML`.
 

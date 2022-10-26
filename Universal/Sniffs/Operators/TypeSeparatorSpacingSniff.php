@@ -65,7 +65,7 @@ final class TypeSeparatorSpacingSniff implements Sniff
             'Expected %s before the ' . $type . ' type separator. Found: %s',
             $code . 'SpacesBefore',
             'error',
-            0,
+            0, // Severity.
             'Space before ' . $type . ' type separator'
         );
 
@@ -78,7 +78,7 @@ final class TypeSeparatorSpacingSniff implements Sniff
             'Expected %s after the ' . $type . ' type separator. Found: %s',
             $code . 'SpacesAfter',
             'error',
-            0,
+            0, // Severity.
             'Space after ' . $type . ' type separator'
         );
     }
