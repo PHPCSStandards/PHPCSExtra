@@ -87,6 +87,7 @@ final class ConstructorDestructorReturnSniff implements Sniff
          */
 
          // Check for a return type.
+        $tokens     = $phpcsFile->getTokens();
         $properties = FunctionDeclarations::getProperties($phpcsFile, $stackPtr);
         if ($properties['return_type'] !== '' && $properties['return_type_token'] !== false) {
             $data = [
@@ -94,15 +95,25 @@ final class ConstructorDestructorReturnSniff implements Sniff
                 $properties['return_type'],
             ];
 
-            $phpcsFile->addError(
+            $fix = $phpcsFile->addFixableError(
                 '%s can not declare a return type. Found: %s',
                 $properties['return_type_token'],
                 'ReturnTypeFound',
                 $data
             );
+
+            if ($fix === true) {
+                $phpcsFile->fixer->beginChangeset();
+
+                $parensCloser = $tokens[$stackPtr]['parenthesis_closer'];
+                for ($i = ($parensCloser + 1); $i <= $properties['return_type_end_token']; $i++) {
+                    $phpcsFile->fixer->replaceToken($i, '');
+                }
+
+                $phpcsFile->fixer->endChangeset();
+            }
         }
 
-        $tokens = $phpcsFile->getTokens();
         if (isset($tokens[$stackPtr]['scope_opener'], $tokens[$stackPtr]['scope_closer']) === false) {
             // Abstract/interface method, live coding or parse error.
             return;
