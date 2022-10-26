@@ -70,7 +70,7 @@ final class PrecisionAlignmentSniff implements Sniff
      *
      * Example usage:
      * ```xml
-     * <rule ref="PHPCSExtra.WhiteSpace.PrecisionAlignment">
+     * <rule ref="Universal.WhiteSpace.PrecisionAlignment">
      *    <properties>
      *        <property name="ignoreAlignmentBefore" type="array">
      *            <!-- Ignore precision alignment in inline HTML -->
