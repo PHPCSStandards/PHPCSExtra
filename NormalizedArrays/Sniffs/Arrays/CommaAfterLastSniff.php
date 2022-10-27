@@ -157,8 +157,10 @@ final class CommaAfterLastSniff implements Sniff
                 if ($fix === true) {
                     $extraContent = ',';
 
-                    if ($tokens[$lastNonEmpty]['code'] === \T_END_HEREDOC
-                        || $tokens[$lastNonEmpty]['code'] === \T_END_NOWDOC
+                    if (($tokens[$lastNonEmpty]['code'] === \T_END_HEREDOC
+                        || $tokens[$lastNonEmpty]['code'] === \T_END_NOWDOC)
+                        // Check for indentation, if indented, it's a PHP 7.3+ heredoc/nowdoc.
+                        && $tokens[$lastNonEmpty]['content'] === \ltrim($tokens[$lastNonEmpty]['content'])
                     ) {
                         // Prevent parse errors in PHP < 7.3 which doesn't support flexible heredoc/nowdoc.
                         $extraContent = $phpcsFile->eolChar . $extraContent;
