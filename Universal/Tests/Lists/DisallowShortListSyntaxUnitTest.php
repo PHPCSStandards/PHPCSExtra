@@ -38,6 +38,7 @@ final class DisallowShortListSyntaxUnitTest extends AbstractSniffUnitTest
             12 => 2,
             13 => 1,
             15 => 1,
+            24 => 1,
         ];
     }
 
