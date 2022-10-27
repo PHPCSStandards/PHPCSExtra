@@ -37,7 +37,7 @@ final class DisallowInlineTabsUnitTest extends AbstractSniffUnitTest
          * next to impossible.
          * But having to continuously restart builds is getting silly.
          */
-        return (PHP_MAJOR_VERSION === 5 && PHP_MINOR_VERSION === 5);
+        return (\PHP_MAJOR_VERSION === 5 && \PHP_MINOR_VERSION === 5);
     }
 
     /**

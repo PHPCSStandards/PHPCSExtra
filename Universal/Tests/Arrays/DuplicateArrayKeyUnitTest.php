@@ -11,7 +11,6 @@
 namespace PHPCSExtra\Universal\Tests\Arrays;
 
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
-use PHPCSUtils\BackCompat\Helper;
 
 /**
  * Unit test class for the DuplicateArrayKey sniff.
