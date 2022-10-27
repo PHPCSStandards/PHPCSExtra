@@ -12,6 +12,7 @@ namespace PHPCSExtra\Universal\Sniffs\Arrays;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
+use PHPCSUtils\Tokens\Collections;
 use PHPCSUtils\Utils\Arrays;
 
 /**
@@ -30,6 +31,13 @@ final class DisallowShortArraySyntaxSniff implements Sniff
 {
 
     /**
+     * The phrase to use for the metric recorded by this sniff.
+     *
+     * @var string
+     */
+    const METRIC_NAME = 'Short array syntax used';
+
+    /**
      * Registers the tokens that this sniff wants to listen for.
      *
      * @since 1.0.0
@@ -38,7 +46,7 @@ final class DisallowShortArraySyntaxSniff implements Sniff
      */
     public function register()
     {
-        return [\T_OPEN_SHORT_ARRAY];
+        return Collections::arrayOpenTokensBC();
     }
 
     /**
@@ -56,9 +64,17 @@ final class DisallowShortArraySyntaxSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        if (Arrays::isShortArray($phpcsFile, $stackPtr) === false) {
+        if ($tokens[$stackPtr]['code'] === \T_ARRAY) {
+            $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'no');
             return;
         }
+
+        if (Arrays::isShortArray($phpcsFile, $stackPtr) === false) {
+            // Square brackets, but not a short array. Probably short list or real square brackets.
+            return;
+        }
+
+        $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'yes');
 
         $error = 'Short array syntax is not allowed';
         $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'Found');
