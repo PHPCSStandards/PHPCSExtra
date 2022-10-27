@@ -40,9 +40,7 @@ final class RequireAnonClassParenthesesSniff implements Sniff
      */
     public function register()
     {
-        return [
-            \T_ANON_CLASS,
-        ];
+        return [\T_ANON_CLASS];
     }
 
     /**

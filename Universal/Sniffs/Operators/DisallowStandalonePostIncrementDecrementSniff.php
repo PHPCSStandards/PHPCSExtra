@@ -184,14 +184,12 @@ final class DisallowStandalonePostIncrementDecrementSniff implements Sniff
 
         $fix = $phpcsFile->addFixableError($error, $stackPtr, $errorCode, $data);
 
-        if ($fix === false) {
-            return $end;
+        if ($fix === true) {
+            $phpcsFile->fixer->beginChangeset();
+            $phpcsFile->fixer->replaceToken($stackPtr, '');
+            $phpcsFile->fixer->addContentBefore($start, $tokens[$stackPtr]['content']);
+            $phpcsFile->fixer->endChangeset();
         }
-
-        $phpcsFile->fixer->beginChangeset();
-        $phpcsFile->fixer->replaceToken($stackPtr, '');
-        $phpcsFile->fixer->addContentBefore($start, $tokens[$stackPtr]['content']);
-        $phpcsFile->fixer->endChangeset();
 
         return $end;
     }

@@ -39,9 +39,7 @@ final class DisallowLonelyIfSniff implements Sniff
      */
     public function register()
     {
-        return [
-            \T_ELSE,
-        ];
+        return [\T_ELSE];
     }
 
     /**
@@ -274,7 +272,7 @@ final class DisallowLonelyIfSniff implements Sniff
         }
 
         // Remove the inner scope closer.
-            $phpcsFile->fixer->replaceToken($innerScopeCloser, '');
+        $phpcsFile->fixer->replaceToken($innerScopeCloser, '');
         $i = ($innerScopeCloser - 1);
 
         // Handle alternative syntax for the closer.

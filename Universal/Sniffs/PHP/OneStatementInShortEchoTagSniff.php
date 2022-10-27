@@ -36,9 +36,7 @@ final class OneStatementInShortEchoTagSniff implements Sniff
      */
     public function register()
     {
-        return [
-            \T_OPEN_TAG_WITH_ECHO,
-        ];
+        return [\T_OPEN_TAG_WITH_ECHO];
     }
 
     /**

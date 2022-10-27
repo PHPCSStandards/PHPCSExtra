@@ -42,9 +42,7 @@ final class RequireFinalClassSniff implements Sniff
      */
     public function register()
     {
-        return [
-            \T_CLASS,
-        ];
+        return [\T_CLASS];
     }
 
     /**

@@ -41,9 +41,7 @@ final class DisallowAnonClassParenthesesSniff implements Sniff
      */
     public function register()
     {
-        return [
-            \T_ANON_CLASS,
-        ];
+        return [\T_ANON_CLASS];
     }
 
     /**
@@ -98,6 +96,7 @@ final class DisallowAnonClassParenthesesSniff implements Sniff
 
         if ($fix === true) {
             $phpcsFile->fixer->beginChangeset();
+
             for ($i = $nextNonEmpty; $i <= $closer; $i++) {
                 if (isset(Tokens::$commentTokens[$tokens[$i]['code']]) === true) {
                     continue;
@@ -105,6 +104,7 @@ final class DisallowAnonClassParenthesesSniff implements Sniff
 
                 $phpcsFile->fixer->replaceToken($i, '');
             }
+
             $phpcsFile->fixer->endChangeset();
         }
     }
