@@ -53,11 +53,6 @@ final class DisallowShortListSyntaxSniff implements Sniff
 
         if ($openClose === false) {
             // Not a short list, live coding or parse error.
-            if (isset($tokens[$stackPtr]['bracket_closer']) === true) {
-                // No need to examine nested subs of this short array/array access.
-                return $tokens[$stackPtr]['bracket_closer'];
-            }
-
             return;
         }
 
