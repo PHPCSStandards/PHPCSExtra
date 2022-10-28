@@ -14,3 +14,6 @@ $foo = [
 
 // Short list, not short array.
 [$a, [$b]] = $array;
+
+// Short array in short list. Short list should be left untouched, short array should be fixed.
+['key' => $a, ['key'] => $b] = $array;

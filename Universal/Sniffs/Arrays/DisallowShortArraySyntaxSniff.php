@@ -57,8 +57,7 @@ final class DisallowShortArraySyntaxSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
 
         if (Arrays::isShortArray($phpcsFile, $stackPtr) === false) {
-            // No need to examine nested subs of this short list.
-            return $tokens[$stackPtr]['bracket_closer'];
+            return;
         }
 
         $error = 'Short array syntax is not allowed';
