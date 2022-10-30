@@ -13,7 +13,7 @@ namespace PHPCSExtra\Universal\Sniffs\Classes;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
-use PHPCSUtils\Tokens\Collections;
+use PHPCSUtils\Utils\ObjectDeclarations;
 
 /**
  * Standardize the modifier keyword order for class declarations.
@@ -90,37 +90,7 @@ final class ModifierKeywordOrderSniff implements Sniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
-        /*
-         * Note to self: This can be switched to use the `ObjectDeclarations::getClassProperties()`
-         * method once that has been adjusted to return stackPtrs as well.
-         */
-        $tokens    = $phpcsFile->getTokens();
-        $valid     = Collections::classModifierKeywords() + Tokens::$emptyTokens;
-        $classProp = [
-            'abstract_token' => false,
-            'final_token'    => false,
-            'readonly_token' => false,
-        ];
-
-        for ($i = ($stackPtr - 1); $i > 0; $i--) {
-            if (isset($valid[$tokens[$i]['code']]) === false) {
-                break;
-            }
-
-            switch ($tokens[$i]['code']) {
-                case \T_ABSTRACT:
-                    $classProp['abstract_token'] = $i;
-                    break;
-
-                case \T_FINAL:
-                    $classProp['final_token'] = $i;
-                    break;
-
-                case \T_READONLY:
-                    $classProp['readonly_token'] = $i;
-                    break;
-            }
-        }
+        $classProp = ObjectDeclarations::getClassProperties($phpcsFile, $stackPtr);
 
         if ($classProp['readonly_token'] === false
             || ($classProp['final_token'] === false && $classProp['abstract_token'] === false)
