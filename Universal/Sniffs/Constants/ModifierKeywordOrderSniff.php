@@ -13,6 +13,7 @@ namespace PHPCSExtra\Universal\Sniffs\Constants;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Tokens\Collections;
 use PHPCSUtils\Utils\Scopes;
 
 /**
@@ -66,17 +67,6 @@ final class ModifierKeywordOrderSniff implements Sniff
     public $order = self::FINAL_VISIBILITY;
 
     /**
-     * Tokens which can be constant modifier keywords.
-     *
-     * @since 1.0.0
-     *
-     * @var array
-     */
-    private $constantModifierKeywords = [
-        \T_FINAL => \T_FINAL,
-    ];
-
-    /**
      * Returns an array of tokens this test wants to listen for.
      *
      * @since 1.0.0
@@ -85,9 +75,6 @@ final class ModifierKeywordOrderSniff implements Sniff
      */
     public function register()
     {
-        // Add the visibility keywords to the constant modifier keywords.
-        $this->constantModifierKeywords += Tokens::$scopeModifiers;
-
         return [\T_CONST];
     }
 
@@ -108,12 +95,8 @@ final class ModifierKeywordOrderSniff implements Sniff
             return;
         }
 
-        /*
-         * Note to self: This can be switched to use the `Collections::constantModifierKeywords()`
-         * method as of the next version of PHPCSUtils.
-         */
         $tokens = $phpcsFile->getTokens();
-        $valid  = $this->constantModifierKeywords + Tokens::$emptyTokens;
+        $valid  = Collections::constantModifierKeywords() + Tokens::$emptyTokens;
 
         $finalPtr      = false;
         $visibilityPtr = false;
