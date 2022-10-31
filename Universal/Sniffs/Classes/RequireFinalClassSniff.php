@@ -24,6 +24,15 @@ final class RequireFinalClassSniff implements Sniff
 {
 
     /**
+     * Name of the metric.
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
+    const METRIC_NAME = 'Class declaration type';
+
+    /**
      * Returns an array of tokens this test wants to listen for.
      *
      * @since 1.0.0
@@ -52,13 +61,13 @@ final class RequireFinalClassSniff implements Sniff
     {
         $classProp = ObjectDeclarations::getClassProperties($phpcsFile, $stackPtr);
         if ($classProp['is_final'] === true) {
-            $phpcsFile->recordMetric($stackPtr, 'Class declaration type', 'final');
+            $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'final');
             return;
         }
 
         if ($classProp['is_abstract'] === true) {
             // Abstract classes can't be final.
-            $phpcsFile->recordMetric($stackPtr, 'Class declaration type', 'abstract');
+            $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'abstract');
             return;
         }
 
@@ -68,7 +77,7 @@ final class RequireFinalClassSniff implements Sniff
             return;
         }
 
-        $phpcsFile->recordMetric($stackPtr, 'Class declaration type', 'not abstract, not final');
+        $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'not abstract, not final');
 
         $snippet = GetTokensAsString::compact($phpcsFile, $stackPtr, $tokens[$stackPtr]['scope_opener'], true);
         $fix     = $phpcsFile->addFixableError(

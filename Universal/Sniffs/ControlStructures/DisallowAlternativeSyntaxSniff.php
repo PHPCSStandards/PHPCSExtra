@@ -25,6 +25,15 @@ final class DisallowAlternativeSyntaxSniff implements Sniff
 {
 
     /**
+     * Name of the metric.
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
+    const METRIC_NAME = 'Control structure style';
+
+    /**
      * Whether to allow the alternative syntax when it is wrapped around
      * inline HTML, as is often seen in views.
      *
@@ -82,7 +91,7 @@ final class DisallowAlternativeSyntaxSniff implements Sniff
          */
         if (isset($tokens[$stackPtr]['scope_opener'], $tokens[$stackPtr]['scope_closer']) === false) {
             // No scope opener found: inline control structure or parse error.
-            $phpcsFile->recordMetric($stackPtr, 'Control structure style', 'inline');
+            $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'inline');
             return;
         }
 
@@ -91,7 +100,7 @@ final class DisallowAlternativeSyntaxSniff implements Sniff
 
         if ($tokens[$opener]['code'] !== \T_COLON) {
             // Curly brace syntax (not our concern).
-            $phpcsFile->recordMetric($stackPtr, 'Control structure style', 'curly braces');
+            $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'curly braces');
             return;
         }
 
@@ -102,9 +111,9 @@ final class DisallowAlternativeSyntaxSniff implements Sniff
         );
 
         if ($hasInlineHTML !== false) {
-            $phpcsFile->recordMetric($stackPtr, 'Control structure style', 'alternative syntax with inline HTML');
+            $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'alternative syntax with inline HTML');
         } else {
-            $phpcsFile->recordMetric($stackPtr, 'Control structure style', 'alternative syntax');
+            $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'alternative syntax');
         }
 
         if ($hasInlineHTML !== false && $this->allowWithInlineHTML === true) {

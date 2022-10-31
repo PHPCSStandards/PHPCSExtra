@@ -23,6 +23,15 @@ final class RequireAnonClassParenthesesSniff implements Sniff
 {
 
     /**
+     * Name of the metric.
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
+    const METRIC_NAME = 'Anon class declaration with parenthesis';
+
+    /**
      * Returns an array of tokens this test wants to listen for.
      *
      * @since 1.0.0
@@ -56,11 +65,11 @@ final class RequireAnonClassParenthesesSniff implements Sniff
             && $tokens[$nextNonEmpty]['code'] === \T_OPEN_PARENTHESIS
         ) {
             // Parentheses found.
-            $phpcsFile->recordMetric($stackPtr, 'Anon class declaration with parenthesis', 'yes');
+            $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'yes');
             return;
         }
 
-        $phpcsFile->recordMetric($stackPtr, 'Anon class declaration with parenthesis', 'no');
+        $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'no');
 
         $fix = $phpcsFile->addFixableError(
             'Parenthesis required when creating a new anonymous class.',
