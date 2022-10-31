@@ -24,6 +24,15 @@ final class DisallowAnonClassParenthesesSniff implements Sniff
 {
 
     /**
+     * Name of the metric.
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
+    const METRIC_NAME = 'Anon class declaration with parenthesis';
+
+    /**
      * Returns an array of tokens this test wants to listen for.
      *
      * @since 1.0.0
@@ -57,13 +66,13 @@ final class DisallowAnonClassParenthesesSniff implements Sniff
             || $tokens[$nextNonEmpty]['code'] !== \T_OPEN_PARENTHESIS
         ) {
             // No parentheses found.
-            $phpcsFile->recordMetric($stackPtr, 'Anon class declaration with parenthesis', 'no');
+            $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'no');
             return;
         }
 
         if (isset($tokens[$nextNonEmpty]['parenthesis_closer']) === false) {
             // Incomplete set of parentheses. Ignore.
-            $phpcsFile->recordMetric($stackPtr, 'Anon class declaration with parenthesis', 'yes');
+            $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'yes');
             return;
         }
 
@@ -71,11 +80,11 @@ final class DisallowAnonClassParenthesesSniff implements Sniff
         $hasParams = $phpcsFile->findNext(Tokens::$emptyTokens, ($nextNonEmpty + 1), $closer, true);
         if ($hasParams !== false) {
             // There is something between the parentheses. Ignore.
-            $phpcsFile->recordMetric($stackPtr, 'Anon class declaration with parenthesis', 'yes, with parameter');
+            $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'yes, with parameter');
             return;
         }
 
-        $phpcsFile->recordMetric($stackPtr, 'Anon class declaration with parenthesis', 'yes');
+        $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'yes');
 
         $fix = $phpcsFile->addFixableError(
             'Parenthesis not allowed when creating a new anonymous class without passing parameters',

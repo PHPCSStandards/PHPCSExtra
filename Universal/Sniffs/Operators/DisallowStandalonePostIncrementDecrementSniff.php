@@ -32,6 +32,15 @@ final class DisallowStandalonePostIncrementDecrementSniff implements Sniff
 {
 
     /**
+     * Name of the metric.
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
+    const METRIC_NAME = 'In/decrement usage in stand-alone statements';
+
+    /**
      * Tokens which can be expected in a stand-alone in/decrement statement.
      *
      * {@internal This array is enriched in the register() method.}
@@ -146,7 +155,7 @@ final class DisallowStandalonePostIncrementDecrementSniff implements Sniff
         $lastNonEmpty = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($end - 1), $start, true);
         if ($start === $stackPtr && $lastNonEmpty !== $stackPtr) {
             // This is already pre-in/decrement.
-            $phpcsFile->recordMetric($stackPtr, 'In/decrement usage in stand-alone statements', 'pre-' . $type);
+            $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'pre-' . $type);
             return $end;
         }
 
@@ -155,7 +164,7 @@ final class DisallowStandalonePostIncrementDecrementSniff implements Sniff
             return $end;
         }
 
-        $phpcsFile->recordMetric($stackPtr, 'In/decrement usage in stand-alone statements', 'post-' . $type);
+        $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'post-' . $type);
 
         $error        = 'Stand-alone post-%1$s statement found. Use pre-%1$s instead: %2$s.';
         $errorCode    = 'Post' . \ucfirst($type) . 'Found';

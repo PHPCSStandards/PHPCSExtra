@@ -26,6 +26,15 @@ final class LowercaseClassResolutionKeywordSniff implements Sniff
 {
 
     /**
+     * Name of the metric.
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
+    const METRIC_NAME = 'Magic ::class constant case';
+
+    /**
      * Returns an array of tokens this test wants to listen for.
      *
      * @since 1.0.0
@@ -66,7 +75,7 @@ final class LowercaseClassResolutionKeywordSniff implements Sniff
         }
 
         if ($contentLC === $content) {
-            $phpcsFile->recordMetric($stackPtr, 'Magic ::class constant case', 'lowercase');
+            $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'lowercase');
             return;
         }
 
@@ -79,10 +88,10 @@ final class LowercaseClassResolutionKeywordSniff implements Sniff
         $errorCode = '';
         if (\strtoupper($content) === $content) {
             $errorCode = 'Uppercase';
-            $phpcsFile->recordMetric($stackPtr, 'Magic ::class constant case', 'uppercase');
+            $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'uppercase');
         } else {
             $errorCode = 'Mixedcase';
-            $phpcsFile->recordMetric($stackPtr, 'Magic ::class constant case', 'mixed case');
+            $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'mixed case');
         }
 
         $fix = $phpcsFile->addFixableError($error, $stackPtr, $errorCode, $data);
