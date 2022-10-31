@@ -32,6 +32,15 @@ final class IfElseDeclarationSniff implements Sniff
 {
 
     /**
+     * Name of the metric.
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
+    const METRIC_NAME = 'Else(if) on a new line';
+
+    /**
      * Returns an array of tokens this test wants to listen for.
      *
      * @since 1.0.0
@@ -90,11 +99,11 @@ final class IfElseDeclarationSniff implements Sniff
         }
 
         if ($tokens[$prevNonEmpty]['line'] !== $tokens[$stackPtr]['line']) {
-            $phpcsFile->recordMetric($stackPtr, 'Else(if) on a new line', 'yes');
+            $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'yes');
             return;
         }
 
-        $phpcsFile->recordMetric($stackPtr, 'Else(if) on a new line', 'no');
+        $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'no');
 
         $errorBase = \strtoupper($tokens[$stackPtr]['content']);
         $error     = $errorBase . ' statement must be on a new line.';

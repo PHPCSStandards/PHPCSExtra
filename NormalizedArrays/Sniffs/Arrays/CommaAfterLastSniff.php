@@ -27,6 +27,15 @@ final class CommaAfterLastSniff implements Sniff
 {
 
     /**
+     * Name of the metric.
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
+    const METRIC_NAME = '%s array - comma after last item';
+
+    /**
      * Whether or not to enforce a comma after the last array item in a single-line array.
      *
      * Valid values:
@@ -140,7 +149,7 @@ final class CommaAfterLastSniff implements Sniff
 
         $phpcsFile->recordMetric(
             $stackPtr,
-            \ucfirst($phrase) . ' array - comma after last item',
+            \sprintf(self::METRIC_NAME, \ucfirst($phrase)),
             ($isComma === true ? 'yes' : 'no')
         );
 

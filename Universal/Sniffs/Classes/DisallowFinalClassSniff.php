@@ -24,6 +24,15 @@ final class DisallowFinalClassSniff implements Sniff
 {
 
     /**
+     * Name of the metric.
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
+    const METRIC_NAME = 'Class declaration type';
+
+    /**
      * Returns an array of tokens this test wants to listen for.
      *
      * @since 1.0.0
@@ -53,10 +62,10 @@ final class DisallowFinalClassSniff implements Sniff
         $classProp = ObjectDeclarations::getClassProperties($phpcsFile, $stackPtr);
         if ($classProp['is_final'] === false) {
             if ($classProp['is_abstract'] === true) {
-                $phpcsFile->recordMetric($stackPtr, 'Class declaration type', 'abstract');
+                $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'abstract');
             }
 
-            $phpcsFile->recordMetric($stackPtr, 'Class declaration type', 'not abstract, not final');
+            $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'not abstract, not final');
             return;
         }
 
@@ -66,7 +75,7 @@ final class DisallowFinalClassSniff implements Sniff
             return;
         }
 
-        $phpcsFile->recordMetric($stackPtr, 'Class declaration type', 'final');
+        $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'final');
 
         // No extra safeguards needed, we know the keyword will exist based on the check above.
         $finalKeyword = $phpcsFile->findPrevious(\T_FINAL, ($stackPtr - 1));

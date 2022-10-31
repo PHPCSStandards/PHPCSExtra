@@ -34,6 +34,15 @@ final class SeparateFunctionsFromOOSniff implements Sniff
 {
 
     /**
+     * Name of the metric.
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
+    const METRIC_NAME = 'Functions or OO declarations ?';
+
+    /**
      * Tokens this sniff searches for.
      *
      * Enhanced from within the register() methods.
@@ -148,7 +157,7 @@ final class SeparateFunctionsFromOOSniff implements Sniff
         }
 
         if ($functionCount > 0 && $OOCount > 0) {
-            $phpcsFile->recordMetric($stackPtr, 'Functions or OO declarations ?', 'Both function and OO declarations');
+            $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'Both function and OO declarations');
 
             $reportToken = \max($firstFunction, $firstOO);
 
@@ -167,11 +176,11 @@ final class SeparateFunctionsFromOOSniff implements Sniff
                 ]
             );
         } elseif ($functionCount > 0) {
-            $phpcsFile->recordMetric($stackPtr, 'Functions or OO declarations ?', 'Only function(s)');
+            $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'Only function(s)');
         } elseif ($OOCount > 0) {
-            $phpcsFile->recordMetric($stackPtr, 'Functions or OO declarations ?', 'Only OO structure(s)');
+            $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'Only OO structure(s)');
         } else {
-            $phpcsFile->recordMetric($stackPtr, 'Functions or OO declarations ?', 'Neither');
+            $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'Neither');
         }
 
         // Ignore the rest of the file.
