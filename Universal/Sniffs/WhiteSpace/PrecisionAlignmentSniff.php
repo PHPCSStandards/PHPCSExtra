@@ -304,7 +304,7 @@ final class PrecisionAlignmentSniff implements Sniff
                 case \T_END_NOWDOC:
                     /*
                      * PHPCS does not execute tab replacement in heredoc/nowdoc closer
-                     * tokens (last checked: PHPCS 3.7.1), so handle this ourselves.
+                     * tokens prior to PHPCS 3.7.2, so handle this ourselves.
                      */
                     $content = $tokens[$i]['content'];
                     if (\strpos($tokens[$i]['content'], "\t") !== false) {
