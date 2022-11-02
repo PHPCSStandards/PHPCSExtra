@@ -30,6 +30,11 @@ class CheckHandlingOfSuperfluousWhitespace extends Something {}
 
 /*comment*/ class BazC implements MyInterface {}
 
+// Test fixer when combined with PHP 8.2 "readonly" modifier.
+readonly class BazD {}
+
+readonly class BazE {}
+
 // Parse error. Remove the final keyword.
 abstract class BazD {}
 
