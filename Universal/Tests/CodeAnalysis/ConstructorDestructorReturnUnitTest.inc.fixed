@@ -118,7 +118,7 @@ trait AbstractConstructorDestructorReturnTypes {
 }
 
 interface InterfaceMethodReturnTypes {
-    public function __construct();
+    public function __construct()/*comment*/;
 
     public function __destruct();
 }
