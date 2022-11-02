@@ -24,5 +24,10 @@ if ( true )
     list( $a ) = [ 'hi' ];
 return $a ?? '';
 
+// Short list in short array.
+$array = [
+    'key' => list($a, $b) = $args,
+];
+
 // Intentional parse error. This has to be the last test in the file.
 [ $a, $b
