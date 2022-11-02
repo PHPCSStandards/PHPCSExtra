@@ -12,6 +12,7 @@ namespace PHPCSExtra\Universal\Sniffs\Lists;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
+use PHPCSUtils\Tokens\Collections;
 use PHPCSUtils\Utils\Lists;
 
 /**
@@ -31,7 +32,7 @@ final class DisallowShortListSyntaxSniff implements Sniff
      */
     public function register()
     {
-        return [\T_OPEN_SHORT_ARRAY];
+        return Collections::shortArrayListOpenTokensBC();
     }
 
     /**
