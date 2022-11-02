@@ -75,7 +75,7 @@ final class OneStatementInShortEchoTagSniff implements Sniff
             'Only one statement is allowed when using short open echo PHP tags.'
                 . ' Use the "<?php" open tag for multi-statement PHP.',
             $nextNonEmpty,
-            'Found'
+            'MultipleFound'
         );
 
         if ($fix === true) {
