@@ -233,7 +233,7 @@ This is considered a **_risky_ fixer**.
 
 #### `Universal.UseStatements.DisallowUseClass` :bar_chart: :books:
 
-Forbid using import `use` statements for classes/traits/interfaces.
+Forbid using import `use` statements for classes/traits/interfaces/enums.
 
 Individual sub-types - with/without alias, global imports, imports from the same namespace - can be forbidden by including that specific error code and/or allowed including the whole sniff and excluding specific error codes.
 

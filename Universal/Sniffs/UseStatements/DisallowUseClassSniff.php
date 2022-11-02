@@ -18,7 +18,7 @@ use PHPCSUtils\Utils\Namespaces;
 use PHPCSUtils\Utils\UseStatements;
 
 /**
- * Disallow class/trait/interface import `use` statements.
+ * Disallow class/trait/interface/enum import `use` statements.
  *
  * Related sniffs:
  * - `Universal.UseStatements.DisallowUseFunction`
@@ -36,7 +36,7 @@ final class DisallowUseClassSniff implements Sniff
      *
      * @var string
      */
-    const METRIC_NAME_SRC = 'Use import statement source for class/interface/trait';
+    const METRIC_NAME_SRC = 'Use import statement source for class/interface/trait/enum';
 
     /**
      * Name of the "Use import with/without alias" metric.
@@ -45,7 +45,7 @@ final class DisallowUseClassSniff implements Sniff
      *
      * @var string
      */
-    const METRIC_NAME_ALIAS = 'Use import statement for class/interface/trait';
+    const METRIC_NAME_ALIAS = 'Use import statement for class/interface/trait/enum';
 
     /**
      * Keep track of which file is being scanned.
@@ -121,7 +121,7 @@ final class DisallowUseClassSniff implements Sniff
         }
 
         if (empty($statements['name'])) {
-            // No class/trait/interface import statements found.
+            // No class/trait/interface/enum import statements found.
             return;
         }
 
@@ -158,7 +158,7 @@ final class DisallowUseClassSniff implements Sniff
              * in case this is a non-namespaced file.
              */
 
-            $error     = 'Use import statements for class/interface/trait%s are not allowed.';
+            $error     = 'Use import statements for class/interface/trait/enum%s are not allowed.';
             $error    .= ' Found import statement for: "%s"';
             $errorCode = 'Found';
             $data      = [
