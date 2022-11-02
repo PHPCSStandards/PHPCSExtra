@@ -27,5 +27,7 @@ class BazA {}
 
 class BazC implements MyInterface {}
 
+readonly class BazD {}
+
 // Live coding. Ignore. This must be the last test in the file.
 class LiveCoding

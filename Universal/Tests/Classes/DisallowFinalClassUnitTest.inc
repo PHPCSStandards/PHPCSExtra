@@ -32,6 +32,11 @@ final
 
 final /*comment*/ class BazC implements MyInterface {}
 
+// Test fixer when combined with PHP 8.2 "readonly" modifier.
+readonly final class BazD {}
+
+final readonly class BazE {}
+
 // Parse error. Remove the final keyword.
 final abstract class BazD {}
 

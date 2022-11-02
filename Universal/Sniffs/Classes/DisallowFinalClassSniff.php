@@ -30,7 +30,7 @@ final class DisallowFinalClassSniff implements Sniff
      *
      * @var string
      */
-    const METRIC_NAME = 'Class declaration type';
+    const METRIC_NAME = 'Class is abstract or final ?';
 
     /**
      * Returns an array of tokens this test wants to listen for.
