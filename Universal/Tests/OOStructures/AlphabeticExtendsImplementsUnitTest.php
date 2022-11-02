@@ -41,6 +41,7 @@ final class AlphabeticExtendsImplementsUnitTest extends AbstractSniffUnitTest
             54 => 1,
             62 => 1,
             68 => 1,
+            80 => 1,
         ];
     }
 

@@ -188,7 +188,7 @@ Disallow the use of multiple namespaces within a file.
 
 #### `Universal.OOStructures.AlphabeticExtendsImplements` :wrench: :bar_chart: :books:
 
-Enforce that the names used in a class "implements" statement or an interface "extends" statement are listed in alphabetic order.
+Enforce that the names used in a class/enum "implements" statement or an interface "extends" statement are listed in alphabetic order.
 
 * This sniff contains a `orderby` property to determine the sort order to use for the statement.
     If all names used are unqualified, the sort order won't make a difference.

@@ -75,6 +75,11 @@ class WithComments implements
 // Reset to default.
 // phpcs:set Universal.OOStructures.AlphabeticExtendsImplements orderby name
 
+enum Suit implements ArrayAccess, Colorful {} // OK.
+
+enum Suit: string implements Colorful, ArrayAccess {}
+
+
 // Test parse error/live coding.
 // Intentional parse error. This has to be the last test in the file.
 class Unfinished extends

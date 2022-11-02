@@ -17,7 +17,7 @@ use PHPCSUtils\Tokens\Collections;
 use PHPCSUtils\Utils\ObjectDeclarations;
 
 /**
- * Verifies that the names used in a class "implements" statement or an interface "extends" statement
+ * Verifies that the interface names used in a class/enum "implements" statement or an interface "extends" statement,
  * are listed in alphabetic order.
  *
  * @since 1.0.0
@@ -32,7 +32,7 @@ final class AlphabeticExtendsImplementsSniff implements Sniff
      *
      * @var string
      */
-    const METRIC_NAME_ALPHA = 'Interface names in implements/extends order alphabetically (%s)';
+    const METRIC_NAME_ALPHA = 'Interface names in implements/extends ordered alphabetically (%s)';
 
     /**
      * Name of the "interface count" metric.
@@ -129,7 +129,7 @@ final class AlphabeticExtendsImplementsSniff implements Sniff
         }
 
         if (\is_array($names) === false) {
-            // Class/interface doesn't extend or implement.
+            // Class/interface/enum doesn't extend or implement.
             $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME_COUNT, 0);
             $phpcsFile->recordMetric($stackPtr, $metricNameAlpha, 'n/a');
             return;
