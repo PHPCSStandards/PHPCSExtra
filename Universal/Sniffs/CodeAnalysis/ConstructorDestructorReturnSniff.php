@@ -107,6 +107,11 @@ final class ConstructorDestructorReturnSniff implements Sniff
 
                 $parensCloser = $tokens[$stackPtr]['parenthesis_closer'];
                 for ($i = ($parensCloser + 1); $i <= $properties['return_type_end_token']; $i++) {
+                    if (isset(Tokens::$commentTokens[$tokens[$i]['code']])) {
+                        // Ignore comments and leave them be.
+                        continue;
+                    }
+
                     $phpcsFile->fixer->replaceToken($i, '');
                 }
 
