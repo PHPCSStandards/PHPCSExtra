@@ -24,6 +24,13 @@ final class DisallowShortListSyntaxSniff implements Sniff
 {
 
     /**
+     * The phrase to use for the metric recorded by this sniff.
+     *
+     * @var string
+     */
+    const METRIC_NAME = 'Short list syntax used';
+
+    /**
      * Registers the tokens that this sniff wants to listen for.
      *
      * @since 1.0.0
@@ -32,7 +39,10 @@ final class DisallowShortListSyntaxSniff implements Sniff
      */
     public function register()
     {
-        return Collections::shortArrayListOpenTokensBC();
+        $targets          = Collections::shortArrayListOpenTokensBC();
+        $targets[\T_LIST] = \T_LIST; // Only for recording metrics.
+
+        return $targets;
     }
 
     /**
@@ -48,7 +58,13 @@ final class DisallowShortListSyntaxSniff implements Sniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
-        $tokens    = $phpcsFile->getTokens();
+        $tokens = $phpcsFile->getTokens();
+
+        if ($tokens[$stackPtr]['code'] === \T_LIST) {
+            $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'no');
+            return;
+        }
+
         $openClose = Lists::getOpenClose($phpcsFile, $stackPtr);
 
         if ($openClose === false) {
@@ -56,7 +72,7 @@ final class DisallowShortListSyntaxSniff implements Sniff
             return;
         }
 
-        $phpcsFile->recordMetric($stackPtr, 'Short list syntax used', 'yes');
+        $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'yes');
 
         $fix = $phpcsFile->addFixableError('Short list syntax is not allowed', $stackPtr, 'Found');
 

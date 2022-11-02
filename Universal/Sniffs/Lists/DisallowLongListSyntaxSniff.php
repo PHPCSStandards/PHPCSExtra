@@ -53,8 +53,6 @@ final class DisallowLongListSyntaxSniff implements Sniff
             return;
         }
 
-        $phpcsFile->recordMetric($stackPtr, 'Short list syntax used', 'no');
-
         $fix = $phpcsFile->addFixableError('Long list syntax is not allowed', $stackPtr, 'Found');
 
         if ($fix === true) {
