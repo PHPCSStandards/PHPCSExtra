@@ -19,14 +19,21 @@ foreach ($a as $k => $v)
 while (++$i <= 10)
     echo $i;
 
+if (true) ?>
+   Do something unconditionally as the PHP close tag turned the if into an single statement (silently added a ;).
+<?php
+
 // Single line for.
 for ($i = 1, $j = 0; $i <= 10; $j += $i, print $i, $i++);
 
 // Single line while.
 while (++$i <= 10) /*comment*/ ;
 
-// Single line declare.
+// Single line declares.
 declare(ticks=1);
+
+declare(ticks=1) ?>
+<?php
 
 /*
  * Control structures using curly braces. Ignore.
