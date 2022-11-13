@@ -124,11 +124,11 @@ final class DisallowAlternativeSyntaxSniff implements Sniff
             return;
         }
 
-        $error = 'Using control structures with the alternative syntax - %1$s(): ... end%1$s; - is not allowed';
+        $error = 'Using control structures with the alternative syntax is not allowed';
         if ($this->allowWithInlineHTML === true) {
             $error .= ' unless the control structure contains inline HTML';
         }
-        $error .= '.';
+        $error .= '. Found: %1$s(): ... end%1$s;';
 
         $code = 'Found' . \ucfirst($tokens[$stackPtr]['content']);
         $data = [$tokens[$stackPtr]['content']];
