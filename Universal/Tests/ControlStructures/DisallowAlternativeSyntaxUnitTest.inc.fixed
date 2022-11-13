@@ -222,6 +222,45 @@ A is something else
 <?php enddeclare; ?>
 
 <?php
+/*
+ * Tests specifically for the "has inline HTML ?" determination to make sure inline HTML
+ * in nested closed scopes is ignored.
+ */
+if (true){
+    echo 'no inline HTML';
+    ?><?php
+    echo 'between close and open tag';
+}
+
+if (!class_exists('Foo')) {
+    class Foo {
+        // Long piece of code
+        function bar() {
+            ?>
+            Inline HTML in closed scopes should be disregarded.
+            <?php
+        }
+    }
+}
+
+switch ($foo) {
+    case 1:
+        $closure = function () {
+            ?>
+            Inline HTML in closed scopes should be disregarded.
+            <?php
+        };
+        break;
+}
+
+declare (ticks = 1){
+    function showTicks() {
+        ?>
+        Inline HTML in closed scopes should be disregarded.
+        <?php
+    }
+}
+
 // phpcs:set Universal.ControlStructures.DisallowAlternativeSyntax allowWithInlineHTML false
 
 // Live coding.

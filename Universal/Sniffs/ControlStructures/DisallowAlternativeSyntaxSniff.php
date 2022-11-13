@@ -37,6 +37,9 @@ final class DisallowAlternativeSyntaxSniff implements Sniff
      * Whether to allow the alternative syntax when it is wrapped around
      * inline HTML, as is often seen in views.
      *
+     * Note: inline HTML within "closed scopes" - like function declarations -,
+     * within the control structure body will not be taken into account.
+     *
      * @since 1.0.0
      *
      * @var bool
@@ -108,19 +111,31 @@ final class DisallowAlternativeSyntaxSniff implements Sniff
             return;
         }
 
-        $hasInlineHTML = $phpcsFile->findNext(
-            \T_INLINE_HTML,
-            $opener,
-            $closer
-        );
+        $closedScopes         = Collections::closedScopes();
+        $find                 = $closedScopes;
+        $find[\T_INLINE_HTML] = \T_INLINE_HTML;
+        $inlineHTMLPtr        = $opener;
+        $hasInlineHTML        = false;
 
-        if ($hasInlineHTML !== false) {
+        do {
+            $inlineHTMLPtr = $phpcsFile->findNext($find, ($inlineHTMLPtr + 1), $closer);
+            if ($tokens[$inlineHTMLPtr]['code'] === \T_INLINE_HTML) {
+                $hasInlineHTML = true;
+                break;
+            }
+
+            if (isset($closedScopes[$tokens[$inlineHTMLPtr]['code']], $tokens[$inlineHTMLPtr]['scope_closer'])) {
+                $inlineHTMLPtr = $tokens[$inlineHTMLPtr]['scope_closer'];
+            }
+        } while ($inlineHTMLPtr !== false && $inlineHTMLPtr < $closer);
+
+        if ($hasInlineHTML === true) {
             $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'alternative syntax with inline HTML');
         } else {
             $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'alternative syntax');
         }
 
-        if ($hasInlineHTML !== false && $this->allowWithInlineHTML === true) {
+        if ($hasInlineHTML === true && $this->allowWithInlineHTML === true) {
             return;
         }
 
@@ -131,7 +146,7 @@ final class DisallowAlternativeSyntaxSniff implements Sniff
         $error .= '. Found: %1$s(): ... end%1$s;';
 
         $code = 'Found' . \ucfirst($tokens[$stackPtr]['content']);
-        if ($hasInlineHTML !== false) {
+        if ($hasInlineHTML === true) {
             $code .= 'WithInlineHTML';
         }
 
