@@ -31,7 +31,7 @@ final class DisallowAlternativeSyntaxSniff implements Sniff
      *
      * @var string
      */
-    const METRIC_NAME = 'Control structure style';
+    const METRIC_NAME = 'Control Structure Style';
 
     /**
      * Whether to allow the alternative syntax when it is wrapped around
@@ -86,6 +86,7 @@ final class DisallowAlternativeSyntaxSniff implements Sniff
          * This doesn't ignore _empty_ bodies.
          */
         if (ControlStructures::hasBody($phpcsFile, $stackPtr, true) === false) {
+            $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'single line (without body)');
             return;
         }
 
