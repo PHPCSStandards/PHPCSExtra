@@ -55,7 +55,12 @@ final class DisallowAlternativeSyntaxSniff implements Sniff
      */
     public function register()
     {
-        return Collections::alternativeControlStructureSyntaxes();
+        $targets = Collections::alternativeControlStructureSyntaxes();
+
+        // Don't look for elseif/else as they need to be dealt with in one go with the if.
+        unset($targets[\T_ELSEIF], $targets[\T_ELSE]);
+
+        return $targets;
     }
 
     /**
@@ -71,19 +76,6 @@ final class DisallowAlternativeSyntaxSniff implements Sniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
-        $tokens = $phpcsFile->getTokens();
-
-        /*
-         * Deal with `else if`.
-         */
-        if ($tokens[$stackPtr]['code'] === \T_ELSE
-            && isset($tokens[$stackPtr]['scope_opener']) === false
-            && ControlStructures::isElseIf($phpcsFile, $stackPtr) === true
-        ) {
-            // This is an `else if` - this will be dealt with on the `if` token.
-            return;
-        }
-
         /*
          * Ignore control structures without body (i.e. single line control structures).
          * This doesn't ignore _empty_ bodies.
@@ -92,6 +84,8 @@ final class DisallowAlternativeSyntaxSniff implements Sniff
             $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'single line (without body)');
             return;
         }
+
+        $tokens = $phpcsFile->getTokens();
 
         /*
          * Check if the control structure uses alternative syntax.
@@ -111,23 +105,56 @@ final class DisallowAlternativeSyntaxSniff implements Sniff
             return;
         }
 
+        /*
+         * As of here, we *know* the control structure must be using alternative syntax and
+         * must have all scope openers/closers set as, in case of parse errors, PHPCS wouldn't
+         * have set the scope opener, even for the first `if`.
+         *
+         * Also note that alternative syntax cannot be used with `else if`, so we don't need to take that
+         * into account.
+         */
+
+        /*
+         * Determine whether there is inline HTML.
+         *
+         * For "chained" control structures (if - elseif - else), the complete control structure
+         * needs to be examined in one go as these cannot be changed individually, only as a complete group.
+         */
         $closedScopes         = Collections::closedScopes();
         $find                 = $closedScopes;
         $find[\T_INLINE_HTML] = \T_INLINE_HTML;
-        $inlineHTMLPtr        = $opener;
-        $hasInlineHTML        = false;
+
+        $chainedIssues = [];
+        $hasInlineHTML = false;
+        $currentPtr    = $stackPtr;
 
         do {
-            $inlineHTMLPtr = $phpcsFile->findNext($find, ($inlineHTMLPtr + 1), $closer);
-            if ($tokens[$inlineHTMLPtr]['code'] === \T_INLINE_HTML) {
-                $hasInlineHTML = true;
-                break;
+            $opener                 = $tokens[$currentPtr]['scope_opener'];
+            $closer                 = $tokens[$currentPtr]['scope_closer'];
+            $chainedIssues[$opener] = $closer;
+
+            if ($hasInlineHTML === true) {
+                // No need to search the contents, we already know there is inline HTML.
+                $currentPtr = $closer;
+                continue;
             }
 
-            if (isset($closedScopes[$tokens[$inlineHTMLPtr]['code']], $tokens[$inlineHTMLPtr]['scope_closer'])) {
-                $inlineHTMLPtr = $tokens[$inlineHTMLPtr]['scope_closer'];
-            }
-        } while ($inlineHTMLPtr !== false && $inlineHTMLPtr < $closer);
+            $inlineHTMLPtr = $opener;
+
+            do {
+                $inlineHTMLPtr = $phpcsFile->findNext($find, ($inlineHTMLPtr + 1), $closer);
+                if ($tokens[$inlineHTMLPtr]['code'] === \T_INLINE_HTML) {
+                    $hasInlineHTML = true;
+                    break;
+                }
+
+                if (isset($closedScopes[$tokens[$inlineHTMLPtr]['code']], $tokens[$inlineHTMLPtr]['scope_closer'])) {
+                    $inlineHTMLPtr = $tokens[$inlineHTMLPtr]['scope_closer'];
+                }
+            } while ($inlineHTMLPtr !== false && $inlineHTMLPtr < $closer);
+
+            $currentPtr = $closer;
+        } while (isset(Collections::alternativeControlStructureSyntaxes()[$tokens[$closer]['code']]) === true);
 
         if ($hasInlineHTML === true) {
             $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'alternative syntax with inline HTML');
@@ -151,31 +178,37 @@ final class DisallowAlternativeSyntaxSniff implements Sniff
         }
 
         $data = [$tokens[$stackPtr]['content']];
-        if ($tokens[$stackPtr]['code'] === \T_ELSEIF || $tokens[$stackPtr]['code'] === \T_ELSE) {
-            $data = ['if'];
+
+        foreach ($chainedIssues as $opener => $closer) {
+            $fix = $phpcsFile->addFixableError($error, $opener, $code, $data);
         }
 
-        $fix = $phpcsFile->addFixableError($error, $tokens[$stackPtr]['scope_opener'], $code, $data);
         if ($fix === false) {
             return;
         }
 
         /*
-         * Fix it.
+         * Fix all issues for this chain in one go to diminish the chance of conflicts.
          */
         $phpcsFile->fixer->beginChangeset();
-        $phpcsFile->fixer->replaceToken($opener, '{');
 
-        if (isset(Collections::alternativeControlStructureSyntaxClosers()[$tokens[$closer]['code']]) === true) {
-            $phpcsFile->fixer->replaceToken($closer, '}');
+        foreach ($chainedIssues as $opener => $closer) {
+            $phpcsFile->fixer->replaceToken($opener, '{');
 
-            $semicolon = $phpcsFile->findNext(Tokens::$emptyTokens, ($closer + 1), null, true);
-            if ($semicolon !== false && $tokens[$semicolon]['code'] === \T_SEMICOLON) {
-                $phpcsFile->fixer->replaceToken($semicolon, '');
+            if (isset(Collections::alternativeControlStructureSyntaxClosers()[$tokens[$closer]['code']]) === true) {
+                $phpcsFile->fixer->replaceToken($closer, '}');
+
+                $semicolon = $phpcsFile->findNext(Tokens::$emptyTokens, ($closer + 1), null, true);
+                if ($semicolon !== false && $tokens[$semicolon]['code'] === \T_SEMICOLON) {
+                    $phpcsFile->fixer->replaceToken($semicolon, '');
+                }
+            } else {
+                /*
+                 * This must be an if/else using alternative syntax.
+                 * The closer will be the next control structure keyword.
+                 */
+                $phpcsFile->fixer->addContentBefore($closer, '} ');
             }
-        } else {
-            // This must be an if/else using alternative syntax. The closer will be the next control structure keyword.
-            $phpcsFile->fixer->addContentBefore($closer, '} ');
         }
 
         $phpcsFile->fixer->endChangeset();

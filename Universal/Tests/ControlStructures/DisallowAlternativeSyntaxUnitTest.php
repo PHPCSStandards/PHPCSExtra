@@ -25,10 +25,16 @@ final class DisallowAlternativeSyntaxUnitTest extends AbstractSniffUnitTest
     /**
      * Returns the lines where errors should occur.
      *
+     * @param string $testFile The name of the file being tested.
+     *
      * @return array <int line number> => <int number of errors>
      */
-    public function getErrorList()
+    public function getErrorList($testFile = '')
     {
+        if ($testFile !== 'DisallowAlternativeSyntaxUnitTest.1.inc') {
+            return [];
+        }
+
         return [
             80  => 1,
             82  => 1,
@@ -46,18 +52,26 @@ final class DisallowAlternativeSyntaxUnitTest extends AbstractSniffUnitTest
             134 => 1,
             138 => 1,
             145 => 1,
-            155 => 1,
-            157 => 1,
-            159 => 1,
-            164 => 1,
-            168 => 1,
-            172 => 1,
-            176 => 1,
-            185 => 1,
-            229 => 1,
-            235 => 1,
-            246 => 1,
+            151 => 1,
+            154 => 1,
+            156 => 1,
+            165 => 1,
+            167 => 1,
+            169 => 1,
+            174 => 1,
+            178 => 1,
+            182 => 1,
+            186 => 1,
+            195 => 1,
+            239 => 1,
+            245 => 1,
             256 => 1,
+            266 => 1,
+            279 => 1,
+            281 => 1,
+            283 => 1,
+            330 => 1,
+            332 => 1,
         ];
     }
 
