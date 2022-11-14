@@ -131,14 +131,13 @@ final class DisallowAlternativeSyntaxSniff implements Sniff
         $error .= '. Found: %1$s(): ... end%1$s;';
 
         $code = 'Found' . \ucfirst($tokens[$stackPtr]['content']);
-        $data = [$tokens[$stackPtr]['content']];
-
-        if ($tokens[$stackPtr]['code'] === \T_ELSEIF || $tokens[$stackPtr]['code'] === \T_ELSE) {
-            $data = ['if'];
-        }
-
         if ($hasInlineHTML !== false) {
             $code .= 'WithInlineHTML';
+        }
+
+        $data = [$tokens[$stackPtr]['content']];
+        if ($tokens[$stackPtr]['code'] === \T_ELSEIF || $tokens[$stackPtr]['code'] === \T_ELSE) {
+            $data = ['if'];
         }
 
         $fix = $phpcsFile->addFixableError($error, $tokens[$stackPtr]['scope_opener'], $code, $data);
