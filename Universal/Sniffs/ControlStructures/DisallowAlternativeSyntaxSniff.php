@@ -31,11 +31,13 @@ final class DisallowAlternativeSyntaxSniff implements Sniff
      *
      * @var string
      */
-    const METRIC_NAME = 'Control structure style';
+    const METRIC_NAME = 'Control Structure Style';
 
     /**
      * Whether to allow the alternative syntax when it is wrapped around
      * inline HTML, as is often seen in views.
+     *
+     * @since 1.0.0
      *
      * @var bool
      */
@@ -80,9 +82,11 @@ final class DisallowAlternativeSyntaxSniff implements Sniff
         }
 
         /*
-         * Ignore control structures without body.
+         * Ignore control structures without body (i.e. single line control structures).
+         * This doesn't ignore _empty_ bodies.
          */
-        if (ControlStructures::hasBody($phpcsFile, $stackPtr) === false) {
+        if (ControlStructures::hasBody($phpcsFile, $stackPtr, true) === false) {
+            $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'single line (without body)');
             return;
         }
 

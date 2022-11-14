@@ -4,7 +4,7 @@
  * Control structures without braces. Ignore.
  */
 if (true)
-    function_call($a);
+    // Deliberately empty.
 elseif (false)
     function_call($a);
 else
@@ -19,27 +19,34 @@ foreach ($a as $k => $v)
 while (++$i <= 10)
     echo $i;
 
+if (true) ?>
+   Do something unconditionally as the PHP close tag turned the if into an single statement (silently added a ;).
+<?php
+
 // Single line for.
 for ($i = 1, $j = 0; $i <= 10; $j += $i, print $i, $i++);
 
 // Single line while.
 while (++$i <= 10) /*comment*/ ;
 
-// Single line declare.
+// Single line declares.
 declare(ticks=1);
+
+declare(ticks=1) ?>
+<?php
 
 /*
  * Control structures using curly braces. Ignore.
  */
 if ( true ) {
-    // Code.
+    function_call($a);
 } elseif (false) {
-    // Code.
+    function_call($a);
 }
 else if (false) {
-    // Code.
+    function_call($a);
 } else {
-    // Code.
+    // Deliberately empty.
 }
 
 for ($i = 1; $i <= 10; $i++) {
@@ -71,11 +78,11 @@ declare(ticks=1) {
  * Alternative control structure syntax.
  */
 if (true):
-    // Code.
+    function_call($a);
 elseif (false):
-    // Code.
+    // Deliberately empty.
 else:
-    // Code.
+    function_call($a);
 endif;
 
 for ($i = 1; $i <= 10; $i++)
@@ -141,12 +148,16 @@ A is something else
 
 <?php
 // phpcs:set Universal.ControlStructures.DisallowAlternativeSyntax allowWithInlineHTML true
+
+/*
+ * Alternative control structure syntaxes without HTML, these should still be fixed.
+ */
 if (true):
-    // Code.
+    function_call($a);
 elseif (false):
-    // Code.
+    function_call($a);
 else:
-    // Code.
+    function_call($a);
 endif;
 
 for ($i = 1; $i <= 10; $i++)
@@ -175,6 +186,9 @@ declare (ticks = 1):
     echo 'ticking';
 enddeclare;
 
+/*
+ * Alternative control structure syntax in views/within inline HTML. These should be ignored.
+ */
 ?>
 <?php if ($a == 5): ?>
 A is equal to 5
@@ -213,6 +227,6 @@ A is something else
 // Live coding.
 // Intentional parse error. This test has to be the last in the file.
     if ($a) {
-        // Code.
+        function_call($a);
     } else {
         // Code.
