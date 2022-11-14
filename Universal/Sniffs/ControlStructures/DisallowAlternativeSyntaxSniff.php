@@ -124,15 +124,20 @@ final class DisallowAlternativeSyntaxSniff implements Sniff
             return;
         }
 
-        $error = 'Using control structures with the alternative syntax - %1$s(): ... end%1$s; - is not allowed.';
-        $code  = 'Found' . \ucfirst($tokens[$stackPtr]['content']);
-        $data  = [$tokens[$stackPtr]['content']];
-        if ($tokens[$stackPtr]['code'] === \T_ELSEIF || $tokens[$stackPtr]['code'] === \T_ELSE) {
-            $data = ['if'];
+        $error = 'Using control structures with the alternative syntax is not allowed';
+        if ($this->allowWithInlineHTML === true) {
+            $error .= ' unless the control structure contains inline HTML';
         }
+        $error .= '. Found: %1$s(): ... end%1$s;';
 
+        $code = 'Found' . \ucfirst($tokens[$stackPtr]['content']);
         if ($hasInlineHTML !== false) {
             $code .= 'WithInlineHTML';
+        }
+
+        $data = [$tokens[$stackPtr]['content']];
+        if ($tokens[$stackPtr]['code'] === \T_ELSEIF || $tokens[$stackPtr]['code'] === \T_ELSE) {
+            $data = ['if'];
         }
 
         $fix = $phpcsFile->addFixableError($error, $tokens[$stackPtr]['scope_opener'], $code, $data);
