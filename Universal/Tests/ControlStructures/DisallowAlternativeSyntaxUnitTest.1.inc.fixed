@@ -147,6 +147,16 @@ A is something else
 <?php } ?>
 
 <?php
+// Test handling if/else structures in one go.
+if ($a == 5){ ?>
+Inline HTML in the if, but nowhere else.
+<?php
+} elseif ($a == 7){
+    echo 'no HTML here, but that\'s okay';
+} else{
+    echo 'no HTML here, but that\'s okay';
+}
+
 // phpcs:set Universal.ControlStructures.DisallowAlternativeSyntax allowWithInlineHTML true
 
 /*
@@ -260,6 +270,94 @@ declare (ticks = 1){
         <?php
     }
 }
+
+/*
+ * Test: you can't mix alternative syntax with curlies, so if one part of the statement has HTML, ignore the rest.
+ * This only really comes into play with if/elseif/else as that's the only potentially multi-part control structure
+ * which allows for alternative syntax.
+ */
+if ($a == 5){
+    echo 'no HTML here';
+} elseif ($a == 7){
+    echo 'no HTML here';
+} else{
+    echo 'no HTML here';
+}
+
+if ($a == 5): ?>
+Inline HTML in the if, but nowhere else.
+<?php
+elseif ($a == 7):
+    echo 'no HTML here, but that\'s okay';
+else:
+    echo 'no HTML here, but that\'s okay';
+endif;
+
+if ($a == 5):
+    echo 'no HTML here, but that\'s okay';
+elseif ($a == 7): ?>
+Inline HTML in the elseif, but nowhere else.
+<?php
+else:
+    echo 'no HTML here, but that\'s okay';
+endif;
+
+if ($a == 5):
+    echo 'no HTML here, but that\'s okay';
+elseif ($a == 7):
+    echo 'no HTML here, but that\'s okay';
+else: ?>
+Inline HTML in the else, but nowhere else.
+<?php
+endif;
+
+if ($a == 5): ?>
+Inline HTML in every leaf.
+<?php
+elseif ($a == 7): ?>
+Inline HTML in every leaf.
+<?php
+else: ?>
+Inline HTML in every leaf.
+<?php
+endif;
+
+// Safeguard that nested control structures will still be examined on their own merit.
+if ($a == 5): ?>
+Inline HTML in the if, but nowhere else.
+<?php
+elseif ($a == 7):
+    if ($foo){
+        doSomething();
+    } else{
+        doSomethingElse();
+    }
+else:
+    echo 'no HTML here, but that\'s okay';
+endif;
+
+// Safeguard that "parent" control structures will take HTML in nested control structures into account.
+if ($a == 5):
+    doSomething();
+elseif ($a == 7):
+    if ($foo): ?>
+    Inline HTML in the nested if, but nowhere else.
+    <?php
+    endif;
+else:
+    echo 'no HTML here, but that\'s okay';
+endif;
+
+// Safeguard this has no influence on non-multi-part control structures.
+switch ($foo):
+    case 1:
+        if ($bar): ?>
+        <div>Inline HTML</div>
+        <?php
+        endif;
+    default;
+        echo 'no HTML here, but that\'s okay';
+endswitch;
 
 // phpcs:set Universal.ControlStructures.DisallowAlternativeSyntax allowWithInlineHTML false
 
