@@ -14,6 +14,7 @@
 
     <testsuites>
         <testsuite name="PHPCSExtra">
+            <directory suffix="UnitTest.php">./Modernize/Tests/</directory>
             <directory suffix="UnitTest.php">./NormalizedArrays/Tests/</directory>
             <directory suffix="UnitTest.php">./Universal/Tests/</directory>
         </testsuite>
@@ -21,6 +22,7 @@
 
     <filter>
         <whitelist addUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./Modernize/Sniffs/</directory>
             <directory suffix=".php">./NormalizedArrays/Sniffs/</directory>
             <directory suffix=".php">./Universal/Sniffs/</directory>
         </whitelist>

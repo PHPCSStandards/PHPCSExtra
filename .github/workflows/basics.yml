@@ -72,6 +72,7 @@ jobs:
       # Check the code-style consistency of the XML ruleset files.
       - name: Check XML code style
         run: |
+          diff -B ./Modernize/ruleset.xml <(xmllint --format "./Modernize/ruleset.xml")
           diff -B ./NormalizedArrays/ruleset.xml <(xmllint --format "./NormalizedArrays/ruleset.xml")
           diff -B ./Universal/ruleset.xml <(xmllint --format "./Universal/ruleset.xml")
 
