@@ -12,6 +12,7 @@
 /phpcs.xml.dist export-ignore
 /phpunit.xml.dist export-ignore
 /phpunit-bootstrap.php export-ignore
+/Modernize/Tests/ export-ignore
 /NormalizedArrays/Tests/ export-ignore
 /Universal/Tests/ export-ignore
 
