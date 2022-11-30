@@ -34,9 +34,10 @@ final class OneStatementInShortEchoTagUnitTest extends AbstractSniffUnitTest
         switch ($testFile) {
             case 'OneStatementInShortEchoTagUnitTest.1.inc':
                 return [
-                    19 => 1,
-                    22 => 1,
-                    29 => 1,
+                    21 => 1,
+                    24 => 1,
+                    31 => 1,
+                    34 => 1,
                 ];
 
             case 'OneStatementInShortEchoTagUnitTest.2.inc':

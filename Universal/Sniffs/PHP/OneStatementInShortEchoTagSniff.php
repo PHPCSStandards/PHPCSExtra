@@ -56,8 +56,22 @@ final class OneStatementInShortEchoTagSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        $endOfStatement = $phpcsFile->findNext([\T_SEMICOLON, \T_CLOSE_TAG], ($stackPtr + 1));
-        if ($endOfStatement === false
+        for ($endOfStatement = ($stackPtr + 1); $endOfStatement < $phpcsFile->numTokens; $endOfStatement++) {
+            if ($tokens[$endOfStatement]['code'] === \T_CLOSE_TAG
+                || $tokens[$endOfStatement]['code'] === \T_SEMICOLON
+            ) {
+                break;
+            }
+
+            // Skip over anything within parenthesis.
+            if ($tokens[$endOfStatement]['code'] === \T_OPEN_PARENTHESIS
+                && isset($tokens[$endOfStatement]['parenthesis_closer'])
+            ) {
+                $endOfStatement = $tokens[$endOfStatement]['parenthesis_closer'];
+            }
+        }
+
+        if ($endOfStatement === $phpcsFile->numTokens
             || $tokens[$endOfStatement]['code'] === \T_CLOSE_TAG
         ) {
             return;
