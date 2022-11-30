@@ -13,6 +13,8 @@ echo 'b';
 ?></div>
 <div><?= $someText . $anotherText . ($x + 10); ?></div>
 <div><?= ($cond) ? $someText : $anotherText ?></div>
+<div><?= (function() use ($a) { return $a; })() ?></div>
+<div><?= (function() use ($a) { return $a; })(); ?></div>
 
 // Multiple statements in short open echo tags should be flagged.
 <div><?=$someText;
@@ -28,6 +30,8 @@ if ($cond) {
 <div><?= $someText;
 trigger_error('test', E_USER_NOTICE);
 ?></div>
+
+<div><?= $cl = function() use ($a) { return $a; }; echo $cl ?></div>
 
 // Unclosed tag. This must be the last test in the file.
 <div><?= $someText
