@@ -63,6 +63,7 @@ final class DisallowFinalClassSniff implements Sniff
         if ($classProp['is_final'] === false) {
             if ($classProp['is_abstract'] === true) {
                 $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'abstract');
+                return;
             }
 
             $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'not abstract, not final');
