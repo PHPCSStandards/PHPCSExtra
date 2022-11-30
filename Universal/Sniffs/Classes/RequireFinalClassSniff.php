@@ -12,6 +12,7 @@ namespace PHPCSExtra\Universal\Sniffs\Classes;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\Utils\GetTokensAsString;
 use PHPCSUtils\Utils\ObjectDeclarations;
 
@@ -73,18 +74,27 @@ final class RequireFinalClassSniff implements Sniff
 
         $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'not abstract, not final');
 
-        $tokens = $phpcsFile->getTokens();
-        if (isset($tokens[$stackPtr]['scope_opener']) === false) {
+        $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
+        if ($nextNonEmpty === false) {
             // Live coding or parse error.
             return;
         }
 
-        $snippet = GetTokensAsString::compact($phpcsFile, $stackPtr, $tokens[$stackPtr]['scope_opener'], true);
+        $snippetEnd  = $nextNonEmpty;
+        $classCloser = '';
+
+        $tokens = $phpcsFile->getTokens();
+        if (isset($tokens[$stackPtr]['scope_opener']) === true) {
+            $snippetEnd  = $tokens[$stackPtr]['scope_opener'];
+            $classCloser = '}';
+        }
+
+        $snippet = GetTokensAsString::compact($phpcsFile, $stackPtr, $snippetEnd, true);
         $fix     = $phpcsFile->addFixableError(
-            'A non-abstract class should be declared as final. Found: %s}',
+            'A non-abstract class should be declared as final. Found: %s%s',
             $stackPtr,
             'NonFinalClassFound',
-            [$snippet]
+            [$snippet, $classCloser]
         );
 
         if ($fix === true) {
