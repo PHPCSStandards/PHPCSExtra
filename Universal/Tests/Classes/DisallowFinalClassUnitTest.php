@@ -37,6 +37,7 @@ final class DisallowFinalClassUnitTest extends AbstractSniffUnitTest
             36 => 1,
             38 => 1,
             41 => 1,
+            44 => 1,
         ];
     }
 
