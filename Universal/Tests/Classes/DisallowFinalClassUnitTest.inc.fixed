@@ -22,21 +22,21 @@ class FooC {
 /*
  * Bad.
  */
-class BazA {}
+class FinalClass {}
 
 class CheckHandlingOfSuperfluousWhitespace extends Something {}
 
     class CheckHandlingOfIndentation {}
 
-/*comment*/ class BazC implements MyInterface {}
+/*comment*/ class CheckHandlingOfComments implements MyInterface {}
 
 // Test fixer when combined with PHP 8.2 "readonly" modifier.
-readonly class BazD {}
+readonly class ReadonlyFinalClass {}
 
-readonly class BazE {}
+readonly class FinalReadonlyClass {}
 
 // Parse error. Remove the final keyword.
-abstract class BazD {}
+abstract class ForbiddenAbstractFinal {}
 
 // Live coding. Ignore. This must be the last test in the file.
 final class
