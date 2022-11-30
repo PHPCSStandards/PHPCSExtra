@@ -16,18 +16,18 @@ abstract class AbstractBarC implements MyInterface {}
 $a = new MyClass() {}
 
 // Parse error. Not our concern.
-final abstract class BazD {}
+final abstract class FinalAbstractClass {}
 
 /*
  * Bad.
  */
-final class BazA {}
+final class PlainClass {}
 
     final class CheckHandlingOfIndentation extends Something {}
 
-final class BazC implements MyInterface {}
+final class ClassImplementing implements MyInterface {}
 
-readonly final class BazD {}
+readonly final class ReadonlyClass {}
 
 // Live coding. Ignore. This must be the last test in the file.
 class LiveCoding
