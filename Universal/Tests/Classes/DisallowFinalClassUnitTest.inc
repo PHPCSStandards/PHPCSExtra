@@ -40,5 +40,8 @@ final readonly class FinalReadonlyClass {}
 // Parse error. Remove the final keyword.
 final abstract class ForbiddenAbstractFinal {}
 
+// Parse error, but not one which concerns us. Remove the final keyword.
+final class UnfinishedDeclare
+
 // Live coding. Ignore. This must be the last test in the file.
 final class
