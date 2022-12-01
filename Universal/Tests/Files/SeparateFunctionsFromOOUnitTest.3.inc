@@ -45,6 +45,8 @@ $closure = function($a, $b) {
     return $a + $b;
 };
 
+$arrow = fn($a, $b) => $a + $b;
+
 define('MY_CONSTANT', 'foo');
 
 const ANOTHER_CONSTANT = 'bar';
