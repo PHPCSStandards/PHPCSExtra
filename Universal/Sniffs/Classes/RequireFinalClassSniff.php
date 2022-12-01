@@ -71,13 +71,13 @@ final class RequireFinalClassSniff implements Sniff
             return;
         }
 
+        $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'not abstract, not final');
+
         $tokens = $phpcsFile->getTokens();
         if (isset($tokens[$stackPtr]['scope_opener']) === false) {
             // Live coding or parse error.
             return;
         }
-
-        $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'not abstract, not final');
 
         $snippet = GetTokensAsString::compact($phpcsFile, $stackPtr, $tokens[$stackPtr]['scope_opener'], true);
         $fix     = $phpcsFile->addFixableError(
