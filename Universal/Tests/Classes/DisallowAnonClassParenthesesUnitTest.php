@@ -25,16 +25,24 @@ final class DisallowAnonClassParenthesesUnitTest extends AbstractSniffUnitTest
     /**
      * Returns the lines where errors should occur.
      *
+     * @param string $testFile The name of the file being tested.
+     *
      * @return array <int line number> => <int number of errors>
      */
-    public function getErrorList()
+    public function getErrorList($testFile = '')
     {
-        return [
-            22 => 1,
-            23 => 1,
-            24 => 1,
-            27 => 1,
-        ];
+        switch ($testFile) {
+            case 'DisallowAnonClassParenthesesUnitTest.1.inc':
+                return [
+                    22 => 1,
+                    23 => 1,
+                    24 => 1,
+                    27 => 1,
+                ];
+
+            default:
+                return [];
+        }
     }
 
     /**
