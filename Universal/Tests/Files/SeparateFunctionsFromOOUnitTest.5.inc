@@ -1,6 +1,6 @@
 <?php
 
-// Valid: File which doesn't declare functions nor OO structures.
+// Valid: File which doesn't declare named functions or OO structures.
 
 $globVar = new class() {
     public function thisIsAnAnonymousClass() {}
@@ -12,6 +12,8 @@ $globVar = new class() {
 $closure = function($a, $b) {
     return $a + $b;
 };
+
+$arrow = fn($a, $b) => $a + $b;
 
 define('MY_CONSTANT', 'foo');
 
