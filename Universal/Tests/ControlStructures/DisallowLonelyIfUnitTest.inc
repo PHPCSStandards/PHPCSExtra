@@ -265,6 +265,19 @@ if ($a) {
     }
 }
 
+/*
+ * Inner block mixing conditions with and without curly braces (which is perfectly valid in PHP).
+ * Bow out as it cannot be determined reliably whether there is something behind the last condition.
+ */
+if ($condition) {
+    doSomething();
+} else {
+    if ($anotherCondition) {
+        doSomething();
+    } else if ($secondIf)
+        doSomething();
+}
+
 // Live coding.
 // Intentional parse error. This test has to be the last in the file.
 if ($a) {
