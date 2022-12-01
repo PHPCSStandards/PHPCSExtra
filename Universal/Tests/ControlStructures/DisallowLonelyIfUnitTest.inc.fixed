@@ -253,6 +253,21 @@ if ($condition) {
         doSomething();
 }
 
+/*
+ * Tests involving PHP close tags to close the inner control structure.
+ * Ignore as these will always need an open tag to reach the outer control structure again,
+ * so are never the "only" thing within the `else` (so not a lonely if).
+ */
+if ($condition):
+    doSomething();
+else:
+    if ($anotherCondition):
+        doSomething();
+    endif ?>
+    Inline HTML
+    <?php
+endif;
+
 // Live coding.
 // Intentional parse error. This test has to be the last in the file.
 if ($a) {

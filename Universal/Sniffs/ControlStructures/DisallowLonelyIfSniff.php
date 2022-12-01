@@ -89,16 +89,15 @@ final class DisallowLonelyIfSniff implements Sniff
         /*
          * Find the end of an if - else chain.
          */
+
         $innerIfPtr       = $nextNonEmpty;
         $innerIfToken     = $tokens[$innerIfPtr];
         $autoFixable      = true;
         $innerScopeCloser = $innerIfToken['scope_closer'];
 
-        /*
-         * For alternative syntax fixer only.
-         * Remember the individual inner scope opener and closers so the fixer doesn't need
-         * to do the same walking over the if/else chain again.
-         */
+        // For alternative syntax fixer only.
+        // Remember the individual inner scope opener and closers so the fixer doesn't need
+        // to do the same walking over the if/else chain again.
         $innerScopes = [
             $innerIfToken['scope_opener'] => $innerScopeCloser,
         ];
@@ -115,6 +114,11 @@ final class DisallowLonelyIfSniff implements Sniff
                         $outerScopeCloser,
                         true
                     );
+
+                    if ($tokens[$nextAfter]['code'] === \T_CLOSE_TAG) {
+                        // Not "lonely" as at the very least there must be a PHP open tag before the outer closer.
+                        return;
+                    }
 
                     if ($tokens[$nextAfter]['code'] === \T_SEMICOLON) {
                         $innerScopeCloser = $nextAfter;
