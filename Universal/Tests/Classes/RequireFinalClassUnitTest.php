@@ -34,6 +34,7 @@ final class RequireFinalClassUnitTest extends AbstractSniffUnitTest
             26 => 1,
             28 => 1,
             30 => 1,
+            33 => 1,
         ];
     }
 
