@@ -58,12 +58,11 @@ final class RequireAnonClassParenthesesSniff implements Sniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
-        $tokens = $phpcsFile->getTokens();
-
+        $tokens       = $phpcsFile->getTokens();
         $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
-        if ($nextNonEmpty !== false
-            && $tokens[$nextNonEmpty]['code'] === \T_OPEN_PARENTHESIS
-        ) {
+
+        // Note: no need to check for `false` as PHPCS won't retokenize `class` to `T_ANON_CLASS` in that case.
+        if ($tokens[$nextNonEmpty]['code'] === \T_OPEN_PARENTHESIS) {
             // Parentheses found.
             $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'yes');
             return;
