@@ -1,6 +1,6 @@
 <?php
 
-// Invalid: File which declares both function(s) as well as OO structure(s).
+// Invalid: File which declares both named function(s) as well as OO structure(s).
 
 interface IBar {
     function bar();
