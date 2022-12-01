@@ -76,43 +76,64 @@ final class NoLeadingBackslashSniff implements Sniff
         $current = $stackPtr;
 
         do {
-            $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($current + 1), $endOfStatement, true);
-            if ($nextNonEmpty === false) {
-                // Reached the end of the statement.
-                return;
-            }
-
-            // Skip past 'function'/'const' keyword.
-            $contentLC = \strtolower($tokens[$nextNonEmpty]['content']);
-            if ($tokens[$nextNonEmpty]['code'] === \T_STRING
-                && ($contentLC === 'function' || $contentLC === 'const')
-            ) {
-                $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($nextNonEmpty + 1), $endOfStatement, true);
-                if ($nextNonEmpty === false) {
-                    // Reached the end of the statement.
-                    return;
-                }
-            }
-
-            if ($tokens[$nextNonEmpty]['code'] === \T_NS_SEPARATOR) {
-                $phpcsFile->recordMetric($nextNonEmpty, self::METRIC_NAME, 'yes');
-
-                $error = 'An import use statement should never start with a leading backslash';
-                $fix   = $phpcsFile->addFixableError($error, $nextNonEmpty, 'LeadingBackslashFound');
-
-                if ($fix === true) {
-                    if ($tokens[$nextNonEmpty - 1]['code'] !== \T_WHITESPACE) {
-                        $phpcsFile->fixer->replaceToken($nextNonEmpty, ' ');
-                    } else {
-                        $phpcsFile->fixer->replaceToken($nextNonEmpty, '');
-                    }
-                }
-            } else {
-                $phpcsFile->recordMetric($nextNonEmpty, self::METRIC_NAME, 'no');
+            $continue = $this->processImport($phpcsFile, $current, $endOfStatement);
+            if ($continue === false) {
+                break;
             }
 
             // Move the stackPtr forward to the next part of the use statement, if any.
             $current = $phpcsFile->findNext(\T_COMMA, ($current + 1), $endOfStatement);
         } while ($current !== false);
+    }
+
+    /**
+     * Examine an individual import statement.
+     *
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile      The file being scanned.
+     * @param int                         $stackPtr       The position of the current token.
+     * @param int                         $endOfStatement End token for the current import statement.
+     *
+     * @return bool Whether or not to continue examining this import use statement.
+     */
+    private function processImport(File $phpcsFile, $stackPtr, $endOfStatement)
+    {
+        $tokens = $phpcsFile->getTokens();
+
+        $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), $endOfStatement, true);
+        if ($nextNonEmpty === false) {
+            // Reached the end of the statement.
+            return false;
+        }
+
+        // Skip past 'function'/'const' keyword.
+        $contentLC = \strtolower($tokens[$nextNonEmpty]['content']);
+        if ($tokens[$nextNonEmpty]['code'] === \T_STRING
+            && ($contentLC === 'function' || $contentLC === 'const')
+        ) {
+            $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($nextNonEmpty + 1), $endOfStatement, true);
+            if ($nextNonEmpty === false) {
+                // Reached the end of the statement.
+                return false;
+            }
+        }
+
+        if ($tokens[$nextNonEmpty]['code'] === \T_NS_SEPARATOR) {
+            $phpcsFile->recordMetric($nextNonEmpty, self::METRIC_NAME, 'yes');
+
+            $error = 'An import use statement should never start with a leading backslash';
+            $fix   = $phpcsFile->addFixableError($error, $nextNonEmpty, 'LeadingBackslashFound');
+
+            if ($fix === true) {
+                if ($tokens[$nextNonEmpty - 1]['code'] !== \T_WHITESPACE) {
+                    $phpcsFile->fixer->replaceToken($nextNonEmpty, ' ');
+                } else {
+                    $phpcsFile->fixer->replaceToken($nextNonEmpty, '');
+                }
+            }
+        } else {
+            $phpcsFile->recordMetric($nextNonEmpty, self::METRIC_NAME, 'no');
+        }
+
+        return true;
     }
 }
