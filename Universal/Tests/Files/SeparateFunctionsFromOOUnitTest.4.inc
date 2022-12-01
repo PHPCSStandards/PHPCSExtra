@@ -11,11 +11,13 @@ namespace {
 
     interface fooB() {}
     trait fooC() {}
+    enum fooD {}
 }
 
 namespace First {
     class firstFooA() {}
     trait firstFooB() {}
+    enum firstFooD {}
 }
 
 namespace Second {
@@ -28,6 +30,8 @@ namespace Second {
     if (!class_exists('secondFooB')) {
         class secondFooB() {}
     }
+
+    enum secondFooD {}
 }
 
 namespace {
