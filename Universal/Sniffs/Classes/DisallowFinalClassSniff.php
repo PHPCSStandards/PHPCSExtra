@@ -12,6 +12,7 @@ namespace PHPCSExtra\Universal\Sniffs\Classes;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\Utils\GetTokensAsString;
 use PHPCSUtils\Utils\ObjectDeclarations;
 
@@ -63,29 +64,38 @@ final class DisallowFinalClassSniff implements Sniff
         if ($classProp['is_final'] === false) {
             if ($classProp['is_abstract'] === true) {
                 $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'abstract');
+                return;
             }
 
             $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'not abstract, not final');
             return;
         }
 
-        $tokens = $phpcsFile->getTokens();
-        if (isset($tokens[$stackPtr]['scope_opener']) === false) {
+        $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'final');
+
+        $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
+        if ($nextNonEmpty === false) {
             // Live coding or parse error.
             return;
         }
 
-        $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'final');
-
         // No extra safeguards needed, we know the keyword will exist based on the check above.
         $finalKeyword = $phpcsFile->findPrevious(\T_FINAL, ($stackPtr - 1));
+        $snippetEnd   = $nextNonEmpty;
+        $classCloser  = '';
 
-        $snippet = GetTokensAsString::compact($phpcsFile, $finalKeyword, $tokens[$stackPtr]['scope_opener'], true);
+        $tokens = $phpcsFile->getTokens();
+        if (isset($tokens[$stackPtr]['scope_opener']) === true) {
+            $snippetEnd  = $tokens[$stackPtr]['scope_opener'];
+            $classCloser = '}';
+        }
+
+        $snippet = GetTokensAsString::compact($phpcsFile, $finalKeyword, $snippetEnd, true);
         $fix     = $phpcsFile->addFixableError(
-            'Declaring a class as final is not allowed. Found: %s}',
+            'Declaring a class as final is not allowed. Found: %s%s',
             $finalKeyword,
             'FinalClassFound',
-            [$snippet]
+            [$snippet, $classCloser]
         );
 
         if ($fix === true) {
