@@ -84,6 +84,28 @@ final class NoLeadingBackslashSniff implements Sniff
             // Move the stackPtr forward to the next part of the use statement, if any.
             $current = $phpcsFile->findNext(\T_COMMA, ($current + 1), $endOfStatement);
         } while ($current !== false);
+
+        if ($tokens[$endOfStatement]['code'] !== \T_OPEN_USE_GROUP) {
+            // Finished the statement.
+            return;
+        }
+
+        $current        = $endOfStatement; // Group open brace.
+        $endOfStatement = $phpcsFile->findNext([\T_CLOSE_USE_GROUP], ($endOfStatement + 1));
+        if ($endOfStatement === false) {
+            // Live coding or parse error.
+            return;
+        }
+
+        do {
+            $continue = $this->processImport($phpcsFile, $current, $endOfStatement, true);
+            if ($continue === false) {
+                break;
+            }
+
+            // Move the stackPtr forward to the next part of the use statement, if any.
+            $current = $phpcsFile->findNext(\T_COMMA, ($current + 1), $endOfStatement);
+        } while ($current !== false);
     }
 
     /**
@@ -92,10 +114,12 @@ final class NoLeadingBackslashSniff implements Sniff
      * @param \PHP_CodeSniffer\Files\File $phpcsFile      The file being scanned.
      * @param int                         $stackPtr       The position of the current token.
      * @param int                         $endOfStatement End token for the current import statement.
+     * @param bool                        $groupUse       Whether the current statement is a partial one
+     *                                                    within a group use statement.
      *
      * @return bool Whether or not to continue examining this import use statement.
      */
-    private function processImport(File $phpcsFile, $stackPtr, $endOfStatement)
+    private function processImport(File $phpcsFile, $stackPtr, $endOfStatement, $groupUse = false)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -121,7 +145,14 @@ final class NoLeadingBackslashSniff implements Sniff
             $phpcsFile->recordMetric($nextNonEmpty, self::METRIC_NAME, 'yes');
 
             $error = 'An import use statement should never start with a leading backslash';
-            $fix   = $phpcsFile->addFixableError($error, $nextNonEmpty, 'LeadingBackslashFound');
+            $code  = 'LeadingBackslashFound';
+
+            if ($groupUse === true) {
+                $error = 'Parse error: partial import use statement in a use group starting with a leading backslash';
+                $code  = 'LeadingBackslashFoundInGroup';
+            }
+
+            $fix = $phpcsFile->addFixableError($error, $nextNonEmpty, $code);
 
             if ($fix === true) {
                 if ($tokens[$nextNonEmpty - 1]['code'] !== \T_WHITESPACE) {
