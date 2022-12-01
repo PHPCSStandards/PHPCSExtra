@@ -12,11 +12,15 @@ interface fooB() {}
 
 trait fooC() {}
 
+enum fooD: string {}
+
 namespace First;
 
 class firstFooA() {}
 
 trait firstFooB() {}
+
+enum firstFooD: string {}
 
 namespace Second;
 
@@ -29,6 +33,8 @@ interface secondFooA() {
 if (!class_exists('secondFooB')) {
     class secondFooB() {}
 }
+
+enum secondFooD: string {}
 
 // This sniff has no rules about side-effects.
 $globVar = new class() {

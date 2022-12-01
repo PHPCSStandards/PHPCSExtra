@@ -42,6 +42,11 @@ final class SeparateFunctionsFromOOUnitTest extends AbstractSniffUnitTest
                     11 => 1,
                 ];
 
+            case 'SeparateFunctionsFromOOUnitTest.8.inc':
+                return [
+                    12 => 1,
+                ];
+
             default:
                 return [];
         }
