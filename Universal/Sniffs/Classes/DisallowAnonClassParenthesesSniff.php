@@ -59,28 +59,32 @@ final class DisallowAnonClassParenthesesSniff implements Sniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
-        $tokens = $phpcsFile->getTokens();
-
+        $tokens       = $phpcsFile->getTokens();
         $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
-        if ($nextNonEmpty === false
-            || $tokens[$nextNonEmpty]['code'] !== \T_OPEN_PARENTHESIS
-        ) {
+
+        // Note: no need to check for `false` as PHPCS won't retokenize `class` to `T_ANON_CLASS` in that case.
+        if ($tokens[$nextNonEmpty]['code'] !== \T_OPEN_PARENTHESIS) {
             // No parentheses found.
             $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'no');
             return;
         }
 
         if (isset($tokens[$nextNonEmpty]['parenthesis_closer']) === false) {
-            // Incomplete set of parentheses. Ignore.
+            /*
+             * Incomplete set of parentheses. Ignore.
+             * Shouldn't be possible as PHPCS won't retokenize `class` to `T_ANON_CLASS` in that case.
+             */
+            // @codeCoverageIgnoreStart
             $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'yes');
             return;
+            // @codeCoverageIgnoreEnd
         }
 
         $closer    = $tokens[$nextNonEmpty]['parenthesis_closer'];
         $hasParams = $phpcsFile->findNext(Tokens::$emptyTokens, ($nextNonEmpty + 1), $closer, true);
         if ($hasParams !== false) {
             // There is something between the parentheses. Ignore.
-            $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'yes, with parameter');
+            $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'yes, with parameter(s)');
             return;
         }
 
