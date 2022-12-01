@@ -67,7 +67,7 @@ final class DisallowStandalonePostIncrementDecrementSniff implements Sniff
         $this->allowedTokens += Collections::namespacedNameTokens();
 
         /*
-         * Remove potential nullsafe object operator. In/decrement not allowed in write context,
+         * Remove nullsafe object operator. In/decrement not allowed in write context,
          * so ignore.
          */
         unset($this->allowedTokens[\T_NULLSAFE_OBJECT_OPERATOR]);

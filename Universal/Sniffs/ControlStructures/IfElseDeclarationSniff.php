@@ -94,7 +94,7 @@ final class IfElseDeclarationSniff implements Sniff
          */
         $prevNonEmpty = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true);
         if ($prevNonEmpty === false || $tokens[$prevNonEmpty]['code'] !== \T_CLOSE_CURLY_BRACKET) {
-            // Parse error. Not our concern.
+            // Parse error or mixing braced and non-braced. Not our concern.
             return;
         }
 

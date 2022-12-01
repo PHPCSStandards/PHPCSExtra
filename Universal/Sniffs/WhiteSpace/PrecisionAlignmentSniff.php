@@ -28,7 +28,7 @@ use PHPCSUtils\Tokens\Collections;
  * - Precision alignment *within* text strings (multi-line text strings, heredocs, nowdocs)
  *   will NOT be flagged by this sniff.
  * - The fixer works based on "best guess" and may not always result in the desired indentation.
- * - This fixer will use tabs or spaces based on whether tabs where present in the original indent.
+ * - This fixer will use tabs or spaces based on whether tabs were present in the original indent.
  *   Use the PHPCS native `Generic.WhiteSpace.DisallowTabIndent` or the
  *   `Generic.WhiteSpace.DisallowSpaceIndent` sniff to clean up the results if so desired.
  *
