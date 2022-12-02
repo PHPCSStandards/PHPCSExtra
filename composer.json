@@ -60,7 +60,7 @@
             "@remove-devcs"
         ],
         "check-complete": [
-            "@php ./vendor/phpcsstandards/phpcsdevtools/bin/phpcs-check-feature-completeness ./NormalizedArrays ./Universal"
+            "@php ./vendor/phpcsstandards/phpcsdevtools/bin/phpcs-check-feature-completeness ./Modernize ./NormalizedArrays ./Universal"
         ],
         "test": [
             "@php ./vendor/phpunit/phpunit/phpunit --filter PHPCSExtra --no-coverage ./vendor/squizlabs/php_codesniffer/tests/AllTests.php"
