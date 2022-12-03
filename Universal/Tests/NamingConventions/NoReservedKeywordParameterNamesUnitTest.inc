@@ -31,6 +31,22 @@ abstract class Bar {
     ); // Bad x 3.
 }
 
+/*
+ * Also flag properties declared via constructor property promotion as those can also be
+ * passed to the class constructor as named parameters.
+ */
+class ConstructorPropertyPromotionNoTypes {
+    public function __construct(
+        public $const = 0.0,
+        protected $do = '',
+        private $eval = null,
+    ) {}
+}
+
+class ConstructorPropertyPromotionWithTypes {
+    public function __construct(protected float|int $Function, public ?string &$GLOBAL = 'test', private mixed $match) {}
+}
+
 // No parameters, nothing to do.
 function noParam() {}
 
