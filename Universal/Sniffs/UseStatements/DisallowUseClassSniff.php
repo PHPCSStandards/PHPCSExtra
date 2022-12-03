@@ -133,7 +133,7 @@ final class DisallowUseClassSniff implements Sniff
                 $reportPtr = $phpcsFile->findNext(\T_STRING, ($reportPtr + 1), $endOfStatement, false, $alias);
                 if ($reportPtr === false) {
                     // Shouldn't be possible.
-                    continue 2;
+                    continue 2; // @codeCoverageIgnore
                 }
 
                 $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($reportPtr + 1), $endOfStatement, true);
