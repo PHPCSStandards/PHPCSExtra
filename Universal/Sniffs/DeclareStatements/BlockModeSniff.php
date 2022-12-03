@@ -177,14 +177,6 @@ class BlockModeSniff implements Sniff
             );
             return;
         }
-		/*
-		 * To do: Add a fixer
-		 *
-		 * But only if strict_types is on its own. In this case we should remove the last brace,
-		 * remove the first one, and after the closing parenthesis add a comma.
-		 *
-		 * Add a fixable test for this case!
-		 */
 
         // Check if there is a code between the declare statement and opening brace/alternative syntax.
         $nextNonEmpty          = $phpcsFile->findNext(Tokens::$emptyTokens, ($closeParenPtr + 1), null, true);
