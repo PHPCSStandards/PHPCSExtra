@@ -10,7 +10,6 @@
 
 namespace PHPCSExtra\Universal\Sniffs\NamingConventions;
 
-use PHP_CodeSniffer\Exceptions\RuntimeException;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHPCSUtils\Tokens\Collections;
@@ -161,16 +160,11 @@ final class NoReservedKeywordParameterNamesSniff implements Sniff
     public function process(File $phpcsFile, $stackPtr)
     {
         // Get all parameters from method signature.
-        try {
-            $parameters = FunctionDeclarations::getParameters($phpcsFile, $stackPtr);
-            if (empty($parameters)) {
-                return;
-            }
-        } catch (RuntimeException $e) {
+        $parameters = FunctionDeclarations::getParameters($phpcsFile, $stackPtr);
+        if (empty($parameters)) {
             return;
         }
 
-        $paramNames = [];
         foreach ($parameters as $param) {
             $name = \ltrim($param['name'], '$');
             if (isset($this->reservedNames[$name]) === true) {
