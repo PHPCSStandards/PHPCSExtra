@@ -13,3 +13,9 @@ abstract class Foo {
         ?int $parent
     ); // Bad x 3.
 }
+
+// No parameters, nothing to do.
+function noParam() {}
+
+// Live coding/parse error. This has to be the last test in the file.
+function liveCoding($echo
