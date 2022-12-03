@@ -16,7 +16,13 @@ use PHPCSUtils\Tokens\Collections;
 use PHPCSUtils\Utils\FunctionDeclarations;
 
 /**
- * Verifies that parameters in function declarations do not use PHP reserved keywords.
+ * Verifies that parameters in function declarations do not use PHP reserved keywords
+ * as this can lead to confusing code when using PHP 8.0+ named parameters in function calls.
+ *
+ * Note: while parameters (variables) are case-sensitive in PHP, keywords are not,
+ * so this sniff checks for the keywords used in parameter names in a
+ * case-insensitive manner to make this sniff independent of code style rules
+ * regarding the case for parameter names.
  *
  * @link https://www.php.net/manual/en/reserved.keywords.php
  *
@@ -30,108 +36,108 @@ final class NoReservedKeywordParameterNamesSniff implements Sniff
      *
      * @since 1.0.0
      *
-     * @var array(string => string)
+     * @var array<string => string> Key is the lowercased keyword, value the "proper" cased keyword.
      */
-    protected $reservedNames = [
-        'abstract'      => true,
-        'and'           => true,
-        'array'         => true,
-        'as'            => true,
-        'break'         => true,
-        'callable'      => true,
-        'case'          => true,
-        'catch'         => true,
-        'class'         => true,
-        'clone'         => true,
-        'const'         => true,
-        'continue'      => true,
-        'declare'       => true,
-        'default'       => true,
-        'die'           => true,
-        'do'            => true,
-        'echo'          => true,
-        'else'          => true,
-        'elseif'        => true,
-        'empty'         => true,
-        'enddeclare'    => true,
-        'endfor'        => true,
-        'endforeach'    => true,
-        'endif'         => true,
-        'endswitch'     => true,
-        'endwhile'      => true,
-        'enum'          => true,
-        'eval'          => true,
-        'exit'          => true,
-        'extends'       => true,
-        'final'         => true,
-        'finally'       => true,
-        'fn'            => true,
-        'for'           => true,
-        'foreach'       => true,
-        'function'      => true,
-        'global'        => true,
-        'goto'          => true,
-        'if'            => true,
-        'implements'    => true,
-        'include'       => true,
-        'include_once'  => true,
-        'instanceof'    => true,
-        'insteadof'     => true,
-        'interface'     => true,
-        'isset'         => true,
-        'list'          => true,
-        'match'         => true,
-        'namespace'     => true,
-        'new'           => true,
-        'or'            => true,
-        'print'         => true,
-        'private'       => true,
-        'protected'     => true,
-        'public'        => true,
-        'readonly'      => true,
-        'require'       => true,
-        'require_once'  => true,
-        'return'        => true,
-        'static'        => true,
-        'switch'        => true,
-        'throw'         => true,
-        'trait'         => true,
-        'try'           => true,
-        'unset'         => true,
-        'use'           => true,
-        'var'           => true,
-        'while'         => true,
-        'xor'           => true,
-        'yield'         => true,
-        '__CLASS__'     => true,
-        '__DIR__'       => true,
-        '__FILE__'      => true,
-        '__FUNCTION__'  => true,
-        '__LINE__'      => true,
-        '__METHOD__'    => true,
-        '__NAMESPACE__' => true,
-        '__TRAIT__'     => true,
-        'int'           => true,
-        'float'         => true,
-        'bool'          => true,
-        'string'        => true,
-        'true'          => true,
-        'false'         => true,
-        'null'          => true,
-        'void'          => true,
-        'iterable'      => true,
-        'object'        => true,
-        'resource'      => true,
-        'mixed'         => true,
-        'numeric'       => true,
-        'never'         => true,
+    private $reservedNames = [
+        'abstract'      => 'abstract',
+        'and'           => 'and',
+        'array'         => 'array',
+        'as'            => 'as',
+        'break'         => 'break',
+        'callable'      => 'callable',
+        'case'          => 'case',
+        'catch'         => 'catch',
+        'class'         => 'class',
+        'clone'         => 'clone',
+        'const'         => 'const',
+        'continue'      => 'continue',
+        'declare'       => 'declare',
+        'default'       => 'default',
+        'die'           => 'die',
+        'do'            => 'do',
+        'echo'          => 'echo',
+        'else'          => 'else',
+        'elseif'        => 'elseif',
+        'empty'         => 'empty',
+        'enddeclare'    => 'enddeclare',
+        'endfor'        => 'endfor',
+        'endforeach'    => 'endforeach',
+        'endif'         => 'endif',
+        'endswitch'     => 'endswitch',
+        'endwhile'      => 'endwhile',
+        'enum'          => 'enum',
+        'eval'          => 'eval',
+        'exit'          => 'exit',
+        'extends'       => 'extends',
+        'final'         => 'final',
+        'finally'       => 'finally',
+        'fn'            => 'fn',
+        'for'           => 'for',
+        'foreach'       => 'foreach',
+        'function'      => 'function',
+        'global'        => 'global',
+        'goto'          => 'goto',
+        'if'            => 'if',
+        'implements'    => 'implements',
+        'include'       => 'include',
+        'include_once'  => 'include_once',
+        'instanceof'    => 'instanceof',
+        'insteadof'     => 'insteadof',
+        'interface'     => 'interface',
+        'isset'         => 'isset',
+        'list'          => 'list',
+        'match'         => 'match',
+        'namespace'     => 'namespace',
+        'new'           => 'new',
+        'or'            => 'or',
+        'print'         => 'print',
+        'private'       => 'private',
+        'protected'     => 'protected',
+        'public'        => 'public',
+        'readonly'      => 'readonly',
+        'require'       => 'require',
+        'require_once'  => 'require_once',
+        'return'        => 'return',
+        'static'        => 'static',
+        'switch'        => 'switch',
+        'throw'         => 'throw',
+        'trait'         => 'trait',
+        'try'           => 'try',
+        'unset'         => 'unset',
+        'use'           => 'use',
+        'var'           => 'var',
+        'while'         => 'while',
+        'xor'           => 'xor',
+        'yield'         => 'yield',
+        '__class__'     => '__CLASS__',
+        '__dir__'       => '__DIR__',
+        '__file__'      => '__FILE__',
+        '__function__'  => '__FUNCTION__',
+        '__line__'      => '__LINE__',
+        '__method__'    => '__METHOD__',
+        '__namespace__' => '__NAMESPACE__',
+        '__trait__'     => '__TRAIT__',
+        'int'           => 'int',
+        'float'         => 'float',
+        'bool'          => 'bool',
+        'string'        => 'string',
+        'true'          => 'true',
+        'false'         => 'false',
+        'null'          => 'null',
+        'void'          => 'void',
+        'iterable'      => 'iterable',
+        'object'        => 'object',
+        'resource'      => 'resource',
+        'mixed'         => 'mixed',
+        'numeric'       => 'numeric',
+        'never'         => 'never',
 
         /*
          * Not reserved keywords, but equally confusing when used in the context of function calls
          * with named parameters.
          */
-        'parent'        => true,
-        'self'          => true,
+        'parent'        => 'parent',
+        'self'          => 'self',
     ];
 
     /**
@@ -165,15 +171,19 @@ final class NoReservedKeywordParameterNamesSniff implements Sniff
             return;
         }
 
+        $message = 'It is recommended not to use reserved keyword "%s" as function parameter name. Found: %s';
+
         foreach ($parameters as $param) {
-            $name = \ltrim($param['name'], '$');
-            if (isset($this->reservedNames[$name]) === true) {
-                $phpcsFile->addWarning(
-                    'It is recommended not to use reserved keywords as function parameter names. Found: %s',
-                    $param['token'],
-                    $name . 'Found',
-                    [$param['name']]
-                );
+            $name   = \ltrim($param['name'], '$');
+            $nameLC = \strtolower($name);
+            if (isset($this->reservedNames[$nameLC]) === true) {
+                $errorCode = $nameLC . 'Found';
+                $data      = [
+                    $this->reservedNames[$nameLC],
+                    $param['name'],
+                ];
+
+                $phpcsFile->addWarning($message, $param['token'], $errorCode, $data);
             }
         }
     }

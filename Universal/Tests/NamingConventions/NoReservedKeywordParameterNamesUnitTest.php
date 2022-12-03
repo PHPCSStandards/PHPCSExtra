@@ -46,6 +46,12 @@ final class NoReservedKeywordParameterNamesUnitTest extends AbstractSniffUnitTes
             11 => 1,
             12 => 1,
             13 => 1,
+            22 => 2,
+            23 => 3,
+            24 => 2,
+            28 => 1,
+            29 => 1,
+            30 => 1,
         ];
     }
 }
