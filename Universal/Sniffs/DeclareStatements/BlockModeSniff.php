@@ -39,6 +39,24 @@ class BlockModeSniff implements Sniff
 {
 
     /**
+     * Name of the metric.
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
+    const DECLARE_SCOPE_METRIC = 'Declare directive scope';
+
+    /**
+     * Name of the metric.
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
+    const DECLARE_TYPE_METRIC = 'Declare directive type';
+
+    /**
      * The option for the encoding directive.
      *
      * Can be one of: 'disallow', 'allow' (no preference), 'require'.
@@ -144,6 +162,12 @@ class BlockModeSniff implements Sniff
 
         $usesBlockMode = isset($tokens[$stackPtr]['scope_opener']);
 
+        if ($usesBlockMode) {
+            $phpcsFile->recordMetric($stackPtr, self::DECLARE_SCOPE_METRIC, 'Block');
+        } else {
+            $phpcsFile->recordMetric($stackPtr, self::DECLARE_SCOPE_METRIC, 'Global');
+        }
+
         // If strict types is defined using block mode, throw error.
         if ($usesBlockMode && isset($directiveStrings['strict_types'])) {
             $phpcsFile->addError(
@@ -153,7 +177,14 @@ class BlockModeSniff implements Sniff
             );
             return;
         }
-        // To do: Add a fixer!
+		/*
+		 * To do: Add a fixer
+		 *
+		 * But only if strict_types is on its own. In this case we should remove the last brace,
+		 * remove the first one, and after the closing parenthesis add a comma.
+		 *
+		 * Add a fixable test for this case!
+		 */
 
         // Check if there is a code between the declare statement and opening brace/alternative syntax.
         $nextNonEmpty          = $phpcsFile->findNext(Tokens::$emptyTokens, ($closeParenPtr + 1), null, true);
@@ -166,6 +197,12 @@ class BlockModeSniff implements Sniff
                 'UnexpectedCodeFound'
             );
             return;
+        }
+
+        foreach (\array_keys($directiveStrings) as $directiveString) {
+            if (isset($this->allowedDirectives[$directiveString])) {
+                $phpcsFile->recordMetric($stackPtr, self::DECLARE_TYPE_METRIC, $directiveString);
+            }
         }
 
         // Multiple directives - if one requires block mode usage, other has to as well.
