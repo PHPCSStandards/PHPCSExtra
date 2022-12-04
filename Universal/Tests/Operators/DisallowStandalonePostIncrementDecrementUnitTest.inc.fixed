@@ -5,16 +5,16 @@
  */
 $i = 10;
 --$i;
--- $i;
+-- $i ?> <?php
 -- /*comment*/ $i;
     ++$i;
     ++
-    $i;
+    $i ?> <?php
     ++/*comment*/$i;
 
 if (true) {
     ++ClassName::$v;
---\Fully\Qualified\ClassName::$v;
+--\Fully\Qualified\ClassName::$v ?> <?php
     ++namespace\ClassName::$v;
 }
 
@@ -22,14 +22,14 @@ if (true) {
 
 --$a[0];
 
-++$obj->prop;
+++$obj->prop ?> <?php
 --$obj->prop;
 
 /*
  * These should throw errors.
  */
 --$i;
---$i        ;
+--$i         ?> <?php
 --$i /*comment*/ ;
     ++$i;
     ++$i ;
@@ -39,13 +39,13 @@ if (true) {
 
 if (true) {
     ++ClassName::$v;
---\Fully\Qualified\ClassName::$v;
+--\Fully\Qualified\ClassName::$v ?> <?php
     ++namespace\ClassName::$v;
 }
 
 ++self::$v;--self::$v;
 
-           ++$obj->prop ;
+           ++$obj->prop  ?> <?php
 /*comment*/ --$obj-> /*comment*/ prop ;
 
 ++$obj->prop[$value[2]];
@@ -55,7 +55,7 @@ if (true) {
  * Report on, but don't auto-fix, statements with multiple in/decrementers.
  */
 ++$i--;
-++ -- $i ++ ++;
+++ -- $i ++ ++ ?> <?php
 
 /*
  * Don't touch non-stand-alone statements.
@@ -64,7 +64,7 @@ while ($i++ && $i < 10);
 
 for ($i = 0; $i < 10; $i++) {}
 
-function_call($i--, $j++);
+function_call($i--, $j++) ?> <?php
 
 $a = 10 + $i++ - 5;
 

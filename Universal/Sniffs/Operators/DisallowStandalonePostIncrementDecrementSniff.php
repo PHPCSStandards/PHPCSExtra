@@ -98,7 +98,14 @@ final class DisallowStandalonePostIncrementDecrementSniff implements Sniff
         $start = BCFile::findStartOfStatement($phpcsFile, $stackPtr);
         $end   = BCFile::findEndOfStatement($phpcsFile, $stackPtr);
 
-        if ($tokens[$end]['code'] !== \T_SEMICOLON) {
+        if (isset(Collections::incrementDecrementOperators()[$tokens[$end]['code']])) {
+            // Statement ends on a PHP close tag, set the end pointer to the close tag.
+            $end = $phpcsFile->findNext(Tokens::$emptyTokens, ($end + 1), null, true);
+        }
+
+        if ($tokens[$end]['code'] !== \T_SEMICOLON
+            && $tokens[$end]['code'] !== \T_CLOSE_TAG
+        ) {
             // Not a stand-alone statement.
             return $end;
         }
