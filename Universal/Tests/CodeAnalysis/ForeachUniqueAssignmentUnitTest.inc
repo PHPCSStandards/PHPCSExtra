@@ -22,15 +22,23 @@ foreach ($array as $key => list($a) ) {}
 foreach ($array as $k => $k ) {}
 foreach ($array as /*comment*/ $k [ 'key' ] => $k['key'] ) {}
 foreach ($array as $k[$name /*comment*/] => $k[/*comment*/ $name] ) {}
-foreach ($array as [$a] => [$a] ) {}
-foreach ($array as list($a) => list($a) ) {}
+foreach ($array as $a => [$a] ) {}
+foreach ($array as $key => list($a, $key, $b) ) {}
 foreach ( $data as $this->prop['key'] => $this->prop['key'] ) {}
+foreach ( $array as $key['key'] => list( $a, $key['key'] ) ) {}
 
 // Also detect the same variable being used in combination with a reference assignment.
 foreach ($a as $k => &$k) {}
+
+// Ensure non-unique variables used in foreach list assignments are disregarded. Not the concern of this sniff.
+foreach ($data as $key => list(, ,)) {} // Invalid, empty list. Bow out.
+foreach ($data as [$id => $id]) {}
+foreach ($data as $key => list("id" => $id, "id" => $id)) {}
+foreach ($data as $key => ["id" => $id, "id" => $id]) {}
 
 /*
  * Parse errors, not our concern.
  */
 foreach ($array) {} // Missing "as".
 foreach ($array as $k => $k
+foreach ($array as $k => ) {}
