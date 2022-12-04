@@ -36,7 +36,8 @@ final class ForeachUniqueAssignmentUnitTest extends AbstractSniffUnitTest
             25 => 1,
             26 => 1,
             27 => 1,
-            30 => 1,
+            28 => 1,
+            31 => 1,
         ];
     }
 
