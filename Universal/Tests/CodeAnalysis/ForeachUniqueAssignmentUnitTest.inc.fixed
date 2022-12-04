@@ -13,8 +13,8 @@ foreach ($array as $k => &$v ) {}
 foreach ($array as $k['key'] => $k['value'] ) {}
 foreach ($array as $k[$name] => $k[$value] ) {}
 foreach ($data as $key => [$id, [$name, $address]]) {}
-foreach ($data as list("id" => $id, "name" => $name)) {}
-foreach ($array as array($a) => list($a) ) {}
+foreach ($data as $key => list("id" => $id, "name" => $name)) {}
+foreach ($array as $key => list($a) ) {}
 
 /*
  * The issue.
