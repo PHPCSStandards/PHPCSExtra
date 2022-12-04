@@ -13,7 +13,9 @@ namespace PHPCSExtra\Universal\Sniffs\CodeAnalysis;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Tokens\Collections;
 use PHPCSUtils\Utils\GetTokensAsString;
+use PHPCSUtils\Utils\Lists;
 
 /**
  * Detects using the same variable for both the key as well as the value in a foreach assignment.
@@ -67,46 +69,85 @@ final class ForeachUniqueAssignmentSniff implements Sniff
             return;
         }
 
-        $doubleArrowPtr = $phpcsFile->findNext(\T_DOUBLE_ARROW, ($asPtr + 1), $closer);
-        if ($doubleArrowPtr === false) {
-            // Key does not get assigned.
+        // Real target.
+        $find = [\T_DOUBLE_ARROW];
+        // Prevent matching on double arrows within a list assignment.
+        $find += Collections::listTokens();
+
+        $doubleArrowPtr = $phpcsFile->findNext($find, ($asPtr + 1), $closer);
+        if ($doubleArrowPtr === false
+            || $tokens[$doubleArrowPtr]['code'] !== \T_DOUBLE_ARROW
+        ) {
+            // No key assignment.
             return;
         }
 
-        $keyAsString   = GetTokensAsString::noEmpties($phpcsFile, ($asPtr + 1), ($doubleArrowPtr - 1));
-        $valueAsString = GetTokensAsString::noEmpties($phpcsFile, ($doubleArrowPtr + 1), ($closer - 1));
+        $isListAssignment = $phpcsFile->findNext(Tokens::$emptyTokens, ($doubleArrowPtr + 1), $closer, true);
+        if ($isListAssignment === false) {
+            // Parse error or live coding, not our concern.
+        }
 
-        if (\ltrim($keyAsString, '&') !== \ltrim($valueAsString, '&')) {
-            // Key and value not the same.
+        $keyAsString      = \ltrim(GetTokensAsString::noEmpties($phpcsFile, ($asPtr + 1), ($doubleArrowPtr - 1)), '&');
+        $valueAssignments = [];
+        if (isset(Collections::listTokens()[$tokens[$isListAssignment]['code']]) === false) {
+            // Single value assignment.
+            $valueAssignments[] = GetTokensAsString::noEmpties($phpcsFile, ($doubleArrowPtr + 1), ($closer - 1));
+        } else {
+            // List assignment.
+            $assignments = Lists::getAssignments($phpcsFile, $isListAssignment);
+            foreach ($assignments as $listItem) {
+                if ($listItem['assignment'] === '') {
+                    // Ignore empty list assignments.
+                    continue;
+                }
+
+                // Note: this doesn't take nested lists into account (yet).
+                $valueAssignments[] = $listItem['assignment'];
+            }
+        }
+
+        if (empty($valueAssignments)) {
+            // No assignments found.
             return;
         }
 
-        $error  = 'The variables used for the key and the value in a foreach assignment should be unique.';
-        $error .= 'Both the key and the value will be currently assigned to: "%s"';
+        foreach ($valueAssignments as $valueAsString) {
+            $valueAsString = \ltrim($valueAsString, '&');
 
-        $fix = $phpcsFile->addFixableError($error, $doubleArrowPtr, 'NotUnique', [$valueAsString]);
-        if ($fix === true) {
-            $phpcsFile->fixer->beginChangeset();
-
-            // Remove the key.
-            for ($i = ($asPtr + 1); $i < ($doubleArrowPtr + 1); $i++) {
-                if ($tokens[$i]['code'] === \T_WHITESPACE
-                    && isset(Tokens::$commentTokens[$tokens[($i + 1)]['code']])
-                ) {
-                    // Don't remove whitespace when followed directly by a comment.
-                    continue;
-                }
-
-                if (isset(Tokens::$commentTokens[$tokens[$i]['code']])) {
-                    // Don't remove comments.
-                    continue;
-                }
-
-                // Remove everything else.
-                $phpcsFile->fixer->replaceToken($i, '');
+            if ($keyAsString !== $valueAsString) {
+                // Key and value not the same.
+                continue;
             }
 
-            $phpcsFile->fixer->endChangeset();
+            $error  = 'The variables used for the key and the value in a foreach assignment should be unique.';
+            $error .= 'Both the key and the value will currently be assigned to: "%s"';
+
+            $fix = $phpcsFile->addFixableError($error, $doubleArrowPtr, 'NotUnique', [$valueAsString]);
+            if ($fix === true) {
+                $phpcsFile->fixer->beginChangeset();
+
+                // Remove the key.
+                for ($i = ($asPtr + 1); $i < ($doubleArrowPtr + 1); $i++) {
+                    if ($tokens[$i]['code'] === \T_WHITESPACE
+                        && isset(Tokens::$commentTokens[$tokens[($i + 1)]['code']])
+                    ) {
+                        // Don't remove whitespace when followed directly by a comment.
+                        continue;
+                    }
+
+                    if (isset(Tokens::$commentTokens[$tokens[$i]['code']])) {
+                        // Don't remove comments.
+                        continue;
+                    }
+
+                    // Remove everything else.
+                    $phpcsFile->fixer->replaceToken($i, '');
+                }
+
+                $phpcsFile->fixer->endChangeset();
+            }
+
+            break;
         }
     }
 }
