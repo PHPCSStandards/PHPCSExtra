@@ -76,7 +76,3 @@ echo 'hi!';
 }
 
 declare ticks=1; // Intentional live coding error. Ignore.
-
-/* Rest to the default directives for the next run */
-// phpcs:set Universal.DeclareStatements.BlockMode encodingBlockMode disallow
-// phpcs:set Universal.DeclareStatements.BlockMode ticksBlockMode allow

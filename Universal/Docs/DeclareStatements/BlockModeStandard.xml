@@ -16,7 +16,7 @@ declare(strict_types=1);
 declare(encoding='utf-8');
 
 declare(ticks=10):
-	// Code.
+    // Code.
 enddeclare;
         ]]>
         </code>
@@ -36,20 +36,24 @@ enddeclare;
     </code_comparison>
     <standard>
     <![CDATA[
-        strict_types declaration directive mustn't be written using curly braces, or with alternative syntax.
+    A declare statement for the `strict_types` directive is not allowed to be written using curly braces or with alternative syntax.
     ]]>
     </standard>
     <code_comparison>
-        <code title="Valid: strict_types written without curly braces.">
+        <code title="Valid: strict_types statement not using block mode.">
         <![CDATA[
 declare(strict_types=1);
         ]]>
         </code>
-        <code title="Invalid: strict_types written using alternative syntax/curly braces.">
+        <code title="Invalid: strict_types statement using alternative syntax/curly braces.">
         <![CDATA[
-declare(strict_types=1, ticks=1) <em>{</em>
-   // Code.
+declare(strict_types=1) <em>{</em>
+    // Code.
 <em>}</em>
+
+declare(strict_types=1) <em>:</em>
+    // Code.
+<em>enddeclare</em>;
         ]]>
         </code>
     </code_comparison>
