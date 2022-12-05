@@ -45,6 +45,6 @@ declare(strict_types=1, encoding='ISO-8859-1'): // Error.
     enddeclare;
 enddeclare;
 
-/* Rest to the default directives for the next run */
+/* Reset to the default directives for the next run */
 // phpcs:set Universal.DeclareStatements.BlockMode encodingBlockMode disallow
 // phpcs:set Universal.DeclareStatements.BlockMode ticksBlockMode allow

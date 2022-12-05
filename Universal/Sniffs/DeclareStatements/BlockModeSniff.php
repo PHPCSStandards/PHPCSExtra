@@ -18,13 +18,13 @@ use PHPCSUtils\Utils\TextStrings;
 /**
  * Checks the style of the declare statement.
  *
- * `declare` directives can be written in two different styles:
+ * Declare statements can be written in two different styles:
  * 1. Applied to the rest of the file, usually written at the top of a file like `declare(strict_types=1);`.
  * 2. Applied to a limited scope using curly braces or using alternative control structure syntax
- *    (the exception to this rule is the `strict_types` directive). This is known as a block mode.
+ *    (the exception to this rule is the `strict_types` directive). This is known as block mode.
  *
- * You can also have multiple directives written inside the `declare` directive.
- * This sniff will check the preferred mode of the `declare` directive.
+ * There can be multiple directives inside a `declare` statement.
+ * This sniff checks the preferred mode for the `declare` statements.
  *
  * You can modify the sniff by changing the whether the block mode of the encoding and the ticks directives
  * is allowed, disallowed or required. By default, the ticks directive, if written in
@@ -45,7 +45,7 @@ class BlockModeSniff implements Sniff
      *
      * @var string
      */
-    const DECLARE_SCOPE_METRIC = 'Declare directive scope';
+    const DECLARE_SCOPE_METRIC = 'Declare statement scope';
 
     /**
      * Name of the metric.
@@ -57,10 +57,10 @@ class BlockModeSniff implements Sniff
     const DECLARE_TYPE_METRIC = 'Declare directive type';
 
     /**
-     * The option for the encoding directive.
+     * Whether block mode is allowed for `encoding` directives.
      *
-     * Can be one of: 'disallow', 'allow' (no preference), 'require'.
-     * By default it's disallowed.
+     * Can be one of: 'disallow', 'allow' (no preference), or 'require'.
+     * Defaults to: 'disallow'.
      *
      * @since 1.0.0
      *
@@ -69,10 +69,10 @@ class BlockModeSniff implements Sniff
     public $encodingBlockMode = 'disallow';
 
     /**
-     * The option for the ticks directive.
+     * Whether block mode is allowed for `ticks` directives.
      *
-     * Can be one of: 'disallow', 'allow' (no preference), 'require'.
-     * By default it's allowed.
+     * Can be one of: 'disallow', 'allow' (no preference), or 'require'.
+     * Defaults to: 'allow'.
      *
      * @since 1.0.0
      *
@@ -83,7 +83,7 @@ class BlockModeSniff implements Sniff
     /**
      * The default option for the strict_types directive.
      *
-     * Only directive that cannot be written in block mode is strict_types.
+     * Block mode is not allowed for the `strict_types` directive.
      * Using it in block mode will throw a PHP fatal error.
      *
      * @since 1.0.0
@@ -114,9 +114,7 @@ class BlockModeSniff implements Sniff
      */
     public function register()
     {
-        return [
-            T_DECLARE
-        ];
+        return [T_DECLARE];
     }
 
     /**
@@ -146,10 +144,12 @@ class BlockModeSniff implements Sniff
         // Get the next string and check if it's an allowed directive.
         // Find all the directive strings inside the declare statement.
         for ($i = $openParenPtr; $i <= $closeParenPtr; $i++) {
-            if ($tokens[$i]['code'] === \T_STRING
-                && isset($this->allowedDirectives[\strtolower($tokens[$i]['content'])])
-            ) {
-                $directiveStrings[$tokens[$i]['content']] = true;
+            if ($tokens[$i]['code'] === \T_STRING) {
+                $contentsLC = \strtolower($tokens[$i]['content']);
+                if (isset($this->allowedDirectives[$contentsLC])) {
+                    $phpcsFile->recordMetric($i, self::DECLARE_TYPE_METRIC, $contentsLC);
+                    $directiveStrings[$contentsLC] = true;
+                }
             }
         }
 
@@ -163,38 +163,57 @@ class BlockModeSniff implements Sniff
         $usesBlockMode = isset($tokens[$stackPtr]['scope_opener']);
 
         if ($usesBlockMode) {
-            $phpcsFile->recordMetric($stackPtr, self::DECLARE_SCOPE_METRIC, 'Block');
+            $phpcsFile->recordMetric($stackPtr, self::DECLARE_SCOPE_METRIC, 'Block mode');
         } else {
-            $phpcsFile->recordMetric($stackPtr, self::DECLARE_SCOPE_METRIC, 'Global');
+            $phpcsFile->recordMetric($stackPtr, self::DECLARE_SCOPE_METRIC, 'File mode');
         }
 
         // If strict types is defined using block mode, throw error.
         if ($usesBlockMode && isset($directiveStrings['strict_types'])) {
-            $phpcsFile->addError(
-                'strict_types declaration must not use block mode.',
-                $stackPtr,
-                'Forbidden'
-            );
+            $error = 'strict_types declaration must not use block mode.';
+            $code  = 'Forbidden';
+
+            if (isset($tokens[$stackPtr]['scope_closer'])) {
+                // If there is no scope closer, we cannot auto-fix.
+                $phpcsFile->addError($error, $stackPtr, $code);
+                return;
+            }
+
+            $fix = $phpcsFile->addFixableError($error, $stackPtr, $code);
+
+            if ($fix === true) {
+                $phpcsFile->fixer->beginChangeset();
+                $phpcsFile->fixer->addContent($closeParenPtr, ';');
+                $phpcsFile->fixer->replaceToken($tokens[$stackPtr]['scope_opener'], '');
+
+                // Remove potential whitespace between parenthesis closer and the brace.
+                for ($i = ($tokens[$stackPtr]['scope_opener'] - 1); $i > 0; $i--) {
+                    if ($tokens[$i]['code'] !== \T_WHITESPACE) {
+                        break;
+                    }
+
+                    $phpcsFile->fixer->replaceToken($i, '');
+                }
+
+                $phpcsFile->fixer->replaceToken($tokens[$stackPtr]['scope_closer'], '');
+                $phpcsFile->fixer->endChangeset();
+            }
             return;
         }
 
-        // Check if there is a code between the declare statement and opening brace/alternative syntax.
-        $nextNonEmpty          = $phpcsFile->findNext(Tokens::$emptyTokens, ($closeParenPtr + 1), null, true);
-        $directiveCloserTokens = [\T_SEMICOLON, \T_CLOSE_TAG, \T_OPEN_CURLY_BRACKET, \T_COLON];
-
-        if (!in_array($tokens[$nextNonEmpty]['code'], $directiveCloserTokens, true)) {
+        // Check if there is code between the declare statement and opening brace/alternative syntax.
+        $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($closeParenPtr + 1), null, true);
+        if ($tokens[$nextNonEmpty]['code'] !== \T_SEMICOLON
+	        && $tokens[$nextNonEmpty]['code'] !== \T_CLOSE_TAG
+	        && $tokens[$nextNonEmpty]['code'] !== \T_OPEN_CURLY_BRACKET
+	        && $tokens[$nextNonEmpty]['code'] !== \T_COLON
+        ) {
             $phpcsFile->addError(
-                'Unexpected code found after opening the declare statement without closing it.',
+                'Unexpected code found after the declare statement.',
                 $stackPtr,
                 'UnexpectedCodeFound'
             );
             return;
-        }
-
-        foreach (\array_keys($directiveStrings) as $directiveString) {
-            if (isset($this->allowedDirectives[$directiveString])) {
-                $phpcsFile->recordMetric($stackPtr, self::DECLARE_TYPE_METRIC, $directiveString);
-            }
         }
 
         // Multiple directives - if one requires block mode usage, other has to as well.
@@ -205,7 +224,7 @@ class BlockModeSniff implements Sniff
             $phpcsFile->addError(
                 'Multiple directives found, but one of them is disallowing the use of block mode.',
                 $stackPtr,
-                'Forbidden'
+                'Forbidden' // <= Duplicate error code for different message (line 175)
             );
             return;
         }
