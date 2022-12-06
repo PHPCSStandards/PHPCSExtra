@@ -145,91 +145,82 @@ final class DuplicateArrayKeySniff extends AbstractArrayDeclarationSniff
 
         /*
          * Check if we've seen the key before.
+         */
+        if ((isset($this->phpVersion) === false || $this->phpVersion < 80000)
+            && isset($this->keysSeenLt8[$key]) === true
+        ) {
+            $errors['phplt8'] = [
+                'data_subset'  => $baseData,
+                'error_suffix' => '',
+                'code_suffix'  => '',
+            ];
+
+            if ($integerKey === true) {
+                $errors['phplt8']['error_suffix'] = ' when using PHP < 8.0';
+                $errors['phplt8']['code_suffix']  = 'ForPHPlt80';
+            }
+
+            $firstSeen              = $this->keysSeenLt8[$key];
+            $firstNonEmptyFirstSeen = $phpcsFile->findNext(Tokens::$emptyTokens, $firstSeen['ptr'], null, true);
+
+            $errors['phplt8']['data_subset'][] = $this->tokens[$firstNonEmptyFirstSeen]['line'];
+        }
+
+        if ((isset($this->phpVersion) === false || $this->phpVersion >= 80000)
+            && isset($this->keysSeenGt8[$key]) === true
+        ) {
+            $errors['phpgt8'] = [
+                'data_subset'  => $baseData,
+                'error_suffix' => '',
+                'code_suffix'  => '',
+            ];
+
+            if ($integerKey === true) {
+                $errors['phpgt8']['error_suffix'] = ' when using PHP >= 8.0';
+                $errors['phpgt8']['code_suffix']  = 'ForPHPgte80';
+            }
+
+            $firstSeen              = $this->keysSeenGt8[$key];
+            $firstNonEmptyFirstSeen = $phpcsFile->findNext(Tokens::$emptyTokens, $firstSeen['ptr'], null, true);
+
+            $errors['phpgt8']['data_subset'][] = $this->tokens[$firstNonEmptyFirstSeen]['line'];
+        }
+
+        /*
+         * Throw the error(s).
          *
          * If no PHP version was passed, throw errors both for PHP < 8.0 and PHP >= 8.0.
          * If a PHP version was set, only throw the error appropriate for the selected PHP version.
          * If both errors would effectively be the same, only throw one.
          */
-        if (isset($this->phpVersion) === false || $this->phpVersion < 80000) {
-            if (isset($this->keysSeenLt8[$key]) === true) {
-                $errorSuffix     = '';
-                $errorCodeSuffix = '';
-                if ($integerKey === true) {
-                    $errorSuffix     = ' when using PHP < 8.0';
-                    $errorCodeSuffix = 'ForPHPlt80';
-                }
-
-                $firstSeen              = $this->keysSeenLt8[$key];
-                $firstNonEmptyFirstSeen = $phpcsFile->findNext(Tokens::$emptyTokens, $firstSeen['ptr'], null, true);
-                $dataLt8                = $baseData;
-                $dataLt8[]              = $this->tokens[$firstNonEmptyFirstSeen]['line'];
-
-                $errors['phplt8'] = [
-                    'data_subset'  => $dataLt8,
-                    'error_suffix' => $errorSuffix,
-                    'code_suffix'  => $errorCodeSuffix,
-                ];
-            }
-        }
-
-        if (isset($this->phpVersion) === false || $this->phpVersion >= 80000) {
-            if (isset($this->keysSeenGt8[$key]) === true) {
-                $errorSuffix     = '';
-                $errorCodeSuffix = '';
-                if ($integerKey === true) {
-                    $errorSuffix     = ' when using PHP >= 8.0';
-                    $errorCodeSuffix = 'ForPHPgte80';
-                }
-
-                $firstSeen              = $this->keysSeenGt8[$key];
-                $firstNonEmptyFirstSeen = $phpcsFile->findNext(Tokens::$emptyTokens, $firstSeen['ptr'], null, true);
-                $dataGt8                = $baseData;
-                $dataGt8[]              = $this->tokens[$firstNonEmptyFirstSeen]['line'];
-
-                $errors['phpgt8'] = [
-                    'data_subset'  => $dataGt8,
-                    'error_suffix' => $errorSuffix,
-                    'code_suffix'  => $errorCodeSuffix,
-                ];
-            }
-        }
-
         if ($errors !== []) {
             $firstNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, $startPtr, null, true);
 
-            if (isset($errors['phplt8'], $errors['phpgt8'])) {
-                if ($errors['phplt8']['data_subset'] === $errors['phpgt8']['data_subset']) {
-                    // Only throw the error once if it would be the same for PHP < 8.0 and PHP >= 8.0.
-                    $data = $errors['phplt8']['data_subset'];
-                    \array_unshift($data, '');
+            if (isset($errors['phplt8'], $errors['phpgt8'])
+                && $errors['phplt8']['data_subset'] === $errors['phpgt8']['data_subset']
+            ) {
+                // Only throw the error once if it would be the same for PHP < 8.0 and PHP >= 8.0.
+                $data = $errors['phplt8']['data_subset'];
+                \array_unshift($data, '');
 
-                    $phpcsFile->addError($errorMsg, $firstNonEmpty, $errorCode, $data);
-                } else {
-                    // Throw both errors.
-                    $codeLt8 = $errorCode . $errors['phplt8']['code_suffix'];
-                    $dataLt8 = $errors['phplt8']['data_subset'];
-                    \array_unshift($dataLt8, $errors['phplt8']['error_suffix']);
+                $phpcsFile->addError($errorMsg, $firstNonEmpty, $errorCode, $data);
+                return;
+            }
 
-                    $phpcsFile->addError($errorMsg, $firstNonEmpty, $codeLt8, $dataLt8);
-
-                    $codeGt8 = $errorCode . $errors['phpgt8']['code_suffix'];
-                    $dataGt8 = $errors['phpgt8']['data_subset'];
-                    \array_unshift($dataGt8, $errors['phpgt8']['error_suffix']);
-
-                    $phpcsFile->addError($errorMsg, $firstNonEmpty, $codeGt8, $dataGt8);
-                }
-            } elseif (isset($errors['phplt8'])) {
-                $errorCode .= $errors['phplt8']['code_suffix'];
-                $data       = $errors['phplt8']['data_subset'];
+            if (isset($errors['phplt8'])) {
+                $code = $errorCode . $errors['phplt8']['code_suffix'];
+                $data = $errors['phplt8']['data_subset'];
                 \array_unshift($data, $errors['phplt8']['error_suffix']);
 
-                $phpcsFile->addError($errorMsg, $firstNonEmpty, $errorCode, $data);
-            } elseif (isset($errors['phpgt8'])) {
-                $errorCode .= $errors['phpgt8']['code_suffix'];
-                $data       = $errors['phpgt8']['data_subset'];
+                $phpcsFile->addError($errorMsg, $firstNonEmpty, $code, $data);
+            }
+
+            if (isset($errors['phpgt8'])) {
+                $code = $errorCode . $errors['phpgt8']['code_suffix'];
+                $data = $errors['phpgt8']['data_subset'];
                 \array_unshift($data, $errors['phpgt8']['error_suffix']);
 
-                $phpcsFile->addError($errorMsg, $firstNonEmpty, $errorCode, $data);
+                $phpcsFile->addError($errorMsg, $firstNonEmpty, $code, $data);
             }
 
             return;
