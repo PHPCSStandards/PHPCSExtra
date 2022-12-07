@@ -38,15 +38,15 @@ PHPCSExtra
 Introduction
 -------------------------------------------
 
-PHPCSExtra is a collection of sniffs and standards for use with [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer).
+PHPCSExtra is a collection of sniffs and standards for use with [PHP_CodeSniffer][phpcs-gh].
 
 
 Minimum Requirements
 -------------------------------------------
 
 * PHP 5.4 or higher.
-* [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer) version **3.7.1** or higher.
-* [PHPCSUtils](https://github.com/PHPCSStandards/PHPCSUtils) version **1.0.0** or higher.
+* [PHP_CodeSniffer][phpcs-gh] version **3.7.1** or higher.
+* [PHPCSUtils][phpcsutils-gh] version **1.0.0** or higher.
 
 
 Installation
@@ -54,7 +54,7 @@ Installation
 
 Installing via Composer is highly recommended.
 
-[Composer](http://getcomposer.org/) will automatically install the project dependencies and register the rulesets from PHPCSExtra and other external standards with PHP_CodeSniffer using the [Composer PHPCS plugin](https://github.com/PHPCSStandards/composer-installer).
+[Composer](http://getcomposer.org/) will automatically install the project dependencies and register the rulesets from PHPCSExtra and other external standards with PHP_CodeSniffer using the [Composer PHPCS plugin][composer-installer-gh].
 
 ### Composer Project-based Installation
 
@@ -109,8 +109,11 @@ Sniffs
 
 **Legend**:
 * :wrench: = Includes auto-fixer.
+    _Use the `phpcbf` command to run the fixers._
 * :bar_chart: = Includes metrics.
+    _Use `phpcs` with `--report=info` to see the metrics._
 * :books: = Includes CLI documentation.
+    _Use `phpcs` with `--generator=Text` to see the documentation._
 
 
 ### Modernize
@@ -465,9 +468,13 @@ If unsure whether the changes you are proposing would be welcome, open an issue 
 
 License
 -------
-This code is released under the GNU Lesser General Public License (LGPLv3). For more information, visit http://www.gnu.org/copyleft/lesser.html
+This code is released under the GNU Lesser General Public License (LGPLv3). For more information, visit <http://www.gnu.org/copyleft/lesser.html>
 
 
 [phpcsextra-packagist]:  https://packagist.org/packages/phpcsstandards/phpcsextra
 [gha-qa-results]:        https://github.com/PHPCSStandards/PHPCSExtra/actions/workflows/basics.yml
 [gha-test-results]:      https://github.com/PHPCSStandards/PHPCSExtra/actions/workflows/test.yml
+
+[phpcs-gh]:              https://github.com/squizlabs/PHP_CodeSniffer
+[phpcsutils-gh]:         https://github.com/PHPCSStandards/PHPCSUtils
+[composer-installer-gh]: https://github.com/PHPCSStandards/composer-installer
