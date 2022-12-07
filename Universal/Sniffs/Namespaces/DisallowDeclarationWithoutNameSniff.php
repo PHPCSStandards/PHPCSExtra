@@ -19,7 +19,7 @@ use PHPCSUtils\Utils\Namespaces;
  *
  * @since 1.0.0
  */
-class DisallowDeclarationWithoutNameSniff implements Sniff
+final class DisallowDeclarationWithoutNameSniff implements Sniff
 {
 
     /**
@@ -65,7 +65,6 @@ class DisallowDeclarationWithoutNameSniff implements Sniff
         if ($name !== '') {
             // Named namespace.
             $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'yes');
-
             return;
         }
 

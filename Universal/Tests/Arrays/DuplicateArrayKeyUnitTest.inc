@@ -151,3 +151,17 @@ $testKeepingTrackOfHighestIntKey = array(
     '9' . '6'  => 'y',    // Int 96 - Error.
     '1.'       => 'z',    // String '1.'
 );
+
+$testPHPLt8VsPHP8 = array(
+    -10 => 'a',
+    'b',        // PHP < 8: int 0; PHP 8+: -9.
+    'c',        // PHP < 8: int 1; PHP 8+: -8.
+    -4  => 'd',
+    'e',        // PHP < 8: int 2; PHP 8+: -3.
+    -9  => 'f', // Duplicate in PHP 8, not in PHP < 8.
+    -8  => 'g', // Duplicate in PHP 8, not in PHP < 8.
+    -3  => 'h', // Duplicate in PHP 8, not in PHP < 8.
+    0   => 'i', // Duplicate in PHP < 8, not in PHP 8.
+    1   => 'j', // Duplicate in PHP < 8, not in PHP 8.
+    2   => 'k', // Duplicate in PHP < 8, not in PHP 8.
+);

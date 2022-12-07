@@ -19,8 +19,17 @@ use PHPCSUtils\Utils\Namespaces;
  *
  * @since 1.0.0
  */
-class EnforceCurlyBraceSyntaxSniff implements Sniff
+final class EnforceCurlyBraceSyntaxSniff implements Sniff
 {
+
+    /**
+     * Name of the metric.
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
+    const METRIC_NAME = 'Namespace declaration using curly brace syntax';
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -57,11 +66,11 @@ class EnforceCurlyBraceSyntaxSniff implements Sniff
         if (isset($tokens[$stackPtr]['scope_condition']) === true
             && $tokens[$stackPtr]['scope_condition'] === $stackPtr
         ) {
-            $phpcsFile->recordMetric($stackPtr, 'Namespace declaration using curly brace syntax', 'yes');
+            $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'yes');
             return;
         }
 
-        $phpcsFile->recordMetric($stackPtr, 'Namespace declaration using curly brace syntax', 'no');
+        $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'no');
 
         $phpcsFile->addError(
             'Namespace declarations without curly braces are not allowed.',

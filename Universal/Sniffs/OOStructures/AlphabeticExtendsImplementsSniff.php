@@ -17,12 +17,12 @@ use PHPCSUtils\Tokens\Collections;
 use PHPCSUtils\Utils\ObjectDeclarations;
 
 /**
- * Verifies that the names used in a class "implements" statement or an interface "extends" statement
+ * Verifies that the interface names used in a class/enum "implements" statement or an interface "extends" statement,
  * are listed in alphabetic order.
  *
  * @since 1.0.0
  */
-class AlphabeticExtendsImplementsSniff implements Sniff
+final class AlphabeticExtendsImplementsSniff implements Sniff
 {
 
     /**
@@ -32,7 +32,7 @@ class AlphabeticExtendsImplementsSniff implements Sniff
      *
      * @var string
      */
-    const METRIC_NAME_ALPHA = 'Interface names in implements/extends order alphabetically (%s)';
+    const METRIC_NAME_ALPHA = 'Interface names in implements/extends ordered alphabetically (%s)';
 
     /**
      * Name of the "interface count" metric.
@@ -86,7 +86,7 @@ class AlphabeticExtendsImplementsSniff implements Sniff
      */
     public function register()
     {
-        return (Collections::$OOCanExtend + Collections::$OOCanImplement);
+        return (Collections::ooCanExtend() + Collections::ooCanImplement());
     }
 
     /**
@@ -122,14 +122,14 @@ class AlphabeticExtendsImplementsSniff implements Sniff
         /*
          * Get the names.
          */
-        if (isset(Collections::$OOCanImplement[$tokens[$stackPtr]['code']]) === true) {
+        if (isset(Collections::ooCanImplement()[$tokens[$stackPtr]['code']]) === true) {
             $names = ObjectDeclarations::findImplementedInterfaceNames($phpcsFile, $stackPtr);
         } else {
             $names = ObjectDeclarations::findExtendedInterfaceNames($phpcsFile, $stackPtr);
         }
 
         if (\is_array($names) === false) {
-            // Class/interface doesn't extend or implement.
+            // Class/interface/enum doesn't extend or implement.
             $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME_COUNT, 0);
             $phpcsFile->recordMetric($stackPtr, $metricNameAlpha, 'n/a');
             return;
@@ -165,7 +165,7 @@ class AlphabeticExtendsImplementsSniff implements Sniff
          * Throw the error.
          */
         $keyword = \T_IMPLEMENTS;
-        if (isset(Collections::$OOCanImplement[$tokens[$stackPtr]['code']]) === false) {
+        if (isset(Collections::ooCanImplement()[$tokens[$stackPtr]['code']]) === false) {
             $keyword = \T_EXTENDS;
         }
 

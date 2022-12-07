@@ -22,8 +22,17 @@ use PHP_CodeSniffer\Files\File;
  *
  * @since 1.0.0
  */
-class DisallowLogicalAndOrSniff implements Sniff
+final class DisallowLogicalAndOrSniff implements Sniff
 {
+
+    /**
+     * Name of the metric.
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
+    const METRIC_NAME = 'Type of and/or operator used';
 
     /**
      * The tokens this sniff records metrics for.
@@ -85,7 +94,7 @@ class DisallowLogicalAndOrSniff implements Sniff
         $tokens    = $phpcsFile->getTokens();
         $tokenCode = $tokens[$stackPtr]['code'];
 
-        $phpcsFile->recordMetric($stackPtr, 'Type of and/or operator used', $this->metricType[$tokenCode]);
+        $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, $this->metricType[$tokenCode]);
 
         if (isset($this->targetTokenInfo[$tokenCode]) === false) {
             // Already using boolean operator.

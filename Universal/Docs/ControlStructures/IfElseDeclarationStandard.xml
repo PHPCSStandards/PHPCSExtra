@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
-<documentation title="If-else Declarations">
+<documentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://phpcsstandards.github.io/PHPCSDevTools/phpcsdocs.xsd"
+    title="If-else Declarations"
+    >
     <standard>
     <![CDATA[
     The `else` and `elseif` keywords should be on a new line.

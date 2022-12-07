@@ -23,8 +23,17 @@ use PHPCSUtils\Utils\Operators;
  *
  * @since 1.0.0
  */
-class DisallowShortTernarySniff implements Sniff
+final class DisallowShortTernarySniff implements Sniff
 {
+
+    /**
+     * Name of the metric.
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
+    const METRIC_NAME = 'Ternary usage';
 
     /**
      * Registers the tokens that this sniff wants to listen for.
@@ -52,11 +61,11 @@ class DisallowShortTernarySniff implements Sniff
     public function process(File $phpcsFile, $stackPtr)
     {
         if (Operators::isShortTernary($phpcsFile, $stackPtr) === false) {
-            $phpcsFile->recordMetric($stackPtr, 'Ternary usage', 'long');
+            $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'long');
             return;
         }
 
-        $phpcsFile->recordMetric($stackPtr, 'Ternary usage', 'short');
+        $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'short');
 
         $phpcsFile->addError(
             'Using short ternaries is not allowed as they are rarely used correctly',

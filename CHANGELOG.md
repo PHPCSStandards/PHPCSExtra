@@ -1,4 +1,4 @@
-# Change Log for the PHPCSExtra standard for PHP Codesniffer
+# Change Log for the PHPCSExtra standard for PHP CodeSniffer
 
 All notable changes to this project will be documented in this file.
 
@@ -14,24 +14,191 @@ This projects adheres to [Keep a CHANGELOG](http://keepachangelog.com/) and uses
 
 _Nothing yet._
 
+
+## [1.0.0-RC1] - 2022-12-07
+
+:warning: Important: this package now requires [PHPCSUtils 1.0.0-alpha4]. Please make sure you use `--with-[all-]dependencies` when running `composer update`. :exclamation:
+
+### Added
+
+#### Modernize
+
+* This is a new standard with one sniff to start with.
+* :wrench: :books: New `Modernize.FunctionCalls.Dirname` sniff to detect and auto-fix two typical code modernizations which can be made related to the [`dirname()`][php-manual-dirname] function. [#172]
+
+#### Universal
+
+* :wrench: :bar_chart: :books: New `Universal.Classes.DisallowAnonClassParentheses` sniff to disallow the use of parentheses when declaring an anonymous class without passing parameters. [#76], [#162]
+* :wrench: :bar_chart: :books: New `Universal.Classes.RequireAnonClassParentheses` sniff to require the use of parentheses when declaring an anonymous class, whether parameters are passed or not. [#76], [#166]
+* :wrench: :bar_chart: :books: New `Universal.Classes.DisallowFinalClass` sniff to disallow classes being declared `final`. [#108], [#114], [#148], [#163]
+* :wrench: :bar_chart: :books: New `Universal.Classes.RequireFinalClass` sniff to require all non-`abstract` classes to be declared `final`. [#109], [#148], [#164]
+    Warning: the auto-fixer for this sniff _may_ have unintended side-effects for applications and should be used with care! This is considered a _risky_ fixer.
+* :wrench: :bar_chart: :books: New `Universal.Classes.ModifierKeywordOrder` sniff to standardize the modifier keyword order for class declarations. [#142]
+    The sniff offers an `order` property to specify the preferred order.
+* :wrench: :books: New `Universal.CodeAnalysis.ConstructorDestructorReturn` sniff to verify that class constructor/destructor methods 1) do not have a return type declaration and 2) do not return a value. [#137], [#140], [#146] Inspired by [@derickr].
+* :wrench: :books: New `Universal.CodeAnalysis.ForeachUniqueAssignment` sniff to detect `foreach` control structures which use the same variable for both the key as well as the value assignment as this will lead to unexpected - and most likely unintended - behaviour. [#110], [#175]
+    The fixer will maintain the existing behaviour of the code. Mind: this may not be the _intended_ behaviour.
+* :wrench: :books: New `Universal.CodeAnalysis.StaticInFinalClass` sniff to detect using `static` instead of `self` in OO constructs which are `final`. [#116], [#180]
+    The sniff has modular error codes to allow for making exceptions based on the type of use for `static`.
+* :wrench: :bar_chart: :books: New `Universal.Constants.LowercaseClassResolutionKeyword` sniff to enforce that the `class` keyword when used for class name resolution, i.e. `::class`, is in lowercase. [#72]
+* :wrench: :bar_chart: :books: New `Universal.Constants.ModifierKeywordOrder` sniff to standardize the modifier keyword order for OO constant declarations. [#143]
+    The sniff offers an `order` property to specify the preferred order.
+* :wrench: :books: New `Universal.ControlStructures.DisallowLonelyIf` sniff to disallow `if` statements as the only statement in an `else` block. [#85], [#168], [#169]
+    Inspired by the [ESLint "no lonely if"] rule.
+    Note: This sniff will not fix the indentation of the "inner" code. It is strongly recommended to run this sniff together with the `Generic.WhiteSpace.ScopeIndent` sniff to get the correct indentation.
+* :bar_chart: :books: New `Universal.Files.SeparateFunctionsFromOO` sniff to enforce that a file should either declare (global/namespaced) functions or declare OO structures, but not both. [#95], [#170], [#171]
+    Nested function declarations, i.e. functions declared within a function/method will be disregarded for the purposes of this sniff.
+    The same goes for anonymous classes, closures and arrow functions.
+* :books: New `Universal.NamingConventions.NoReservedKeywordParameterNames` sniff to verify that function parameters do not use reserved keywords as names, as this can quickly become confusing when people use them in function calls using named parameters. [#80], [#81], [#106], [#107], [#173]
+    The sniff has modular error codes to allow for making exceptions for specific keywords.
+* :wrench: :bar_chart: :books: New `Universal.Operators.TypeSeparatorSpacing` sniff to enforce no spaces around union type and intersection type separators. [#117]
+* :wrench: :books: New `Universal.PHP.OneStatementInShortEchoTag` sniff to disallow short open echo tags `<?=` containing more than one PHP statement. [#89], [#147], [#165]
+* :wrench: :bar_chart: :books: New `Universal.WhiteSpace.AnonClassKeywordSpacing` sniff to standardize the amount of spacing between the `class` keyword and the open parenthesis (if any) for anonymous class declarations. [#120]
+    The sniff offers a `spacing` property to set the amount of spaces the sniff should check for.
+* :wrench: :books: New `Universal.WhiteSpace.PrecisionAlignment` sniff to enforce indentation to always be a multiple of a tabstop, i.e. disallow precision alignment. [#119], [#122], [#123], [#124]
+    Note:
+    - This sniff does not concern itself with tabs versus spaces.
+        It is recommended to use the sniff in combination with the PHPCS native `Generic.WhiteSpace.DisallowTabIndent` or the `Generic.WhiteSpace.DisallowSpaceIndent` sniff.
+    - When using this sniff with tab-based standards, please ensure that the `tab-width` is set and either don't set the `$indent` property or set it to the tab-width (or a multiple thereof).
+    - The fixer works based on "best guess" and may not always result in the desired indentation. Combine this sniff with the `Generic.WhiteSpace.ScopeIndent` sniff for more precise indentation fixes.
+    - The behaviour of the sniff is customizable via the following properties:
+        - `indent`: the indent used for the codebase.
+        - `ignoreAlignmentBefore`: allows for providing a list of token names for which (preceding) precision alignment should be ignored.
+        - `ignoreBlankLines`: whether or not potential trailing whitespace on otherwise blank lines should be examined or ignored.
+
+### Changed
+
+#### Universal
+* `Universal.Arrays.DisallowShortArraySyntax`: the sniff will now record metrics about long vs short array usage. [#154]
+* `Universal.Arrays.DuplicateArrayKey`: where relevant, the sniff will now make a distinction between keys which will be duplicate in all PHP version and (numeric) keys which will only be a duplicate key in [PHP < 8.0 or PHP >= 8.0][php-rfc-negative_array_index]. [#177], [#178]
+    If a [`php_version` configuration option][php_version-config] has been passed to PHPCS, it will be respected by the sniff and only report duplicate keys for the configured PHP version.
+* `Universal.ControlStructures.DisallowAlternativeSyntax`: the sniff will now also record a metric when single-line (no body) control structures are encountered. [#158]
+* `Universal.ControlStructures.DisallowAlternativeSyntax`: the error message thrown by the sniff is now more descriptive. [#159]
+* `Universal.ControlStructures.DisallowAlternativeSyntax`: metrics will no longer be recorded for `elseif` and `else` keywords, but only on the `if` keyword as the type of syntax used has to be the same for the whole "chain". [#161]
+* `Universal.Lists.DisallowLongListSyntax`: the sniff will no longer record (incomplete) metrics about long vs short list usage. [#155]
+* `Universal.Lists.DisallowShortListSyntax`: the sniff will now record (complete) metrics about long vs short list usage. [#155]
+* `Universal.OOStructures.AlphabeticExtendsImplements`: documented support for `enum ... implements`. [#150]
+* `Universal.UseStatements.DisallowUseClass`: updated error message and metric name to take PHP 8.1 `enum`s into account. [#149]
+* `Universal.UseStatements.NoLeadingBackslash`: the sniff will now also flag and auto-fix leading backslashes in group use statements. [#167]
+
+#### Other
+* Updated the sniffs for compatibility with PHPCSUtils 1.0.0-alpha4. [#134]
+* Updated the sniffs to correctly handle PHP 8.0/8.1/8.2 features whenever relevant.
+* Readme: Updated installation instructions for compatibility with Composer 2.2+. [#101]
+* Composer: The minimum `PHP_CodeSniffer` requirement has been updated to `^3.7.1` (was ^3.3.1). [#115], [#130]
+* Composer: The package will now identify itself as a static analysis tool. Thanks [@GaryJones]! [#126]
+* All non-`abstract` classes in this package are now `final`. [#121]
+* All XML documentation now has a schema annotation. [#128]
+* Various housekeeping.
+
+### Fixed
+
+The upgrade to PHPCSUtils 1.0.0-alpha4 took care of a number of bugs, which potentially could have affected sniffs in this package.
+
+#### NormalizedArrays
+* `NormalizedArrays.Arrays.ArrayBraceSpacing`: the sniff now allows for trailing comments after the array opener in multi-line arrays. [#118]
+* `NormalizedArrays.Arrays.ArrayBraceSpacing`: trailing comments at the end of an array, but before the closer, in multi-line arrays will no longer confuse the sniff. [#135]
+* `NormalizedArrays.Arrays.CommaAfterLast`: the fixer will now recognize PHP 7.3+ flexible heredoc/nowdocs and in that case, will add the comma on the same line as the heredoc/nowdoc closer. [#144]
+
+#### Universal
+* `Universal.Arrays.DisallowShortArraySyntax`: nested short arrays in short lists will now be detected and fixed correctly. [#153]
+* `Universal.ControlStructures.DisallowAlternativeSyntax`: the sniff will no longer bow out indiscriminately when the `allowWithInlineHTML` property is set to `true`. [#90], [#161]
+* `Universal.ControlStructures.DisallowAlternativeSyntax`: when alternative control structure syntax is allowed in combination with inline HTML (`allowWithInlineHTML` property set to `true`), inline HTML in functions declared within the control structure body will no longer be taken into account for determining whether or not the control structure contains inline HTML. [#160]
+* `Universal.Lists.DisallowShortListSyntax`: the sniff will work around a tokenizer bug in PHPCS 3.7.1, which previously could lead to false negatives. [#151].
+* `Universal.Lists.DisallowShortListSyntax`: nested short lists in short arrays will now be detected and fixed correctly. [#152]
+* `Universal.Operators.DisallowStandalonePostIncrementDecrement`: the sniff will now correctly recognize stand-alone statements which end on a PHP close tag. [#176]
+
+[#72]:  https://github.com/PHPCSStandards/PHPCSExtra/pull/72
+[#76]:  https://github.com/PHPCSStandards/PHPCSExtra/pull/76
+[#80]:  https://github.com/PHPCSStandards/PHPCSExtra/pull/80
+[#81]:  https://github.com/PHPCSStandards/PHPCSExtra/pull/81
+[#85]:  https://github.com/PHPCSStandards/PHPCSExtra/pull/85
+[#89]:  https://github.com/PHPCSStandards/PHPCSExtra/pull/89
+[#90]:  https://github.com/PHPCSStandards/PHPCSExtra/pull/90
+[#95]:  https://github.com/PHPCSStandards/PHPCSExtra/pull/95
+[#101]: https://github.com/PHPCSStandards/PHPCSExtra/pull/101
+[#106]: https://github.com/PHPCSStandards/PHPCSExtra/pull/106
+[#107]: https://github.com/PHPCSStandards/PHPCSExtra/pull/107
+[#108]: https://github.com/PHPCSStandards/PHPCSExtra/pull/108
+[#109]: https://github.com/PHPCSStandards/PHPCSExtra/pull/109
+[#110]: https://github.com/PHPCSStandards/PHPCSExtra/pull/110
+[#114]: https://github.com/PHPCSStandards/PHPCSExtra/pull/114
+[#115]: https://github.com/PHPCSStandards/PHPCSExtra/pull/115
+[#116]: https://github.com/PHPCSStandards/PHPCSExtra/pull/116
+[#117]: https://github.com/PHPCSStandards/PHPCSExtra/pull/117
+[#118]: https://github.com/PHPCSStandards/PHPCSExtra/pull/118
+[#119]: https://github.com/PHPCSStandards/PHPCSExtra/pull/119
+[#120]: https://github.com/PHPCSStandards/PHPCSExtra/pull/120
+[#121]: https://github.com/PHPCSStandards/PHPCSExtra/pull/121
+[#122]: https://github.com/PHPCSStandards/PHPCSExtra/pull/122
+[#123]: https://github.com/PHPCSStandards/PHPCSExtra/pull/123
+[#124]: https://github.com/PHPCSStandards/PHPCSExtra/pull/124
+[#126]: https://github.com/PHPCSStandards/PHPCSExtra/pull/126
+[#128]: https://github.com/PHPCSStandards/PHPCSExtra/pull/128
+[#130]: https://github.com/PHPCSStandards/PHPCSExtra/pull/130
+[#134]: https://github.com/PHPCSStandards/PHPCSExtra/pull/134
+[#137]: https://github.com/PHPCSStandards/PHPCSExtra/pull/137
+[#140]: https://github.com/PHPCSStandards/PHPCSExtra/pull/140
+[#142]: https://github.com/PHPCSStandards/PHPCSExtra/pull/142
+[#143]: https://github.com/PHPCSStandards/PHPCSExtra/pull/143
+[#144]: https://github.com/PHPCSStandards/PHPCSExtra/pull/144
+[#146]: https://github.com/PHPCSStandards/PHPCSExtra/pull/146
+[#147]: https://github.com/PHPCSStandards/PHPCSExtra/pull/147
+[#148]: https://github.com/PHPCSStandards/PHPCSExtra/pull/148
+[#149]: https://github.com/PHPCSStandards/PHPCSExtra/pull/149
+[#150]: https://github.com/PHPCSStandards/PHPCSExtra/pull/150
+[#151]: https://github.com/PHPCSStandards/PHPCSExtra/pull/151
+[#152]: https://github.com/PHPCSStandards/PHPCSExtra/pull/152
+[#153]: https://github.com/PHPCSStandards/PHPCSExtra/pull/153
+[#154]: https://github.com/PHPCSStandards/PHPCSExtra/pull/154
+[#155]: https://github.com/PHPCSStandards/PHPCSExtra/pull/155
+[#158]: https://github.com/PHPCSStandards/PHPCSExtra/pull/158
+[#159]: https://github.com/PHPCSStandards/PHPCSExtra/pull/159
+[#160]: https://github.com/PHPCSStandards/PHPCSExtra/pull/160
+[#161]: https://github.com/PHPCSStandards/PHPCSExtra/pull/161
+[#162]: https://github.com/PHPCSStandards/PHPCSExtra/pull/162
+[#163]: https://github.com/PHPCSStandards/PHPCSExtra/pull/163
+[#164]: https://github.com/PHPCSStandards/PHPCSExtra/pull/164
+[#165]: https://github.com/PHPCSStandards/PHPCSExtra/pull/165
+[#166]: https://github.com/PHPCSStandards/PHPCSExtra/pull/166
+[#167]: https://github.com/PHPCSStandards/PHPCSExtra/pull/167
+[#168]: https://github.com/PHPCSStandards/PHPCSExtra/pull/168
+[#169]: https://github.com/PHPCSStandards/PHPCSExtra/pull/169
+[#170]: https://github.com/PHPCSStandards/PHPCSExtra/pull/170
+[#171]: https://github.com/PHPCSStandards/PHPCSExtra/pull/171
+[#172]: https://github.com/PHPCSStandards/PHPCSExtra/pull/172
+[#173]: https://github.com/PHPCSStandards/PHPCSExtra/pull/173
+[#175]: https://github.com/PHPCSStandards/PHPCSExtra/pull/175
+[#176]: https://github.com/PHPCSStandards/PHPCSExtra/pull/176
+[#177]: https://github.com/PHPCSStandards/PHPCSExtra/pull/177
+[#178]: https://github.com/PHPCSStandards/PHPCSExtra/pull/178
+[#180]: https://github.com/PHPCSStandards/PHPCSExtra/pull/180
+
+[php-manual-dirname]:           https://www.php.net/function.dirname
+[php-rfc-negative_array_index]: https://wiki.php.net/rfc/negative_array_index
+[php_version-config]:           https://github.com/squizlabs/PHP_CodeSniffer/wiki/Configuration-Options#setting-the-php-version
+[ESLint "no lonely if"]:        https://eslint.org/docs/rules/no-lonely-if
+[PHPCSUtils 1.0.0-alpha4]:      https://github.com/PHPCSStandards/PHPCSUtils/releases/tag/1.0.0-alpha4
+
+
 ## [1.0.0-alpha3] - 2020-06-29
 
 ### Added
 
 #### Universal
 
-* :wrench: :books: New `Universal.Arrays.DisallowShortArraySyntax` sniff to disallow short array syntax. [#40](https://github.com/PHPCSStandards/PHPCSExtra/pull/40)
+* :wrench: :books: New `Universal.Arrays.DisallowShortArraySyntax` sniff to disallow short array syntax. [#40]
     In contrast to the PHPCS native `Generic.Arrays.DisallowShortArraySyntax` sniff, this sniff will ignore short list syntax and not cause parse errors when the fixer is used.
-* :wrench: :bar_chart: :books: New `Universal.Constants.UppercaseMagicConstants` sniff to enforce that PHP native magic constants are in uppercase. [#64](https://github.com/PHPCSStandards/PHPCSExtra/pull/64)
-* :bar_chart: :books: New `Universal.Namespaces.DisallowDeclarationWithoutName` sniff to disallow namespace declarations without a namespace name. [#50](https://github.com/PHPCSStandards/PHPCSExtra/pull/50)
-* :bar_chart: :books: New `Universal.Operators.DisallowLogicalAndOr` sniff to enforce the use of the boolean `&&` and `||` operators instead of the logical `and`/`or` operators. [#52](https://github.com/PHPCSStandards/PHPCSExtra/pull/52)
-    Note: as the [operator precedence](https://www.php.net/manual/en/language.operators.precedence.php) of the logical operators is significantly lower than the operator precedence of boolean operators, this sniff does not contain an auto-fixer.
-* :bar_chart: :books: New `Universal.Operators.DisallowShortTernary` sniff to disallow the use of short ternaries `?:`. [#42](https://github.com/PHPCSStandards/PHPCSExtra/pull/42)
+* :wrench: :bar_chart: :books: New `Universal.Constants.UppercaseMagicConstants` sniff to enforce that PHP native magic constants are in uppercase. [#64]
+* :bar_chart: :books: New `Universal.Namespaces.DisallowDeclarationWithoutName` sniff to disallow namespace declarations without a namespace name. [#50]
+* :bar_chart: :books: New `Universal.Operators.DisallowLogicalAndOr` sniff to enforce the use of the boolean `&&` and `||` operators instead of the logical `and`/`or` operators. [#52]
+    Note: as the [operator precedence] of the logical operators is significantly lower than the operator precedence of boolean operators, this sniff does not contain an auto-fixer.
+* :bar_chart: :books: New `Universal.Operators.DisallowShortTernary` sniff to disallow the use of short ternaries `?:`. [#42]
     While short ternaries are useful when used correctly, the principle of them is often misunderstood and they are more often than not used incorrectly, leading to hard to debug issues and/or PHP warnings/notices.
-* :wrench: :bar_chart: :books: New `Universal.Operators.DisallowStandalonePostIncrementDecrement` sniff disallow the use of post-in/decrements in stand-alone statements and discourage the use of multiple increment/decrement operators in a stand-alone statement. [#65](https://github.com/PHPCSStandards/PHPCSExtra/pull/65)
-* :wrench: :bar_chart: :books: New `Universal.Operators.StrictComparisons` sniff to enforce the use of strict comparisons. [#48](https://github.com/PHPCSStandards/PHPCSExtra/pull/48)
+* :wrench: :bar_chart: :books: New `Universal.Operators.DisallowStandalonePostIncrementDecrement` sniff disallow the use of post-in/decrements in stand-alone statements and discourage the use of multiple increment/decrement operators in a stand-alone statement. [#65]
+* :wrench: :bar_chart: :books: New `Universal.Operators.StrictComparisons` sniff to enforce the use of strict comparisons. [#48]
     Warning: the auto-fixer for this sniff _may_ cause bugs in applications and should be used with care! This is considered a _risky_ fixer.
-* :wrench: :bar_chart: :books: New `Universal.OOStructures.AlphabeticExtendsImplements` sniff to verify that the names used in a class "implements" statement or an interface "extends" statement are listed in alphabetic order. [#55](https://github.com/PHPCSStandards/PHPCSExtra/pull/55)
+* :wrench: :bar_chart: :books: New `Universal.OOStructures.AlphabeticExtendsImplements` sniff to verify that the names used in a class "implements" statement or an interface "extends" statement are listed in alphabetic order. [#55]
     * This sniff contains a public `orderby` property to determine the sort order to use for the statement.
         If all names used are unqualified, the sort order won't make a difference.
         However, if one or more of the names are partially or fully qualified, the chosen sort order will determine how the sorting between unqualified, partially and fully qualified names is handled.
@@ -47,18 +214,33 @@ _Nothing yet._
     * When fixing, the existing spacing between the names in an `implements`/`extends` statement will not be maintained.
         The fixer will separate each name with a comma and one space.
         If alternative formatting is desired, a sniff which will check and fix the formatting should be added to the ruleset.
-* :wrench: :bar_chart: :books: New `Universal.UseStatements.LowercaseFunctionConst` sniff to enforce that `function` and `const` keywords when used in an import `use` statement are always lowercase. [#58](https://github.com/PHPCSStandards/PHPCSExtra/pull/58)
-* :wrench: :bar_chart: :books: New `Universal.UseStatements.NoLeadingBackslash` sniff to verify that a name being imported in an import `use` statement does not start with a leading backslash. [#46](https://github.com/PHPCSStandards/PHPCSExtra/pull/46)
+* :wrench: :bar_chart: :books: New `Universal.UseStatements.LowercaseFunctionConst` sniff to enforce that `function` and `const` keywords when used in an import `use` statement are always lowercase. [#58]
+* :wrench: :bar_chart: :books: New `Universal.UseStatements.NoLeadingBackslash` sniff to verify that a name being imported in an import `use` statement does not start with a leading backslash. [#46]
     Names in import `use` statements should always be fully qualified, so a leading backslash is not needed and it is strongly recommended not to use one.
     This sniff handles all types of import use statements supported by PHP, in contrast to other sniffs for the same in, for instance, the PSR12 or the Slevomat standard, which are incomplete.
-* :wrench: :books: New `Universal.WhiteSpace.DisallowInlineTabs` sniff to enforce using spaces for mid-line alignment. [#43](https://github.com/PHPCSStandards/PHPCSExtra/pull/43)
+* :wrench: :books: New `Universal.WhiteSpace.DisallowInlineTabs` sniff to enforce using spaces for mid-line alignment. [#43]
 
 ### Changed
 
 #### Other
 * The `master` branch has been renamed to `stable`.
-* Composer: The version requirements for the [DealerDirect Composer PHPCS plugin] have been widened to allow for version 0.7.0 which supports Composer 2.0.0. [#62](https://github.com/PHPCSStandards/PHPCSExtra/pull/62)
+* Composer: The version requirements for the [Composer PHPCS plugin] have been widened to allow for version 0.7.0 which supports Composer 2.0.0. [#62]
 * Various housekeeping.
+
+[#40]: https://github.com/PHPCSStandards/PHPCSExtra/pull/40
+[#42]: https://github.com/PHPCSStandards/PHPCSExtra/pull/42
+[#43]: https://github.com/PHPCSStandards/PHPCSExtra/pull/43
+[#46]: https://github.com/PHPCSStandards/PHPCSExtra/pull/46
+[#48]: https://github.com/PHPCSStandards/PHPCSExtra/pull/48
+[#50]: https://github.com/PHPCSStandards/PHPCSExtra/pull/50
+[#52]: https://github.com/PHPCSStandards/PHPCSExtra/pull/52
+[#55]: https://github.com/PHPCSStandards/PHPCSExtra/pull/55
+[#58]: https://github.com/PHPCSStandards/PHPCSExtra/pull/58
+[#62]: https://github.com/PHPCSStandards/PHPCSExtra/pull/62
+[#64]: https://github.com/PHPCSStandards/PHPCSExtra/pull/64
+[#65]: https://github.com/PHPCSStandards/PHPCSExtra/pull/65
+
+[operator precedence]: https://www.php.net/manual/en/language.operators.precedence.php
 
 
 ## [1.0.0-alpha2] - 2020-02-18
@@ -66,19 +248,19 @@ _Nothing yet._
 ### Added
 
 #### Universal
-* :wrench: :bar_chart: :books: New `Universal.ControlStructures.DisallowAlternativeSyntax` sniff to disallow using the alternative syntax for control structures. [#23](https://github.com/PHPCSStandards/PHPCSExtra/pull/23)
+* :wrench: :bar_chart: :books: New `Universal.ControlStructures.DisallowAlternativeSyntax` sniff to disallow using the alternative syntax for control structures. [#23]
     - This sniff contains a `allowWithInlineHTML` property to allow alternative syntax when inline HTML is used within the control structure. In all other cases, the use of the alternative syntax will still be disallowed.
     - The sniff has modular error codes to allow for making exceptions based on specific control structures and/or specific control structures in combination with inline HTML.
-* :bar_chart: `Universal.UseStatements.DisallowUseClass/Function/Const`: new, additional metrics about the import source will be shown in the `info` report. [#25](https://github.com/PHPCSStandards/PHPCSExtra/pull/25)
+* :bar_chart: `Universal.UseStatements.DisallowUseClass/Function/Const`: new, additional metrics about the import source will be shown in the `info` report. [#25]
 
 #### Other
-* Readme: installation instructions and sniff list. [#26](https://github.com/PHPCSStandards/PHPCSExtra/pull/26)
+* Readme: installation instructions and sniff list. [#26]
 
 ### Changed
 
 #### Universal
-* `Universal.Arrays.DuplicateArrayKey`: wording of the error message. [#18](https://github.com/PHPCSStandards/PHPCSExtra/pull/18)
-* `Universal.UseStatements.DisallowUseClass/Function/Const`: the error codes have been made more modular. [#25](https://github.com/PHPCSStandards/PHPCSExtra/pull/25)
+* `Universal.Arrays.DuplicateArrayKey`: wording of the error message. [#18]
+* `Universal.UseStatements.DisallowUseClass/Function/Const`: the error codes have been made more modular. [#25]
     Each of these sniffs now has four additional error codes:
     <ul>
         <li><code>FoundSameNamespace</code>, <code>FoundSameNamespaceWithAlias</code> for <code>use</code> statements importing from the same namespace;</li>
@@ -87,17 +269,25 @@ _Nothing yet._
     In all other circumstances, the existing error codes <code>FoundWithAlias</code> and <code>FoundWithoutAlias</code> will continue to be used.
 
 #### Other
-* Improved formatting of the CLI documentation which can be viewed using `--generator=text`. [#17](https://github.com/PHPCSStandards/PHPCSExtra/pull/17)
+* Improved formatting of the CLI documentation which can be viewed using `--generator=text`. [#17]
 * Various housekeeping.
 
 ### Fixed
 
 #### Universal
-* `Universal.Arrays.DuplicateArrayKey`: improved handling of parse errors. [#34](https://github.com/PHPCSStandards/PHPCSExtra/pull/34)
-* `Universal.ControlStructures.IfElseDeclaration`: the fixer will now respect tab indentation. [#19](https://github.com/PHPCSStandards/PHPCSExtra/pull/19)
-* `Universal.UseStatements.DisallowUseClass/Function/Const`: the determination of whether a import is aliased in now done in a case-insensitive manner. [#25](https://github.com/PHPCSStandards/PHPCSExtra/pull/25)
-* `Universal.UseStatements.DisallowUseClass/Function/Const`: an import from the global namespace would previously always be seen as non-aliased, even when it was aliased. [#25](https://github.com/PHPCSStandards/PHPCSExtra/pull/25)
-* `Universal.UseStatements.DisallowUseClass/Function/Const`: improved tolerance for `use` import statements with leading backslashes. [#25](https://github.com/PHPCSStandards/PHPCSExtra/pull/25)
+* `Universal.Arrays.DuplicateArrayKey`: improved handling of parse errors. [#34]
+* `Universal.ControlStructures.IfElseDeclaration`: the fixer will now respect tab indentation. [#19]
+* `Universal.UseStatements.DisallowUseClass/Function/Const`: the determination of whether a import is aliased in now done in a case-insensitive manner. [#25]
+* `Universal.UseStatements.DisallowUseClass/Function/Const`: an import from the global namespace would previously always be seen as non-aliased, even when it was aliased. [#25]
+* `Universal.UseStatements.DisallowUseClass/Function/Const`: improved tolerance for `use` import statements with leading backslashes. [#25]
+
+[#17]: https://github.com/PHPCSStandards/PHPCSExtra/pull/17
+[#18]: https://github.com/PHPCSStandards/PHPCSExtra/pull/18
+[#19]: https://github.com/PHPCSStandards/PHPCSExtra/pull/19
+[#23]: https://github.com/PHPCSStandards/PHPCSExtra/pull/23
+[#25]: https://github.com/PHPCSStandards/PHPCSExtra/pull/25
+[#26]: https://github.com/PHPCSStandards/PHPCSExtra/pull/26
+[#34]: https://github.com/PHPCSStandards/PHPCSExtra/pull/34
 
 
 ## 1.0.0-alpha1 - 2020-01-23
@@ -149,7 +339,12 @@ This initial alpha release contains the following sniffs:
 * :bar_chart: :books: `Universal.UseStatements.DisallowUseFunction`: forbid using import use statements for functions.
     Individual sub-types can be allowed by excluding specific error codes.
 
+[Composer PHPCS plugin]: https://github.com/PHPCSStandards/composer-installer
 
 [Unreleased]: https://github.com/PHPCSStandards/PHPCSExtra/compare/stable...HEAD
+[1.0.0-RC1]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.0-alpha3...1.0.0-rc1
 [1.0.0-alpha3]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.0-alpha2...1.0.0-alpha3
 [1.0.0-alpha2]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.0-alpha1...1.0.0-alpha2
+
+[@derickr]:   https://github.com/derickr
+[@GaryJones]: https://github.com/GaryJones

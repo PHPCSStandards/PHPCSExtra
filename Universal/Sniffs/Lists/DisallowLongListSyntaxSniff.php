@@ -19,7 +19,7 @@ use PHPCSUtils\Utils\Lists;
  *
  * @since 1.0.0
  */
-class DisallowLongListSyntaxSniff implements Sniff
+final class DisallowLongListSyntaxSniff implements Sniff
 {
 
     /**
@@ -52,8 +52,6 @@ class DisallowLongListSyntaxSniff implements Sniff
             // Live coding or parse error.
             return;
         }
-
-        $phpcsFile->recordMetric($stackPtr, 'Short list syntax used', 'no');
 
         $fix = $phpcsFile->addFixableError('Long list syntax is not allowed', $stackPtr, 'Found');
 

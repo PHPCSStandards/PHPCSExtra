@@ -19,33 +19,59 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @since 1.0.0
  */
-class DisallowAlternativeSyntaxUnitTest extends AbstractSniffUnitTest
+final class DisallowAlternativeSyntaxUnitTest extends AbstractSniffUnitTest
 {
 
     /**
      * Returns the lines where errors should occur.
      *
+     * @param string $testFile The name of the file being tested.
+     *
      * @return array <int line number> => <int number of errors>
      */
-    public function getErrorList()
+    public function getErrorList($testFile = '')
     {
+        if ($testFile !== 'DisallowAlternativeSyntaxUnitTest.1.inc') {
+            return [];
+        }
+
         return [
-            73  => 1,
-            75  => 1,
-            77  => 1,
+            80  => 1,
             82  => 1,
-            86  => 1,
-            90  => 1,
-            94  => 1,
-            103 => 1,
-            111 => 1,
-            113 => 1,
-            115 => 1,
-            119 => 1,
-            123 => 1,
-            127 => 1,
-            131 => 1,
+            84  => 1,
+            89  => 1,
+            93  => 1,
+            97  => 1,
+            101 => 1,
+            110 => 1,
+            118 => 1,
+            120 => 1,
+            122 => 1,
+            126 => 1,
+            130 => 1,
+            134 => 1,
             138 => 1,
+            145 => 1,
+            151 => 1,
+            154 => 1,
+            156 => 1,
+            165 => 1,
+            167 => 1,
+            169 => 1,
+            174 => 1,
+            178 => 1,
+            182 => 1,
+            186 => 1,
+            195 => 1,
+            239 => 1,
+            245 => 1,
+            256 => 1,
+            266 => 1,
+            279 => 1,
+            281 => 1,
+            283 => 1,
+            330 => 1,
+            332 => 1,
         ];
     }
 

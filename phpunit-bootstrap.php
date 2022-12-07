@@ -67,6 +67,7 @@ for that PHPCS install.
  * Ref: https://github.com/squizlabs/PHP_CodeSniffer/pull/1146
  */
 $phpcsExtraStandards = [
+    'Modernize'        => true,
     'NormalizedArrays' => true,
     'Universal'        => true,
 ];

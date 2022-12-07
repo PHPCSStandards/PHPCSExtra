@@ -1,0 +1,36 @@
+<?php
+
+/*
+ * OK.
+ */
+final class FooA {}
+
+final /*comment*/ class FooB extends Something {}
+
+final
+    /*comment*/
+    class FooC {}
+
+abstract class AbstractBarC implements MyInterface {}
+
+$a = new MyClass() {}
+
+// Parse error. Not our concern.
+final abstract class FinalAbstractClass {}
+
+/*
+ * Bad.
+ */
+final class PlainClass {}
+
+    final class CheckHandlingOfIndentation extends Something {}
+
+final class ClassImplementing implements MyInterface {}
+
+readonly final class ReadonlyClass {}
+
+// Live coding/parse error, but not one which concerns us. Add the final keyword.
+final class LiveCoding
+
+// Live coding. Ignore. This must be the last test in the file.
+class

@@ -15,6 +15,7 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 use PHPCSExtra\Universal\Helpers\DummyTokenizer;
 use PHPCSUtils\BackCompat\Helper;
+use PHPCSUtils\Tokens\Collections;
 
 /**
  * Enforces using spaces for mid-line alignment.
@@ -38,7 +39,7 @@ use PHPCSUtils\BackCompat\Helper;
  *
  * @since 1.0.0
  */
-class DisallowInlineTabsSniff implements Sniff
+final class DisallowInlineTabsSniff implements Sniff
 {
 
     /**
@@ -73,10 +74,7 @@ class DisallowInlineTabsSniff implements Sniff
      */
     public function register()
     {
-        return [
-            \T_OPEN_TAG,
-            \T_OPEN_TAG_WITH_ECHO,
-        ];
+        return Collections::phpOpenTags();
     }
 
     /**

@@ -19,7 +19,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @since 1.0.0
  */
-class NoLeadingBackslashUnitTest extends AbstractSniffUnitTest
+final class NoLeadingBackslashUnitTest extends AbstractSniffUnitTest
 {
 
     /**
@@ -39,7 +39,10 @@ class NoLeadingBackslashUnitTest extends AbstractSniffUnitTest
                     11 => 1,
                     14 => 1,
                     16 => 1,
-                    20 => 1,
+                    26 => 1,
+                    27 => 1,
+                    28 => 1,
+                    29 => 1,
                 ];
 
             default:

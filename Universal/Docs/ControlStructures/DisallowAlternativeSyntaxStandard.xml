@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
-<documentation title="Disallow Alternative Control Structure Syntax">
+<documentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://phpcsstandards.github.io/PHPCSDevTools/phpcsdocs.xsd"
+    title="Disallow Alternative Control Structure Syntax"
+    >
     <standard>
     <![CDATA[
     The use of the alternative syntax for control structures is not allowed.

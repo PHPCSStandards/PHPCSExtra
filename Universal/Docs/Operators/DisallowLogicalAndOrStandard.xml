@@ -1,4 +1,8 @@
-<documentation title="Disallow Logical And Or">
+<?xml version="1.0"?>
+<documentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://phpcsstandards.github.io/PHPCSDevTools/phpcsdocs.xsd"
+    title="Disallow Logical And Or"
+    >
     <standard>
     <![CDATA[
     Using the logical "and" and "or" operators is not allowed.

@@ -21,8 +21,17 @@ use PHP_CodeSniffer\Files\File;
  *
  * @since 1.0.0
  */
-class StrictComparisonsSniff implements Sniff
+final class StrictComparisonsSniff implements Sniff
 {
+
+    /**
+     * Name of the metric.
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
+    const METRIC_NAME = 'Type of comparison used';
 
     /**
      * The tokens this sniff records metrics for.
@@ -84,7 +93,7 @@ class StrictComparisonsSniff implements Sniff
         $tokens    = $phpcsFile->getTokens();
         $tokenCode = $tokens[$stackPtr]['code'];
 
-        $phpcsFile->recordMetric($stackPtr, 'Type of comparison used', $this->metricType[$tokenCode]);
+        $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, $this->metricType[$tokenCode]);
 
         if (isset($this->targetTokenInfo[$tokenCode]) === false) {
             // Already using strict comparison operator.

@@ -22,7 +22,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @since 1.0.0
  */
-class DisallowUseFunctionUnitTest extends AbstractSniffUnitTest
+final class DisallowUseFunctionUnitTest extends AbstractSniffUnitTest
 {
 
     /**

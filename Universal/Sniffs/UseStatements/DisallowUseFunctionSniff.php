@@ -26,7 +26,7 @@ use PHPCSUtils\Utils\UseStatements;
  *
  * @since 1.0.0
  */
-class DisallowUseFunctionSniff implements Sniff
+final class DisallowUseFunctionSniff implements Sniff
 {
 
     /**
@@ -133,7 +133,7 @@ class DisallowUseFunctionSniff implements Sniff
                 $reportPtr = $phpcsFile->findNext(\T_STRING, ($reportPtr + 1), $endOfStatement, false, $alias);
                 if ($reportPtr === false) {
                     // Shouldn't be possible.
-                    continue 2;
+                    continue 2; // @codeCoverageIgnore
                 }
 
                 $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($reportPtr + 1), $endOfStatement, true);

@@ -28,8 +28,17 @@ use PHPCSUtils\Utils\GetTokensAsString;
  *
  * @since 1.0.0
  */
-class DisallowStandalonePostIncrementDecrementSniff implements Sniff
+final class DisallowStandalonePostIncrementDecrementSniff implements Sniff
 {
+
+    /**
+     * Name of the metric.
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
+    const METRIC_NAME = 'In/decrement usage in stand-alone statements';
 
     /**
      * Tokens which can be expected in a stand-alone in/decrement statement.
@@ -53,11 +62,17 @@ class DisallowStandalonePostIncrementDecrementSniff implements Sniff
      */
     public function register()
     {
-        $this->allowedTokens += Collections::$OOHierarchyKeywords;
-        $this->allowedTokens += Collections::$objectOperators;
-        $this->allowedTokens += Collections::$OONameTokens;
+        $this->allowedTokens += Collections::ooHierarchyKeywords();
+        $this->allowedTokens += Collections::objectOperators();
+        $this->allowedTokens += Collections::namespacedNameTokens();
 
-        return Collections::$incrementDecrementOperators;
+        /*
+         * Remove nullsafe object operator. In/decrement not allowed in write context,
+         * so ignore.
+         */
+        unset($this->allowedTokens[\T_NULLSAFE_OBJECT_OPERATOR]);
+
+        return Collections::incrementDecrementOperators();
     }
 
     /**
@@ -83,19 +98,27 @@ class DisallowStandalonePostIncrementDecrementSniff implements Sniff
         $start = BCFile::findStartOfStatement($phpcsFile, $stackPtr);
         $end   = BCFile::findEndOfStatement($phpcsFile, $stackPtr);
 
-        if ($tokens[$end]['code'] !== \T_SEMICOLON) {
+        if (isset(Collections::incrementDecrementOperators()[$tokens[$end]['code']])) {
+            // Statement ends on a PHP close tag, set the end pointer to the close tag.
+            $end = $phpcsFile->findNext(Tokens::$emptyTokens, ($end + 1), null, true);
+        }
+
+        if ($tokens[$end]['code'] !== \T_SEMICOLON
+            && $tokens[$end]['code'] !== \T_CLOSE_TAG
+        ) {
             // Not a stand-alone statement.
             return $end;
         }
 
-        $counter  = 0;
-        $lastCode = null;
+        $counter   = 0;
+        $lastCode  = null;
+        $operators = Collections::incrementDecrementOperators();
         for ($i = $start; $i < $end; $i++) {
             if (isset(Tokens::$emptyTokens[$tokens[$i]['code']]) === true) {
                 continue;
             }
 
-            if (isset(Collections::$incrementDecrementOperators[$tokens[$i]['code']]) === true) {
+            if (isset($operators[$tokens[$i]['code']]) === true) {
                 $lastCode = $tokens[$i]['code'];
                 ++$counter;
                 continue;
@@ -139,7 +162,7 @@ class DisallowStandalonePostIncrementDecrementSniff implements Sniff
         $lastNonEmpty = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($end - 1), $start, true);
         if ($start === $stackPtr && $lastNonEmpty !== $stackPtr) {
             // This is already pre-in/decrement.
-            $phpcsFile->recordMetric($stackPtr, 'In/decrement usage in stand-alone statements', 'pre-' . $type);
+            $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'pre-' . $type);
             return $end;
         }
 
@@ -148,7 +171,7 @@ class DisallowStandalonePostIncrementDecrementSniff implements Sniff
             return $end;
         }
 
-        $phpcsFile->recordMetric($stackPtr, 'In/decrement usage in stand-alone statements', 'post-' . $type);
+        $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'post-' . $type);
 
         $error        = 'Stand-alone post-%1$s statement found. Use pre-%1$s instead: %2$s.';
         $errorCode    = 'Post' . \ucfirst($type) . 'Found';
@@ -161,14 +184,12 @@ class DisallowStandalonePostIncrementDecrementSniff implements Sniff
 
         $fix = $phpcsFile->addFixableError($error, $stackPtr, $errorCode, $data);
 
-        if ($fix === false) {
-            return $end;
+        if ($fix === true) {
+            $phpcsFile->fixer->beginChangeset();
+            $phpcsFile->fixer->replaceToken($stackPtr, '');
+            $phpcsFile->fixer->addContentBefore($start, $tokens[$stackPtr]['content']);
+            $phpcsFile->fixer->endChangeset();
         }
-
-        $phpcsFile->fixer->beginChangeset();
-        $phpcsFile->fixer->replaceToken($stackPtr, '');
-        $phpcsFile->fixer->addContentBefore($start, $tokens[$stackPtr]['content']);
-        $phpcsFile->fixer->endChangeset();
 
         return $end;
     }

@@ -30,7 +30,7 @@ use Some\NS\{
 // Test handling of alias as part of the last leaf of the imported name, including case-insensitivity
 // and tolerance for leading backslashes.
 // While aliasing to itself doesn't make much sense, the sniff should handle it correctly.
-use function My\preg_match as Match;
+use function My\preg_match as Pmatch;
 use function My\preg_replace as Preg_Replace;
 use function str_pos as Pos; // Alias for global import.
 use function \str_pad as STR_PAD; // Alias for global import to same name.

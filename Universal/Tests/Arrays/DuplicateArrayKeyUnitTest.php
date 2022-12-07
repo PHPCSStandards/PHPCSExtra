@@ -19,7 +19,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @since 1.0.0
  */
-class DuplicateArrayKeyUnitTest extends AbstractSniffUnitTest
+final class DuplicateArrayKeyUnitTest extends AbstractSniffUnitTest
 {
 
     /**
@@ -109,6 +109,12 @@ class DuplicateArrayKeyUnitTest extends AbstractSniffUnitTest
             147 => 1,
             148 => 1,
             151 => 1,
+            161 => 1,
+            162 => 1,
+            163 => 1,
+            164 => 1,
+            165 => 1,
+            166 => 1,
         ];
     }
 

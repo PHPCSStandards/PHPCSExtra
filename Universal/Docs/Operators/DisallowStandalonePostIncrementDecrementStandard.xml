@@ -1,4 +1,8 @@
-<documentation title="Disallow Standalone Post-Increment/Decrement">
+<?xml version="1.0"?>
+<documentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://phpcsstandards.github.io/PHPCSDevTools/phpcsdocs.xsd"
+    title="Disallow Standalone Post-Increment/Decrement"
+    >
     <standard>
     <![CDATA[
     In a stand-alone in/decrement statement, pre-in/decrement should always be favoured over post-in/decrement.

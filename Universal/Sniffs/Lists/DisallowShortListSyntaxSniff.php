@@ -12,6 +12,7 @@ namespace PHPCSExtra\Universal\Sniffs\Lists;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
+use PHPCSUtils\Tokens\Collections;
 use PHPCSUtils\Utils\Lists;
 
 /**
@@ -19,8 +20,15 @@ use PHPCSUtils\Utils\Lists;
  *
  * @since 1.0.0
  */
-class DisallowShortListSyntaxSniff implements Sniff
+final class DisallowShortListSyntaxSniff implements Sniff
 {
+
+    /**
+     * The phrase to use for the metric recorded by this sniff.
+     *
+     * @var string
+     */
+    const METRIC_NAME = 'Short list syntax used';
 
     /**
      * Registers the tokens that this sniff wants to listen for.
@@ -31,7 +39,10 @@ class DisallowShortListSyntaxSniff implements Sniff
      */
     public function register()
     {
-        return [\T_OPEN_SHORT_ARRAY];
+        $targets          = Collections::shortArrayListOpenTokensBC();
+        $targets[\T_LIST] = \T_LIST; // Only for recording metrics.
+
+        return $targets;
     }
 
     /**
@@ -47,20 +58,21 @@ class DisallowShortListSyntaxSniff implements Sniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
-        $tokens    = $phpcsFile->getTokens();
+        $tokens = $phpcsFile->getTokens();
+
+        if ($tokens[$stackPtr]['code'] === \T_LIST) {
+            $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'no');
+            return;
+        }
+
         $openClose = Lists::getOpenClose($phpcsFile, $stackPtr);
 
         if ($openClose === false) {
             // Not a short list, live coding or parse error.
-            if (isset($tokens[$stackPtr]['bracket_closer']) === true) {
-                // No need to examine nested subs of this short array/array access.
-                return $tokens[$stackPtr]['bracket_closer'];
-            }
-
             return;
         }
 
-        $phpcsFile->recordMetric($stackPtr, 'Short list syntax used', 'yes');
+        $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'yes');
 
         $fix = $phpcsFile->addFixableError('Short list syntax is not allowed', $stackPtr, 'Found');
 

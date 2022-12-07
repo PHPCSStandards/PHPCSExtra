@@ -19,7 +19,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @since 1.0.0
  */
-class DisallowShortListSyntaxUnitTest extends AbstractSniffUnitTest
+final class DisallowShortListSyntaxUnitTest extends AbstractSniffUnitTest
 {
 
     /**
@@ -38,6 +38,8 @@ class DisallowShortListSyntaxUnitTest extends AbstractSniffUnitTest
             12 => 2,
             13 => 1,
             15 => 1,
+            24 => 1,
+            29 => 1,
         ];
     }
 

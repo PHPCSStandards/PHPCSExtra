@@ -19,7 +19,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @since 1.0.0
  */
-class AlphabeticExtendsImplementsUnitTest extends AbstractSniffUnitTest
+final class AlphabeticExtendsImplementsUnitTest extends AbstractSniffUnitTest
 {
 
     /**
@@ -41,6 +41,7 @@ class AlphabeticExtendsImplementsUnitTest extends AbstractSniffUnitTest
             54 => 1,
             62 => 1,
             68 => 1,
+            80 => 1,
         ];
     }
 

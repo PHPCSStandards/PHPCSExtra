@@ -13,6 +13,7 @@ namespace PHPCSExtra\NormalizedArrays\Sniffs\Arrays;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Tokens\Collections;
 use PHPCSUtils\Utils\Arrays;
 
 /**
@@ -22,8 +23,17 @@ use PHPCSUtils\Utils\Arrays;
  *
  * @since 1.0.0
  */
-class CommaAfterLastSniff implements Sniff
+final class CommaAfterLastSniff implements Sniff
 {
+
+    /**
+     * Name of the metric.
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
+    const METRIC_NAME = '%s array - comma after last item';
 
     /**
      * Whether or not to enforce a comma after the last array item in a single-line array.
@@ -81,11 +91,7 @@ class CommaAfterLastSniff implements Sniff
      */
     public function register()
     {
-        return [
-            \T_ARRAY,
-            \T_OPEN_SHORT_ARRAY,
-            \T_OPEN_SQUARE_BRACKET,
-        ];
+        return Collections::arrayOpenTokensBC();
     }
 
     /**
@@ -143,7 +149,7 @@ class CommaAfterLastSniff implements Sniff
 
         $phpcsFile->recordMetric(
             $stackPtr,
-            \ucfirst($phrase) . ' array - comma after last item',
+            \sprintf(self::METRIC_NAME, \ucfirst($phrase)),
             ($isComma === true ? 'yes' : 'no')
         );
 
@@ -160,8 +166,10 @@ class CommaAfterLastSniff implements Sniff
                 if ($fix === true) {
                     $extraContent = ',';
 
-                    if ($tokens[$lastNonEmpty]['code'] === \T_END_HEREDOC
-                        || $tokens[$lastNonEmpty]['code'] === \T_END_NOWDOC
+                    if (($tokens[$lastNonEmpty]['code'] === \T_END_HEREDOC
+                        || $tokens[$lastNonEmpty]['code'] === \T_END_NOWDOC)
+                        // Check for indentation, if indented, it's a PHP 7.3+ heredoc/nowdoc.
+                        && $tokens[$lastNonEmpty]['content'] === \ltrim($tokens[$lastNonEmpty]['content'])
                     ) {
                         // Prevent parse errors in PHP < 7.3 which doesn't support flexible heredoc/nowdoc.
                         $extraContent = $phpcsFile->eolChar . $extraContent;
@@ -197,6 +205,7 @@ class CommaAfterLastSniff implements Sniff
                     }
 
                     $phpcsFile->fixer->beginChangeset();
+
                     for ($i = $start; $i <= $end; $i++) {
                         $phpcsFile->fixer->replaceToken($i, '');
                     }

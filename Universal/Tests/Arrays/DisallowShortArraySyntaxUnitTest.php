@@ -19,7 +19,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @since 1.0.0
  */
-class DisallowShortArraySyntaxUnitTest extends AbstractSniffUnitTest
+final class DisallowShortArraySyntaxUnitTest extends AbstractSniffUnitTest
 {
 
     /**
@@ -38,6 +38,7 @@ class DisallowShortArraySyntaxUnitTest extends AbstractSniffUnitTest
             8  => 1,
             9  => 1,
             11 => 1,
+            19 => 1,
         ];
     }
 

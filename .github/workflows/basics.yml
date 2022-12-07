@@ -1,0 +1,98 @@
+name: CS
+
+on:
+  # Run on all pushes and on all pull requests.
+  # Prevent the build from running when there are only irrelevant changes.
+  push:
+    paths-ignore:
+      - '**.md'
+  pull_request:
+  # Allow manually triggering the workflow.
+  workflow_dispatch:
+
+# Cancels all previous workflow runs for the same branch that have not yet completed.
+concurrency:
+  # The concurrency group contains the workflow name and the branch name.
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checkcs:
+    name: 'Basic CS and QA checks'
+    runs-on: ubuntu-latest
+
+    env:
+      XMLLINT_INDENT: '    '
+      # - COMPOSER_ROOT_VERSION is needed to get round the recursive dependency when using CI.
+      COMPOSER_ROOT_VERSION: '1.99.99'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 'latest'
+          coverage: none
+          tools: cs2pr
+
+      - name: 'Composer: adjust dependencies'
+        run: |
+          # The sniff stage doesn't run the unit tests, so no need for PHPUnit.
+          composer remove --no-update --dev phpunit/phpunit --no-scripts --no-interaction
+          # Using PHPCS `master` as an early detection system for bugs upstream.
+          composer require --no-update squizlabs/php_codesniffer:"dev-master" --no-interaction
+
+      # Install dependencies and handle caching in one go.
+      # @link https://github.com/marketplace/actions/install-composer-dependencies
+      - name: Install Composer dependencies
+        uses: "ramsey/composer-install@v2"
+        with:
+          # Bust the cache at least once a month - output format: YYYY-MM-DD.
+          custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
+
+      - name: Install xmllint
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y libxml2-utils
+
+      # Show XML violations inline in the file diff.
+      # @link https://github.com/marketplace/actions/xmllint-problem-matcher
+      - uses: korelstar/xmllint-problem-matcher@v1
+
+      # Validate the Ruleset XML file.
+      # @link http://xmlsoft.org/xmllint.html
+      - name: Validate rulesets against schema
+        run: xmllint --noout --schema vendor/squizlabs/php_codesniffer/phpcs.xsd ./*/ruleset.xml
+
+      # Check the code-style consistency of the XML ruleset files.
+      - name: Check XML code style
+        run: |
+          diff -B ./Modernize/ruleset.xml <(xmllint --format "./Modernize/ruleset.xml")
+          diff -B ./NormalizedArrays/ruleset.xml <(xmllint --format "./NormalizedArrays/ruleset.xml")
+          diff -B ./Universal/ruleset.xml <(xmllint --format "./Universal/ruleset.xml")
+
+      # Validate the Documentation XML files.
+      - name: Validate documentation against schema
+        run: xmllint --noout --schema vendor/phpcsstandards/phpcsdevtools/DocsXsd/phpcsdocs.xsd ./*/Docs/*/*Standard.xml
+
+      # Check the code-style consistency of the PHP files.
+      - name: Check PHP code style
+        id: phpcs
+        run: vendor/bin/phpcs --report-full --report-checkstyle=./phpcs-report.xml
+
+      - name: Show PHPCS results in PR
+        if: ${{ always() && steps.phpcs.outcome == 'failure' }}
+        run: cs2pr ./phpcs-report.xml
+
+      # Check that the sniffs available are feature complete.
+      # For now, just check that all sniffs have unit tests.
+      # At a later stage the documentation check can be activated.
+      - name: Check sniff feature completeness
+        run: composer check-complete
+
+      # Validate the composer.json file.
+      # @link https://getcomposer.org/doc/03-cli.md#validate
+      - name: Validate Composer installation
+        run: composer validate --no-check-all --strict

@@ -44,9 +44,6 @@
     <!-- Set minimum PHP version supported to PHP 5.4. -->
     <config name="testVersion" value="5.4-"/>
 
-    <!-- Enforce short arrays. -->
-    <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
-
 
     <!--
     #############################################################################

@@ -13,6 +13,7 @@ namespace PHPCSExtra\Universal\Sniffs\Arrays;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\AbstractSniffs\AbstractArrayDeclarationSniff;
+use PHPCSUtils\BackCompat\Helper;
 
 /**
  * Detect duplicate array keys in array declarations.
@@ -20,29 +21,61 @@ use PHPCSUtils\AbstractSniffs\AbstractArrayDeclarationSniff;
  * This sniff will detect duplicate keys with high precision, though any array key
  * set via a variable/constant/function call is excluded from the examination.
  *
+ * The sniff will handle the change in how numeric array keys are set
+ * since PHP 8.0 and will flag keys which would be duplicates cross-version.
+ * {@link https://wiki.php.net/rfc/negative_array_index}
+ *
  * @since 1.0.0
  */
-class DuplicateArrayKeySniff extends AbstractArrayDeclarationSniff
+final class DuplicateArrayKeySniff extends AbstractArrayDeclarationSniff
 {
 
     /**
-     * Keep track of which array keys have been seen already.
+     * Keep track of which array keys have been seen already on PHP < 8.0.
      *
      * @since 1.0.0
      *
      * @var array
      */
-    private $keysSeen = [];
+    private $keysSeenLt8 = [];
+
+    /**
+     * Keep track of which array keys have been seen already on PHP >= 8.0.
+     *
+     * @since 1.0.0
+     *
+     * @var array
+     */
+    private $keysSeenGt8 = [];
 
     /**
      * Keep track of the maximum seen integer key to know what the next value will be for
-     * array items without a key.
+     * array items without a key on PHP < 8.0.
      *
      * @since 1.0.0
      *
      * @var int
      */
-    private $currentMaxIntKey = -1;
+    private $currentMaxIntKeyLt8;
+
+    /**
+     * Keep track of the maximum seen integer key to know what the next value will be for
+     * array items without a key on PHP >= 8.0.
+     *
+     * @since 1.0.0
+     *
+     * @var int
+     */
+    private $currentMaxIntKeyGt8;
+
+    /**
+     * The current PHP version.
+     *
+     * @since 1.0.0
+     *
+     * @var int
+     */
+    private $phpVersion;
 
     /**
      * Process every part of the array declaration.
@@ -60,8 +93,17 @@ class DuplicateArrayKeySniff extends AbstractArrayDeclarationSniff
     public function processArray(File $phpcsFile)
     {
         // Reset properties before processing this array.
-        $this->keysSeen         = [];
-        $this->currentMaxIntKey = -1;
+        $this->keysSeenLt8 = [];
+        $this->keysSeenGt8 = [];
+
+        if (isset($this->phpVersion) === false) {
+            $phpVersion = Helper::getConfigData('php_version');
+            if ($phpVersion !== null) {
+                $this->phpVersion = (int) $phpVersion;
+            }
+        }
+
+        unset($this->currentMaxIntKeyLt8, $this->currentMaxIntKeyGt8);
 
         parent::processArray($phpcsFile);
     }
@@ -92,41 +134,122 @@ class DuplicateArrayKeySniff extends AbstractArrayDeclarationSniff
 
         $integerKey = \is_int($key);
 
-        /*
-         * Check if we've seen it before.
-         */
-        if (isset($this->keysSeen[$key]) === true) {
-            $firstSeen              = $this->keysSeen[$key];
-            $firstNonEmptyFirstSeen = $phpcsFile->findNext(Tokens::$emptyTokens, $firstSeen['ptr'], null, true);
-            $firstNonEmpty          = $phpcsFile->findNext(Tokens::$emptyTokens, $startPtr, null, true);
+        $errorMsg  = 'Duplicate array key found. The value will be overwritten%s.'
+            . ' The %s array key "%s" was first seen on line %d';
+        $errorCode = 'Found';
+        $errors    = [];
+        $baseData  = [
+            ($integerKey === true) ? 'integer' : 'string',
+            $key,
+        ];
 
-            $data = [
-                ($integerKey === true) ? 'integer' : 'string',
-                $key,
-                $this->tokens[$firstNonEmptyFirstSeen]['line'],
+        /*
+         * Check if we've seen the key before.
+         */
+        if ((isset($this->phpVersion) === false || $this->phpVersion < 80000)
+            && isset($this->keysSeenLt8[$key]) === true
+        ) {
+            $errors['phplt8'] = [
+                'data_subset'  => $baseData,
+                'error_suffix' => '',
+                'code_suffix'  => '',
             ];
 
-            $phpcsFile->addError(
-                'Duplicate array key found. The value will be overwritten.'
-                    . ' The %s array key "%s" was first seen on line %d',
-                $firstNonEmpty,
-                'Found',
-                $data
-            );
+            if ($integerKey === true) {
+                $errors['phplt8']['error_suffix'] = ' when using PHP < 8.0';
+                $errors['phplt8']['code_suffix']  = 'ForPHPlt80';
+            }
+
+            $firstSeen              = $this->keysSeenLt8[$key];
+            $firstNonEmptyFirstSeen = $phpcsFile->findNext(Tokens::$emptyTokens, $firstSeen['ptr'], null, true);
+
+            $errors['phplt8']['data_subset'][] = $this->tokens[$firstNonEmptyFirstSeen]['line'];
+        }
+
+        if ((isset($this->phpVersion) === false || $this->phpVersion >= 80000)
+            && isset($this->keysSeenGt8[$key]) === true
+        ) {
+            $errors['phpgt8'] = [
+                'data_subset'  => $baseData,
+                'error_suffix' => '',
+                'code_suffix'  => '',
+            ];
+
+            if ($integerKey === true) {
+                $errors['phpgt8']['error_suffix'] = ' when using PHP >= 8.0';
+                $errors['phpgt8']['code_suffix']  = 'ForPHPgte80';
+            }
+
+            $firstSeen              = $this->keysSeenGt8[$key];
+            $firstNonEmptyFirstSeen = $phpcsFile->findNext(Tokens::$emptyTokens, $firstSeen['ptr'], null, true);
+
+            $errors['phpgt8']['data_subset'][] = $this->tokens[$firstNonEmptyFirstSeen]['line'];
+        }
+
+        /*
+         * Throw the error(s).
+         *
+         * If no PHP version was passed, throw errors both for PHP < 8.0 and PHP >= 8.0.
+         * If a PHP version was set, only throw the error appropriate for the selected PHP version.
+         * If both errors would effectively be the same, only throw one.
+         */
+        if ($errors !== []) {
+            $firstNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, $startPtr, null, true);
+
+            if (isset($errors['phplt8'], $errors['phpgt8'])
+                && $errors['phplt8']['data_subset'] === $errors['phpgt8']['data_subset']
+            ) {
+                // Only throw the error once if it would be the same for PHP < 8.0 and PHP >= 8.0.
+                $data = $errors['phplt8']['data_subset'];
+                \array_unshift($data, '');
+
+                $phpcsFile->addError($errorMsg, $firstNonEmpty, $errorCode, $data);
+                return;
+            }
+
+            if (isset($errors['phplt8'])) {
+                $code = $errorCode . $errors['phplt8']['code_suffix'];
+                $data = $errors['phplt8']['data_subset'];
+                \array_unshift($data, $errors['phplt8']['error_suffix']);
+
+                $phpcsFile->addError($errorMsg, $firstNonEmpty, $code, $data);
+            }
+
+            if (isset($errors['phpgt8'])) {
+                $code = $errorCode . $errors['phpgt8']['code_suffix'];
+                $data = $errors['phpgt8']['data_subset'];
+                \array_unshift($data, $errors['phpgt8']['error_suffix']);
+
+                $phpcsFile->addError($errorMsg, $firstNonEmpty, $code, $data);
+            }
 
             return;
         }
 
         /*
-         * Key not seen before. Add to array.
+         * Key not seen before. Add to arrays.
          */
-        $this->keysSeen[$key] = [
+        $this->keysSeenLt8[$key] = [
+            'item' => $itemNr,
+            'ptr'  => $startPtr,
+        ];
+        $this->keysSeenGt8[$key] = [
             'item' => $itemNr,
             'ptr'  => $startPtr,
         ];
 
-        if ($integerKey === true && $key > $this->currentMaxIntKey) {
-            $this->currentMaxIntKey = $key;
+        if ($integerKey === true) {
+            if ((isset($this->currentMaxIntKeyLt8) === false && $key > -1)
+                || (isset($this->currentMaxIntKeyLt8) === true && $key > $this->currentMaxIntKeyLt8)
+            ) {
+                $this->currentMaxIntKeyLt8 = $key;
+            }
+
+            if (isset($this->currentMaxIntKeyGt8) === false
+                || $key > $this->currentMaxIntKeyGt8
+            ) {
+                $this->currentMaxIntKeyGt8 = $key;
+            }
         }
     }
 
@@ -146,8 +269,24 @@ class DuplicateArrayKeySniff extends AbstractArrayDeclarationSniff
      */
     public function processNoKey(File $phpcsFile, $startPtr, $itemNr)
     {
-        ++$this->currentMaxIntKey;
-        $this->keysSeen[$this->currentMaxIntKey] = [
+        // Track the key for PHP < 8.0.
+        if (isset($this->currentMaxIntKeyLt8) === false) {
+            $this->currentMaxIntKeyLt8 = -1;
+        }
+
+        ++$this->currentMaxIntKeyLt8;
+        $this->keysSeenLt8[$this->currentMaxIntKeyLt8] = [
+            'item' => $itemNr,
+            'ptr'  => $startPtr,
+        ];
+
+        // Track the key for PHP 8.0+.
+        if (isset($this->currentMaxIntKeyGt8) === false) {
+            $this->currentMaxIntKeyGt8 = -1;
+        }
+
+        ++$this->currentMaxIntKeyGt8;
+        $this->keysSeenGt8[$this->currentMaxIntKeyGt8] = [
             'item' => $itemNr,
             'ptr'  => $startPtr,
         ];

@@ -19,7 +19,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @since 1.0.0
  */
-class IfElseDeclarationUnitTest extends AbstractSniffUnitTest
+final class IfElseDeclarationUnitTest extends AbstractSniffUnitTest
 {
 
     /**

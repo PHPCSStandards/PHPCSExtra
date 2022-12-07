@@ -12,7 +12,7 @@ namespace PHPCSExtra\Universal\Sniffs\Constants;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
-use PHPCSUtils\Tokens\Collections;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * Verifies that PHP native `__...__` magic constants are in uppercase when used.
@@ -21,8 +21,17 @@ use PHPCSUtils\Tokens\Collections;
  *
  * @since 1.0.0
  */
-class UppercaseMagicConstantsSniff implements Sniff
+final class UppercaseMagicConstantsSniff implements Sniff
 {
+
+    /**
+     * Name of the metric.
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
+    const METRIC_NAME = 'Magic constant case';
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -33,7 +42,7 @@ class UppercaseMagicConstantsSniff implements Sniff
      */
     public function register()
     {
-        return Collections::$magicConstants;
+        return Tokens::$magicConstants;
     }
 
     /**
@@ -53,7 +62,7 @@ class UppercaseMagicConstantsSniff implements Sniff
         $content   = $tokens[$stackPtr]['content'];
         $contentUC = \strtoupper($content);
         if ($contentUC === $content) {
-            $phpcsFile->recordMetric($stackPtr, 'Magic constant case', 'uppercase');
+            $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'uppercase');
             return;
         }
 
@@ -66,10 +75,10 @@ class UppercaseMagicConstantsSniff implements Sniff
 
         if (\strtolower($content) === $content) {
             $errorCode = 'Lowercase';
-            $phpcsFile->recordMetric($stackPtr, 'Magic constant case', 'lowercase');
+            $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'lowercase');
         } else {
             $errorCode = 'Mixedcase';
-            $phpcsFile->recordMetric($stackPtr, 'Magic constant case', 'mixed case');
+            $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'mixed case');
         }
 
         $fix = $phpcsFile->addFixableError($error, $stackPtr, $errorCode, $data);
