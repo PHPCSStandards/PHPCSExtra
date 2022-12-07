@@ -41,9 +41,7 @@ final class DisallowAnonClassParenthesesSniff implements Sniff
      */
     public function register()
     {
-        return [
-            \T_ANON_CLASS,
-        ];
+        return [\T_ANON_CLASS];
     }
 
     /**
@@ -80,8 +78,9 @@ final class DisallowAnonClassParenthesesSniff implements Sniff
             // @codeCoverageIgnoreEnd
         }
 
-        $closer    = $tokens[$nextNonEmpty]['parenthesis_closer'];
-        $hasParams = $phpcsFile->findNext(Tokens::$emptyTokens, ($nextNonEmpty + 1), $closer, true);
+        $opener    = $nextNonEmpty;
+        $closer    = $tokens[$opener]['parenthesis_closer'];
+        $hasParams = $phpcsFile->findNext(Tokens::$emptyTokens, ($opener + 1), $closer, true);
         if ($hasParams !== false) {
             // There is something between the parentheses. Ignore.
             $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'yes, with parameter(s)');
@@ -98,13 +97,15 @@ final class DisallowAnonClassParenthesesSniff implements Sniff
 
         if ($fix === true) {
             $phpcsFile->fixer->beginChangeset();
-            for ($i = $nextNonEmpty; $i <= $closer; $i++) {
+
+            for ($i = $opener; $i <= $closer; $i++) {
                 if (isset(Tokens::$commentTokens[$tokens[$i]['code']]) === true) {
                     continue;
                 }
 
                 $phpcsFile->fixer->replaceToken($i, '');
             }
+
             $phpcsFile->fixer->endChangeset();
         }
     }

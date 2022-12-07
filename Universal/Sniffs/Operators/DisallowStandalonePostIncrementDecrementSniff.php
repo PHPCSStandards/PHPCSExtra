@@ -67,7 +67,7 @@ final class DisallowStandalonePostIncrementDecrementSniff implements Sniff
         $this->allowedTokens += Collections::namespacedNameTokens();
 
         /*
-         * Remove potential nullsafe object operator. In/decrement not allowed in write context,
+         * Remove nullsafe object operator. In/decrement not allowed in write context,
          * so ignore.
          */
         unset($this->allowedTokens[\T_NULLSAFE_OBJECT_OPERATOR]);
@@ -184,14 +184,12 @@ final class DisallowStandalonePostIncrementDecrementSniff implements Sniff
 
         $fix = $phpcsFile->addFixableError($error, $stackPtr, $errorCode, $data);
 
-        if ($fix === false) {
-            return $end;
+        if ($fix === true) {
+            $phpcsFile->fixer->beginChangeset();
+            $phpcsFile->fixer->replaceToken($stackPtr, '');
+            $phpcsFile->fixer->addContentBefore($start, $tokens[$stackPtr]['content']);
+            $phpcsFile->fixer->endChangeset();
         }
-
-        $phpcsFile->fixer->beginChangeset();
-        $phpcsFile->fixer->replaceToken($stackPtr, '');
-        $phpcsFile->fixer->addContentBefore($start, $tokens[$stackPtr]['content']);
-        $phpcsFile->fixer->endChangeset();
 
         return $end;
     }

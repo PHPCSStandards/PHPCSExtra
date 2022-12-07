@@ -205,6 +205,7 @@ final class CommaAfterLastSniff implements Sniff
                     }
 
                     $phpcsFile->fixer->beginChangeset();
+
                     for ($i = $start; $i <= $end; $i++) {
                         $phpcsFile->fixer->replaceToken($i, '');
                     }

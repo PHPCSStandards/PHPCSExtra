@@ -18,7 +18,7 @@ use PHPCSUtils\Tokens\Collections;
 /**
  * Standardize the modifier keyword order for class declarations.
  *
- * @since 1.0.0-alpha4
+ * @since 1.0.0
  */
 final class ModifierKeywordOrderSniff implements Sniff
 {
@@ -26,7 +26,7 @@ final class ModifierKeywordOrderSniff implements Sniff
     /**
      * Name of the metric.
      *
-     * @since 1.0.0-alpha4
+     * @since 1.0.0
      *
      * @var string
      */
@@ -35,7 +35,7 @@ final class ModifierKeywordOrderSniff implements Sniff
     /**
      * Order preference: abstract/final readonly.
      *
-     * @since 1.0.0-alpha4
+     * @since 1.0.0
      *
      * @var string
      */
@@ -44,7 +44,7 @@ final class ModifierKeywordOrderSniff implements Sniff
     /**
      * Order preference: readonly abstract/final.
      *
-     * @since 1.0.0-alpha4
+     * @since 1.0.0
      *
      * @var string
      */
@@ -59,7 +59,7 @@ final class ModifierKeywordOrderSniff implements Sniff
      *
      * Defaults to "extendability readonly".
      *
-     * @since 1.0.0-alpha4
+     * @since 1.0.0
      *
      * @var string
      */
@@ -68,7 +68,7 @@ final class ModifierKeywordOrderSniff implements Sniff
     /**
      * Returns an array of tokens this test wants to listen for.
      *
-     * @since 1.0.0-alpha4
+     * @since 1.0.0
      *
      * @return array
      */
@@ -80,7 +80,7 @@ final class ModifierKeywordOrderSniff implements Sniff
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @since 1.0.0-alpha4
+     * @since 1.0.0
      *
      * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position of the current token
@@ -178,7 +178,7 @@ final class ModifierKeywordOrderSniff implements Sniff
     /**
      * Throw the error and potentially fix it.
      *
-     * @since 1.0.0-alpha4
+     * @since 1.0.0
      *
      * @param \PHP_CodeSniffer\Files\File $phpcsFile     The file being scanned.
      * @param int                         $firstKeyword  The position of the first keyword found.
