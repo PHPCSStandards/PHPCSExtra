@@ -50,10 +50,6 @@ jobs:
             phpcs_version: 'dev-master'
             experimental: true
 
-          #- php: '7.4'
-          #  phpcs_version: '4.0.x-dev'
-          #  experimental: true
-
     name: "Test${{ matrix.phpcs_version == 'dev-master' && ' + Lint' || '' }}: PHP ${{ matrix.php }} - PHPCS ${{ matrix.phpcs_version }}"
 
     continue-on-error: ${{ matrix.experimental }}
@@ -67,7 +63,7 @@ jobs:
       - name: Setup ini config
         id: set_ini
         run: |
-          if [[ "${{ matrix.phpcs_version }}" != "dev-master" && "${{ matrix.phpcs_version }}" != "4.0.x-dev" ]]; then
+          if [[ "${{ matrix.phpcs_version }}" != "dev-master" ]]; then
             echo 'PHP_INI=error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On' >> $GITHUB_OUTPUT
           else
             echo 'PHP_INI=error_reporting=-1, display_errors=On' >> $GITHUB_OUTPUT
@@ -79,22 +75,9 @@ jobs:
           php-version: ${{ matrix.php }}
           ini-values: ${{ steps.set_ini.outputs.PHP_INI }}
           coverage: none
-        env:
-          # Token is needed for the PHPCS 4.x run against source.
-          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 'Composer: set PHPCS version for tests'
         run: composer require --no-update squizlabs/php_codesniffer:"${{ matrix.phpcs_version }}" --no-interaction
-
-      - name: 'Composer: conditionally prefer source for PHPCS'
-        if: ${{ startsWith( matrix.phpcs_version, '4' ) }}
-        # --prefer-source ensures that the PHPCS native unit test framework will be available in PHPCS 4.x.
-        run: composer config preferred-install.squizlabs/php_codesniffer source
-
-      - name: 'Composer: conditionally remove PHPCSDevtools'
-        if: ${{ startsWith( matrix.phpcs_version, '4' ) }}
-        # Remove devtools as it will not (yet) install on PHPCS 4.x.
-        run: composer remove --no-update --dev phpcsstandards/phpcsdevtools --no-interaction
 
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-composer-dependencies
