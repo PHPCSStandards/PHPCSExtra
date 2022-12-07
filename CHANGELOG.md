@@ -137,6 +137,7 @@ The upgrade to PHPCSUtils 1.0.0-alpha4 took care of a number of bugs, which pote
 [#128]: https://github.com/PHPCSStandards/PHPCSExtra/pull/128
 [#130]: https://github.com/PHPCSStandards/PHPCSExtra/pull/130
 [#134]: https://github.com/PHPCSStandards/PHPCSExtra/pull/134
+[#135]: https://github.com/PHPCSStandards/PHPCSExtra/pull/135
 [#137]: https://github.com/PHPCSStandards/PHPCSExtra/pull/137
 [#140]: https://github.com/PHPCSStandards/PHPCSExtra/pull/140
 [#142]: https://github.com/PHPCSStandards/PHPCSExtra/pull/142
