@@ -28,6 +28,7 @@
     "require-dev" : {
         "php-parallel-lint/php-parallel-lint": "^1.3.2",
         "php-parallel-lint/php-console-highlighter": "^1.0",
+        "phpcsstandards/phpcsdevcs": "^1.1.5",
         "phpcsstandards/phpcsdevtools": "^1.2.0",
         "phpunit/phpunit": "^4.5 || ^5.0 || ^6.0 || ^7.0"
     },
@@ -43,21 +44,11 @@
         "lint": [
             "@php ./vendor/php-parallel-lint/php-parallel-lint/parallel-lint . --show-deprecated -e php --exclude vendor --exclude .git"
         ],
-        "install-devcs": [
-            "composer require --dev phpcsstandards/phpcsdevcs:\"^1.1.3\" --no-suggest --no-interaction"
-        ],
-        "remove-devcs": [
-            "composer remove --dev phpcsstandards/phpcsdevcs --no-interaction"
-        ],
         "checkcs": [
-            "@install-devcs",
-            "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs",
-            "@remove-devcs"
+            "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs"
         ],
         "fixcs": [
-            "@install-devcs",
-            "@php ./vendor/squizlabs/php_codesniffer/bin/phpcbf",
-            "@remove-devcs"
+            "@php ./vendor/squizlabs/php_codesniffer/bin/phpcbf"
         ],
         "check-complete": [
             "@php ./vendor/phpcsstandards/phpcsdevtools/bin/phpcs-check-feature-completeness ./Modernize ./NormalizedArrays ./Universal"
