@@ -29,7 +29,7 @@ trait UseContextUnknown {
 final class ClosuresAreNotTargettedByThisSniff {
     public static $className = 'Bar';
     public function foobar() {
-        $closure = function() {
+        $closure = static function(): static {
             // Returns new instance of Closure, not of ClosuresAreNotTargettedByThisSniff.
             // Still unnecessary, but not the target of this sniff.
             // Should possibly get its own sniff.
@@ -62,6 +62,10 @@ function foobar() {
 };
 
 static::$outsideClassContext;
+
+function arrowNotInOO() {
+    $arrow = static fn(): static => new static();
+}
 
 
 /*
@@ -159,6 +163,12 @@ enum FinalByDesign {
         $var = $obj instanceof self;
 
         $var = new self;
+    }
+}
+
+final class ArrowFunctionsAreOpen {
+    public function foobar() {
+        $arrow = static fn(): self => new self();
     }
 }
 

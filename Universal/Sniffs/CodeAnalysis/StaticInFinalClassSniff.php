@@ -48,8 +48,9 @@ final class StaticInFinalClassSniff implements Sniff
     public function register()
     {
         return [
-            // This token is used to retrieve return types reliably.
+            // These tokens are used to retrieve return types reliably.
             \T_FUNCTION,
+            \T_FN,
             // While this is our "real" target.
             \T_STATIC,
             // But we also need this as after "instanceof", `static` is tokenized as `T_STRING in PHPCS < 4.0.0.
@@ -80,7 +81,9 @@ final class StaticInFinalClassSniff implements Sniff
             return;
         }
 
-        if ($tokens[$stackPtr]['code'] === \T_FUNCTION) {
+        if ($tokens[$stackPtr]['code'] === \T_FUNCTION
+            || $tokens[$stackPtr]['code'] === \T_FN
+        ) {
             /*
              * Check return types for methods in final classes, anon classes and enums.
              *
@@ -91,10 +94,18 @@ final class StaticInFinalClassSniff implements Sniff
                 $scopeOpener = $tokens[$stackPtr]['scope_opener'];
             }
 
-            $ooPtr = Scopes::validDirectScope($phpcsFile, $stackPtr, $this->validOOScopes);
-            if ($ooPtr === false) {
-                // Method in a trait (not known where it is used), interface (never final) or not in an OO scope.
-                return $scopeOpener;
+            if ($tokens[$stackPtr]['code'] === \T_FUNCTION) {
+                $ooPtr = Scopes::validDirectScope($phpcsFile, $stackPtr, $this->validOOScopes);
+                if ($ooPtr === false) {
+                    // Method in a trait (not known where it is used), interface (never final) or not in an OO scope.
+                    return $scopeOpener;
+                }
+            } else {
+                $ooPtr = Conditions::getLastCondition($phpcsFile, $stackPtr, $this->validOOScopes);
+                if ($ooPtr === false) {
+                    // Arrow function outside of OO.
+                    return $scopeOpener;
+                }
             }
 
             if ($tokens[$ooPtr]['code'] === \T_CLASS) {
