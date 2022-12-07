@@ -12,7 +12,7 @@ PHPCSExtra
 [![Minimum PHP Version](https://img.shields.io/packagist/php-v/phpcsstandards/phpcsextra.svg?maxAge=3600)](https://packagist.org/packages/phpcsstandards/phpcsextra)
 [![CS Build Status](https://github.com/PHPCSStandards/PHPCSExtra/workflows/CS/badge.svg?branch=develop)](https://github.com/PHPCSStandards/PHPCSExtra/actions?query=workflow%3ACS)
 [![Test Build Status](https://github.com/PHPCSStandards/PHPCSExtra/workflows/Test/badge.svg?branch=develop)](https://github.com/PHPCSStandards/PHPCSExtra/actions?query=workflow%3ATest)
-[![Tested on PHP 5.4 to 8.0](https://img.shields.io/badge/tested%20on-PHP%205.4%20|%205.5%20|%205.6%20|%207.0%20|%207.1%20|%207.2%20|%207.3%20|%207.4%20|%208.0-brightgreen.svg?maxAge=2419200)](https://github.com/PHPCSStandards/PHPCSExtra/actions?query=workflow%3ATest)
+[![Tested on PHP 5.4 to 8.2](https://img.shields.io/badge/tested%20on-PHP%205.4%20|%205.5%20|%205.6%20|%207.0%20|%207.1%20|%207.2%20|%207.3%20|%207.4%20|%208.0%20|%208.1%20|%208.2-brightgreen.svg?maxAge=2419200)](https://github.com/PHPCSStandards/PHPCSExtra/actions?query=workflow%3ATest)
 [![Coverage Status](https://coveralls.io/repos/github/PHPCSStandards/PHPCSExtra/badge.svg)](https://coveralls.io/github/PHPCSStandards/PHPCSExtra)
 
 [![License: LGPLv3](https://poser.pugx.org/phpcsstandards/phpcsextra/license)](https://github.com/PHPCSStandards/PHPCSExtra/blob/stable/LICENSE)
