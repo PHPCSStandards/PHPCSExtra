@@ -48,7 +48,7 @@ $path = dirname(\dirname(__DIR__) . '/file.php'); // Nested dirname() call not s
  * These should be flagged for use of dirname(__FILE__).
  */
 $path = dirname(__FILE__);
-$path = \dirname (   __FILE__  ,  ) ; // Includes trailing comma.
+$path = \dirname (   __file__  ,  ) ; // Includes trailing comma.
 
 $path = DirName(__FILE__ /* todo: replace with __DIR__ */); // Not auto-fixable.
 
@@ -70,7 +70,7 @@ $path = dirname(path: __FILE__, levels: 1);
 $path = dirname(levels: 3, path: __FILE__);
 
 // phpcs:ignore Modernize.FunctionCalls.Dirname.Nested -- Only apply __DIR__ fix, not $levels.
-$path = dirname(dirname(dirname(dirname(__FILE__))));
+$path = dirname(dirname(dirname(dirname(__file__))));
 
 
 /*
@@ -129,7 +129,7 @@ $path = dirname(
         levels: 2,
         path: dirname(
             path: dirname(
-                path: __FILE__
+                path: __file__
             ),
             levels: 3,
         )
