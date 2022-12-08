@@ -118,7 +118,7 @@ final class DirnameSniff implements Sniff
         /*
          * PHP 5.3+: Detect use of dirname(__FILE__).
          */
-        if ($pathParam['clean'] === '__FILE__') {
+        if (\strtoupper($pathParam['clean']) === '__FILE__') {
             // Determine if the issue is auto-fixable.
             $hasComment = $phpcsFile->findNext(Tokens::$commentTokens, ($opener + 1), $closer);
             $fixable    = ($hasComment === false);
