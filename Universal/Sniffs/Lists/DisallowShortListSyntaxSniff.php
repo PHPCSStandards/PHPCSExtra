@@ -39,10 +39,7 @@ final class DisallowShortListSyntaxSniff implements Sniff
      */
     public function register()
     {
-        $targets          = Collections::shortArrayListOpenTokensBC();
-        $targets[\T_LIST] = \T_LIST; // Only for recording metrics.
-
-        return $targets;
+        return Collections::listOpenTokensBC();
     }
 
     /**
