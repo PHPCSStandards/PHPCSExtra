@@ -15,6 +15,38 @@ This projects adheres to [Keep a CHANGELOG](http://keepachangelog.com/) and uses
 _Nothing yet._
 
 
+## [1.0.0] - 2023-01-04
+
+:warning: Important: this package now requires [PHPCSUtils 1.0.0]. Please make sure you use `--with-[all-]dependencies` when running `composer update`. :exclamation:
+
+For the full list of features, please see the changelogs of the alpha/rc releases:
+* [1.0.0-rc1](https://github.com/PHPCSStandards/PHPCSExtra/releases/tag/1.0.0-rc1)
+* [1.0.0-alpha3](https://github.com/PHPCSStandards/PHPCSExtra/releases/tag/1.0.0-alpha3)
+* [1.0.0-alpha2](https://github.com/PHPCSStandards/PHPCSExtra/releases/tag/1.0.0-alpha2)
+* [1.0.0-alpha1](https://github.com/PHPCSStandards/PHPCSExtra/releases/tag/1.0.0-alpha1)
+
+### Changed
+
+#### Other
+
+* Updated various sniffs to take advantage of PHPCSUtils 1.0.0(-rc1). [#193], [#194], [#195]
+* Minor documentation improvements.
+* Various housekeeping.
+
+### Fixed
+
+#### Modernize
+
+* `Modernize.FunctionCalls.Dirname`: the sniff will now correctly recognize magic constants in a case-insensitive manner. [#187]
+
+[PHPCSUtils 1.0.0]: https://github.com/PHPCSStandards/PHPCSUtils/releases/tag/1.0.0
+
+[#187]: https://github.com/PHPCSStandards/PHPCSExtra/pull/187
+[#193]: https://github.com/PHPCSStandards/PHPCSExtra/pull/193
+[#194]: https://github.com/PHPCSStandards/PHPCSExtra/pull/194
+[#195]: https://github.com/PHPCSStandards/PHPCSExtra/pull/195
+
+
 ## [1.0.0-RC1] - 2022-12-07
 
 :warning: Important: this package now requires [PHPCSUtils 1.0.0-alpha4]. Please make sure you use `--with-[all-]dependencies` when running `composer update`. :exclamation:
@@ -343,6 +375,7 @@ This initial alpha release contains the following sniffs:
 [Composer PHPCS plugin]: https://github.com/PHPCSStandards/composer-installer
 
 [Unreleased]: https://github.com/PHPCSStandards/PHPCSExtra/compare/stable...HEAD
+[1.0.0]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.0-rc1...1.0.0
 [1.0.0-RC1]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.0-alpha3...1.0.0-rc1
 [1.0.0-alpha3]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.0-alpha2...1.0.0-alpha3
 [1.0.0-alpha2]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.0-alpha1...1.0.0-alpha2
