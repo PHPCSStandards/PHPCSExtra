@@ -16,7 +16,7 @@ PR for tracking changes for the x.x.x release. Target release date: **DOW MONTH 
 - [ ] Merge this PR
 - [ ] Make sure all CI builds are green.
 - [ ] Tag and create a release (careful, GH defaults to `develop`!) & copy & paste the changelog to it.
-    :pencil2: Don't forget to copy the link collection from the bottom of the changelog!
+    :pencil2: Check if anything from the link collection at the bottom of the changelog needs to be copied in!
 - [ ] Make sure all CI builds are green.
 - [ ] Close the milestone
 - [ ] Open a new milestone for the next release
