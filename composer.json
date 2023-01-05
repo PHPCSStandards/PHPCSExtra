@@ -39,25 +39,25 @@
     },
     "scripts" : {
         "lint": [
-            "@php ./vendor/php-parallel-lint/php-parallel-lint/parallel-lint . --show-deprecated -e php --exclude vendor --exclude .git"
+            "parallel-lint . --show-deprecated -e php --exclude vendor --exclude .git"
         ],
         "checkcs": [
-            "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs"
+            "phpcs"
         ],
         "fixcs": [
-            "@php ./vendor/squizlabs/php_codesniffer/bin/phpcbf"
+            "phpcbf"
         ],
         "check-complete": [
-            "@php ./vendor/phpcsstandards/phpcsdevtools/bin/phpcs-check-feature-completeness ./Modernize ./NormalizedArrays ./Universal"
+            "phpcs-check-feature-completeness ./Modernize ./NormalizedArrays ./Universal"
         ],
         "test": [
-            "@php ./vendor/phpunit/phpunit/phpunit --filter PHPCSExtra --no-coverage ./vendor/squizlabs/php_codesniffer/tests/AllTests.php"
+            "phpunit --filter PHPCSExtra --no-coverage ./vendor/squizlabs/php_codesniffer/tests/AllTests.php"
         ],
         "coverage": [
-            "@php ./vendor/phpunit/phpunit/phpunit --filter PHPCSExtra ./vendor/squizlabs/php_codesniffer/tests/AllTests.php"
+            "phpunit --filter PHPCSExtra ./vendor/squizlabs/php_codesniffer/tests/AllTests.php"
         ],
         "coverage-local": [
-            "@php ./vendor/phpunit/phpunit/phpunit --filter PHPCSExtra ./vendor/squizlabs/php_codesniffer/tests/AllTests.php --coverage-html ./build/coverage-html"
+            "phpunit --filter PHPCSExtra ./vendor/squizlabs/php_codesniffer/tests/AllTests.php --coverage-html ./build/coverage-html"
         ]
     },
     "config": {
