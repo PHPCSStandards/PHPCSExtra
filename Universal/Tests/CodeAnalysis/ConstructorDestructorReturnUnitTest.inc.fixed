@@ -122,3 +122,34 @@ interface InterfaceMethodReturnTypes {
 
     public function __destruct();
 }
+
+// Issue #201 - prevent false positives for nested functions/closures.
+class NestedFunctions {
+    public function __construct() {
+        function global_function() {
+            return true;
+        }
+    }
+
+    public function __construct() {
+        function global_function($foo) {
+            return $foo;
+        }
+    }
+}
+
+class NestedClosures {
+    public function __construct() {
+        do_something(
+            function () {
+                return true;
+            },
+        );
+    }
+
+    public function __construct() {
+        $this->callback = function () {
+            return 10;
+        };
+    }
+}

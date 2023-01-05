@@ -14,6 +14,7 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\BackCompat\BCFile;
+use PHPCSUtils\Tokens\Collections;
 use PHPCSUtils\Utils\FunctionDeclarations;
 use PHPCSUtils\Utils\GetTokensAsString;
 use PHPCSUtils\Utils\NamingConventions;
@@ -128,10 +129,22 @@ final class ConstructorDestructorReturnSniff implements Sniff
         $current = $tokens[$stackPtr]['scope_opener'];
         $end     = $tokens[$stackPtr]['scope_closer'];
 
+        // Not searching for arrow functions as those have an implicit return, so no
+        $search            = Collections::functionDeclarationTokens();
+        $search[\T_RETURN] = \T_RETURN;
+
         do {
-            $current = $phpcsFile->findNext(\T_RETURN, ($current + 1), $end);
+            $current = $phpcsFile->findNext($search, ($current + 1), $end);
             if ($current === false) {
                 break;
+            }
+
+            if (isset(Collections::functionDeclarationTokens()[$tokens[$current]['code']])
+                && isset($tokens[$current]['scope_closer'])
+            ) {
+                // Skip over nested function/closure declarations.
+                $current = $tokens[$current]['scope_closer'];
+                continue;
             }
 
             $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($current + 1), $end, true);
