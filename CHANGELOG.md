@@ -15,6 +15,18 @@ This projects adheres to [Keep a CHANGELOG](http://keepachangelog.com/) and uses
 _Nothing yet._
 
 
+## [1.0.1] - 2023-01-05
+
+### Fixed
+
+#### Universal
+
+* `Universal.CodeAnalysis.ConstructorDestructorReturn`: fixed false positive for return statements in nested functions/closures declared within constructor/destructor methods. Thanks [@anomiex] for reporting! [#201], [#202]
+
+[#201]: https://github.com/PHPCSStandards/PHPCSExtra/issues/201
+[#202]: https://github.com/PHPCSStandards/PHPCSExtra/pull/202
+
+
 ## [1.0.0] - 2023-01-04
 
 :warning: Important: this package now requires [PHPCSUtils 1.0.0]. Please make sure you use `--with-[all-]dependencies` when running `composer update`. :exclamation:
@@ -375,10 +387,12 @@ This initial alpha release contains the following sniffs:
 [Composer PHPCS plugin]: https://github.com/PHPCSStandards/composer-installer
 
 [Unreleased]: https://github.com/PHPCSStandards/PHPCSExtra/compare/stable...HEAD
+[1.0.1]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.0-rc1...1.0.0
 [1.0.0-RC1]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.0-alpha3...1.0.0-rc1
 [1.0.0-alpha3]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.0-alpha2...1.0.0-alpha3
 [1.0.0-alpha2]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.0-alpha1...1.0.0-alpha2
 
+[@anomiex]:   https://github.com/anomiex
 [@derickr]:   https://github.com/derickr
 [@GaryJones]: https://github.com/GaryJones
