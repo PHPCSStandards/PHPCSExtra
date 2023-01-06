@@ -14,6 +14,7 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\BackCompat\BCFile;
+use PHPCSUtils\BackCompat\Helper;
 use PHPCSUtils\Tokens\Collections;
 use PHPCSUtils\Utils\FunctionDeclarations;
 use PHPCSUtils\Utils\GetTokensAsString;
@@ -67,7 +68,12 @@ final class ConstructorDestructorReturnSniff implements Sniff
         if ($functionNameLC === '__construct' || $functionNameLC === '__destruct') {
             $functionType = \sprintf('A "%s()" magic method', $functionNameLC);
         } else {
-            // This may be a PHP 4-style constructor.
+            // If the PHP version is explicitly set to PHP 8.0 or higher, ignore PHP 4-style constructors.
+            if ((int) Helper::getConfigData('php_version') >= 80000) {
+                return;
+            }
+
+            // This may be a PHP 4-style constructor which should be handled.
             $OOName = ObjectDeclarations::getName($phpcsFile, $scopePtr);
 
             if (empty($OOName) === true) {

@@ -11,6 +11,7 @@
 namespace PHPCSExtra\Universal\Tests\CodeAnalysis;
 
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
+use PHPCSUtils\BackCompat\Helper;
 
 /**
  * Unit test class for the ConstructorDestructorReturn sniff.
@@ -21,6 +22,31 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  */
 final class ConstructorDestructorReturnUnitTest extends AbstractSniffUnitTest
 {
+
+    /**
+     * Set CLI values before the file is tested.
+     *
+     * @param string                  $testFile The name of the file being tested.
+     * @param \PHP_CodeSniffer\Config $config   The config data for the test run.
+     *
+     * @return void
+     */
+    public function setCliValues($testFile, $config)
+    {
+        switch ($testFile) {
+            case 'ConstructorDestructorReturnUnitTest.2.inc':
+                Helper::setConfigData('php_version', '80025', true, $config); // PHP 8.0.25.
+                break;
+
+            case 'ConstructorDestructorReturnUnitTest.3.inc':
+                Helper::setConfigData('php_version', '70313', true, $config); // PHP 7.3.13.
+                break;
+
+            default:
+                Helper::setConfigData('php_version', null, true, $config); // No PHP version set.
+                break;
+        }
+    }
 
     /**
      * Returns the lines where errors should occur.
@@ -41,6 +67,24 @@ final class ConstructorDestructorReturnUnitTest extends AbstractSniffUnitTest
                     118 => 1,
                     122 => 1,
                     124 => 1,
+                ];
+
+            case 'ConstructorDestructorReturnUnitTest.2.inc':
+                return [
+                    10 => 1,
+                    14 => 1,
+                ];
+
+            case 'ConstructorDestructorReturnUnitTest.3.inc':
+                return [
+                    10 => 1,
+                    14 => 1,
+                    18 => 1,
+                ];
+
+            case 'ConstructorDestructorReturnUnitTest.4.inc':
+                return [
+                    10 => 1,
                 ];
 
             default:
@@ -65,6 +109,24 @@ final class ConstructorDestructorReturnUnitTest extends AbstractSniffUnitTest
                     95  => 1,
                     103 => 1,
                     107 => 1,
+                ];
+
+            case 'ConstructorDestructorReturnUnitTest.2.inc':
+                return [
+                    11 => 1,
+                    15 => 1,
+                ];
+
+            case 'ConstructorDestructorReturnUnitTest.3.inc':
+                return [
+                    11 => 1,
+                    15 => 1,
+                    20 => 1,
+                ];
+
+            case 'ConstructorDestructorReturnUnitTest.4.inc':
+                return [
+                    12 => 1,
                 ];
 
             default:
