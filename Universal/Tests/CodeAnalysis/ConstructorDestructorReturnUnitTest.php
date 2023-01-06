@@ -25,34 +25,50 @@ final class ConstructorDestructorReturnUnitTest extends AbstractSniffUnitTest
     /**
      * Returns the lines where errors should occur.
      *
+     * @param string $testFile The name of the file being tested.
+     *
      * @return array <int line number> => <int number of errors>
      */
-    public function getErrorList()
+    public function getErrorList($testFile = '')
     {
-        return [
-            85  => 1,
-            89  => 1,
-            101 => 1,
-            116 => 1,
-            118 => 1,
-            122 => 1,
-            124 => 1,
-        ];
+        switch ($testFile) {
+            case 'ConstructorDestructorReturnUnitTest.1.inc':
+                return [
+                    85  => 1,
+                    89  => 1,
+                    101 => 1,
+                    116 => 1,
+                    118 => 1,
+                    122 => 1,
+                    124 => 1,
+                ];
+
+            default:
+                return [];
+        }
     }
 
     /**
      * Returns the lines where warnings should occur.
      *
+     * @param string $testFile The name of the file being tested.
+     *
      * @return array <int line number> => <int number of warnings>
      */
-    public function getWarningList()
+    public function getWarningList($testFile = '')
     {
-        return [
-            86  => 1,
-            90  => 1,
-            95  => 1,
-            103 => 1,
-            107 => 1,
-        ];
+        switch ($testFile) {
+            case 'ConstructorDestructorReturnUnitTest.1.inc':
+                return [
+                    86  => 1,
+                    90  => 1,
+                    95  => 1,
+                    103 => 1,
+                    107 => 1,
+                ];
+
+            default:
+                return [];
+        }
     }
 }
