@@ -177,7 +177,6 @@ The sniff will make a distinction between keys which will be duplicate in all PH
 If a [`php_version` configuration option][php_version-config] has been passed to PHPCS using either `--config-set` or `--runtime-set`, it will be respected by the sniff and only report duplicate keys for the configured PHP version.
 
 [php-rfc-negative_array_index]: https://wiki.php.net/rfc/negative_array_index
-[php_version-config]:           https://github.com/squizlabs/PHP_CodeSniffer/wiki/Configuration-Options#setting-the-php-version
 
 #### `Universal.Arrays.MixedArrayKeyTypes` :books:
 
@@ -217,6 +216,9 @@ Require a consistent modifier keyword order for class declarations.
 
 * Disallows return type declarations on constructor/destructor methods - error code: `ReturnTypeFound`, auto-fixable.
 * Discourages constructor/destructor methods returning a value - error code: `ReturnValueFound`.
+
+If a [`php_version` configuration option][php_version-config] has been passed to PHPCS using either `--config-set` or `--runtime-set`, it will be respected by the sniff.
+In effect, this means that the sniff will only report on PHP4-style constructors if the configured PHP version is less than 8.0.
 
 #### `Universal.CodeAnalysis.ForeachUniqueAssignment` :wrench: :books:
 
@@ -478,3 +480,5 @@ This code is released under the GNU Lesser General Public License (LGPLv3). For 
 [phpcs-gh]:              https://github.com/squizlabs/PHP_CodeSniffer
 [phpcsutils-gh]:         https://github.com/PHPCSStandards/PHPCSUtils
 [composer-installer-gh]: https://github.com/PHPCSStandards/composer-installer
+
+[php_version-config]:    https://github.com/squizlabs/PHP_CodeSniffer/wiki/Configuration-Options#setting-the-php-version

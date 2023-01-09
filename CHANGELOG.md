@@ -14,6 +14,17 @@ This projects adheres to [Keep a CHANGELOG](http://keepachangelog.com/) and uses
 
 _Nothing yet._
 
+## [1.0.2] - 2023-01-10
+
+### Changed
+
+#### Universal
+
+* `Universal.CodeAnalysis.ConstructorDestructorReturn`: the sniff will now respect a potentially set [`php_version` configuration option][php_version-config] and only report on PHP4-style constructors when the `php_version` is below `'80000'`. Thanks [@anomiex] for reporting! [#207], [#208]
+
+[#207]: https://github.com/PHPCSStandards/PHPCSExtra/issues/207
+[#208]: https://github.com/PHPCSStandards/PHPCSExtra/pull/208
+
 
 ## [1.0.1] - 2023-01-05
 
@@ -221,7 +232,6 @@ The upgrade to PHPCSUtils 1.0.0-alpha4 took care of a number of bugs, which pote
 
 [php-manual-dirname]:           https://www.php.net/function.dirname
 [php-rfc-negative_array_index]: https://wiki.php.net/rfc/negative_array_index
-[php_version-config]:           https://github.com/squizlabs/PHP_CodeSniffer/wiki/Configuration-Options#setting-the-php-version
 [ESLint "no lonely if"]:        https://eslint.org/docs/rules/no-lonely-if
 [PHPCSUtils 1.0.0-alpha4]:      https://github.com/PHPCSStandards/PHPCSUtils/releases/tag/1.0.0-alpha4
 
@@ -385,8 +395,10 @@ This initial alpha release contains the following sniffs:
     Individual sub-types can be allowed by excluding specific error codes.
 
 [Composer PHPCS plugin]: https://github.com/PHPCSStandards/composer-installer
+[php_version-config]:    https://github.com/squizlabs/PHP_CodeSniffer/wiki/Configuration-Options#setting-the-php-version
 
 [Unreleased]: https://github.com/PHPCSStandards/PHPCSExtra/compare/stable...HEAD
+[1.0.2]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.1...1.0.2
 [1.0.1]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.0-rc1...1.0.0
 [1.0.0-RC1]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.0-alpha3...1.0.0-rc1
