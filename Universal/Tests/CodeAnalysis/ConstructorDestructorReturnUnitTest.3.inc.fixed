@@ -1,0 +1,22 @@
+<?php
+
+/*
+ * This test file is run with php_version set to a value of 70999 or lower.
+ *
+ * The PHP4-style constructor should be recognized as a constructor and handled as usual.
+ */
+
+class ReturnsAValue {
+    public function __construct() {
+        return $this;
+    }
+
+    public function __destruct() {
+        return 'destructed';
+    }
+
+    function returnsavalue()
+    {
+        return 'php4style';
+    }
+}
