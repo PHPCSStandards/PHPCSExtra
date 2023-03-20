@@ -136,6 +136,12 @@ $path = dirname(
     )
 );
 
+class AttributesShouldBeIgnored
+{
+    #[DirName(__FILE__)]
+    public function foo(): void
+    {}
+}
 
 // Parse error.
 // This must be the last test in the file.
