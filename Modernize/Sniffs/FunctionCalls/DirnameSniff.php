@@ -70,6 +70,11 @@ final class DirnameSniff implements Sniff
             return;
         }
 
+        if (empty($tokens[$stackPtr]['nested_attributes']) === false) {
+            // Class instantiation in attribute, not function call.
+            return;
+        }
+
         // Check if it is really a function call to the global function.
         $prevNonEmpty = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true);
 
