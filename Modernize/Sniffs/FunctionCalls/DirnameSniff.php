@@ -14,6 +14,7 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\Tokens\Collections;
+use PHPCSUtils\Utils\Context;
 use PHPCSUtils\Utils\PassedParameters;
 
 /**
@@ -70,7 +71,7 @@ final class DirnameSniff implements Sniff
             return;
         }
 
-        if (empty($tokens[$stackPtr]['nested_attributes']) === false) {
+        if (Context::inAttribute($phpcsFile, $stackPtr) === true) {
             // Class instantiation in attribute, not function call.
             return;
         }
