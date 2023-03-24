@@ -33,7 +33,7 @@ jobs:
         #
         # The matrix is set up so as not to duplicate the builds which are run for code coverage.
         php: ['5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '8.0', '8.1', '8.2', '8.3']
-        phpcs_version: ['3.7.1', 'dev-master']
+        phpcs_version: ['lowest', 'dev-master']
 
     name: "Test${{ matrix.phpcs_version == 'dev-master' && ' + Lint' || '' }}: PHP ${{ matrix.php }} - PHPCS ${{ matrix.phpcs_version }}"
 
@@ -61,8 +61,9 @@ jobs:
           ini-values: ${{ steps.set_ini.outputs.PHP_INI }}
           coverage: none
 
-      - name: 'Composer: set PHPCS version for tests'
-        run: composer require --no-update squizlabs/php_codesniffer:"${{ matrix.phpcs_version }}" --no-interaction
+      - name: "Composer: set PHPCS version for tests (master)"
+        if: ${{ matrix.phpcs_version != 'lowest' }}
+        run: composer require squizlabs/php_codesniffer:"${{ matrix.phpcs_version }}" --no-update --no-scripts --no-interaction
 
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-composer-dependencies
@@ -78,8 +79,12 @@ jobs:
         if: ${{ startsWith( matrix.php, '8' ) }}
         uses: "ramsey/composer-install@v2"
         with:
-          composer-options: --ignore-platform-reqs
+          composer-options: --ignore-platform-req=php+
           custom-cache-suffix: $(date -u "+%Y-%m")
+
+      - name: "Set PHPCS version (lowest)"
+        if: ${{ matrix.phpcs_version == 'lowest' }}
+        run: composer update squizlabs/php_codesniffer --prefer-lowest --ignore-platform-req=php+ --no-scripts --no-interaction
 
       - name: Lint against parse errors
         if: matrix.phpcs_version == 'dev-master'
@@ -109,7 +114,7 @@ jobs:
       matrix:
         # 7.4 should be updated to 8.2 when higher PHPUnit versions can be supported.
         php: ['5.4', '7.4']
-        phpcs_version: ['3.7.1', 'dev-master']
+        phpcs_version: ['lowest', 'dev-master']
 
     name: "Coverage${{ matrix.phpcs_version == 'dev-master' && ' + Lint' || '' }}: PHP ${{ matrix.php }} - PHPCS ${{ matrix.phpcs_version }}"
 
@@ -136,10 +141,9 @@ jobs:
           coverage: xdebug
           tools: cs2pr
 
-      - name: 'Composer: adjust dependencies'
-        run: |
-          # Set a specific PHPCS version.
-          composer require --no-update squizlabs/php_codesniffer:"${{ matrix.phpcs_version }}" --no-scripts --no-interaction
+      - name: "Composer: set PHPCS version for tests (master)"
+        if: ${{ matrix.phpcs_version != 'lowest' }}
+        run: composer require squizlabs/php_codesniffer:"${{ matrix.phpcs_version }}" --no-update --no-scripts --no-interaction
 
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-composer-dependencies
@@ -148,6 +152,10 @@ jobs:
         with:
           # Bust the cache at least once a month - output format: YYYY-MM.
           custom-cache-suffix: $(date -u "+%Y-%m")
+
+      - name: "Set PHPCS version (lowest)"
+        if: ${{ matrix.phpcs_version == 'lowest' }}
+        run: composer update squizlabs/php_codesniffer --prefer-lowest --ignore-platform-req=php+ --no-scripts --no-interaction
 
       - name: Lint against parse errors
         if: matrix.phpcs_version == 'dev-master'

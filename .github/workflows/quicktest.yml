@@ -29,7 +29,7 @@ jobs:
     strategy:
       matrix:
         php: ['5.4', 'latest']
-        phpcs_version: ['3.7.1', 'dev-master']
+        phpcs_version: ['lowest', 'dev-master']
 
     name: "QTest${{ matrix.phpcs_version == 'dev-master' && ' + Lint' || '' }}: PHP ${{ matrix.php }} - PHPCS ${{ matrix.phpcs_version }}"
 
@@ -55,8 +55,9 @@ jobs:
           ini-values: ${{ steps.set_ini.outputs.PHP_INI }}
           coverage: none
 
-      - name: 'Composer: set PHPCS version for tests'
-        run: composer require --no-update --no-scripts squizlabs/php_codesniffer:"${{ matrix.phpcs_version }}" --no-interaction
+      - name: "Composer: set PHPCS version for tests (master)"
+        if: ${{ matrix.phpcs_version != 'lowest' }}
+        run: composer require squizlabs/php_codesniffer:"${{ matrix.phpcs_version }}" --no-update --no-scripts --no-interaction
 
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-composer-dependencies
@@ -72,8 +73,12 @@ jobs:
         if: matrix.php == 'latest'
         uses: "ramsey/composer-install@v2"
         with:
-          composer-options: --ignore-platform-reqs
+          composer-options: --ignore-platform-req=php+
           custom-cache-suffix: $(date -u "+%Y-%m")
+
+      - name: "Set PHPCS version (lowest)"
+        if: ${{ matrix.phpcs_version == 'lowest' }}
+        run: composer update squizlabs/php_codesniffer --prefer-lowest --ignore-platform-req=php+ --no-scripts --no-interaction
 
       - name: Lint against parse errors
         if: matrix.phpcs_version == 'dev-master'
