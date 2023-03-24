@@ -470,7 +470,7 @@ If unsure whether the changes you are proposing would be welcome, open an issue 
 
 License
 -------
-This code is released under the GNU Lesser General Public License (LGPLv3). For more information, visit <http://www.gnu.org/copyleft/lesser.html>
+This code is released under the [GNU Lesser General Public License (LGPLv3)](LICENSE).
 
 
 [phpcsextra-packagist]:  https://packagist.org/packages/phpcsstandards/phpcsextra
