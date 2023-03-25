@@ -95,6 +95,7 @@ final class DisallowInlineTabsSniff implements Sniff
         }
 
         $tokens = $phpcsFile->getTokens();
+        $dummy  = new DummyTokenizer('', $phpcsFile->config);
 
         for ($i = 0; $i < $phpcsFile->numTokens; $i++) {
             // Skip all non-whitespace tokens and skip whitespace at the start of a new line.
@@ -109,11 +110,20 @@ final class DisallowInlineTabsSniff implements Sniff
             // If tabs haven't been converted to spaces by the tokenizer, do so now.
             $token = $tokens[$i];
             if (isset($token['orig_content']) === false) {
-                $dummy = new DummyTokenizer('', $phpcsFile->config);
+                if ($token['content'] === '' || \strpos($token['content'], "\t") === false) {
+                    // If there are no tabs, we can continue, no matter what.
+                    continue;
+                }
+
                 $dummy->replaceTabsInToken($token, ' ', ' ', $this->tabWidth);
             }
 
             $origContent = $token['orig_content'];
+
+            if ($origContent === '' || \strpos($origContent, "\t") === false) {
+                // If there are no tabs, we can continue, no matter what.
+                continue;
+            }
 
             $multiLineComment = false;
             if (($tokens[$i]['code'] === \T_COMMENT
@@ -131,8 +141,6 @@ final class DisallowInlineTabsSniff implements Sniff
                 if ($commentOnly === '' || \strpos($commentOnly, "\t") === false) {
                     continue;
                 }
-            } elseif ($origContent === '' || \strpos($origContent, "\t") === false) {
-                continue;
             }
 
             $fix = $phpcsFile->addFixableError(
