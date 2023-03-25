@@ -94,6 +94,10 @@ final class DisallowInlineTabsSniff implements Sniff
             $this->tabWidth = Helper::getTabWidth($phpcsFile);
         }
 
+        if (defined('PHP_CODESNIFFER_IN_TESTS')) {
+            $this->tabWidth = Helper::getCommandLineData($phpcsFile, 'tabWidth');
+        }
+
         $tokens = $phpcsFile->getTokens();
         $dummy  = new DummyTokenizer('', $phpcsFile->config);
 
@@ -115,7 +119,7 @@ final class DisallowInlineTabsSniff implements Sniff
                     continue;
                 }
 
-                $dummy->replaceTabsInToken($token, ' ', ' ', $this->tabWidth);
+                $dummy->replaceTabsInToken($token);
             }
 
             $origContent = $token['orig_content'];
