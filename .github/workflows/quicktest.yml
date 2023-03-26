@@ -76,7 +76,7 @@ jobs:
           composer-options: --ignore-platform-req=php+
           custom-cache-suffix: $(date -u "+%Y-%m")
 
-      - name: "Set PHPCS version (lowest)"
+      - name: "Composer: set PHPCS version for tests (lowest)"
         if: ${{ matrix.phpcs_version == 'lowest' }}
         run: composer update squizlabs/php_codesniffer --prefer-lowest --ignore-platform-req=php+ --no-scripts --no-interaction
 
