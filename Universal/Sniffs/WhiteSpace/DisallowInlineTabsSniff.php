@@ -122,12 +122,11 @@ final class DisallowInlineTabsSniff implements Sniff
                 $dummy->replaceTabsInToken($token);
             }
 
+            /*
+             * Tokens only have the 'orig_content' key if they contain tabs,
+             * so from here on out, we **know** there will be tabs in the content.
+             */
             $origContent = $token['orig_content'];
-
-            if ($origContent === '' || \strpos($origContent, "\t") === false) {
-                // If there are no tabs, we can continue, no matter what.
-                continue;
-            }
 
             $multiLineComment = false;
             if (($tokens[$i]['code'] === \T_COMMENT
