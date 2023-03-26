@@ -94,6 +94,10 @@ final class DisallowInlineTabsSniff implements Sniff
             $this->tabWidth = Helper::getTabWidth($phpcsFile);
         }
 
+        if (defined('PHP_CODESNIFFER_IN_TESTS')) {
+            $this->tabWidth = Helper::getCommandLineData($phpcsFile, 'tabWidth');
+        }
+
         $tokens = $phpcsFile->getTokens();
         $dummy  = new DummyTokenizer('', $phpcsFile->config);
 
@@ -115,15 +119,14 @@ final class DisallowInlineTabsSniff implements Sniff
                     continue;
                 }
 
-                $dummy->replaceTabsInToken($token, ' ', ' ', $this->tabWidth);
+                $dummy->replaceTabsInToken($token);
             }
 
+            /*
+             * Tokens only have the 'orig_content' key if they contain tabs,
+             * so from here on out, we **know** there will be tabs in the content.
+             */
             $origContent = $token['orig_content'];
-
-            if ($origContent === '' || \strpos($origContent, "\t") === false) {
-                // If there are no tabs, we can continue, no matter what.
-                continue;
-            }
 
             $multiLineComment = false;
             if (($tokens[$i]['code'] === \T_COMMENT
