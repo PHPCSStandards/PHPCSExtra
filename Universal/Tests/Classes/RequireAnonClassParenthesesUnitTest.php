@@ -32,6 +32,7 @@ final class RequireAnonClassParenthesesUnitTest extends AbstractSniffUnitTest
         return [
             22 => 1,
             23 => 1,
+            35 => 1,
         ];
     }
 
