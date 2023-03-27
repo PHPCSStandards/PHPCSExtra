@@ -22,6 +22,18 @@ $anon = new class // Comment
 $util->doSomething( new class() {} );
 $b = new class() extends SomeClass implements SomeInterface {};
 
+/*
+ * Safeguard handling of anon classes with attributes.
+ */
+$anon = new
+#[MyAttribute, AnotherAttribute]
+class() {}; // OK.
+
+$anon = new
+#[AllowDynamicProperties]
+#[MyAttribute, AnotherAttribute]
+class() {}; // Bad.
+
 // Live coding.
 // Intentional parse error. This has to be the last test in the file.
 $anon = new class
