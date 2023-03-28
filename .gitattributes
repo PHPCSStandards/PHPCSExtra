@@ -20,6 +20,12 @@ phpunit-bootstrap.php    export-ignore
 /Universal/Tests/        export-ignore
 
 #
+# Use PHP syntax highlighting for these files
+#
+.inc                     linguist-language=PHP
+.inc.fixed               linguist-language=PHP
+
+#
 # Auto detect text files and perform LF normalization
 # http://davidlaing.com/2012/09/19/customise-your-gitattributes-to-become-a-git-ninja/
 #
