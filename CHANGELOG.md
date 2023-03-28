@@ -14,6 +14,30 @@ This projects adheres to [Keep a CHANGELOG](http://keepachangelog.com/) and uses
 
 _Nothing yet._
 
+## [1.0.3] - 2023-03-28
+
+### Changed
+
+#### Universal
+
+* `Universal.WhiteSpace.DisallowInlineTabs`: significant performance improvement. [#216], [#217]
+
+#### Other
+
+* Various housekeeping.
+
+### Fixed
+
+#### Modernize
+
+* `Modernize.FunctionCalls.Dirname`: prevent false positives for attribute classes called `dirname`. [#211], [#213]
+
+[#211]: https://github.com/PHPCSStandards/PHPCSExtra/pull/211
+[#213]: https://github.com/PHPCSStandards/PHPCSExtra/pull/213
+[#216]: https://github.com/PHPCSStandards/PHPCSExtra/pull/216
+[#217]: https://github.com/PHPCSStandards/PHPCSExtra/pull/217
+
+
 ## [1.0.2] - 2023-01-10
 
 ### Changed
@@ -398,6 +422,7 @@ This initial alpha release contains the following sniffs:
 [php_version-config]:    https://github.com/squizlabs/PHP_CodeSniffer/wiki/Configuration-Options#setting-the-php-version
 
 [Unreleased]: https://github.com/PHPCSStandards/PHPCSExtra/compare/stable...HEAD
+[1.0.3]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.2...1.0.3
 [1.0.2]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.1...1.0.2
 [1.0.1]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.0-rc1...1.0.0

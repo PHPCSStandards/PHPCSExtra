@@ -55,8 +55,8 @@ final class DisallowInlineTabsUnitTest extends AbstractSniffUnitTest
             return;
         }
 
-        if ($testFile === 'DisallowInlineTabsUnitTest.5.inc') {
-            // Set to the default.
+        if ($testFile === 'DisallowInlineTabsUnitTest.5.inc' || $testFile === 'DisallowInlineTabsUnitTest.6.inc') {
+            // Set to the default (results in tab width 1).
             $config->tabWidth = 0;
             return;
         }

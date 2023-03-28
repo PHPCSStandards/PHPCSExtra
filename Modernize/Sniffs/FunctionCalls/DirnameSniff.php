@@ -14,6 +14,7 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\Tokens\Collections;
+use PHPCSUtils\Utils\Context;
 use PHPCSUtils\Utils\PassedParameters;
 
 /**
@@ -67,6 +68,11 @@ final class DirnameSniff implements Sniff
 
         if (isset($tokens[$nextNonEmpty]['parenthesis_closer']) === false) {
             // Live coding or parse error, ignore.
+            return;
+        }
+
+        if (Context::inAttribute($phpcsFile, $stackPtr) === true) {
+            // Class instantiation in attribute, not function call.
             return;
         }
 

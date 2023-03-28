@@ -26,6 +26,18 @@ $anon = new class // Comment
 
 $b = new class ( /*comment*/ ) {};
 
+/*
+ * Safeguard handling of anon classes with attributes.
+ */
+$anon = new
+#[AllowDynamicProperties]
+#[MyAttribute, AnotherAttribute]
+class() {}; // Bad.
+
+$anon = new
+#[MyAttribute, AnotherAttribute]
+class {}; // OK.
+
 // Live coding.
 // Intentional parse error. This has to be the last test in the file.
 $anon = new class()
