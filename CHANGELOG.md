@@ -319,7 +319,7 @@ The upgrade to PHPCSUtils 1.0.0-alpha4 took care of a number of bugs, which pote
 [#64]: https://github.com/PHPCSStandards/PHPCSExtra/pull/64
 [#65]: https://github.com/PHPCSStandards/PHPCSExtra/pull/65
 
-[operator precedence]: https://www.php.net/manual/en/language.operators.precedence.php
+[operator precedence]: https://www.php.net/language.operators.precedence
 
 
 ## [1.0.0-alpha2] - 2020-02-18
