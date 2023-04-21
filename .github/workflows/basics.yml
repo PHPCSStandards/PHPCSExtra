@@ -139,8 +139,8 @@ jobs:
           remark-lint-heading-whitespace
           remark-lint-list-item-punctuation
           remark-lint-match-punctuation
+          remark-lint-no-dead-urls
           remark-lint-no-hr-after-heading
-          remark-lint-are-links-valid-alive
           remark-lint-are-links-valid-duplicate
           remark-validate-links
 
