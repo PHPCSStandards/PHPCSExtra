@@ -337,7 +337,7 @@ Enforce that the names used in a class/enum "implements" statement or an interfa
 
 Enforce the use of the boolean `&&` and `||` operators instead of the logical `and`/`or` operators.
 
-:information_source: Note: as the [operator precedence](https://www.php.net/manual/en/language.operators.precedence.php) of the logical operators is significantly lower than the operator precedence of boolean operators, this sniff does not contain an auto-fixer.
+:information_source: Note: as the [operator precedence](https://www.php.net/language.operators.precedence) of the logical operators is significantly lower than the operator precedence of boolean operators, this sniff does not contain an auto-fixer.
 
 #### `Universal.Operators.DisallowShortTernary` :bar_chart: :books:
 
