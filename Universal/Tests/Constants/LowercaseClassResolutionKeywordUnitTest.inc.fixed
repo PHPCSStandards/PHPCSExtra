@@ -27,3 +27,12 @@ namespace MyNameSpace {
 echo bar::class;
 
 array_map([\MyNameSpace\xyz :: /* comment */ class, 'methodName'], $array);
+
+// Safeguard against false positives for methods called "class".
+class NotTheMagicConstant {
+    public function &Class() {
+        self::Class();
+        NotTheMagicConstant::CLASS();
+        My\Class\ClassName::clASS();
+    }
+}
