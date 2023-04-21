@@ -14,6 +14,25 @@ This projects adheres to [Keep a CHANGELOG](http://keepachangelog.com/) and uses
 
 _Nothing yet._
 
+## [1.0.4] - 2023-06-18
+
+### Changed
+
+#### Other
+
+* Composer: The minimum `PHPCSUtils` requirement has been updated to `^1.0.6` (was ^1.0.0). [#237]
+* Various housekeeping.
+
+### Fixed
+
+#### Universal
+
+* `Universal.Constants.LowercaseClassResolutionKeyword`: prevent false positives for function calls to methods called `class`. [#226]
+
+[#226]: https://github.com/PHPCSStandards/PHPCSExtra/pull/226
+[#237]: https://github.com/PHPCSStandards/PHPCSExtra/pull/237
+
+
 ## [1.0.3] - 2023-03-28
 
 ### Changed
@@ -422,6 +441,7 @@ This initial alpha release contains the following sniffs:
 [php_version-config]:    https://github.com/squizlabs/PHP_CodeSniffer/wiki/Configuration-Options#setting-the-php-version
 
 [Unreleased]: https://github.com/PHPCSStandards/PHPCSExtra/compare/stable...HEAD
+[1.0.4]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.3...1.0.4
 [1.0.3]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.2...1.0.3
 [1.0.2]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.1...1.0.2
 [1.0.1]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.0...1.0.1
