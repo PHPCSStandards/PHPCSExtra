@@ -204,9 +204,9 @@ class BlockModeSniff implements Sniff
         // Check if there is code between the declare statement and opening brace/alternative syntax.
         $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($closeParenPtr + 1), null, true);
         if ($tokens[$nextNonEmpty]['code'] !== \T_SEMICOLON
-	        && $tokens[$nextNonEmpty]['code'] !== \T_CLOSE_TAG
-	        && $tokens[$nextNonEmpty]['code'] !== \T_OPEN_CURLY_BRACKET
-	        && $tokens[$nextNonEmpty]['code'] !== \T_COLON
+            && $tokens[$nextNonEmpty]['code'] !== \T_CLOSE_TAG
+            && $tokens[$nextNonEmpty]['code'] !== \T_OPEN_CURLY_BRACKET
+            && $tokens[$nextNonEmpty]['code'] !== \T_COLON
         ) {
             $phpcsFile->addError(
                 'Unexpected code found after the declare statement.',
