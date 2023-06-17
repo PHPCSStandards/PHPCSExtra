@@ -82,9 +82,11 @@ jobs:
           composer-options: --ignore-platform-req=php+
           custom-cache-suffix: $(date -u "+%Y-%m")
 
-      - name: "Composer: set PHPCS version for tests (lowest)"
+      - name: "Composer: set PHPCS/PHPCSUtils version for tests (lowest)"
         if: ${{ matrix.phpcs_version == 'lowest' }}
-        run: composer update squizlabs/php_codesniffer --prefer-lowest --ignore-platform-req=php+ --no-scripts --no-interaction
+        run: >
+          composer update squizlabs/php_codesniffer phpcsstandards/phpcsutils
+          --prefer-lowest --ignore-platform-req=php+ --no-scripts --no-interaction
 
       - name: Lint against parse errors
         if: matrix.phpcs_version == 'dev-master'
@@ -153,9 +155,11 @@ jobs:
           # Bust the cache at least once a month - output format: YYYY-MM.
           custom-cache-suffix: $(date -u "+%Y-%m")
 
-      - name: "Composer: set PHPCS version for tests (lowest)"
+      - name: "Composer: set PHPCS/PHPCSUtils version for tests (lowest)"
         if: ${{ matrix.phpcs_version == 'lowest' }}
-        run: composer update squizlabs/php_codesniffer --prefer-lowest --ignore-platform-req=php+ --no-scripts --no-interaction
+        run: >
+          composer update squizlabs/php_codesniffer phpcsstandards/phpcsutils
+          --prefer-lowest --ignore-platform-req=php+ --no-scripts --no-interaction
 
       - name: Lint against parse errors
         if: matrix.phpcs_version == 'dev-master'
