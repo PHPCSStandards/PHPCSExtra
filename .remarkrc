@@ -8,7 +8,15 @@
     ["remark-lint-linebreak-style", "unix"],
     ["remark-lint-link-title-style", "\""],
     ["remark-lint-ordered-list-marker-style", "."],
-    ["remark-lint-no-dead-urls", {"skipUrlPatterns": ["https://www.php.net/"]}],
+    [
+        "remark-lint-no-dead-urls",
+        {
+            "skipUrlPatterns": [
+                "https://www.php.net/",
+                "^https?://github\\.com/PHPCSStandards/PHPCSExtra/compare/[0-9\\.]+?\\.{3}[0-9\\.]+"
+            ]
+        }
+    ],
     "remark-lint-no-duplicate-defined-urls",
     "remark-lint-no-duplicate-definitions",
     "remark-lint-no-empty-url",
