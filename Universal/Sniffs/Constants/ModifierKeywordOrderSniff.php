@@ -187,7 +187,7 @@ final class ModifierKeywordOrderSniff implements Sniff
             $i = ($secondKeyword + 1);
             while ($tokens[$i]['code'] === \T_WHITESPACE) {
                 $phpcsFile->fixer->replaceToken($i, '');
-                $i++;
+                ++$i;
             }
 
             // Use the original token content as the case used for keywords is not the concern of this sniff.
