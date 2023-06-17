@@ -4,8 +4,6 @@ on:
   # Run on all pushes and on all pull requests.
   # Prevent the build from running when there are only irrelevant changes.
   push:
-    paths-ignore:
-      - '**.md'
   pull_request:
   # Allow manually triggering the workflow.
   workflow_dispatch:
@@ -141,8 +139,8 @@ jobs:
           remark-lint-heading-whitespace
           remark-lint-list-item-punctuation
           remark-lint-match-punctuation
+          remark-lint-no-dead-urls
           remark-lint-no-hr-after-heading
-          remark-lint-are-links-valid-alive
           remark-lint-are-links-valid-duplicate
           remark-validate-links
 

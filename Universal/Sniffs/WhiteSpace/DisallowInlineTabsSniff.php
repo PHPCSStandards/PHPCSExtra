@@ -94,7 +94,7 @@ final class DisallowInlineTabsSniff implements Sniff
             $this->tabWidth = Helper::getTabWidth($phpcsFile);
         }
 
-        if (defined('PHP_CODESNIFFER_IN_TESTS')) {
+        if (\defined('PHP_CODESNIFFER_IN_TESTS')) {
             $this->tabWidth = Helper::getCommandLineData($phpcsFile, 'tabWidth');
         }
 

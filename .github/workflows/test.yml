@@ -82,9 +82,11 @@ jobs:
           composer-options: --ignore-platform-req=php+
           custom-cache-suffix: $(date -u "+%Y-%m")
 
-      - name: "Composer: set PHPCS version for tests (lowest)"
+      - name: "Composer: set PHPCS/PHPCSUtils version for tests (lowest)"
         if: ${{ matrix.phpcs_version == 'lowest' }}
-        run: composer update squizlabs/php_codesniffer --prefer-lowest --ignore-platform-req=php+ --no-scripts --no-interaction
+        run: >
+          composer update squizlabs/php_codesniffer phpcsstandards/phpcsutils
+          --prefer-lowest --ignore-platform-req=php+ --no-scripts --no-interaction
 
       - name: Lint against parse errors
         if: matrix.phpcs_version == 'dev-master'
@@ -153,9 +155,11 @@ jobs:
           # Bust the cache at least once a month - output format: YYYY-MM.
           custom-cache-suffix: $(date -u "+%Y-%m")
 
-      - name: "Composer: set PHPCS version for tests (lowest)"
+      - name: "Composer: set PHPCS/PHPCSUtils version for tests (lowest)"
         if: ${{ matrix.phpcs_version == 'lowest' }}
-        run: composer update squizlabs/php_codesniffer --prefer-lowest --ignore-platform-req=php+ --no-scripts --no-interaction
+        run: >
+          composer update squizlabs/php_codesniffer phpcsstandards/phpcsutils
+          --prefer-lowest --ignore-platform-req=php+ --no-scripts --no-interaction
 
       - name: Lint against parse errors
         if: matrix.phpcs_version == 'dev-master'
@@ -180,7 +184,7 @@ jobs:
       - name: Upload coverage results to Coveralls
         if: ${{ success() }}
         env:
-          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_TOKEN }}
           COVERALLS_PARALLEL: true
           COVERALLS_FLAG_NAME: php-${{ matrix.php }}-phpcs-${{ matrix.phpcs_version }}
         run: php-coveralls -v -x build/logs/clover.xml
@@ -195,5 +199,5 @@ jobs:
       - name: Coveralls Finished
         uses: coverallsapp/github-action@v2
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.COVERALLS_TOKEN }}
           parallel-finished: true
