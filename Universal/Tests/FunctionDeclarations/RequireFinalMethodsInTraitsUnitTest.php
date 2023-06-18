@@ -8,14 +8,14 @@
  * @link      https://github.com/PHPCSStandards/PHPCSExtra
  */
 
-namespace PHPCSExtra\Universal\Tests\OOStructures;
+namespace PHPCSExtra\Universal\Tests\FunctionDeclarations;
 
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 /**
  * Unit test class for the RequireFinalMethodsInTraits sniff.
  *
- * @covers PHPCSExtra\Universal\Sniffs\OOStructures\RequireFinalMethodsInTraitsSniff
+ * @covers PHPCSExtra\Universal\Sniffs\FunctionDeclarations\RequireFinalMethodsInTraitsSniff
  *
  * @since 1.1.0
  */

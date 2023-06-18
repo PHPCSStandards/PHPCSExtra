@@ -8,7 +8,7 @@
  * @link      https://github.com/PHPCSStandards/PHPCSExtra
  */
 
-namespace PHPCSExtra\Universal\Sniffs\OOStructures;
+namespace PHPCSExtra\Universal\Sniffs\FunctionDeclarations;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;

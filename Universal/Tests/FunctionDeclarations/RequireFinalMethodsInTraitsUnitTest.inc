@@ -96,7 +96,7 @@ trait FixMe {
     /*comment*/ protected function withCommentBeforeKeyword() {}
 }
 
-// phpcs:set Universal.OOStructures.RequireFinalMethodsInTraits includeMagicMethods true
+// phpcs:set Universal.FunctionDeclarations.RequireFinalMethodsInTraits includeMagicMethods true
 trait MagicMethodsAreFlaggedOnRequest {
     public function __construct() {}
     public function __destruct() {}
@@ -117,4 +117,4 @@ trait MagicMethodsAreFlaggedOnRequest {
 }
 
 // Reset property to default value.
-// phpcs:set Universal.OOStructures.RequireFinalMethodsInTraits includeMagicMethods false
+// phpcs:set Universal.FunctionDeclarations.RequireFinalMethodsInTraits includeMagicMethods false
