@@ -14,13 +14,60 @@ This projects adheres to [Keep a CHANGELOG](http://keepachangelog.com/) and uses
 
 _Nothing yet._
 
+## [1.1.0] - 2023-07-19
+
+### Added
+
+#### Universal
+
+* :wrench: :books: New `Universal.CodeAnalysis.NoEchoSprintf` sniff to detect use of the inefficient `echo [v]sprintf(...);` combi and recommends using `[v]printf()` instead. [#242]
+* :bar_chart: :books: New `Universal.FunctionDeclarations.NoLongClosures` sniff to detect "long" closures and recommend using a named function instead. [#240]
+    The sniff offers the following properties to influence its behaviour: `recommendedLines` (defaults to `5`), `maxLines` (defaults to `8`), `ignoreCommentLines` (defaults to `true`) and `ignoreEmptyLines` (defaults to `true`).
+* :wrench: :bar_chart: :books: New `Universal.FunctionDeclarations.RequireFinalMethodsInTraits` sniff to enforce non-private, non-abstract methods in traits to be declared as `final`. [#243], [#245]
+    There is a separate `NonFinalMagicMethodFound` error code for magic methods to allow those to be excluded from the check.
+* :wrench: :bar_chart: :books: New `Universal.UseStatements.DisallowMixedGroupUse` sniff to disallow group use statements which import a combination of namespace/OO construct, functions and/or constants in one statement. [#241], [#246]
+    Note: the fixer will use a semi-standardized format for group use statements. If there are more specific requirements for the formatting of group use statements, the ruleset configurator should ensure that additional sniffs are included in the ruleset to enforce the required format.
+* :wrench: :bar_chart: :books: New `Universal.UseStatements.KeywordSpacing` sniff to enforce the use of a single space after the `use`, `function`, `const` keywords and both before and after the `as` keyword in import `use` statements. [#247]
+    The sniff has modular error codes to allow for disabling individual checks.
+* :wrench: :books: New `Universal.UseStatements.NoUselessAliases` sniff to detect useless aliases (aliasing something to its original name) in import use statements. [#244]
+    Note: as OO and function names in PHP are case-insensitive, aliasing to the same name, using a different case is also considered useless.
+* :wrench: :bar_chart: :books: New `Universal.WhiteSpace.CommaSpacing` sniff to enforce that there is no space before a comma and exactly one space, or a new line, after a comma. [#254]
+    Additionally, the sniff also enforces that the comma should follow the code and not be placed after a trailing comment.
+    The sniff has modular error codes to allow for disabling individual checks and checks in certain contexts.
+    The sniff will respect a potentially set [`php_version` configuration option][php_version-config] when deciding how to handle the spacing after a heredoc/nowdoc closer.
+
+### Changed
+
+#### Universal
+
+* Minor performance improvements for the `Universal.Arrays.DuplicateArrayKey` and the `Universal.CodeAnalysis.ConstructorDestructorReturn` sniffs. [#251], [#252]
+
+#### Other
+
+* Composer: The minimum `PHPCSUtils` requirement has been updated to `^1.0.8` (was `^1.0.6`). [#249], [#254]
+* Various housekeeping.
+
+[#240]: https://github.com/PHPCSStandards/PHPCSExtra/pull/240
+[#241]: https://github.com/PHPCSStandards/PHPCSExtra/pull/241
+[#242]: https://github.com/PHPCSStandards/PHPCSExtra/pull/242
+[#243]: https://github.com/PHPCSStandards/PHPCSExtra/pull/243
+[#244]: https://github.com/PHPCSStandards/PHPCSExtra/pull/244
+[#245]: https://github.com/PHPCSStandards/PHPCSExtra/pull/245
+[#246]: https://github.com/PHPCSStandards/PHPCSExtra/pull/246
+[#247]: https://github.com/PHPCSStandards/PHPCSExtra/pull/247
+[#249]: https://github.com/PHPCSStandards/PHPCSExtra/pull/249
+[#251]: https://github.com/PHPCSStandards/PHPCSExtra/pull/251
+[#252]: https://github.com/PHPCSStandards/PHPCSExtra/pull/252
+[#254]: https://github.com/PHPCSStandards/PHPCSExtra/pull/254
+
+
 ## [1.0.4] - 2023-06-18
 
 ### Changed
 
 #### Other
 
-* Composer: The minimum `PHPCSUtils` requirement has been updated to `^1.0.6` (was ^1.0.0). [#237]
+* Composer: The minimum `PHPCSUtils` requirement has been updated to `^1.0.6` (was `^1.0.0`). [#237]
 * Various housekeeping.
 
 ### Fixed
@@ -183,7 +230,7 @@ For the full list of features, please see the changelogs of the alpha/rc release
 * Updated the sniffs for compatibility with PHPCSUtils 1.0.0-alpha4. [#134]
 * Updated the sniffs to correctly handle PHP 8.0/8.1/8.2 features whenever relevant.
 * Readme: Updated installation instructions for compatibility with Composer 2.2+. [#101]
-* Composer: The minimum `PHP_CodeSniffer` requirement has been updated to `^3.7.1` (was ^3.3.1). [#115], [#130]
+* Composer: The minimum `PHP_CodeSniffer` requirement has been updated to `^3.7.1` (was `^3.3.1`). [#115], [#130]
 * Composer: The package will now identify itself as a static analysis tool. Thanks [@GaryJones]! [#126]
 * All non-`abstract` classes in this package are now `final`. [#121]
 * All XML documentation now has a schema annotation. [#128]
@@ -441,6 +488,7 @@ This initial alpha release contains the following sniffs:
 [php_version-config]:    https://github.com/squizlabs/PHP_CodeSniffer/wiki/Configuration-Options#setting-the-php-version
 
 [Unreleased]: https://github.com/PHPCSStandards/PHPCSExtra/compare/stable...HEAD
+[1.1.0]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.4...1.1.0
 [1.0.4]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.3...1.0.4
 [1.0.3]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.2...1.0.3
 [1.0.2]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.1...1.0.2
