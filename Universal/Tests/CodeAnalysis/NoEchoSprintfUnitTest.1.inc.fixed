@@ -1,0 +1,35 @@
+<?php
+
+/*
+ * Not our targets.
+ */
+echo function_call();
+
+echo '<div>' . sprintf('%s - %d', $string, $number) . '</div>';
+
+echo \sprintf('%s - %d', $string, $number), 'text', sprintf('%s - %d', $string, $number);
+
+echo 'text' . sprintf('%s - %d', $string, $number);
+
+echo sprintf('%s - %d', $string, $number), \sprintf('%s - %d', $string, $number);
+
+/*
+ * The issue.
+ */
+printf('%s - %d', $string, $number);
+\printf(
+    '%s',
+    $string,
+) ?>
+<?php
+
+/*comment*/ printf('%s - %d', $string, $number);
+
+\printf /*comment*/ ('%s - %d', $string, $number) /*comment*/ ;
+
+vprintf('%s - %d', [$string, $number]);
+\vprintf('%s - %d', [$string, $number]);
+
+// Intentional parse error/live coding.
+// This needs to be the last test in the file.
+echo
