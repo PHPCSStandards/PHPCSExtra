@@ -8,7 +8,7 @@
  * @link      https://github.com/PHPCSStandards/PHPCSExtra
  */
 
-namespace PHPCSExtra\Universal\Sniffs\OOStructures;
+namespace PHPCSExtra\Universal\Sniffs\FunctionDeclarations;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
@@ -32,17 +32,6 @@ final class RequireFinalMethodsInTraitsSniff implements Sniff
      * @var string
      */
     const METRIC_NAME = 'Non-private method in trait is abstract or final ?';
-
-    /**
-     * Whether or not this rule applies to magic methods.
-     *
-     * Defaults to `false`.
-     *
-     * @since 1.1.0
-     *
-     * @var bool
-     */
-    public $includeMagicMethods = false;
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -81,14 +70,6 @@ final class RequireFinalMethodsInTraitsSniff implements Sniff
             return;
         }
 
-        $methodName = FunctionDeclarations::getName($phpcsFile, $stackPtr);
-        if ($this->includeMagicMethods === false
-            && FunctionDeclarations::isMagicMethodName($methodName) === true
-        ) {
-            // Magic methods are excluded. Bow out.
-            return;
-        }
-
         $methodProps = FunctionDeclarations::getProperties($phpcsFile, $stackPtr);
         if ($methodProps['scope'] === 'private') {
             // Private methods can't be final.
@@ -109,16 +90,26 @@ final class RequireFinalMethodsInTraitsSniff implements Sniff
 
         $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'not abstract, not final');
 
+        $methodName = FunctionDeclarations::getName($phpcsFile, $stackPtr);
+        $magic      = '';
+        $code       = 'NonFinalMethodFound';
+        if (FunctionDeclarations::isMagicMethodName($methodName) === true) {
+            // Use separate error code for magic methods.
+            $magic = 'magic ';
+            $code  = 'NonFinalMagicMethodFound';
+        }
+
         $data = [
             $methodProps['scope'],
+            $magic,
             $methodName,
             ObjectDeclarations::getName($phpcsFile, $scopePtr),
         ];
 
         $fix = $phpcsFile->addFixableError(
-            'The non-abstract, %s method "%s()" in trait %s should be declared as final.',
+            'The non-abstract, %s %smethod "%s()" in trait %s should be declared as final.',
             $stackPtr,
-            'NonFinalMethodFound',
+            $code,
             $data
         );
 

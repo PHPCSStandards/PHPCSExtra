@@ -6,8 +6,6 @@
     <standard>
     <![CDATA[
     Requires the use of the `final` keyword for non-abstract, non-private methods in traits.
-
-    By default, magic methods are exempt from this check. Magic methods can be enforced to be `final` too by setting the `includeMagicMethods` property to `true`.
     ]]>
     </standard>
     <code_comparison>

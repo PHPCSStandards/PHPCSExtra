@@ -54,25 +54,6 @@ trait FinalMagicMethodsAreNotFlagged {
     final public function __unserialize($data) {}
 }
 
-trait MagicMethodsAreNotFlaggedByDefault {
-    public function __construct() {}
-    public function __destruct() {}
-    public function __clone() {}
-    public function __debugInfo() {}
-    public function __invoke() {}
-    public function __get($name) {}
-    public function __set($name, $value) {}
-    public function __isset($name) {}
-    public function __unset($name) {}
-    public function __call($name, $arguments) {}
-    public static function __callStatic($name, $arguments) {}
-    public function __sleep() {}
-    public function __toString() {}
-    public static function __set_state($properties) {}
-    public function __serialize() {}
-    public function __unserialize($data) {}
-}
-
 
 /*
  * Bad.
@@ -96,8 +77,7 @@ trait FixMe {
     /*comment*/ protected function withCommentBeforeKeyword() {}
 }
 
-// phpcs:set Universal.OOStructures.RequireFinalMethodsInTraits includeMagicMethods true
-trait MagicMethodsAreFlaggedOnRequest {
+trait MagicMethodsAreAlsoFlagged {
     public function __construct() {}
     public function __destruct() {}
     public function __clone() {}
@@ -115,6 +95,3 @@ trait MagicMethodsAreFlaggedOnRequest {
     public function __serialize() {}
     public function __unserialize($data) {}
 }
-
-// Reset property to default value.
-// phpcs:set Universal.OOStructures.RequireFinalMethodsInTraits includeMagicMethods false
