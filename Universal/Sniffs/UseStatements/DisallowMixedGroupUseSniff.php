@@ -108,10 +108,37 @@ final class DisallowMixedGroupUseSniff implements Sniff
 
         $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, 'group use, multi type');
 
+        // Build up the error message.
+        $foundPhrases = [];
+        if ($ooCount > 1) {
+            $foundPhrases[] = \sprintf('%d namespaces/OO names', $ooCount);
+        } elseif ($ooCount === 1) {
+            $foundPhrases[] = \sprintf('%d namespace/OO name', $ooCount);
+        }
+
+        if ($functionCount > 1) {
+            $foundPhrases[] = \sprintf('%d functions', $functionCount);
+        } elseif ($functionCount === 1) {
+            $foundPhrases[] = \sprintf('%d function', $functionCount);
+        }
+
+        if ($constantCount > 1) {
+            $foundPhrases[] = \sprintf('%d constants', $constantCount);
+        } elseif ($constantCount === 1) {
+            $foundPhrases[] = \sprintf('%d constant', $constantCount);
+        }
+
+        if (\count($foundPhrases) === 2) {
+            $found = \implode(' and ', $foundPhrases);
+        } else {
+            $found  = \array_shift($foundPhrases) . ', ';
+            $found .= \implode(' and ', $foundPhrases);
+        }
+
         $error = 'Group use statements should import one type of construct.'
-            . ' Mixed group use statement found importing %d namespaces/OO names, %d functions and %d constants.';
+            . ' Mixed group use statement found importing %s.';
         $code  = 'Found';
-        $data  = [$ooCount, $functionCount, $constantCount];
+        $data  = [$found];
 
         $hasComment = $phpcsFile->findNext(Tokens::$commentTokens, ($stackPtr + 1), $endOfStatement);
         if ($hasComment !== false) {
