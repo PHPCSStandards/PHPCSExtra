@@ -56,7 +56,7 @@ use
 
    otherFunction;
 use FuncTion\Util\functionB;
-use  CONST  Vendor\Package\CONSTANT_NAME   as   OTHER_CONSTANT;
+use  CONST  Vendor\Package\CONSTANT_NAME   as  /*comment*/ OTHER_CONSTANT;
 use Const\Util\MyClass\CONSTANT_Y;
 
 use Vendor\Package\MultiStatement as   Multi,
@@ -67,8 +67,9 @@ Use  function   Vendor\Package\MultiFunction  as  MFunction,
 
 use   Some\NS\{
    ClassName
+     // phpcs:ignore Stnd.Cat.Sniff --for reasons.
      as  OtherClassName,
-   function   SubLevel\functionName
+   function/*comment*/  SubLevel\functionName
      as  OtherFunctionName,
    const   Constants\MYCONSTANT
      as  OTHERCONSTANT,

@@ -46,12 +46,12 @@ final class KeywordSpacingUnitTest extends AbstractSniffUnitTest
                     65 => 4,
                     66 => 2,
                     68 => 1,
-                    70 => 2,
-                    71 => 1,
-                    72 => 2,
-                    73 => 1,
-                    74 => 2,
-                    78 => 1,
+                    71 => 2,
+                    72 => 1,
+                    73 => 2,
+                    74 => 1,
+                    75 => 2,
+                    79 => 1,
                 ];
 
             case 'KeywordSpacingUnitTest.2.inc':
