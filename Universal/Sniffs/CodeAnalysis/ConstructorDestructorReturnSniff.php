@@ -32,6 +32,15 @@ final class ConstructorDestructorReturnSniff implements Sniff
 {
 
     /**
+     * PHP version as configured or 0 if unknown.
+     *
+     * @since 1.1.0
+     *
+     * @var int
+     */
+    private $phpVersion;
+
+    /**
      * Registers the tokens that this sniff wants to listen for.
      *
      * @since 1.0.0
@@ -56,6 +65,16 @@ final class ConstructorDestructorReturnSniff implements Sniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
+        if (isset($this->phpVersion) === false || \defined('PHP_CODESNIFFER_IN_TESTS')) {
+            // Set default value to prevent this code from running every time the sniff is triggered.
+            $this->phpVersion = 0;
+
+            $phpVersion = Helper::getConfigData('php_version');
+            if ($phpVersion !== null) {
+                $this->phpVersion = (int) $phpVersion;
+            }
+        }
+
         $scopePtr = Scopes::validDirectScope($phpcsFile, $stackPtr, Tokens::$ooScopeTokens);
         if ($scopePtr === false) {
             // Not an OO method.
@@ -69,7 +88,7 @@ final class ConstructorDestructorReturnSniff implements Sniff
             $functionType = \sprintf('A "%s()" magic method', $functionNameLC);
         } else {
             // If the PHP version is explicitly set to PHP 8.0 or higher, ignore PHP 4-style constructors.
-            if ((int) Helper::getConfigData('php_version') >= 80000) {
+            if ($this->phpVersion >= 80000) {
                 return;
             }
 
