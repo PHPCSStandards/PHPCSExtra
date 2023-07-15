@@ -69,7 +69,7 @@ final class DuplicateArrayKeySniff extends AbstractArrayDeclarationSniff
     private $currentMaxIntKeyGt8;
 
     /**
-     * The current PHP version.
+     * PHP version as configured or -1 if unknown.
      *
      * @since 1.0.0
      *
@@ -97,6 +97,9 @@ final class DuplicateArrayKeySniff extends AbstractArrayDeclarationSniff
         $this->keysSeenGt8 = [];
 
         if (isset($this->phpVersion) === false) {
+            // Set default value to prevent this code from running every time the sniff is triggered.
+            $this->phpVersion = -1;
+
             $phpVersion = Helper::getConfigData('php_version');
             if ($phpVersion !== null) {
                 $this->phpVersion = (int) $phpVersion;
@@ -146,7 +149,7 @@ final class DuplicateArrayKeySniff extends AbstractArrayDeclarationSniff
         /*
          * Check if we've seen the key before.
          */
-        if ((isset($this->phpVersion) === false || $this->phpVersion < 80000)
+        if (($this->phpVersion === -1 || $this->phpVersion < 80000)
             && isset($this->keysSeenLt8[$key]) === true
         ) {
             $errors['phplt8'] = [
@@ -166,7 +169,7 @@ final class DuplicateArrayKeySniff extends AbstractArrayDeclarationSniff
             $errors['phplt8']['data_subset'][] = $this->tokens[$firstNonEmptyFirstSeen]['line'];
         }
 
-        if ((isset($this->phpVersion) === false || $this->phpVersion >= 80000)
+        if (($this->phpVersion === -1 || $this->phpVersion >= 80000)
             && isset($this->keysSeenGt8[$key]) === true
         ) {
             $errors['phpgt8'] = [
