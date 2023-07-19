@@ -26,11 +26,11 @@ trait UseContextUnknown {
     }
 }
 
-final class ClosuresAreNotTargettedByThisSniff {
+final class ClosuresAreNotTargetedByThisSniff {
     public static $className = 'Bar';
     public function foobar() {
         $closure = static function(): static {
-            // Returns new instance of Closure, not of ClosuresAreNotTargettedByThisSniff.
+            // Returns new instance of Closure, not of ClosuresAreNotTargetedByThisSniff.
             // Still unnecessary, but not the target of this sniff.
             // Should possibly get its own sniff.
             return new static();
@@ -97,7 +97,7 @@ class ValidUseOfStaticInConcrete extends Foo
 }
 
 interface NeverFinal {
-    public function typedMethod(): static|ArrrayAccess;
+    public function typedMethod(): static|ArrayAccess;
 }
 
 
@@ -156,7 +156,7 @@ class NonFinalClassWithNesting {
 }
 
 enum FinalByDesign {
-    public function typedMethod(): static|ArrrayAccess {
+    public function typedMethod(): static|ArrayAccess {
         $var = static::functionCall();
         $var = static::class;
 
