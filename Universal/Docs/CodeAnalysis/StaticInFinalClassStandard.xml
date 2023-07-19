@@ -14,7 +14,7 @@
     ]]>
     </standard>
     <code_comparison>
-        <code title="Valid: Using 'self' in a final OO constuct.">
+        <code title="Valid: Using 'self' in a final OO construct.">
         <![CDATA[
 final class Foo
 {
@@ -27,7 +27,7 @@ final class Foo
 }
         ]]>
         </code>
-        <code title="Invalid: Using 'static' in a final OO constuct.">
+        <code title="Invalid: Using 'static' in a final OO construct.">
         <![CDATA[
 $anon = new class {
     public function myMethod(
