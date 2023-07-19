@@ -5,7 +5,7 @@
     >
     <standard>
     <![CDATA[
-    Detects use of `echo [v]sprintf(...);`. Use `printf()` instead.
+    Detects use of `echo [v]sprintf(...);`. Use `[v]printf()` instead.
     ]]>
     </standard>
     <code_comparison>

@@ -17,7 +17,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers PHPCSExtra\Universal\Sniffs\UseStatements\DisallowMixedGroupUseSniff
  *
- * @since 1.0.0
+ * @since 1.1.0
  */
 final class DisallowMixedGroupUseUnitTest extends AbstractSniffUnitTest
 {
