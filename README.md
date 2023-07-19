@@ -61,7 +61,7 @@ Installing via Composer is highly recommended.
 Run the following from the root of your project:
 ```bash
 composer config allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
-composer require --dev phpcsstandards/phpcsextra:"^1.0"
+composer require --dev phpcsstandards/phpcsextra:"^1.1.0"
 ```
 
 ### Composer Global Installation
@@ -69,7 +69,7 @@ composer require --dev phpcsstandards/phpcsextra:"^1.0"
 Alternatively, you may want to install this standard globally:
 ```bash
 composer global config allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
-composer global require --dev phpcsstandards/phpcsextra:"^1.0"
+composer global require --dev phpcsstandards/phpcsextra:"^1.1.0"
 ```
 
 ### Updating to a newer version
@@ -220,6 +220,10 @@ Require a consistent modifier keyword order for class declarations.
 If a [`php_version` configuration option][php_version-config] has been passed to PHPCS using either `--config-set` or `--runtime-set`, it will be respected by the sniff.
 In effect, this means that the sniff will only report on PHP4-style constructors if the configured PHP version is less than 8.0.
 
+#### `Universal.CodeAnalysis.NoEchoSprintf` :wrench: :books:
+
+Detects use of the inefficient `echo [v]sprintf(...);` combi. Use `[v]printf()` instead.
+
 #### `Universal.CodeAnalysis.ForeachUniqueAssignment` :wrench: :books:
 
 Detects `foreach` control structures which use the same variable for both the key as well as the value assignment as this will lead to unexpected - and most likely unintended - behaviour.
@@ -277,6 +281,26 @@ Enforce for a file to either declare (global/namespaced) functions or declare OO
 * Note: This sniff has no opinion on side effects. If you want to sniff for those, use the PHPCS native `PSR1.Files.SideEffects` sniff.
 * Also note: This sniff has no opinion on multiple OO structures being declared in one file.
     If you want to sniff for that, use the PHPCS native `Generic.Files.OneObjectStructurePerFile` sniff.
+
+#### `Universal.FunctionDeclarations.NoLongClosures` :bar_chart: :books:
+
+Detects "long" closures and recommends using a named function instead.
+
+The sniff is configurable by setting any of the following properties in a custom ruleset:
+* `recommendedLines` (int): determines when a warning will be thrown.
+    Defaults to `5`, meaning a warning with the errorcode `ExceedsRecommended` will be thrown if the closure is more than 5 lines long.
+* `maxLines` (int): determines when an error will be thrown.
+    Defaults to `8`, meaning that an error with the errorcode `ExceedsMaximum` will be thrown if the closure is more than 8 lines long.
+* `ignoreCommentLines` (bool): whether or not comment-only lines should be ignored for the lines count.
+    Defaults to `true`.
+* `ignoreEmptyLines` (bool): whether or not blank lines should be ignored for the lines count.
+    Defaults to `true`.
+
+#### `Universal.FunctionDeclarations.RequireFinalMethodsInTraits` :wrench: :bar_chart: :books:
+
+Enforce non-private, non-abstract methods in traits to be declared as `final`.
+
+The available error codes are: `NonFinalMethodFound` and `NonFinalMagicMethodFound`.
 
 #### `Universal.Lists.DisallowLongListSyntax` :wrench: :books:
 
@@ -368,6 +392,13 @@ The available error codes are: `UnionTypeSpacesBefore`, `UnionTypeSpacesAfter`, 
 
 Disallow short open echo tags `<?=` containing more than one PHP statement.
 
+#### `Universal.UseStatements.DisallowMixedGroupUse` :wrench: :bar_chart: :books:
+
+Disallow group use statements which import a combination of namespace/OO construct, functions and/or constants in one statement.
+
+Note: the fixer will use a semi-standardized format for group use statements.
+If there are more specific requirements for the formatting of group use statements, the ruleset configurator should ensure that additional sniffs are included in the ruleset to enforce the required format.
+
 #### `Universal.UseStatements.DisallowUseClass` :bar_chart: :books:
 
 Forbid using import `use` statements for classes/traits/interfaces/enums.
@@ -394,6 +425,14 @@ Enforce that `function` and `const` keywords when used in an import `use` statem
 
 Companion sniff to the PHPCS native `Generic.PHP.LowerCaseKeyword` sniff which doesn't cover these keywords when used in an import `use` statement.
 
+#### `Universal.UseStatements.KeywordSpacing` :wrench: :bar_chart: :books:
+
+Enforce the use of a single space after the `use`, `function`, `const` keywords and both before and after the `as` keyword in import `use` statements.
+
+Companion sniff to the PHPCS native `Generic.WhiteSpace.LanguageConstructSpacing` sniff which doesn't cover the `function`, `const` and `as` keywords when used in an import `use` statement.
+
+The sniff has modular error codes to allow for disabling individual checks. The error codes are: `SpaceAfterUse`, `SpaceAfterFunction`, `SpaceAfterConst`, `SpaceBeforeAs` and `SpaceAfterAs`.
+
 #### `Universal.UseStatements.NoLeadingBackslash` :wrench: :bar_chart: :books:
 
 Verify that a name being imported in an import `use` statement does not start with a leading backslash.
@@ -402,12 +441,39 @@ Names in import `use` statements should always be fully qualified, so a leading 
 
 This sniff handles all types of import use statements supported by PHP, in contrast to other sniffs for the same in, for instance, the PHPCS native `PSR12` or the Slevomat standard, which are incomplete.
 
+#### `Universal.UseStatements.NoUselessAliases` :wrench: :books:
+
+Detects useless aliases in import use statements.
+
+Aliasing something to the same name as the original construct is considered useless (though allowed in PHP).
+Note: as OO and function names in PHP are case-insensitive, aliasing to the same name, using a different case is also considered useless.
+
 #### `Universal.WhiteSpace.AnonClassKeywordSpacing` :wrench: :bar_chart: :books:
 
 Standardize the amount of spacing between the `class` keyword and the open parenthesis (if any) for anonymous class declarations.
 
 * This sniff contains an `spacing` property to set the amount of spaces the sniff should check for.
     Accepted values: (int) number of spaces. Defaults to `0` (spaces).
+
+#### `Universal.WhiteSpace.CommaSpacing` :wrench: :bar_chart: :books:
+
+Enforce that there is no space before a comma and exactly one space, or a new line, after a comma.
+
+Additionally, the sniff also enforces that the comma should follow the code and not be placed after a trailing comment.
+
+For the spacing part, the sniff makes the following exceptions:
+1. A comma preceded or followed by a parenthesis, curly or square bracket.
+    These will not be flagged to prevent conflicts with sniffs handling spacing around braces.
+2. A comma preceded or followed by another comma, like for skipping items in a list assignment.
+    These will not be flagged.
+
+* The sniff has a separate error code - `TooMuchSpaceAfterCommaBeforeTrailingComment` - for when a comma is found with more than one space after it, followed by a trailing comment.
+    Exclude this error code to allow trailing comment alignment.
+* The other error codes the sniff uses, `SpaceBefore`, `TooMuchSpaceAfter` and `NoSpaceAfter`, may be suffixed with a context indicator - `*InFunctionDeclaration`, `*InFunctionCall`, `*InClosureUse` or `*InDeclare` -.
+    This allows for disabling the sniff in any of these contexts by excluding the specific suffixed error codes.
+* The sniff will respect a potentially set [`php_version` configuration option][php_version-config] when deciding how to handle the spacing after a heredoc/nowdoc closer.
+    In effect, this means that the sniff will enforce a new line between the closer and a comma if the configured PHP version is less than 7.3.
+    When no `php_version` is passed, the sniff will handle the spacing between a heredoc/nowdoc closer and a comma based on whether it is a cross-version compatible heredoc/nowdoc (enforce new line) or a flexible heredoc/nowdoc (enforce no space).
 
 #### `Universal.WhiteSpace.DisallowInlineTabs` :wrench: :books:
 
