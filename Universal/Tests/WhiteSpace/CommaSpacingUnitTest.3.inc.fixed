@@ -1,0 +1,25 @@
+<?php
+
+/*
+ * CommaAfterComment error - comma should be moved, but only when dealing with trailing comments.
+ */
+$a = array($a /* Comment.*/, $bbb/* Comment. */, $ccccc /* Comment */, $dddd);
+
+$a = array(
+    $a, // Comment.
+
+    $bbb, /* Comment. */
+    $ccccc, /* multi
+    line */
+    $dddd,
+    /**
+     * Inline docblock.
+     */
+
+    $eeee, // phpcs:ignore Stnd.Cat.SniffName -- for reasons.
+
+    $ff, # phpcs:disable Stnd.Cat.SniffName -- for reasons.
+
+
+    $ggg, /* phpcs:ignore Stnd.Cat.SniffName -- for reasons. */
+);

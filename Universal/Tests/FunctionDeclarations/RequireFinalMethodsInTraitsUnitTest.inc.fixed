@@ -1,0 +1,97 @@
+<?php
+
+/*
+ * OK.
+ */
+function NotOurTarget() {}
+
+class FooA {
+    protected function NotOurTarget() {}
+}
+
+interface FooB {
+    function NotOurTarget();
+}
+
+enum FooC {
+    public function NotOurTarget();
+}
+
+$anon = new class {
+    function anonClassIsFinalByNature() {}
+}
+
+trait MethodsAreAlreadyFinal {
+    final public function publicFinalMethod();
+    protected final function protectedFinalMethod() {}
+}
+
+trait TheseAreExempt {
+    public abstract function publicAbstractMethodShouldNotBeFinal();
+    abstract protected function protectedAbstractMethodShouldNotBeFinal() {}
+
+    private function privateMethodsCannotBeFinal();
+
+    public function parseError
+}
+
+trait FinalMagicMethodsAreNotFlagged {
+    final public function __construct() {}
+    public final function __destruct() {}
+    public final function __clone() {}
+    final public function __debugInfo() {}
+    final public function __invoke() {}
+    public final function __get($name) {}
+    public final function __set($name, $value) {}
+    final public function __isset($name) {}
+    final public function __unset($name) {}
+    public final function __call($name, $arguments) {}
+    public static final function __callStatic($name, $arguments) {}
+    final public function __sleep() {}
+    public final function __toString() {}
+    public final static function __set_state($properties) {}
+    final public function __serialize() {}
+    final public function __unserialize($data) {}
+}
+
+
+/*
+ * Bad.
+ */
+trait FixMe {
+    public final function publicMethod() {}
+    protected final function protectedMethod() {}
+
+    public static final function publicStaticMethod() {}
+    static protected final function protectedStaticMethod() {}
+
+    protected final function __doubleUnderscoresButNotMagic() {}
+
+    /**
+     * Docblock
+     */
+    public final function withDocblock() {}
+
+    static /*comment*/ protected final function withCommentBetweenKeywords() {}
+
+    /*comment*/ protected final function withCommentBeforeKeyword() {}
+}
+
+trait MagicMethodsAreAlsoFlagged {
+    public final function __construct() {}
+    public final function __destruct() {}
+    public final function __clone() {}
+    public final function __debugInfo() {}
+    public final function __invoke() {}
+    public final function __get($name) {}
+    public final function __set($name, $value) {}
+    public final function __isset($name) {}
+    public final function __unset($name) {}
+    public final function __call($name, $arguments) {}
+    public static final function __callStatic($name, $arguments) {}
+    public final function __sleep() {}
+    public final function __toString() {}
+    public static final function __set_state($properties) {}
+    public final function __serialize() {}
+    public final function __unserialize($data) {}
+}

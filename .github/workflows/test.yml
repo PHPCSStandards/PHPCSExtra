@@ -168,23 +168,34 @@ jobs:
       - name: Run the unit tests with code coverage
         run: composer coverage
 
-      # Uploading the results with PHP Coveralls v1 won't work from GH Actions, so switch the PHP version.
-      - name: Switch to PHP 7.4
-        if: ${{ success() && matrix.php != '7.4' }}
+      # PHP Coveralls v2 (which supports GH Actions) has a PHP 5.5 minimum, so switch the PHP version.
+      - name: Switch to PHP latest
+        if: ${{ success() && matrix.php == '5.4' }}
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 7.4
+          php-version: 'latest'
           coverage: none
 
-      # Global install is used to prevent a conflict with the local composer.lock in PHP 8.0+.
+      # Global install is used to prevent a conflict with the local composer.lock.
       - name: Install Coveralls
         if: ${{ success() }}
-        run: composer global require php-coveralls/php-coveralls:"^2.5.3" --no-interaction
+        run: composer global require php-coveralls/php-coveralls:"^2.6.0" --no-interaction
 
-      - name: Upload coverage results to Coveralls
-        if: ${{ success() }}
+      - name: Upload coverage results to Coveralls (normal)
+        if: ${{ success() && github.actor != 'dependabot[bot]' }}
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_TOKEN }}
+          COVERALLS_PARALLEL: true
+          COVERALLS_FLAG_NAME: php-${{ matrix.php }}-phpcs-${{ matrix.phpcs_version }}
+        run: php-coveralls -v -x build/logs/clover.xml
+
+      # Dependabot does not have access to secrets, other than the GH token.
+      # Ref: https://docs.github.com/en/code-security/dependabot/working-with-dependabot/automating-dependabot-with-github-actions
+      # Ref: https://github.com/lemurheavy/coveralls-public/issues/1721
+      - name: Upload coverage results to Coveralls (Dependabot)
+        if: ${{ success() && github.actor == 'dependabot[bot]' }}
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           COVERALLS_PARALLEL: true
           COVERALLS_FLAG_NAME: php-${{ matrix.php }}-phpcs-${{ matrix.phpcs_version }}
         run: php-coveralls -v -x build/logs/clover.xml
@@ -196,8 +207,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Coveralls Finished
+      - name: Coveralls Finished (normal)
+        if: ${{ github.actor != 'dependabot[bot]' }}
         uses: coverallsapp/github-action@v2
         with:
           github-token: ${{ secrets.COVERALLS_TOKEN }}
+          parallel-finished: true
+
+      # Dependabot does not have access to secrets, other than the GH token.
+      # Ref: https://docs.github.com/en/code-security/dependabot/working-with-dependabot/automating-dependabot-with-github-actions
+      # Ref: https://github.com/lemurheavy/coveralls-public/issues/1721
+      - name: Coveralls Finished (Dependabot)
+        if: ${{ github.actor == 'dependabot[bot]' }}
+        uses: coverallsapp/github-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           parallel-finished: true
