@@ -220,15 +220,15 @@ Require a consistent modifier keyword order for class declarations.
 If a [`php_version` configuration option][php_version-config] has been passed to PHPCS using either `--config-set` or `--runtime-set`, it will be respected by the sniff.
 In effect, this means that the sniff will only report on PHP4-style constructors if the configured PHP version is less than 8.0.
 
-#### `Universal.CodeAnalysis.NoEchoSprintf` :wrench: :books:
-
-Detects use of the inefficient `echo [v]sprintf(...);` combi. Use `[v]printf()` instead.
-
 #### `Universal.CodeAnalysis.ForeachUniqueAssignment` :wrench: :books:
 
 Detects `foreach` control structures which use the same variable for both the key as well as the value assignment as this will lead to unexpected - and most likely unintended - behaviour.
 
 Note: The fixer will maintain the existing behaviour of the code. This may not be the _intended_ behaviour.
+
+#### `Universal.CodeAnalysis.NoEchoSprintf` :wrench: :books:
+
+Detects use of the inefficient `echo [v]sprintf(...);` combi. Use `[v]printf()` instead.
 
 #### `Universal.CodeAnalysis.StaticInFinalClass` :wrench: :books:
 
@@ -419,12 +419,6 @@ Forbid using import `use` statements for functions.
 
 See [`Universal.UseStatements.DisallowUseClass`](#universalusestatementsdisallowuseclass-bar_chart-books)  for information on the error codes.
 
-#### `Universal.UseStatements.LowercaseFunctionConst` :wrench: :bar_chart: :books:
-
-Enforce that `function` and `const` keywords when used in an import `use` statement are always lowercase.
-
-Companion sniff to the PHPCS native `Generic.PHP.LowerCaseKeyword` sniff which doesn't cover these keywords when used in an import `use` statement.
-
 #### `Universal.UseStatements.KeywordSpacing` :wrench: :bar_chart: :books:
 
 Enforce the use of a single space after the `use`, `function`, `const` keywords and both before and after the `as` keyword in import `use` statements.
@@ -432,6 +426,12 @@ Enforce the use of a single space after the `use`, `function`, `const` keywords 
 Companion sniff to the PHPCS native `Generic.WhiteSpace.LanguageConstructSpacing` sniff which doesn't cover the `function`, `const` and `as` keywords when used in an import `use` statement.
 
 The sniff has modular error codes to allow for disabling individual checks. The error codes are: `SpaceAfterUse`, `SpaceAfterFunction`, `SpaceAfterConst`, `SpaceBeforeAs` and `SpaceAfterAs`.
+
+#### `Universal.UseStatements.LowercaseFunctionConst` :wrench: :bar_chart: :books:
+
+Enforce that `function` and `const` keywords when used in an import `use` statement are always lowercase.
+
+Companion sniff to the PHPCS native `Generic.PHP.LowerCaseKeyword` sniff which doesn't cover these keywords when used in an import `use` statement.
 
 #### `Universal.UseStatements.NoLeadingBackslash` :wrench: :bar_chart: :books:
 
