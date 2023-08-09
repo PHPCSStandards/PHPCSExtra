@@ -13,6 +13,7 @@ namespace PHPCSExtra\Modernize\Sniffs\FunctionCalls;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\BackCompat\Helper;
 use PHPCSUtils\Tokens\Collections;
 use PHPCSUtils\Utils\Context;
 use PHPCSUtils\Utils\PassedParameters;
@@ -24,6 +25,15 @@ use PHPCSUtils\Utils\PassedParameters;
  */
 final class DirnameSniff implements Sniff
 {
+
+    /**
+     * PHP version as configured or 0 if unknown.
+     *
+     * @since 1.1.1
+     *
+     * @var int
+     */
+    private $phpVersion;
 
     /**
      * Registers the tokens that this sniff wants to listen for.
@@ -50,6 +60,21 @@ final class DirnameSniff implements Sniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
+        if (isset($this->phpVersion) === false || \defined('PHP_CODESNIFFER_IN_TESTS')) {
+            // Set default value to prevent this code from running every time the sniff is triggered.
+            $this->phpVersion = 0;
+
+            $phpVersion = Helper::getConfigData('php_version');
+            if ($phpVersion !== null) {
+                $this->phpVersion = (int) $phpVersion;
+            }
+        }
+
+        if ($this->phpVersion !== 0 && $this->phpVersion < 50300) {
+            // PHP version too low, nothing to do.
+            return;
+        }
+
         $tokens = $phpcsFile->getTokens();
 
         if (\strtolower($tokens[$stackPtr]['content']) !== 'dirname') {
@@ -182,6 +207,11 @@ final class DirnameSniff implements Sniff
         /*
          * PHP 7.0+: Detect use of nested calls to dirname().
          */
+        if ($this->phpVersion !== 0 && $this->phpVersion < 70000) {
+            // No need to check for this issue if the PHP version would not allow for it anyway.
+            return;
+        }
+
         if (\preg_match('`^\s*\\\\?dirname\s*\(`i', $pathParam['clean']) !== 1) {
             return;
         }

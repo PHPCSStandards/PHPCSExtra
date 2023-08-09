@@ -126,6 +126,9 @@ This sniff will detect and auto-fix two typical code modernizations which can be
 2. Since PHP 7.0, nested function calls to `dirname()` can be changed to use the `$levels` parameter.
     Errorcode: `Modernize.FunctionCalls.Dirname.Nested`.
 
+If a [`php_version` configuration option][php_version-config] has been passed to PHPCS using either `--config-set` or `--runtime-set`, it will be respected by the sniff.
+In effect, this means that the sniff will only report on modernizations which can be applied for the PHP version as configured.
+
 
 ### NormalizedArrays
 

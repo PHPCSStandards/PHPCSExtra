@@ -10,6 +10,7 @@
 
 namespace PHPCSExtra\Modernize\Tests\FunctionCalls;
 
+use PHPCSUtils\BackCompat\Helper;
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 /**
@@ -21,6 +22,35 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  */
 final class DirnameUnitTest extends AbstractSniffUnitTest
 {
+
+    /**
+     * Set CLI values before the file is tested.
+     *
+     * @param string                  $testFile The name of the file being tested.
+     * @param \PHP_CodeSniffer\Config $config   The config data for the test run.
+     *
+     * @return void
+     */
+    public function setCliValues($testFile, $config)
+    {
+        switch ($testFile) {
+            case 'DirnameUnitTest.2.inc':
+                Helper::setConfigData('php_version', '50000', true, $config); // PHP 5.0.
+                break;
+
+            case 'DirnameUnitTest.3.inc':
+                Helper::setConfigData('php_version', '50300', true, $config); // PHP 5.3.
+                break;
+
+            case 'DirnameUnitTest.4.inc':
+                Helper::setConfigData('php_version', '70000', true, $config); // PHP 7.0.
+                break;
+
+            default:
+                Helper::setConfigData('php_version', null, true, $config); // No PHP version set.
+                break;
+        }
+    }
 
     /**
      * Returns the lines where errors should occur.
@@ -68,6 +98,17 @@ final class DirnameUnitTest extends AbstractSniffUnitTest
                     128 => 1,
                     130 => 1,
                     131 => 1,
+                ];
+
+            case 'DirnameUnitTest.3.inc':
+                return [
+                    10 => 1,
+                ];
+
+            case 'DirnameUnitTest.4.inc':
+                return [
+                    9  => 1,
+                    10 => 1,
                 ];
 
             default:
