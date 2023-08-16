@@ -11,8 +11,8 @@
 namespace PHPCSExtra\Universal\Sniffs\UseStatements;
 
 use PHP_CodeSniffer\Exceptions\RuntimeException;
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\Utils\Namespaces;
 use PHPCSUtils\Utils\UseStatements;
