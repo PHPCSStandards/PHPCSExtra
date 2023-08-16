@@ -10,8 +10,8 @@
 
 namespace PHPCSExtra\Modernize\Tests\FunctionCalls;
 
-use PHPCSUtils\BackCompat\Helper;
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
+use PHPCSUtils\BackCompat\Helper;
 
 /**
  * Unit test class for the Dirname sniff.

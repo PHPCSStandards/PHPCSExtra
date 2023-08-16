@@ -10,8 +10,8 @@
 
 namespace PHPCSExtra\Universal\Sniffs\Operators;
 
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 /**
  * Enforce the use of the boolean `&&` and `||` operators instead of the logical `and`/`or` operators.
