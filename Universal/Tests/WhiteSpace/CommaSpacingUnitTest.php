@@ -82,7 +82,7 @@ final class CommaSpacingUnitTest extends AbstractSniffUnitTest
      *
      * @param string $testFile The name of the file being tested.
      *
-     * @return array<int, int>
+     * @return array<int, int> Key is the line number, value is the number of expected errors.
      */
     public function getErrorList($testFile = '')
     {
@@ -227,7 +227,7 @@ final class CommaSpacingUnitTest extends AbstractSniffUnitTest
     /**
      * Returns the lines where warnings should occur.
      *
-     * @return array<int, int>
+     * @return array<int, int> Key is the line number, value is the number of expected warnings.
      */
     public function getWarningList()
     {

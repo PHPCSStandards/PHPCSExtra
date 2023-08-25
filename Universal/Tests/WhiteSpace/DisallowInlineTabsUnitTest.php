@@ -69,7 +69,7 @@ final class DisallowInlineTabsUnitTest extends AbstractSniffUnitTest
      *
      * @param string $testFile The name of the file being tested.
      *
-     * @return array <int line number> => <int number of errors>
+     * @return array<int, int> Key is the line number, value is the number of expected errors.
      */
     public function getErrorList($testFile = '')
     {
@@ -155,7 +155,7 @@ final class DisallowInlineTabsUnitTest extends AbstractSniffUnitTest
     /**
      * Returns the lines where warnings should occur.
      *
-     * @return array <int line number> => <int number of errors>
+     * @return array<int, int> Key is the line number, value is the number of expected errors.
      */
     public function getWarningList()
     {
