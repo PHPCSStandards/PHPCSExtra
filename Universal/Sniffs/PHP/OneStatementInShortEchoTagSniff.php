@@ -48,7 +48,7 @@ final class OneStatementInShortEchoTagSniff implements Sniff
      * @param int                         $stackPtr  The position of the current token
      *                                               in the stack passed in $tokens.
      *
-     * @return int Integer stack pointer to skip the rest of the file.
+     * @return void
      */
     public function process(File $phpcsFile, $stackPtr)
     {

@@ -42,10 +42,11 @@ final class DummyTokenizer extends Tokenizer
      *
      * @param string $string The string to tokenize.
      *
-     * @return array
+     * @return array<int, array<string, mixed>>
      */
     protected function tokenize($string)
     {
+        return [];
     }
 
     /**

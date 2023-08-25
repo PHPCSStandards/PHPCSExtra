@@ -36,7 +36,7 @@ final class NoReservedKeywordParameterNamesSniff implements Sniff
      *
      * @since 1.0.0
      *
-     * @var array<string => string> Key is the lowercased keyword, value the "proper" cased keyword.
+     * @var array<string, string> Key is the lowercased keyword, value the "proper" cased keyword.
      */
     private $reservedNames = [
         'abstract'      => 'abstract',

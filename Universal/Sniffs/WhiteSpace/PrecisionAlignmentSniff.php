@@ -42,7 +42,7 @@ final class PrecisionAlignmentSniff implements Sniff
      *
      * @since 1.0.0
      *
-     * @var array
+     * @var string[]
      */
     public $supportedTokenizers = [
         'PHP',
@@ -84,7 +84,7 @@ final class PrecisionAlignmentSniff implements Sniff
      *
      * @since 1.0.0
      *
-     * @var array
+     * @var string[]
      */
     public $ignoreAlignmentBefore = [];
 

@@ -39,7 +39,7 @@ final class DisallowLogicalAndOrSniff implements Sniff
      *
      * @since 1.0.0
      *
-     * @var array
+     * @var array<int|string, string>
      */
     private $metricType = [
         \T_LOGICAL_AND => 'logical (and/or)',
@@ -53,7 +53,7 @@ final class DisallowLogicalAndOrSniff implements Sniff
      *
      * @since 1.0.0
      *
-     * @var array
+     * @var array<int|string, array<string, string>>
      */
     private $targetTokenInfo = [
         \T_LOGICAL_AND => [

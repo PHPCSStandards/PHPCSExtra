@@ -36,7 +36,7 @@ final class MixedKeyedUnkeyedArraySniff extends AbstractArrayDeclarationSniff
      *
      * @since 1.0.0
      *
-     * @var array <int item number> => <int stack point to the first non empty token in the item>
+     * @var array<int, int> Key is the item number; value the stack point to the first non empty token in the item.
      */
     private $itemsWithoutKey = [];
 

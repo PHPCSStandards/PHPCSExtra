@@ -49,7 +49,7 @@ final class SeparateFunctionsFromOOSniff implements Sniff
      *
      * @since 1.0.0
      *
-     * @var array
+     * @var array<int|string>
      */
     private $search = [
         // Some tokens to help skip over structures we're not interested in.
@@ -81,7 +81,8 @@ final class SeparateFunctionsFromOOSniff implements Sniff
      * @param int                         $stackPtr  The position of the current token
      *                                               in the stack passed in $tokens.
      *
-     * @return void
+     * @return int|void Integer stack pointer to skip forward or void to continue
+     *                  normal file processing.
      */
     public function process(File $phpcsFile, $stackPtr)
     {
