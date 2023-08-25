@@ -127,6 +127,7 @@ final class DisallowInlineTabsSniff implements Sniff
              * so from here on out, we **know** there will be tabs in the content.
              */
             $origContent = $token['orig_content'];
+            $commentOnly = '';
 
             $multiLineComment = false;
             if (($tokens[$i]['code'] === \T_COMMENT
