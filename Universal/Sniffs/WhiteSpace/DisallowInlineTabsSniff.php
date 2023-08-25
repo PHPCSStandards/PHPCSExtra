@@ -91,11 +91,11 @@ final class DisallowInlineTabsSniff implements Sniff
     public function process(File $phpcsFile, $stackPtr)
     {
         if (isset($this->tabWidth) === false) {
-            $this->tabWidth = Helper::getTabWidth($phpcsFile);
+            $this->tabWidth = (int) Helper::getTabWidth($phpcsFile);
         }
 
         if (\defined('PHP_CODESNIFFER_IN_TESTS')) {
-            $this->tabWidth = Helper::getCommandLineData($phpcsFile, 'tabWidth');
+            $this->tabWidth = (int) Helper::getCommandLineData($phpcsFile, 'tabWidth');
         }
 
         $tokens = $phpcsFile->getTokens();
