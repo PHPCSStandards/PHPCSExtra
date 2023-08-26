@@ -40,7 +40,7 @@ final class DisallowShortTernarySniff implements Sniff
      *
      * @since 1.0.0
      *
-     * @return int[]
+     * @return array<int|string>
      */
     public function register()
     {
