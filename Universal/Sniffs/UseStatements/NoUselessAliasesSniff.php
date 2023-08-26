@@ -42,7 +42,7 @@ final class NoUselessAliasesSniff implements Sniff
      *
      * @since 1.1.0
      *
-     * @return array
+     * @return array<int|string>
      */
     public function register()
     {

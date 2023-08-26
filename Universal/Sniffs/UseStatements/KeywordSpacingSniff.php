@@ -50,7 +50,7 @@ final class KeywordSpacingSniff implements Sniff
      *
      * @since 1.1.0
      *
-     * @var array(string => string)
+     * @var array<string, true>
      */
     protected $keywords = [
         'const'    => true,
@@ -62,7 +62,7 @@ final class KeywordSpacingSniff implements Sniff
      *
      * @since 1.1.0
      *
-     * @return array
+     * @return array<int|string>
      */
     public function register()
     {

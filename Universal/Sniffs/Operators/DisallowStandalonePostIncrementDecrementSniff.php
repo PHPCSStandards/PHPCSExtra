@@ -47,7 +47,7 @@ final class DisallowStandalonePostIncrementDecrementSniff implements Sniff
      *
      * @since 1.0.0
      *
-     * @var array
+     * @var array<int|string>
      */
     private $allowedTokens = [
         \T_VARIABLE => \T_VARIABLE,
@@ -58,7 +58,7 @@ final class DisallowStandalonePostIncrementDecrementSniff implements Sniff
      *
      * @since 1.0.0
      *
-     * @return int[]
+     * @return array<int|string>
      */
     public function register()
     {
@@ -84,7 +84,8 @@ final class DisallowStandalonePostIncrementDecrementSniff implements Sniff
      * @param int                         $stackPtr  The position of the current token
      *                                               in the stack passed in $tokens.
      *
-     * @return void
+     * @return int|void Integer stack pointer to skip forward or void to continue
+     *                  normal file processing.
      */
     public function process(File $phpcsFile, $stackPtr)
     {

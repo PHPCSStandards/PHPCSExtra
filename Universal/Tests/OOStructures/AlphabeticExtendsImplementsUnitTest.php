@@ -25,7 +25,7 @@ final class AlphabeticExtendsImplementsUnitTest extends AbstractSniffUnitTest
     /**
      * Returns the lines where errors should occur.
      *
-     * @return array<int, int>
+     * @return array<int, int> Key is the line number, value is the number of expected errors.
      */
     public function getErrorList()
     {
@@ -48,7 +48,7 @@ final class AlphabeticExtendsImplementsUnitTest extends AbstractSniffUnitTest
     /**
      * Returns the lines where errors should occur.
      *
-     * @return array<int, int>
+     * @return array<int, int> Key is the line number, value is the number of expected warnings.
      */
     public function getWarningList()
     {

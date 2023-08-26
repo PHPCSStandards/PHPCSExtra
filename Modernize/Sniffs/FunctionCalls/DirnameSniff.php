@@ -40,7 +40,7 @@ final class DirnameSniff implements Sniff
      *
      * @since 1.0.0
      *
-     * @return int|string[]
+     * @return array<int|string>
      */
     public function register()
     {
@@ -357,9 +357,9 @@ final class DirnameSniff implements Sniff
      *
      * @since 1.0.0
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile   The file being scanned.
-     * @param array|false                 $levelsParam The information about the parameter as retrieved
-     *                                                 via PassedParameters::getParameterFromStack().
+     * @param \PHP_CodeSniffer\Files\File     $phpcsFile   The file being scanned.
+     * @param array<string, int|string>|false $levelsParam The information about the parameter as retrieved
+     *                                                     via PassedParameters::getParameterFromStack().
      *
      * @return int|false Integer levels value or FALSE if the levels value couldn't be determined.
      */

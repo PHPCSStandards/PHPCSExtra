@@ -38,7 +38,7 @@ final class StrictComparisonsSniff implements Sniff
      *
      * @since 1.0.0
      *
-     * @var array
+     * @var array<int|string, string>
      */
     private $metricType = [
         \T_IS_EQUAL         => 'loose',
@@ -52,7 +52,7 @@ final class StrictComparisonsSniff implements Sniff
      *
      * @since 1.0.0
      *
-     * @var array
+     * @var array<int|string, array<string, string>>
      */
     private $targetTokenInfo = [
         \T_IS_EQUAL     => [
@@ -70,7 +70,7 @@ final class StrictComparisonsSniff implements Sniff
      *
      * @since 1.0.0
      *
-     * @return array
+     * @return array<int|string>
      */
     public function register()
     {

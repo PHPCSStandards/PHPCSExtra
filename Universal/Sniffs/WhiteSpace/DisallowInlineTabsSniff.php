@@ -56,7 +56,7 @@ final class DisallowInlineTabsSniff implements Sniff
      *
      * @since 1.0.0
      *
-     * @var array
+     * @var array<int|string, true>
      */
     private $find = [
         \T_WHITESPACE             => true,
@@ -70,7 +70,7 @@ final class DisallowInlineTabsSniff implements Sniff
      *
      * @since 1.0.0
      *
-     * @return int[]
+     * @return array<int|string>
      */
     public function register()
     {

@@ -42,7 +42,7 @@ final class DisallowShortArraySyntaxSniff implements Sniff
      *
      * @since 1.0.0
      *
-     * @return int|string[]
+     * @return array<int|string>
      */
     public function register()
     {
