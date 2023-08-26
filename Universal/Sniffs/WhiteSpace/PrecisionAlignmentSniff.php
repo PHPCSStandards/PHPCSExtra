@@ -208,7 +208,11 @@ final class PrecisionAlignmentSniff implements Sniff
                 $origContent = $tokens[$i]['orig_content'];
             }
 
-            $spaces = 0;
+            $spaces  = 0;
+            $length  = 0;
+            $content = '';
+            $closer  = '';
+
             switch ($tokens[$i]['code']) {
                 case \T_WHITESPACE:
                     if ($this->ignoreBlankLines === true

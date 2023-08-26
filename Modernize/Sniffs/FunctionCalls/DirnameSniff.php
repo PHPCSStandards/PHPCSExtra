@@ -150,6 +150,8 @@ final class DirnameSniff implements Sniff
          * PHP 5.3+: Detect use of dirname(__FILE__).
          */
         if (\strtoupper($pathParam['clean']) === '__FILE__') {
+            $levelsValue = false;
+
             // Determine if the issue is auto-fixable.
             $hasComment = $phpcsFile->findNext(Tokens::$commentTokens, ($opener + 1), $closer);
             $fixable    = ($hasComment === false);
@@ -248,7 +250,12 @@ final class DirnameSniff implements Sniff
          */
 
         // Step 1: Are there comments ? If so, not auto-fixable as we don't want to remove comments.
-        $fixable = true;
+        $fixable          = true;
+        $outerLevelsValue = false;
+        $innerParameters  = [];
+        $innerLevelsParam = false;
+        $innerLevelsValue = false;
+
         for ($i = ($opener + 1); $i < $closer; $i++) {
             if (isset(Tokens::$commentTokens[$tokens[$i]['code']])) {
                 $fixable = false;
