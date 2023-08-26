@@ -12,6 +12,7 @@
 .remarkrc                export-ignore
 .yamllint.yml            export-ignore
 phpcs.xml.dist           export-ignore
+phpstan.neon.dist        export-ignore
 phpunit.xml.dist         export-ignore
 phpunit-bootstrap.php    export-ignore
 /.github/                export-ignore
