@@ -44,7 +44,7 @@ final class NoEchoSprintfSniff implements Sniff
      *
      * @since 1.1.0
      *
-     * @return array
+     * @return array<int|string>
      */
     public function register()
     {
@@ -81,7 +81,7 @@ final class NoEchoSprintfSniff implements Sniff
         $detectedFunction = \strtolower($tokens[$next]['content']);
 
         $openParens = $phpcsFile->findNext(Tokens::$emptyTokens, ($next + 1), null, true);
-        if ($next === false
+        if ($openParens === false
             || $tokens[$openParens]['code'] !== \T_OPEN_PARENTHESIS
             || isset($tokens[$openParens]['parenthesis_closer']) === false
         ) {

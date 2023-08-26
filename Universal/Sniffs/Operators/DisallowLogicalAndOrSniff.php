@@ -10,8 +10,8 @@
 
 namespace PHPCSExtra\Universal\Sniffs\Operators;
 
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 /**
  * Enforce the use of the boolean `&&` and `||` operators instead of the logical `and`/`or` operators.
@@ -39,7 +39,7 @@ final class DisallowLogicalAndOrSniff implements Sniff
      *
      * @since 1.0.0
      *
-     * @var array
+     * @var array<int|string, string>
      */
     private $metricType = [
         \T_LOGICAL_AND => 'logical (and/or)',
@@ -53,7 +53,7 @@ final class DisallowLogicalAndOrSniff implements Sniff
      *
      * @since 1.0.0
      *
-     * @var array
+     * @var array<int|string, array<string, string>>
      */
     private $targetTokenInfo = [
         \T_LOGICAL_AND => [
@@ -71,7 +71,7 @@ final class DisallowLogicalAndOrSniff implements Sniff
      *
      * @since 1.0.0
      *
-     * @return array
+     * @return array<int|string>
      */
     public function register()
     {

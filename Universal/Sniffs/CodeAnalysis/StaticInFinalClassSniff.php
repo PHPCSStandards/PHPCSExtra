@@ -30,7 +30,7 @@ final class StaticInFinalClassSniff implements Sniff
     /**
      * OO Scopes in which late static binding is useless.
      *
-     * @var int|string[]
+     * @var array<int|string>
      */
     private $validOOScopes = [
         \T_CLASS,      // Only if final.
@@ -43,7 +43,7 @@ final class StaticInFinalClassSniff implements Sniff
      *
      * @since 1.0.0
      *
-     * @return array
+     * @return array<int|string>
      */
     public function register()
     {

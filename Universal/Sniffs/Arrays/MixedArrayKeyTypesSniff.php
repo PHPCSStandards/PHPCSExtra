@@ -68,7 +68,9 @@ final class MixedArrayKeyTypesSniff extends AbstractArrayDeclarationSniff
      *                                               an array item.
      * @param int                         $itemNr    Which item in the array is being handled.
      *
-     * @return void
+     * @return true|void Returning `TRUE` will short-circuit the array item loop and stop processing.
+     *                   In effect, this means that the sniff will not examine the double arrow, the array
+     *                   value or comma for this array item and will not process any array items after this one.
      */
     public function processKey(File $phpcsFile, $startPtr, $endPtr, $itemNr)
     {
@@ -141,7 +143,9 @@ final class MixedArrayKeyTypesSniff extends AbstractArrayDeclarationSniff
      *                                               value part of the array item.
      * @param int                         $itemNr    Which item in the array is being handled.
      *
-     * @return void
+     * @return true|void Returning `TRUE` will short-circuit the array item loop and stop processing.
+     *                   In effect, this means that the sniff will not examine the array value or
+     *                   comma for this array item and will not process any array items after this one.
      */
     public function processNoKey(File $phpcsFile, $startPtr, $itemNr)
     {

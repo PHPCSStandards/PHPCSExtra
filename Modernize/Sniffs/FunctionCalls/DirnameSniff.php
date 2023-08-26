@@ -13,6 +13,7 @@ namespace PHPCSExtra\Modernize\Sniffs\FunctionCalls;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\BackCompat\Helper;
 use PHPCSUtils\Tokens\Collections;
 use PHPCSUtils\Utils\Context;
 use PHPCSUtils\Utils\PassedParameters;
@@ -26,11 +27,20 @@ final class DirnameSniff implements Sniff
 {
 
     /**
+     * PHP version as configured or 0 if unknown.
+     *
+     * @since 1.1.1
+     *
+     * @var int
+     */
+    private $phpVersion;
+
+    /**
      * Registers the tokens that this sniff wants to listen for.
      *
      * @since 1.0.0
      *
-     * @return int|string[]
+     * @return array<int|string>
      */
     public function register()
     {
@@ -50,6 +60,21 @@ final class DirnameSniff implements Sniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
+        if (isset($this->phpVersion) === false || \defined('PHP_CODESNIFFER_IN_TESTS')) {
+            // Set default value to prevent this code from running every time the sniff is triggered.
+            $this->phpVersion = 0;
+
+            $phpVersion = Helper::getConfigData('php_version');
+            if ($phpVersion !== null) {
+                $this->phpVersion = (int) $phpVersion;
+            }
+        }
+
+        if ($this->phpVersion !== 0 && $this->phpVersion < 50300) {
+            // PHP version too low, nothing to do.
+            return;
+        }
+
         $tokens = $phpcsFile->getTokens();
 
         if (\strtolower($tokens[$stackPtr]['content']) !== 'dirname') {
@@ -125,6 +150,8 @@ final class DirnameSniff implements Sniff
          * PHP 5.3+: Detect use of dirname(__FILE__).
          */
         if (\strtoupper($pathParam['clean']) === '__FILE__') {
+            $levelsValue = false;
+
             // Determine if the issue is auto-fixable.
             $hasComment = $phpcsFile->findNext(Tokens::$commentTokens, ($opener + 1), $closer);
             $fixable    = ($hasComment === false);
@@ -182,6 +209,11 @@ final class DirnameSniff implements Sniff
         /*
          * PHP 7.0+: Detect use of nested calls to dirname().
          */
+        if ($this->phpVersion !== 0 && $this->phpVersion < 70000) {
+            // No need to check for this issue if the PHP version would not allow for it anyway.
+            return;
+        }
+
         if (\preg_match('`^\s*\\\\?dirname\s*\(`i', $pathParam['clean']) !== 1) {
             return;
         }
@@ -218,7 +250,12 @@ final class DirnameSniff implements Sniff
          */
 
         // Step 1: Are there comments ? If so, not auto-fixable as we don't want to remove comments.
-        $fixable = true;
+        $fixable          = true;
+        $outerLevelsValue = false;
+        $innerParameters  = [];
+        $innerLevelsParam = false;
+        $innerLevelsValue = false;
+
         for ($i = ($opener + 1); $i < $closer; $i++) {
             if (isset(Tokens::$commentTokens[$tokens[$i]['code']])) {
                 $fixable = false;
@@ -320,9 +357,9 @@ final class DirnameSniff implements Sniff
      *
      * @since 1.0.0
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile   The file being scanned.
-     * @param array|false                 $levelsParam The information about the parameter as retrieved
-     *                                                 via PassedParameters::getParameterFromStack().
+     * @param \PHP_CodeSniffer\Files\File     $phpcsFile   The file being scanned.
+     * @param array<string, int|string>|false $levelsParam The information about the parameter as retrieved
+     *                                                     via PassedParameters::getParameterFromStack().
      *
      * @return int|false Integer levels value or FALSE if the levels value couldn't be determined.
      */

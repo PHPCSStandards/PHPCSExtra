@@ -10,8 +10,8 @@
 
 namespace PHPCSExtra\Universal\Sniffs\WhiteSpace;
 
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\BackCompat\Helper;
 use PHPCSUtils\Fixers\SpacesFixer;
@@ -78,7 +78,7 @@ final class CommaSpacingSniff implements Sniff
      *
      * @since 1.1.0
      *
-     * @return array
+     * @return array<int|string>
      */
     public function register()
     {

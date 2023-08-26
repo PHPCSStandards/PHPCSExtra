@@ -10,8 +10,8 @@
 
 namespace PHPCSExtra\Universal\Sniffs\Namespaces;
 
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 use PHPCSUtils\Utils\Namespaces;
 
 /**
@@ -36,7 +36,7 @@ final class DisallowDeclarationWithoutNameSniff implements Sniff
      *
      * @since 1.0.0
      *
-     * @return array
+     * @return array<int|string>
      */
     public function register()
     {

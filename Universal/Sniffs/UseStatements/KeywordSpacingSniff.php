@@ -10,8 +10,8 @@
 
 namespace PHPCSExtra\Universal\Sniffs\UseStatements;
 
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\Fixers\SpacesFixer;
 use PHPCSUtils\Utils\UseStatements;
@@ -50,7 +50,7 @@ final class KeywordSpacingSniff implements Sniff
      *
      * @since 1.1.0
      *
-     * @var array(string => string)
+     * @var array<string, true>
      */
     protected $keywords = [
         'const'    => true,
@@ -62,7 +62,7 @@ final class KeywordSpacingSniff implements Sniff
      *
      * @since 1.1.0
      *
-     * @return array
+     * @return array<int|string>
      */
     public function register()
     {

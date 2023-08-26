@@ -56,7 +56,7 @@ final class DisallowInlineTabsSniff implements Sniff
      *
      * @since 1.0.0
      *
-     * @var array
+     * @var array<int|string, true>
      */
     private $find = [
         \T_WHITESPACE             => true,
@@ -70,7 +70,7 @@ final class DisallowInlineTabsSniff implements Sniff
      *
      * @since 1.0.0
      *
-     * @return int[]
+     * @return array<int|string>
      */
     public function register()
     {
@@ -91,11 +91,11 @@ final class DisallowInlineTabsSniff implements Sniff
     public function process(File $phpcsFile, $stackPtr)
     {
         if (isset($this->tabWidth) === false) {
-            $this->tabWidth = Helper::getTabWidth($phpcsFile);
+            $this->tabWidth = (int) Helper::getTabWidth($phpcsFile);
         }
 
         if (\defined('PHP_CODESNIFFER_IN_TESTS')) {
-            $this->tabWidth = Helper::getCommandLineData($phpcsFile, 'tabWidth');
+            $this->tabWidth = (int) Helper::getCommandLineData($phpcsFile, 'tabWidth');
         }
 
         $tokens = $phpcsFile->getTokens();
@@ -127,6 +127,7 @@ final class DisallowInlineTabsSniff implements Sniff
              * so from here on out, we **know** there will be tabs in the content.
              */
             $origContent = $token['orig_content'];
+            $commentOnly = '';
 
             $multiLineComment = false;
             if (($tokens[$i]['code'] === \T_COMMENT

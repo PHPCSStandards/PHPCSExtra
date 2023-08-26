@@ -10,8 +10,8 @@
 
 namespace PHPCSExtra\Universal\Sniffs\UseStatements;
 
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\Utils\NamingConventions;
 use PHPCSUtils\Utils\UseStatements;
@@ -42,7 +42,7 @@ final class NoUselessAliasesSniff implements Sniff
      *
      * @since 1.1.0
      *
-     * @return array
+     * @return array<int|string>
      */
     public function register()
     {

@@ -35,7 +35,7 @@ final class DuplicateArrayKeySniff extends AbstractArrayDeclarationSniff
      *
      * @since 1.0.0
      *
-     * @var array
+     * @var array<int, array<string, int>>
      */
     private $keysSeenLt8 = [];
 
@@ -44,7 +44,7 @@ final class DuplicateArrayKeySniff extends AbstractArrayDeclarationSniff
      *
      * @since 1.0.0
      *
-     * @var array
+     * @var array<int, array<string, int>>
      */
     private $keysSeenGt8 = [];
 

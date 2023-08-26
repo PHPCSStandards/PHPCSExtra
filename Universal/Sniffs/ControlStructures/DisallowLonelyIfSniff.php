@@ -35,7 +35,7 @@ final class DisallowLonelyIfSniff implements Sniff
      *
      * @since 1.0.0
      *
-     * @return array
+     * @return array<int|string>
      */
     public function register()
     {
