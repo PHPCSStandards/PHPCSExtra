@@ -14,6 +14,24 @@ This projects adheres to [Keep a CHANGELOG](http://keepachangelog.com/) and uses
 
 _Nothing yet._
 
+## [1.1.1] - 2023-08-26
+
+### Changed
+
+#### Modernize
+
+* `Modernize.FunctionCalls.Dirname`: the sniff will now respect a potentially set [`php_version` configuration option][php_version-config] and only report on modernizations which are possible on the configured `php_version`. [#261]
+    If the `php_version` is not set, the sniff will continue to report on all modernization options.
+
+#### Other
+
+* Various documentation improvements. Props in part to [@szepeviktor].
+* Improved defensive coding in select places.
+* Various housekeeping.
+
+[#261]: https://github.com/PHPCSStandards/PHPCSExtra/pull/261
+
+
 ## [1.1.0] - 2023-07-19
 
 ### Added
@@ -488,6 +506,7 @@ This initial alpha release contains the following sniffs:
 [php_version-config]:    https://github.com/squizlabs/PHP_CodeSniffer/wiki/Configuration-Options#setting-the-php-version
 
 [Unreleased]: https://github.com/PHPCSStandards/PHPCSExtra/compare/stable...HEAD
+[1.1.1]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.1.0...1.1.1
 [1.1.0]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.4...1.1.0
 [1.0.4]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.3...1.0.4
 [1.0.3]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.2...1.0.3
@@ -498,6 +517,7 @@ This initial alpha release contains the following sniffs:
 [1.0.0-alpha3]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.0-alpha2...1.0.0-alpha3
 [1.0.0-alpha2]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.0-alpha1...1.0.0-alpha2
 
-[@anomiex]:   https://github.com/anomiex
-[@derickr]:   https://github.com/derickr
-[@GaryJones]: https://github.com/GaryJones
+[@anomiex]:     https://github.com/anomiex
+[@derickr]:     https://github.com/derickr
+[@GaryJones]:   https://github.com/GaryJones
+[@szepeviktor]: https://github.com/szepeviktor
