@@ -26,7 +26,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -101,7 +101,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -128,7 +128,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up node and enable caching of dependencies
         uses: actions/setup-node@v3
@@ -190,7 +190,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Ref: https://yamllint.readthedocs.io/en/stable/
       - name: Run Yamllint on all yaml files in repo
