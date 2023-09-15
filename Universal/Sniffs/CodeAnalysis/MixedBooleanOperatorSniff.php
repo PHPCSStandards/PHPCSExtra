@@ -63,8 +63,6 @@ final class MixedBooleanOperatorSniff implements Sniff
             $search = \T_BOOLEAN_OR;
         } elseif ($token['code'] === \T_BOOLEAN_OR) {
             $search = \T_BOOLEAN_AND;
-        } else {
-            throw new \LogicException('Unreachable');
         }
 
         while (true) {
@@ -106,8 +104,6 @@ final class MixedBooleanOperatorSniff implements Sniff
                 $error = "Mixing '&&' and '||' within an expression without using parentheses to clarify precedence.";
                 $phpcsFile->addError($error, $stackPtr, 'MissingParentheses', []);
                 return;
-            } else {
-                throw new \LogicException('Unreachable');
             }
         }
     }
