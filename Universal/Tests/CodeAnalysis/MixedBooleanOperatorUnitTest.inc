@@ -40,8 +40,20 @@ foo([true && true || false]);
 
 if (true && true || true && true);
 
-$foo = false || true && (#[\Attr] function (#[\SensitiveParameter] $p) {
+$foo = false || true && (#[\Attr(true && true || true)] function (#[\SensitiveParameter] $p) {
     echo true || true && true;
+
+    return true;
+})('dummy') || false;
+
+$foo = false || (true && (#[\Attr((true && true) || true)] function (#[\SensitiveParameter] $p) {
+    echo (true || true) && true;
+
+    return true;
+})('dummy')) || false;
+
+$foo = true || true || (#[\Attr(true && true && true)] function (#[\SensitiveParameter] $p) {
+    echo true && true && true;
 
     return true;
 })('dummy') || false;
