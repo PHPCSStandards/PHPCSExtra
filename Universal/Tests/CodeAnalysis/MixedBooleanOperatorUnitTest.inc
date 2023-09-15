@@ -39,3 +39,9 @@ $foo[] = true && true || false;
 foo([true && true || false]);
 
 if (true && true || true && true);
+
+$foo = false || true && (#[\Attr] function (#[\SensitiveParameter] $p) {
+    echo true || true && true;
+
+    return true;
+})('dummy') || false;
