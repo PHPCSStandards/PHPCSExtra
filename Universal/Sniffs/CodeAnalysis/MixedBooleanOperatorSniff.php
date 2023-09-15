@@ -12,6 +12,7 @@ namespace PHPCSExtra\Universal\Sniffs\CodeAnalysis;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
+use PHPCSUtils\BackCompat\BCFile;
 
 /**
  * Forbid mixing `&&` and `||` within a single expression without making precedence
@@ -56,7 +57,7 @@ final class MixedBooleanOperatorSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
         $token  = $tokens[$stackPtr];
 
-        $start = $phpcsFile->findStartOfStatement($stackPtr);
+        $start = BCFile::findStartOfStatement($phpcsFile, $stackPtr);
 
         if ($token['code'] === \T_BOOLEAN_AND) {
             $search = \T_BOOLEAN_OR;
