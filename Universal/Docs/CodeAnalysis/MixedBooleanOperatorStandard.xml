@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<documentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://phpcsstandards.github.io/PHPCSDevTools/phpcsdocs.xsd"
+    title="Mixed Boolean Operator"
+    >
+    <standard>
+    <![CDATA[
+    Forbids mixing `&&` and `||` within a single expression without making precedence clear using parentheses.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: Making precedence clear with parentheses.">
+        <![CDATA[
+$one = false;
+$two = false;
+$three = true;
+
+$result = <em>($one && $two) || $three</em>;
+$result2 = <em>$one && ($two || $three)</em>;
+        ]]>
+        </code>
+        <code title="Invalid: Not using parentheses.">
+        <![CDATA[
+$one = false;
+$two = false;
+$three = true;
+
+$result = <em>$one && $two || $three</em>;
+        ]]>
+        </code>
+    </code_comparison>
+</documentation>

@@ -229,6 +229,10 @@ Detects `foreach` control structures which use the same variable for both the ke
 
 Note: The fixer will maintain the existing behaviour of the code. This may not be the _intended_ behaviour.
 
+#### `Universal.CodeAnalysis.MixedBooleanOperator` :books:
+
+Forbids mixing `&&` and `||` within a single expression without making precedence clear using parentheses.
+
 #### `Universal.CodeAnalysis.NoEchoSprintf` :wrench: :books:
 
 Detects use of the inefficient `echo [v]sprintf(...);` combi. Use `[v]printf()` instead.
