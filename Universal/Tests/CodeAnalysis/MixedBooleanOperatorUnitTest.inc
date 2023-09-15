@@ -57,3 +57,6 @@ $foo = true || true || (#[\Attr(true && true && true)] function (#[\SensitivePar
 
     return true;
 })('dummy') || false;
+
+if (true && [true, callMe(), ${true || true}] || true);
+if (true && [true, callMe(), ${true || true}] && true);

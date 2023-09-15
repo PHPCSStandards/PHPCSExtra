@@ -73,8 +73,10 @@ final class MixedBooleanOperatorSniff implements Sniff
                     $search,
                     \T_OPEN_PARENTHESIS,
                     \T_OPEN_SQUARE_BRACKET,
+                    \T_OPEN_CURLY_BRACKET,
                     \T_CLOSE_PARENTHESIS,
                     \T_CLOSE_SQUARE_BRACKET,
+                    \T_CLOSE_CURLY_BRACKET,
                 ],
                 $stackPtr,
                 $start
@@ -86,6 +88,7 @@ final class MixedBooleanOperatorSniff implements Sniff
 
             if ($tokens[$previous]['code'] === \T_OPEN_PARENTHESIS
                 || $tokens[$previous]['code'] === \T_OPEN_SQUARE_BRACKET
+                || $tokens[$previous]['code'] === \T_OPEN_CURLY_BRACKET
             ) {
                 // We halt if we reach the opening parens / bracket of the boolean operator.
                 return;
@@ -93,7 +96,10 @@ final class MixedBooleanOperatorSniff implements Sniff
                 // We skip the content of nested parens.
                 $stackPtr = ($tokens[$previous]['parenthesis_opener'] - 1);
             } elseif ($tokens[$previous]['code'] === \T_CLOSE_SQUARE_BRACKET) {
-                // We skip the content of nested brackets.
+                // We skip the content of nested square brackets.
+                $stackPtr = ($tokens[$previous]['bracket_opener'] - 1);
+            } elseif ($tokens[$previous]['code'] === \T_CLOSE_CURLY_BRACKET) {
+                // We skip the content of nested curly brackets.
                 $stackPtr = ($tokens[$previous]['bracket_opener'] - 1);
             } elseif ($tokens[$previous]['code'] === $search) {
                 // We reached a mismatching operator, thus we must report the error.
