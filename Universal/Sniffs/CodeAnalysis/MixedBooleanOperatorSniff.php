@@ -96,7 +96,7 @@ final class MixedBooleanOperatorSniff implements Sniff
                 $stackPtr = ($tokens[$previous]['bracket_opener'] - 1);
             } elseif ($tokens[$previous]['code'] === $search) {
                 // We reached a mismatching operator, thus we must report the error.
-                $error = "Mixed '&&' and '||' within an expression without using parentheses.";
+                $error = "Mixing '&&' and '||' within an expression without using parentheses to clarify precedence.";
                 $phpcsFile->addError($error, $stackPtr, 'MissingParentheses', []);
                 return;
             } else {
