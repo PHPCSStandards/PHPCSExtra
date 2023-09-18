@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 use PHPCSUtils\BackCompat\BCFile;
 
 /**
- * Forbid mixing `&&` and `||` within a single expression without making precedence
+ * Forbid mixing different binary boolean operators within a single expression without making precedence
  * clear using parentheses.
  *
  * @link https://github.com/squizlabs/PHP_CodeSniffer/pull/3205
@@ -38,6 +38,9 @@ final class MixedBooleanOperatorSniff implements Sniff
         return [
             \T_BOOLEAN_OR,
             \T_BOOLEAN_AND,
+            \T_LOGICAL_AND,
+            \T_LOGICAL_OR,
+            \T_LOGICAL_XOR,
         ];
     }
 
@@ -86,7 +89,7 @@ final class MixedBooleanOperatorSniff implements Sniff
         }
 
         // We found a mismatching operator, thus we must report the error.
-        $error = "Mixing '&&' and '||' within an expression without using parentheses to clarify precedence.";
+        $error = "Mixing different binary boolean operators within an expression without using parentheses to clarify precedence.";
         $phpcsFile->addError($error, $stackPtr, 'MissingParentheses', []);
     }
 }

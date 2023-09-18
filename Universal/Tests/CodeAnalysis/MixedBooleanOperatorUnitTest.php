@@ -13,7 +13,7 @@ namespace PHPCSExtra\Universal\Tests\CodeAnalysis;
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 /**
- * Unit test class for the ForeachUniqueAssignment sniff.
+ * Unit test class for the MixedBooleanOperator sniff.
  *
  * @covers PHPCSExtra\Universal\Sniffs\CodeAnalysis\MixedBooleanOperatorSniff
  *
@@ -52,6 +52,10 @@ final class MixedBooleanOperatorUnitTest extends AbstractSniffUnitTest
             72 => 1,
             73 => 1,
             76 => 2,
+            78 => 1,
+            79 => 1,
+            80 => 1,
+            81 => 2,
         ];
     }
 

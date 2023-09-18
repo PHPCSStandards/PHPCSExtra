@@ -5,7 +5,7 @@
     >
     <standard>
     <![CDATA[
-    Forbids mixing `&&` and `||` within a single expression without making precedence clear using parentheses.
+    Forbid mixing different binary boolean operators within a single expression without making precedence clear using parentheses.
     ]]>
     </standard>
     <code_comparison>
@@ -17,6 +17,8 @@ $three = true;
 
 $result = <em>($one && $two) || $three</em>;
 $result2 = <em>$one && ($two || $three)</em>;
+$result3 = <em>($one && !$two) xor $three;</em>;
+$result4 = <em>$one && (!$two xor $three);</em>;
         ]]>
         </code>
         <code title="Invalid: Not using parentheses.">
@@ -26,6 +28,7 @@ $two = false;
 $three = true;
 
 $result = <em>$one && $two || $three</em>;
+$result3 = <em>$one && !$two xor $three;</em>;
         ]]>
         </code>
     </code_comparison>

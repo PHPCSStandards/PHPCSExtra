@@ -74,3 +74,8 @@ $foo = true && true || true // Not OK.
 
 for(true || true || true, true && true && true);
 for(true && true || true, true && true || true); // Not OK.
+
+(true && true and true); // Not OK.
+(true && true or true); // Not OK.
+(true and true or true); // Not OK.
+(true and true xor true and true); // Not OK.
