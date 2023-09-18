@@ -59,56 +59,28 @@ final class MixedBooleanOperatorSniff implements Sniff
 
         $start = BCFile::findStartOfStatement($phpcsFile, $stackPtr);
 
-        if ($token['code'] === \T_BOOLEAN_AND) {
-            $search = \T_BOOLEAN_OR;
-        } elseif ($token['code'] === \T_BOOLEAN_OR) {
-            $search = \T_BOOLEAN_AND;
-        } else {
-            // @codeCoverageIgnoreStart
+        $valid = $token['code'];
+
+        $previous = $phpcsFile->findPrevious(
+            \array_filter(
+                $this->register(),
+                function ($token) use ($valid) {
+                    return $token !== $valid;
+                }
+            ),
+            $stackPtr,
+            $start,
+            false,
+            null,
+            true
+        );
+
+        if ($previous === false) {
             return;
-            // @codeCoverageIgnoreEnd
         }
 
-        while (true) {
-            $previous = $phpcsFile->findPrevious(
-                [
-                    $search,
-                    \T_OPEN_PARENTHESIS,
-                    \T_OPEN_SQUARE_BRACKET,
-                    \T_OPEN_CURLY_BRACKET,
-                    \T_CLOSE_PARENTHESIS,
-                    \T_CLOSE_SQUARE_BRACKET,
-                    \T_CLOSE_CURLY_BRACKET,
-                ],
-                $stackPtr,
-                $start
-            );
-
-            if ($previous === false) {
-                break;
-            }
-
-            if ($tokens[$previous]['code'] === \T_OPEN_PARENTHESIS
-                || $tokens[$previous]['code'] === \T_OPEN_SQUARE_BRACKET
-                || $tokens[$previous]['code'] === \T_OPEN_CURLY_BRACKET
-            ) {
-                // We halt if we reach the opening parens / bracket of the boolean operator.
-                return;
-            } elseif ($tokens[$previous]['code'] === \T_CLOSE_PARENTHESIS) {
-                // We skip the content of nested parens.
-                $stackPtr = ($tokens[$previous]['parenthesis_opener'] - 1);
-            } elseif ($tokens[$previous]['code'] === \T_CLOSE_SQUARE_BRACKET) {
-                // We skip the content of nested square brackets.
-                $stackPtr = ($tokens[$previous]['bracket_opener'] - 1);
-            } elseif ($tokens[$previous]['code'] === \T_CLOSE_CURLY_BRACKET) {
-                // We skip the content of nested curly brackets.
-                $stackPtr = ($tokens[$previous]['bracket_opener'] - 1);
-            } elseif ($tokens[$previous]['code'] === $search) {
-                // We reached a mismatching operator, thus we must report the error.
-                $error = "Mixing '&&' and '||' within an expression without using parentheses to clarify precedence.";
-                $phpcsFile->addError($error, $stackPtr, 'MissingParentheses', []);
-                return;
-            }
-        }
+        // We found a mismatching operator, thus we must report the error.
+        $error = "Mixing '&&' and '||' within an expression without using parentheses to clarify precedence.";
+        $phpcsFile->addError($error, $stackPtr, 'MissingParentheses', []);
     }
 }
