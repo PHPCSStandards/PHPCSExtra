@@ -63,6 +63,10 @@ final class MixedBooleanOperatorSniff implements Sniff
             $search = \T_BOOLEAN_OR;
         } elseif ($token['code'] === \T_BOOLEAN_OR) {
             $search = \T_BOOLEAN_AND;
+        } else {
+            // @codeCoverageIgnoreStart
+            return;
+            // @codeCoverageIgnoreEnd
         }
 
         while (true) {
