@@ -44,7 +44,7 @@ $foo = false || true && (#[\Attr(true && true || true)] function (#[\SensitivePa
     echo true || true && true; // Not OK.
 
     return true;
-})('dummy') || false;
+})('dummy') || false; // Not OK.
 
 $foo = false || (true && (#[\Attr((true && true) || true)] function (#[\SensitiveParameter] $p) {
     echo (true || true) && true;
@@ -60,3 +60,17 @@ $foo = true || true || (#[\Attr(true && true && true)] function (#[\SensitivePar
 
 if (true && [true, callMe(), ${true || true}] || true); // Not OK.
 if (true && [true, callMe(), ${true || true}] && true);
+
+for (true || true || true; true && true && true; true || true || true);
+for (true || true && true; true && true || true; true || true && true); // Not OK.
+
+for ($a = true || true || true, $b = true && true && true; $a; $b);
+for ($a = true || true && true, $b = true || true && true; $a; $b); // Not OK.
+
+$foo = true || true || true ? true && true && true : true || true || true;
+$foo = true && true || true // Not OK.
+    ? true || true && true // Not OK.
+    : true || true && true; // Not OK.
+
+for(true || true || true, true && true && true);
+for(true && true || true, true && true || true); // Not OK.
