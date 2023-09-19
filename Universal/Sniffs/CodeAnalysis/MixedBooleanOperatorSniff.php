@@ -26,6 +26,7 @@ use PHPCSUtils\BackCompat\BCFile;
  */
 final class MixedBooleanOperatorSniff implements Sniff
 {
+    private $searchTargets = [];
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -36,6 +37,11 @@ final class MixedBooleanOperatorSniff implements Sniff
      */
     public function register()
     {
+        $this->searchTargets = \array_merge(
+            Tokens::$booleanOperators,
+            [\T_INLINE_THEN, \T_INLINE_ELSE]
+        );
+
         return Tokens::$booleanOperators;
     }
 
@@ -53,17 +59,11 @@ final class MixedBooleanOperatorSniff implements Sniff
     public function process(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
-        $token  = $tokens[$stackPtr];
 
         $start = BCFile::findStartOfStatement($phpcsFile, $stackPtr);
 
-        $valid = $token['code'];
-
         $previous = $phpcsFile->findPrevious(
-            \array_merge(
-                $this->register(),
-                [\T_INLINE_THEN, \T_INLINE_ELSE]
-            ),
+            $this->searchTargets,
             $stackPtr - 1,
             $start,
             false,
@@ -72,8 +72,11 @@ final class MixedBooleanOperatorSniff implements Sniff
         );
 
         if (
+            // No token found.
             $previous === false
-            || $tokens[$previous]['code'] === $valid
+            // Identical operator found.
+            || $tokens[$previous]['code'] === $tokens[$stackPtr]['code']
+            // Beginning of the expression found for the ternary conditional operator.
             || \in_array($tokens[$previous]['code'], [\T_INLINE_THEN, \T_INLINE_ELSE], true)
         ) {
             return;
