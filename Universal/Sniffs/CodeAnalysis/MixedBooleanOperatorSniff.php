@@ -26,7 +26,7 @@ use PHPCSUtils\BackCompat\BCFile;
  */
 final class MixedBooleanOperatorSniff implements Sniff
 {
-    private $searchTargets = [];
+    private $previousTokens = [];
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -37,7 +37,7 @@ final class MixedBooleanOperatorSniff implements Sniff
      */
     public function register()
     {
-        $this->searchTargets = \array_merge(
+        $this->previousTokens = \array_merge(
             Tokens::$booleanOperators,
             [\T_INLINE_THEN, \T_INLINE_ELSE]
         );
@@ -63,7 +63,7 @@ final class MixedBooleanOperatorSniff implements Sniff
         $start = BCFile::findStartOfStatement($phpcsFile, $stackPtr);
 
         $previous = $phpcsFile->findPrevious(
-            $this->searchTargets,
+            $this->previousTokens,
             $stackPtr - 1,
             $start,
             false,
