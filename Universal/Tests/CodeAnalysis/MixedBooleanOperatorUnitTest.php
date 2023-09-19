@@ -56,6 +56,7 @@ final class MixedBooleanOperatorUnitTest extends AbstractSniffUnitTest
             79 => 1,
             80 => 1,
             81 => 2,
+            83 => 1,
         ];
     }
 

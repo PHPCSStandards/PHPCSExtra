@@ -60,16 +60,11 @@ final class MixedBooleanOperatorSniff implements Sniff
         $valid = $token['code'];
 
         $previous = $phpcsFile->findPrevious(
-            \array_filter(
-                \array_merge(
-                    $this->register(),
-                    [\T_INLINE_THEN, \T_INLINE_ELSE]
-                ),
-                function ($token) use ($valid) {
-                    return $token !== $valid;
-                }
+            \array_merge(
+                $this->register(),
+                [\T_INLINE_THEN, \T_INLINE_ELSE]
             ),
-            $stackPtr,
+            $stackPtr - 1,
             $start,
             false,
             null,
@@ -78,6 +73,7 @@ final class MixedBooleanOperatorSniff implements Sniff
 
         if (
             $previous === false
+            || $tokens[$previous]['code'] === $valid
             || \in_array($tokens[$previous]['code'], [\T_INLINE_THEN, \T_INLINE_ELSE], true)
         ) {
             return;
