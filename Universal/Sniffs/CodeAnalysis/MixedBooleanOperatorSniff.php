@@ -12,6 +12,7 @@ namespace PHPCSExtra\Universal\Sniffs\CodeAnalysis;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\BackCompat\BCFile;
 
 /**
@@ -35,13 +36,7 @@ final class MixedBooleanOperatorSniff implements Sniff
      */
     public function register()
     {
-        return [
-            \T_BOOLEAN_OR,
-            \T_BOOLEAN_AND,
-            \T_LOGICAL_AND,
-            \T_LOGICAL_OR,
-            \T_LOGICAL_XOR,
-        ];
+        return Tokens::$booleanOperators;
     }
 
     /**
