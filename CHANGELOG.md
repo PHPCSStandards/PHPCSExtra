@@ -14,6 +14,23 @@ This projects adheres to [Keep a CHANGELOG](http://keepachangelog.com/) and uses
 
 _Nothing yet._
 
+## [1.1.2] - 2023-09-21
+
+### Changed
+
+#### Other
+
+* Various housekeeping.
+
+### Fixed
+
+#### Universal
+
+* `Universal.CodeAnalysis.ConstructorDestructorReturn`: the sniff will now correctly ignore methods mirroring the class name (PHP-4 style constructors) in namespaced code. [#207], [#272]
+
+[#272]: https://github.com/PHPCSStandards/PHPCSExtra/pull/272
+
+
 ## [1.1.1] - 2023-08-26
 
 ### Changed
@@ -506,6 +523,7 @@ This initial alpha release contains the following sniffs:
 [php_version-config]:    https://github.com/squizlabs/PHP_CodeSniffer/wiki/Configuration-Options#setting-the-php-version
 
 [Unreleased]: https://github.com/PHPCSStandards/PHPCSExtra/compare/stable...HEAD
+[1.1.2]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.1.1...1.1.2
 [1.1.1]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.1.0...1.1.1
 [1.1.0]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.4...1.1.0
 [1.0.4]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.3...1.0.4
