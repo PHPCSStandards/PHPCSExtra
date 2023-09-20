@@ -59,13 +59,13 @@ Please include as many details as relevant about the environment you experienced
 You should be able to get the version numbers using the `composer info` command.
 -->
 
-| Environment              | Answer
-| ------------------------ | -------
-| PHP version              | x.y.z
-| PHP_CodeSniffer version  | x.y.z
-| PHPCSExtra version       | x.y.z
-| PHPCSUtils version       | x.y.z
-| Install type             | e.g. Composer global, Composer project local, git clone, other (please expand)
+| Environment             | Answer                                                                         |
+|-------------------------|--------------------------------------------------------------------------------|
+| PHP version             | x.y.z                                                                          |
+| PHP_CodeSniffer version | x.y.z                                                                          |
+| PHPCSExtra version      | x.y.z                                                                          |
+| PHPCSUtils version      | x.y.z                                                                          |
+| Install type            | e.g. Composer global, Composer project local, git clone, other (please expand) |
 
 
 ## Additional Context (optional)
