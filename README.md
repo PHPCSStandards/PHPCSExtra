@@ -230,6 +230,13 @@ Detects `foreach` control structures which use the same variable for both the ke
 
 Note: The fixer will maintain the existing behaviour of the code. This may not be the _intended_ behaviour.
 
+#### `Universal.CodeAnalysis.NoDoubleNegative` :wrench: :books:
+
+Detects double negation `!!` in code, which is effectively the same as a boolean cast, but with a much higher cognitive load.
+Also detects triple negation `!!!`, which is effectively the same as a single negation.
+
+The sniff has modular error codes to allow for disabling individual checks. The error codes are: `FoundDouble`, `FoundDoubleWithInstanceof` (not auto-fixable) and `FoundTriple`.
+
 #### `Universal.CodeAnalysis.NoEchoSprintf` :wrench: :books:
 
 Detects use of the inefficient `echo [v]sprintf(...);` combi. Use `[v]printf()` instead.
@@ -361,6 +368,14 @@ Enforce that the names used in a class/enum "implements" statement or an interfa
     The fixer will separate each name with a comma and one space.
     If alternative formatting is desired, a sniff which will check and fix the formatting should be added to the ruleset.
 
+#### `Universal.Operators.ConcatPosition` :wrench: :bar_chart: :books:
+
+Enforce that the concatenation operator for multi-line concatenations is in a preferred position, either always at the start of the next line or always at the end of the previous line.
+
+* This sniff contains an `allowOnly` property to set the preferred position for the operator.
+    Accepted values: (string) `"start"` or `"end"`. Defaults to `"start"`.
+* Note: mid-line concatenation is still allowed and will not be flagged by this sniff.
+
 #### `Universal.Operators.DisallowLogicalAndOr` :bar_chart: :books:
 
 Enforce the use of the boolean `&&` and `||` operators instead of the logical `and`/`or` operators.
@@ -391,6 +406,10 @@ This is considered a **_risky_ fixer**.
 Enforce no spaces around the union type and intersection type operators.
 
 The available error codes are: `UnionTypeSpacesBefore`, `UnionTypeSpacesAfter`, `IntersectionTypeSpacesBefore`, `IntersectionTypeSpacesAfter`.
+
+#### `Universal.PHP.LowercasePHPTag` :wrench: :bar_chart: :books:
+
+Enforces that the "PHP" in a PHP open tag is lowercase.
 
 #### `Universal.PHP.OneStatementInShortEchoTag` :wrench: :books:
 
