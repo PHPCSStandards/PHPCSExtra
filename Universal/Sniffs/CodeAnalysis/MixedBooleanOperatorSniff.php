@@ -26,6 +26,7 @@ use PHPCSUtils\BackCompat\BCFile;
  */
 final class MixedBooleanOperatorSniff implements Sniff
 {
+
     /**
      * Array of tokens this test searches for to find either a boolean
      * operator or the start of the current (sub-)expression. Used for
@@ -91,7 +92,7 @@ final class MixedBooleanOperatorSniff implements Sniff
         }
 
         // We found a mismatching operator, thus we must report the error.
-        $error = "Mixing different binary boolean operators within an expression without using parentheses to clarify precedence.";
+        $error = 'Mixing different binary boolean operators within an expression without using parentheses to clarify precedence.';
         $phpcsFile->addError($error, $stackPtr, 'MissingParentheses');
     }
 }
