@@ -19,6 +19,8 @@ $result = <em>($one && $two) || $three</em>;
 $result2 = <em>$one && ($two || $three)</em>;
 $result3 = <em>($one && !$two) xor $three;</em>;
 $result4 = <em>$one && (!$two xor $three);</em>;
+
+if (<em>($result && !$result3) || (!$result && $result3)</em>) {}
         ]]>
         </code>
         <code title="Invalid: Not using parentheses.">
@@ -29,6 +31,8 @@ $three = true;
 
 $result = <em>$one && $two || $three</em>;
 $result3 = <em>$one && !$two xor $three;</em>;
+
+if (<em>$result && !$result3 || !$result && $result3</em>) {}
         ]]>
         </code>
     </code_comparison>
