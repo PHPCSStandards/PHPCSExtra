@@ -46,10 +46,9 @@ final class MixedBooleanOperatorSniff implements Sniff
      */
     public function register()
     {
-        $this->searchTargets = \array_merge(
-            Tokens::$booleanOperators,
-            [\T_INLINE_THEN, \T_INLINE_ELSE]
-        );
+        $this->searchTargets                 = Tokens::$booleanOperators;
+        $this->searchTargets[\T_INLINE_THEN] = \T_INLINE_THEN;
+        $this->searchTargets[\T_INLINE_ELSE] = \T_INLINE_ELSE;
 
         return Tokens::$booleanOperators;
     }
