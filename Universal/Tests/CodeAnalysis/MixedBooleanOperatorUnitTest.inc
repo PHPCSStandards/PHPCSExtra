@@ -99,6 +99,24 @@ match (true) {
 };
 
 match (true) {
-    // Debatable, currently Not OK.
+    // Debatable.
     $a || $b, $a && $b => true,
 };
+
+// OK.
+$foo = fn ($a, $b, $c) => $a && ($b || $c);
+
+// Not OK.
+$foo = fn ($a, $b, $c) => $a && $b || $c;
+
+// OK.
+$foo = $a && (fn ($a, $b, $c) => $a || $b);
+
+// Debatable.
+$foo = $a && fn ($a, $b, $c) => $a || $b;
+
+// OK.
+\array_map(
+    fn ($a, $b, $c) => $a || $b,
+    $a && $b
+);
