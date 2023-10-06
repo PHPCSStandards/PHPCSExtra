@@ -92,7 +92,8 @@ final class MixedBooleanOperatorSniff implements Sniff
         }
 
         // We found a mismatching operator, thus we must report the error.
-        $error = 'Mixing different binary boolean operators within an expression without using parentheses to clarify precedence is not allowed.';
+        $error  = 'Mixing different binary boolean operators within an expression';
+        $error .= ' without using parentheses to clarify precedence is not allowed.';
         $phpcsFile->addError($error, $stackPtr, 'MissingParentheses');
     }
 }
