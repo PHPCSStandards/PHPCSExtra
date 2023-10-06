@@ -91,3 +91,14 @@ match (true) {
     // Not OK.
     $a || $b && $c => true,
 };
+
+match (true) {
+    // OK.
+    $a || $b => true,
+    $a && $b => true,
+};
+
+match (true) {
+    // Debatable, currently Not OK.
+    $a || $b, $a && $b => true,
+};
