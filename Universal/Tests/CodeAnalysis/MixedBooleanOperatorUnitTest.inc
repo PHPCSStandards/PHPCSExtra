@@ -81,3 +81,13 @@ for(true && true || true, true && true || true); // Not OK.
 (true and true xor true and true); // Not OK.
 
 if (true || true && true && true && true); // Not OK.
+
+match (true) {
+    // OK.
+    $a || ($b && $c) => true,
+};
+
+match (true) {
+    // Not OK.
+    $a || $b && $c => true,
+};
