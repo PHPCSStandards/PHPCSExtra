@@ -24,7 +24,7 @@ use PHPCSUtils\BackCompat\BCFile;
  *
  * @since 1.2.0
  */
-final class MixedBooleanOperatorSniff implements Sniff
+final class RequireExplicitBooleanOperatorPrecedenceSniff implements Sniff
 {
 
     /**

@@ -229,7 +229,7 @@ Detects `foreach` control structures which use the same variable for both the ke
 
 Note: The fixer will maintain the existing behaviour of the code. This may not be the _intended_ behaviour.
 
-#### `Universal.CodeAnalysis.MixedBooleanOperator` :books:
+#### `Universal.CodeAnalysis.RequireExplicitBooleanOperatorPrecedence` :books:
 
 Forbids mixing different binary boolean operators within a single expression without making precedence clear using parentheses.
 

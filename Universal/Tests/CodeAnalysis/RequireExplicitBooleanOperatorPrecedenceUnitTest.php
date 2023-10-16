@@ -13,13 +13,13 @@ namespace PHPCSExtra\Universal\Tests\CodeAnalysis;
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 /**
- * Unit test class for the MixedBooleanOperator sniff.
+ * Unit test class for the RequireExplicitBooleanOperatorPrecedence sniff.
  *
- * @covers PHPCSExtra\Universal\Sniffs\CodeAnalysis\MixedBooleanOperatorSniff
+ * @covers PHPCSExtra\Universal\Sniffs\CodeAnalysis\RequireExplicitBooleanOperatorPrecedenceSniff
  *
  * @since 1.2.0
  */
-final class MixedBooleanOperatorUnitTest extends AbstractSniffUnitTest
+final class RequireExplicitBooleanOperatorPrecedenceUnitTest extends AbstractSniffUnitTest
 {
 
     /**
