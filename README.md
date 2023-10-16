@@ -231,7 +231,7 @@ Note: The fixer will maintain the existing behaviour of the code. This may not b
 
 #### `Universal.CodeAnalysis.RequireExplicitBooleanOperatorPrecedence` :books:
 
-Forbids mixing different binary boolean operators within a single expression without making precedence clear using parentheses.
+Forbids mixing different binary boolean operators (`&&`, `||`, `and`, `or`, `xor`) within a single expression without making precedence clear using parentheses.
 
 #### `Universal.CodeAnalysis.NoEchoSprintf` :wrench: :books:
 

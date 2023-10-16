@@ -19,6 +19,12 @@ use PHPCSUtils\BackCompat\BCFile;
  * Forbid mixing different binary boolean operators within a single expression without making precedence
  * clear using parentheses.
  *
+ * The unary `!` operator is not handled, because its high precedence matches its visuals of
+ * applying only to the sub-expression right next to it, making it unlikely that someone would
+ * misinterpret its precedence. Requiring parentheses around it would reduce the readability of
+ * expressions due to the additional characters, especially if multiple subexpressions / variables
+ * need to be negated.
+ *
  * Sister-sniff to the PHPCS native `Squiz.ControlStructures.InlineIfDeclaration` and
  * `Squiz.Formatting.OperatorBracket.MissingBrackets` sniffs.
  *

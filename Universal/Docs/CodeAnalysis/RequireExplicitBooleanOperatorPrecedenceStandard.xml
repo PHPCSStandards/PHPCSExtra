@@ -5,7 +5,7 @@
     >
     <standard>
     <![CDATA[
-    Forbids mixing different binary boolean operators within a single expression without making precedence clear using parentheses.
+    Forbids mixing different binary boolean operators (&&, ||, and, or, xor) within a single expression without making precedence clear using parentheses.
     ]]>
     </standard>
     <code_comparison>
