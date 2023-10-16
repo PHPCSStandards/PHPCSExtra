@@ -19,6 +19,9 @@ use PHPCSUtils\BackCompat\BCFile;
  * Forbid mixing different binary boolean operators within a single expression without making precedence
  * clear using parentheses.
  *
+ * Sister-sniff to the PHPCS native `Squiz.ControlStructures.InlineIfDeclaration` and
+ * `Squiz.Formatting.OperatorBracket.MissingBrackets` sniffs.
+ *
  * @link https://github.com/squizlabs/PHP_CodeSniffer/pull/3205
  * @link https://github.com/php-fig/per-coding-style/issues/22
  *
