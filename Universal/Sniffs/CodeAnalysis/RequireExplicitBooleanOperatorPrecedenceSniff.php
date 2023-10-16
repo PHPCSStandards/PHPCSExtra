@@ -3,7 +3,7 @@
  * PHPCSExtra, a collection of sniffs and standards for use with PHP_CodeSniffer.
  *
  * @package   PHPCSExtra
- * @copyright 2021 WoltLab GmbH, 2023 PHPCSExtra Contributors
+ * @copyright 2023 PHPCSExtra Contributors
  * @license   https://opensource.org/licenses/LGPL-3.0 LGPL3
  * @link      https://github.com/PHPCSStandards/PHPCSExtra
  */
