@@ -120,3 +120,12 @@ $foo = $a && fn ($a, $b, $c) => $a || $b;
     fn ($a, $b, $c) => $a || $b,
     $a && $b
 );
+
+match (true) {
+    // Not OK.
+    $a || ($b && $c) && $d => true,
+    // Not OK.
+    $b && $c['a'] || $d => true,
+    // Not OK.
+    $b && ${$var} || $d => true,
+};
