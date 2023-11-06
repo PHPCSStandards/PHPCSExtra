@@ -566,8 +566,8 @@ This code is released under the [GNU Lesser General Public License (LGPLv3)](LIC
 [gha-qa-results]:        https://github.com/PHPCSStandards/PHPCSExtra/actions/workflows/basics.yml
 [gha-test-results]:      https://github.com/PHPCSStandards/PHPCSExtra/actions/workflows/test.yml
 
-[phpcs-gh]:              https://github.com/squizlabs/PHP_CodeSniffer
+[phpcs-gh]:              https://github.com/PHPCSStandards/PHP_CodeSniffer
 [phpcsutils-gh]:         https://github.com/PHPCSStandards/PHPCSUtils
 [composer-installer-gh]: https://github.com/PHPCSStandards/composer-installer
 
-[php_version-config]:    https://github.com/squizlabs/PHP_CodeSniffer/wiki/Configuration-Options#setting-the-php-version
+[php_version-config]:    https://github.com/PHPCSStandards/PHP_CodeSniffer/wiki/Configuration-Options#setting-the-php-version
