@@ -52,6 +52,10 @@ final class CommaAfterLastUnitTest extends AbstractSniffUnitTest
                     152 => 1,
                     159 => 1,
                     166 => 1,
+                    176 => 1,
+                    180 => 1,
+                    201 => 1,
+                    205 => 1,
                 ];
 
             case 'CommaAfterLastUnitTest.2.inc':
