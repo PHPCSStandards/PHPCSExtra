@@ -166,6 +166,56 @@ EOD
 , /*comment*/
 ) );
 
+/**
+ * Tests enforcing a comma after the last array item when the closer is in the same line. See #283.
+ */
+// phpcs:set NormalizedArrays.Arrays.CommaAfterLast multiLine enforce
+
+$missing = array(
+    1, 2,
+    3, 4);
+
+$missing = [
+    '1', '2',
+    '3', '4'];
+
+$missing_but_good = [
+    '1', '2',
+    '3', '4']; // phpcs:ignore NormalizedArrays.Arrays.CommaAfterLast.MissingMultiLineCloserSameLine
+
+$good = array(
+    1, 2,
+    3, 4,);
+
+$good = [
+    '1', '2',
+    '3', '4',];
+
+/**
+ * Tests forbidding a comma after the last array item when the closer is in the same line. See #283.
+ */
+// phpcs:set NormalizedArrays.Arrays.CommaAfterLast multiLine forbid
+
+$found = array(
+    1, 2,
+    3, 4,);
+
+$found = [
+    '1', '2',
+    '3', '4',];
+
+$found_but_good = [
+    '1', '2',
+    '3', '4',]; // phpcs:ignore NormalizedArrays.Arrays.CommaAfterLast.FoundMultiLineCloserSameLine
+
+$good = array(
+    1, 2,
+    3, 4);
+
+$good = [
+    '1', '2',
+    '3', '4'];
+
 // Reset the properties to the defaults.
 // phpcs:set NormalizedArrays.Arrays.CommaAfterLast singleLine forbid
 // phpcs:set NormalizedArrays.Arrays.CommaAfterLast multiLine enforce
