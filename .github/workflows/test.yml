@@ -32,12 +32,12 @@ jobs:
         # @link https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstrategymatrix
         #
         # The matrix is set up so as not to duplicate the builds which are run for code coverage.
-        php: ['5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '8.0', '8.1', '8.2', '8.3']
+        php: ['5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '8.0', '8.1', '8.2', '8.3', '8.4']
         phpcs_version: ['lowest', 'dev-master']
 
     name: "Test${{ matrix.phpcs_version == 'dev-master' && ' + Lint' || '' }}: PHP ${{ matrix.php }} - PHPCS ${{ matrix.phpcs_version }}"
 
-    continue-on-error: ${{ matrix.php == '8.3' }}
+    continue-on-error: ${{ matrix.php == '8.4' }}
 
     steps:
       - name: Checkout code
