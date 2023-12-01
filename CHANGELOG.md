@@ -14,6 +14,36 @@ This projects adheres to [Keep a CHANGELOG](http://keepachangelog.com/) and uses
 
 _Nothing yet._
 
+## [1.2.0] - 2023-12-02
+
+### Added
+
+#### Universal
+
+* :wrench: :books: New `Universal.CodeAnalysis.NoDoubleNegative` sniff to detect double negatives (!!) and advise to use a boolean cast instead. Thanks [@diedexx] for reviewing. [#277]
+* :wrench: :books: New `Universal.Operators.ConcatPosition` sniff to enforce that the concatenation operator for multi-line concatenations is in a preferred position, either always at the start of the next line or always at the end of the previous line. [#294]
+* :wrench: :bar_chart: :books: New `Universal.PHP.LowercasePHPTag` sniff to enforce that the "PHP" in a PHP open tag is lowercase. Thanks [@fredden] for reviewing. [#276]
+
+### Changed
+
+#### NormalizedArrays
+
+* `NormalizedArrays.Arrays.CommaAfterLast`: the sniff now has two extra error codes to distinguish between multi-line arrays with the last array item on the _same line_ as the array closer vs the last array item being on a line _before_ the array closer. Thanks [@stronk7] for suggesting and patching this. [#283], [#284]
+    These new error codes allow for selectively excluding that specific situation from triggering the sniff.
+    The new error codes are `FoundMultiLineCloserSameLine` (for `multiLine="forbid"`) and `MissingMultiLineCloserSameLine` (for `multiLine="enforce"`).
+    The pre-existing `FoundMultiLine` and `FoundSingleLine` error codes continue to be used for multi-line arrays with the last array item on a different line than the array closer.
+
+#### Other
+
+* Various housekeeping.
+
+[#276]: https://github.com/PHPCSStandards/PHPCSExtra/pull/276
+[#277]: https://github.com/PHPCSStandards/PHPCSExtra/pull/277
+[#283]: https://github.com/PHPCSStandards/PHPCSExtra/issues/283
+[#284]: https://github.com/PHPCSStandards/PHPCSExtra/pull/284
+[#294]: https://github.com/PHPCSStandards/PHPCSExtra/pull/294
+
+
 ## [1.1.2] - 2023-09-21
 
 ### Changed
@@ -523,6 +553,7 @@ This initial alpha release contains the following sniffs:
 [php_version-config]:    https://github.com/squizlabs/PHP_CodeSniffer/wiki/Configuration-Options#setting-the-php-version
 
 [Unreleased]: https://github.com/PHPCSStandards/PHPCSExtra/compare/stable...HEAD
+[1.2.0]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.1.2...1.2.0
 [1.1.2]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.1.1...1.1.2
 [1.1.1]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.1.0...1.1.1
 [1.1.0]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.4...1.1.0
@@ -537,5 +568,8 @@ This initial alpha release contains the following sniffs:
 
 [@anomiex]:     https://github.com/anomiex
 [@derickr]:     https://github.com/derickr
+[@diedexx]:     https://github.com/diedexx
+[@fredden]:     https://github.com/fredden
 [@GaryJones]:   https://github.com/GaryJones
+[@stronk7]:     https://github.com/stronk7
 [@szepeviktor]: https://github.com/szepeviktor
