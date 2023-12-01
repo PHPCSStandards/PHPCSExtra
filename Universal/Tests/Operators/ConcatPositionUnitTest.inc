@@ -1,0 +1,122 @@
+<?php
+
+/*
+ * Not our targets.
+ */
+
+// Same line.
+$a = 'text' . 'text' . $b;
+
+/*
+ * Always prefer start of line (default).
+ *
+ * phpcs:set Universal.Operators.ConcatPosition allowOnly start
+ */
+
+// OK.
+$a = 'start'
+    . 'start with space'
+	. $b;
+
+$a = 'start'
+    .'start no space'
+	./*comment*/$b;
+
+$a = 'start'
+    // Comment on own line.
+    . $b;
+
+// Not OK.
+$a = 'mixed' .
+
+
+    'mixed'
+	. $b;
+
+$a = 'end with space' .
+    'end with space and comment' . // Comment.
+	$b;
+
+$a = 'end with space' .
+    /* comment */ 'end with comment before';
+
+$a = 'end no space'.
+    'end no space and comment'/*comment*/.//Comment
+	$b;
+
+$a = 'end with space' .
+    // Comment on own line.
+    'end with space with comment above' .
+    // Comment on own line.
+	$b;
+
+$a = 'stand-alone'
+    .
+    'stand-alone';
+
+/*
+ * Always prefer end of line (via setting).
+ *
+ * phpcs:set Universal.Operators.ConcatPosition allowOnly end
+ */
+
+// OK.
+$a = 'end with space' .
+    'end with space and comment' . // Comment.
+	$b;
+
+$a = 'end no space'.
+    'end no space and comment'/*comment*/.//Comment
+	$b;
+
+$a = 'end no space'.
+    // Comment on own line.
+	$b;
+
+// Not OK.
+$a = 'mixed' .
+    'mixed'
+
+
+	. $b;
+
+$a = 'start'
+    . 'start with space'
+	. $b;
+
+$a = 'start'
+    .'start no space'
+	./*comment*/$b;
+
+$a = 'start'
+    // Comment on own line.
+    .'start with comment above'
+    // Comment on own line.
+	.$b;
+
+$a = 'stand-alone'
+    .
+    'stand-alone';
+
+/*
+ * Invalid setting will use the default (start of line).
+ *
+ * phpcs:set Universal.Operators.ConcatPosition allowOnly mixed
+ */
+
+// OK.
+$a = 'start'
+    . 'start with space'
+	. $b;
+
+// Not OK.
+$a = 'mixed' .
+    'mixed'
+	. $b;
+
+// Reset to the default value.
+// phpcs:set Universal.Operators.ConcatPosition allowOnly start
+
+// Intentional parse error/live coding.
+// This needs to be the last test in the file.
+$a = 'text' .
