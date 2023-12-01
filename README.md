@@ -62,7 +62,7 @@ Installing via Composer is highly recommended.
 Run the following from the root of your project:
 ```bash
 composer config allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
-composer require --dev phpcsstandards/phpcsextra:"^1.1.0"
+composer require --dev phpcsstandards/phpcsextra:"^1.2.0"
 ```
 
 ### Composer Global Installation
@@ -70,7 +70,7 @@ composer require --dev phpcsstandards/phpcsextra:"^1.1.0"
 Alternatively, you may want to install this standard globally:
 ```bash
 composer global config allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
-composer global require --dev phpcsstandards/phpcsextra:"^1.1.0"
+composer global require --dev phpcsstandards/phpcsextra:"^1.2.0"
 ```
 
 ### Updating to a newer version
