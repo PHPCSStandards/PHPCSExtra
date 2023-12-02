@@ -1,5 +1,5 @@
 parameters:
-    #phpVersion: 50400 # Needs to be 70100 or higher... sigh...
+    # phpVersion: 50400 # Needs to be 70100 or higher... sigh...
     level: 6
     paths:
         - Modernize
@@ -10,6 +10,8 @@ parameters:
     treatPhpDocTypesAsCertain: false
 
     ignoreErrors:
+        # yamllint disable rule:line-length
+
         # Level 1
         # Keep to stay in line with parent class.
         -
@@ -22,21 +24,21 @@ parameters:
         -
             message: '`^Property \S+Sniff::\$(phpVersion|tabWidth) \(int\) in isset\(\) is not nullable\.$`'
             paths:
-              - Modernize\Sniffs\FunctionCalls\DirnameSniff.php
-              - Universal\Sniffs\Arrays\DuplicateArrayKeySniff.php
-              - Universal\Sniffs\CodeAnalysis\ConstructorDestructorReturnSniff.php
-              - Universal\Sniffs\WhiteSpace\CommaSpacingSniff.php
-              - Universal\Sniffs\WhiteSpace\DisallowInlineTabsSniff.php
-              - Universal\Sniffs\WhiteSpace\PrecisionAlignmentSniff.php
+                - Modernize\Sniffs\FunctionCalls\DirnameSniff.php
+                - Universal\Sniffs\Arrays\DuplicateArrayKeySniff.php
+                - Universal\Sniffs\CodeAnalysis\ConstructorDestructorReturnSniff.php
+                - Universal\Sniffs\WhiteSpace\CommaSpacingSniff.php
+                - Universal\Sniffs\WhiteSpace\DisallowInlineTabsSniff.php
+                - Universal\Sniffs\WhiteSpace\PrecisionAlignmentSniff.php
         -
             message: '`^Strict comparison using === between true and false will always evaluate to false\.$`'
             paths:
-              - Modernize\Sniffs\FunctionCalls\DirnameSniff.php
-              - Universal\Sniffs\Arrays\DuplicateArrayKeySniff.php
-              - Universal\Sniffs\CodeAnalysis\ConstructorDestructorReturnSniff.php
-              - Universal\Sniffs\WhiteSpace\CommaSpacingSniff.php
-              - Universal\Sniffs\WhiteSpace\DisallowInlineTabsSniff.php
-              - Universal\Sniffs\WhiteSpace\PrecisionAlignmentSniff.php
+                - Modernize\Sniffs\FunctionCalls\DirnameSniff.php
+                - Universal\Sniffs\Arrays\DuplicateArrayKeySniff.php
+                - Universal\Sniffs\CodeAnalysis\ConstructorDestructorReturnSniff.php
+                - Universal\Sniffs\WhiteSpace\CommaSpacingSniff.php
+                - Universal\Sniffs\WhiteSpace\DisallowInlineTabsSniff.php
+                - Universal\Sniffs\WhiteSpace\PrecisionAlignmentSniff.php
         -
             message: '`^Property PHPCSExtra\\Universal\\Sniffs\\Arrays\\DuplicateArrayKeySniff\:\:\$currentMaxIntKey[GL]t8 \(int\) in isset\(\) is not nullable\.$`'
             path: Universal\Sniffs\Arrays\DuplicateArrayKeySniff.php
@@ -50,3 +52,5 @@ parameters:
         # We're not using strict types, so this will be juggled without any issues.
         - '#^Parameter \#3 \$value of method \S+File::recordMetric\(\) expects string, \(?(float|int|bool)(<[^>]+>)?(\|(float|int|bool)(<[^>]+>)?)*\)? given\.$#'
         - '#^Parameter \#2 \$content of method \S+Fixer::replaceToken\(\) expects string, \(?(float|int|bool)(<[^>]+>)?(\|(float|int|bool)(<[^>]+>)?)*\)? given\.$#'
+
+        # yamllint enable rule:line-length

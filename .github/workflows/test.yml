@@ -32,12 +32,12 @@ jobs:
         # @link https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstrategymatrix
         #
         # The matrix is set up so as not to duplicate the builds which are run for code coverage.
-        php: ['5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '8.0', '8.1', '8.2', '8.3']
+        php: ['5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '8.0', '8.1', '8.2', '8.3', '8.4']
         phpcs_version: ['lowest', 'dev-master']
 
     name: "Test${{ matrix.phpcs_version == 'dev-master' && ' + Lint' || '' }}: PHP ${{ matrix.php }} - PHPCS ${{ matrix.phpcs_version }}"
 
-    continue-on-error: ${{ matrix.php == '8.3' }}
+    continue-on-error: ${{ matrix.php == '8.4' }}
 
     steps:
       - name: Checkout code
@@ -66,7 +66,7 @@ jobs:
         run: composer require squizlabs/php_codesniffer:"${{ matrix.phpcs_version }}" --no-update --no-scripts --no-interaction
 
       # Install dependencies and handle caching in one go.
-      # @link https://github.com/marketplace/actions/install-composer-dependencies
+      # @link https://github.com/marketplace/actions/install-php-dependencies-with-composer
       - name: Install Composer dependencies - normal
         if: ${{ startsWith( matrix.php, '8' ) == false }}
         uses: "ramsey/composer-install@v2"
@@ -148,7 +148,7 @@ jobs:
         run: composer require squizlabs/php_codesniffer:"${{ matrix.phpcs_version }}" --no-update --no-scripts --no-interaction
 
       # Install dependencies and handle caching in one go.
-      # @link https://github.com/marketplace/actions/install-composer-dependencies
+      # @link https://github.com/marketplace/actions/install-php-dependencies-with-composer
       - name: Install Composer dependencies
         uses: "ramsey/composer-install@v2"
         with:
@@ -168,37 +168,14 @@ jobs:
       - name: Run the unit tests with code coverage
         run: composer coverage
 
-      # PHP Coveralls v2 (which supports GH Actions) has a PHP 5.5 minimum, so switch the PHP version.
-      - name: Switch to PHP latest
-        if: ${{ success() && matrix.php == '5.4' }}
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: 'latest'
-          coverage: none
-
-      # Global install is used to prevent a conflict with the local composer.lock.
-      - name: Install Coveralls
+      - name: Upload coverage results to Coveralls
         if: ${{ success() }}
-        run: composer global require php-coveralls/php-coveralls:"^2.6.0" --no-interaction
-
-      - name: Upload coverage results to Coveralls (normal)
-        if: ${{ success() && github.actor != 'dependabot[bot]' }}
-        env:
-          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_TOKEN }}
-          COVERALLS_PARALLEL: true
-          COVERALLS_FLAG_NAME: php-${{ matrix.php }}-phpcs-${{ matrix.phpcs_version }}
-        run: php-coveralls -v -x build/logs/clover.xml
-
-      # Dependabot does not have access to secrets, other than the GH token.
-      # Ref: https://docs.github.com/en/code-security/dependabot/working-with-dependabot/automating-dependabot-with-github-actions
-      # Ref: https://github.com/lemurheavy/coveralls-public/issues/1721
-      - name: Upload coverage results to Coveralls (Dependabot)
-        if: ${{ success() && github.actor == 'dependabot[bot]' }}
-        env:
-          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          COVERALLS_PARALLEL: true
-          COVERALLS_FLAG_NAME: php-${{ matrix.php }}-phpcs-${{ matrix.phpcs_version }}
-        run: php-coveralls -v -x build/logs/clover.xml
+        uses: coverallsapp/github-action@v2
+        with:
+          format: clover
+          file: build/logs/clover.xml
+          flag-name: php-${{ matrix.php }}-phpcs-${{ matrix.phpcs_version }}
+          parallel: true
 
   coveralls-finish:
     needs: coverage
@@ -207,19 +184,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Coveralls Finished (normal)
-        if: ${{ github.actor != 'dependabot[bot]' }}
+      - name: Coveralls Finished
         uses: coverallsapp/github-action@v2
         with:
-          github-token: ${{ secrets.COVERALLS_TOKEN }}
-          parallel-finished: true
-
-      # Dependabot does not have access to secrets, other than the GH token.
-      # Ref: https://docs.github.com/en/code-security/dependabot/working-with-dependabot/automating-dependabot-with-github-actions
-      # Ref: https://github.com/lemurheavy/coveralls-public/issues/1721
-      - name: Coveralls Finished (Dependabot)
-        if: ${{ github.actor == 'dependabot[bot]' }}
-        uses: coverallsapp/github-action@v2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           parallel-finished: true

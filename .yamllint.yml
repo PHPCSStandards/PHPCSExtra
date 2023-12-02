@@ -6,6 +6,7 @@ yaml-files:
   - '*.yaml'
   - '*.yml'
   - '.yamllint'
+  - 'phpstan.neon*'
 
 # Rule documentation: https://yamllint.readthedocs.io/en/stable/rules.html
 rules:

@@ -17,7 +17,8 @@
     ],
     "support" : {
         "issues" : "https://github.com/PHPCSStandards/PHPCSExtra/issues",
-        "source" : "https://github.com/PHPCSStandards/PHPCSExtra"
+        "source" : "https://github.com/PHPCSStandards/PHPCSExtra",
+        "security": "https://github.com/PHPCSStandards/PHPCSExtra/security/policy"
     },
     "require" : {
         "php" : ">=5.4",

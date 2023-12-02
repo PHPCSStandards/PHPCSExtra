@@ -1,0 +1,8 @@
+<?php
+echo 'The above is fine';
+?>
+<?php
+echo 'The above is incorrect';
+?>
+<?php echo 'This is incorrect'; ?>
+<?php echo 'This is incorrect'; ?>
