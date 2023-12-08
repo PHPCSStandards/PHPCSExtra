@@ -32,7 +32,7 @@ jobs:
         # @link https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstrategymatrix
         #
         # The matrix is set up so as not to duplicate the builds which are run for code coverage.
-        php: ['5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '8.0', '8.1', '8.2', '8.3', '8.4']
+        php: ['5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2', '8.4']
         phpcs_version: ['lowest', 'dev-master']
 
     name: "Test${{ matrix.phpcs_version == 'dev-master' && ' + Lint' || '' }}: PHP ${{ matrix.php }} - PHPCS ${{ matrix.phpcs_version }}"
@@ -67,19 +67,10 @@ jobs:
 
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-php-dependencies-with-composer
-      - name: Install Composer dependencies - normal
-        if: ${{ startsWith( matrix.php, '8' ) == false }}
+      - name: Install Composer dependencies
         uses: "ramsey/composer-install@v2"
         with:
           # Bust the cache at least once a month - output format: YYYY-MM.
-          custom-cache-suffix: $(date -u "+%Y-%m")
-
-      # For the PHP 8/"nightly", we need to install with ignore platform reqs as we're still using PHPUnit 7.
-      - name: Install Composer dependencies - with ignore platform
-        if: ${{ startsWith( matrix.php, '8' ) }}
-        uses: "ramsey/composer-install@v2"
-        with:
-          composer-options: --ignore-platform-req=php+
           custom-cache-suffix: $(date -u "+%Y-%m")
 
       - name: "Composer: set PHPCS/PHPCSUtils version for tests (lowest)"
@@ -92,13 +83,8 @@ jobs:
         if: matrix.phpcs_version == 'dev-master'
         run: composer lint
 
-      - name: Run the unit tests - PHP 5.4 - 8.0
-        if: ${{ matrix.php < '8.1' }}
+      - name: Run the unit tests
         run: composer test
-
-      - name: Run the unit tests - PHP > 8.1
-        if: ${{ matrix.php >= '8.1' }}
-        run: composer test -- --no-configuration --bootstrap=phpunit-bootstrap.php --dont-report-useless-tests
 
   #### CODE COVERAGE STAGE ####
   # N.B.: Coverage is only checked on the lowest and highest stable PHP versions
@@ -114,8 +100,7 @@ jobs:
 
     strategy:
       matrix:
-        # 7.4 should be updated to 8.2 when higher PHPUnit versions can be supported.
-        php: ['5.4', '7.4']
+        php: ['5.4', '8.3']
         phpcs_version: ['lowest', 'dev-master']
 
     name: "Coverage${{ matrix.phpcs_version == 'dev-master' && ' + Lint' || '' }}: PHP ${{ matrix.php }} - PHPCS ${{ matrix.phpcs_version }}"

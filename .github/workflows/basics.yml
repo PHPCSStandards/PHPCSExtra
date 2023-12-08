@@ -42,8 +42,6 @@ jobs:
 
       - name: 'Composer: adjust dependencies'
         run: |
-          # The sniff stage doesn't run the unit tests, so no need for PHPUnit.
-          composer remove --no-update --dev phpunit/phpunit --no-scripts --no-interaction
           # Using PHPCS `master` as an early detection system for bugs upstream.
           composer require --no-update squizlabs/php_codesniffer:"dev-master" --no-interaction
 
@@ -107,7 +105,7 @@ jobs:
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
+          php-version: 'latest'
           coverage: none
           tools: phpstan
 
