@@ -14,6 +14,20 @@ This projects adheres to [Keep a CHANGELOG](http://keepachangelog.com/) and uses
 
 _Nothing yet._
 
+## [1.2.1] - 2023-12-08
+
+### Changed
+
+#### Other
+
+* Composer: The minimum `PHP_CodeSniffer` requirement has been updated to `^3.8.0` (was `^3.7.2`). [#298]
+* Composer: The minimum `PHPCSUtils` requirement has been updated to `^1.0.9` (was `^1.0.8`). [#298]
+
+Please ensure you run `composer update phpcsstandards/phpcsextra --with-dependencies` to benefit from this.
+
+[#298]: https://github.com/PHPCSStandards/PHPCSExtra/pull/298
+
+
 ## [1.2.0] - 2023-12-02
 
 ### Added
@@ -550,9 +564,10 @@ This initial alpha release contains the following sniffs:
     Individual sub-types can be allowed by excluding specific error codes.
 
 [Composer PHPCS plugin]: https://github.com/PHPCSStandards/composer-installer
-[php_version-config]:    https://github.com/squizlabs/PHP_CodeSniffer/wiki/Configuration-Options#setting-the-php-version
+[php_version-config]:    https://github.com/PHPCSStandards/PHP_CodeSniffer/wiki/Configuration-Options#setting-the-php-version
 
 [Unreleased]: https://github.com/PHPCSStandards/PHPCSExtra/compare/stable...HEAD
+[1.2.1]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.2.0...1.2.1
 [1.2.0]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.1.2...1.2.0
 [1.1.2]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.1.1...1.1.2
 [1.1.1]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.1.0...1.1.1
