@@ -70,8 +70,9 @@ jobs:
       - name: "Composer: set PHPCS/PHPCSUtils version for tests (lowest)"
         if: ${{ matrix.phpcs_version == 'lowest' }}
         run: >
-          composer update squizlabs/php_codesniffer phpcsstandards/phpcsutils
-          --prefer-lowest --ignore-platform-req=php+ --no-scripts --no-interaction
+          composer update --prefer-lowest --no-scripts --no-interaction
+          squizlabs/php_codesniffer
+          phpcsstandards/phpcsutils
 
       - name: Lint against parse errors
         if: matrix.phpcs_version == 'dev-master'
