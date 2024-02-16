@@ -23,6 +23,34 @@ final class KeywordSpacingUnitTest extends AbstractSniffUnitTest
 {
 
     /**
+     * Get a list of all test files to check.
+     *
+     * @param string $testFileBase The base path that the unit tests files will have.
+     *
+     * @return array<string>
+     */
+    protected function getTestFiles($testFileBase)
+    {
+        $testFiles = parent::getTestFiles($testFileBase);
+
+        if (\PHP_VERSION_ID < 80000) {
+            return $testFiles;
+        }
+
+        // The issue being tested in the "2" test case file cannot be flagged/fixed on PHP 8.0+.
+        $target = 'KeywordSpacingUnitTest.2.inc';
+        $length = \strlen($target);
+        foreach ($testFiles as $i => $fileName) {
+            if (\substr($fileName, -$length) === $target) {
+                unset($testFiles[$i]);
+                break;
+            }
+        }
+
+        return $testFiles;
+    }
+
+    /**
      * Returns the lines where errors should occur.
      *
      * @param string $testFile The name of the file being tested.
@@ -55,10 +83,6 @@ final class KeywordSpacingUnitTest extends AbstractSniffUnitTest
                 ];
 
             case 'KeywordSpacingUnitTest.2.inc':
-                if (\PHP_VERSION_ID >= 80000) {
-                    return [];
-                }
-
                 return [
                     11 => 1,
                 ];
