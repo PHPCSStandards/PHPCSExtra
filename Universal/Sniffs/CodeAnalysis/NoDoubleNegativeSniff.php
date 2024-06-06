@@ -14,6 +14,7 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\BackCompat\BCFile;
+use PHPCSUtils\Tokens\Collections;
 use PHPCSUtils\Utils\GetTokensAsString;
 use PHPCSUtils\Utils\Parentheses;
 
@@ -50,12 +51,11 @@ final class NoDoubleNegativeSniff implements Sniff
     public function register()
     {
         // Collect all the operators only once.
-        $this->operatorsWithLowerPrecedence                 = Tokens::$assignmentTokens;
-        $this->operatorsWithLowerPrecedence                += Tokens::$booleanOperators;
-        $this->operatorsWithLowerPrecedence                += Tokens::$comparisonTokens;
-        $this->operatorsWithLowerPrecedence                += Tokens::$operators;
-        $this->operatorsWithLowerPrecedence[\T_INLINE_THEN] = \T_INLINE_THEN;
-        $this->operatorsWithLowerPrecedence[\T_INLINE_ELSE] = \T_INLINE_ELSE;
+        $this->operatorsWithLowerPrecedence  = Tokens::$assignmentTokens;
+        $this->operatorsWithLowerPrecedence += Tokens::$booleanOperators;
+        $this->operatorsWithLowerPrecedence += Tokens::$comparisonTokens;
+        $this->operatorsWithLowerPrecedence += Tokens::$operators;
+        $this->operatorsWithLowerPrecedence += Collections::ternaryOperators();
 
         return [\T_BOOLEAN_NOT];
     }
