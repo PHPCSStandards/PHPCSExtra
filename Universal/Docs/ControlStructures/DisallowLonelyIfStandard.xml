@@ -11,7 +11,7 @@
     ]]>
     </standard>
     <code_comparison>
-        <code title="Valid: use of elseif or if followed by another statement.">
+        <code title="Valid: Use of elseif or if followed by another statement.">
         <![CDATA[
 if ($foo) {
     // ...
@@ -32,7 +32,7 @@ if ($foo) {
 
         ]]>
         </code>
-        <code title="Invalid: lonely if in an else block.">
+        <code title="Invalid: Lonely if in an else block.">
         <![CDATA[
 if ($foo) {
     // ...

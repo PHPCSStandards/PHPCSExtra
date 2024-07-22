@@ -9,14 +9,14 @@
     ]]>
     </standard>
     <code_comparison>
-        <code title="Valid: using singular negation or a boolean cast.">
+        <code title="Valid: Using singular negation or a boolean cast.">
         <![CDATA[
 $var = $a && <em>!</em> $b;
 
 if(<em>(bool)</em> callMe($a)) {}
         ]]>
         </code>
-        <code title="Invalid: using double negation (or more).">
+        <code title="Invalid: Using double negation (or more).">
         <![CDATA[
 $var = $a && <em>! !</em> $b;
 
