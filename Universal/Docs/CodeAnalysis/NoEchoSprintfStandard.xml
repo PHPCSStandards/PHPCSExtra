@@ -9,13 +9,13 @@
     ]]>
     </standard>
     <code_comparison>
-        <code title="Valid: using [v]printf() or echo with anything but [v]sprintf().">
+        <code title="Valid: Using [v]printf() or echo with anything but [v]sprintf().">
         <![CDATA[
 <em>printf</em>('text %s text', $var);
 <em>echo callMe</em>('text %s text', $var);
         ]]>
         </code>
-        <code title="Invalid: using echo [v]sprintf().">
+        <code title="Invalid: Using echo [v]sprintf().">
         <![CDATA[
 <em>echo sprintf</em>('text %s text', $var);
 <em>echo vsprintf</em>('text %s text', [$var]);

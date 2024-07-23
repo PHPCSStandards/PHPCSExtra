@@ -5,7 +5,7 @@
     >
     <standard>
     <![CDATA[
-        All items in an array should either have an explicit key assigned or none. A mix of keyed and unkeyed items is not allowed.
+    All items in an array should either have an explicit key assigned or none. A mix of keyed and unkeyed items is not allowed.
     ]]>
     </standard>
     <code_comparison>

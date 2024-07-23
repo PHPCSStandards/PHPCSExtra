@@ -5,8 +5,8 @@
     >
     <standard>
     <![CDATA[
-        When a second array item with the same key is declared, it will overwrite the first.
-        This sniff detects when this is happening in array declarations.
+    When a second array item with the same key is declared, it will overwrite the first.
+    This sniff detects when this is happening in array declarations.
     ]]>
     </standard>
     <code_comparison>
