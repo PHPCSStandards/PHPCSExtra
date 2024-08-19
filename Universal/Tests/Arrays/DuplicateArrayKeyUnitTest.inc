@@ -165,3 +165,13 @@ $testPHPLt8VsPHP8 = array(
     1   => 'j', // Duplicate in PHP < 8, not in PHP 8.
     2   => 'k', // Duplicate in PHP < 8, not in PHP 8.
 );
+
+// Issue PHPCSExtra#316, PHPCSStandards/PHPCSUtils#619 no false positive for numeric string keys starting/ending with an underscore.
+$validStringKeys = array(
+    '_1'  => 'value1',
+    '_2'  => 'value2',
+    '3_'  => 'value3',
+    '4_'  => 'value4',
+    '_5_' => 'value5',
+    '_6_' => 'value6',
+);
