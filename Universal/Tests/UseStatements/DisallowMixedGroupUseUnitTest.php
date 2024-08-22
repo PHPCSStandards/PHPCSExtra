@@ -52,6 +52,8 @@ final class DisallowMixedGroupUseUnitTest extends AbstractSniffUnitTest
             100 => 1,
             107 => 1,
             113 => 1,
+            119 => 1,
+            127 => 1,
         ];
     }
 
