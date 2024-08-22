@@ -51,6 +51,7 @@ final class StaticInFinalClassUnitTest extends AbstractSniffUnitTest
             163 => 1,
             165 => 1,
             171 => 2,
+            176 => 1,
         ];
     }
 

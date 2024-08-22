@@ -172,6 +172,10 @@ final class ArrowFunctionsAreOpen {
     }
 }
 
+final class DNFReturnType {
+    public function hasDNF() : (A&static)|null {}
+}
+
 
 // Live coding. This has to be the last test in the file.
 class LiveCoding extends Foo {
