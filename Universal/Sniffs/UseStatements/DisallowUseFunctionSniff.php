@@ -10,10 +10,10 @@
 
 namespace PHPCSExtra\Universal\Sniffs\UseStatements;
 
-use PHP_CodeSniffer\Exceptions\RuntimeException;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Exceptions\ValueError;
 use PHPCSUtils\Utils\Namespaces;
 use PHPCSUtils\Utils\UseStatements;
 
@@ -115,7 +115,7 @@ final class DisallowUseFunctionSniff implements Sniff
         // Ok, so this is a T_USE token.
         try {
             $statements = UseStatements::splitImportUseStatement($phpcsFile, $stackPtr);
-        } catch (RuntimeException $e) {
+        } catch (ValueError $e) {
             // Not an import use statement. Bow out.
             return;
         }
