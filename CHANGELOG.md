@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-This projects adheres to [Keep a CHANGELOG](http://keepachangelog.com/) and uses [Semantic Versioning](http://semver.org/).
+This projects adheres to [Keep a CHANGELOG](https://keepachangelog.com/en/1.1.0/) and uses [Semantic Versioning](https://semver.org/).
 
 **Legend**:
 :wrench: = Includes auto-fixer.
@@ -401,7 +401,7 @@ The upgrade to PHPCSUtils 1.0.0-alpha4 took care of a number of bugs, which pote
 
 [php-manual-dirname]:           https://www.php.net/function.dirname
 [php-rfc-negative_array_index]: https://wiki.php.net/rfc/negative_array_index
-[ESLint "no lonely if"]:        https://eslint.org/docs/rules/no-lonely-if
+[ESLint "no lonely if"]:        https://eslint.org/docs/latest/rules/no-lonely-if
 [PHPCSUtils 1.0.0-alpha4]:      https://github.com/PHPCSStandards/PHPCSUtils/releases/tag/1.0.0-alpha4
 
 
