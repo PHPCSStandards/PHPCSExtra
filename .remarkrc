@@ -13,8 +13,12 @@
         {
             "skipUrlPatterns": [
                 "https://www.php.net/",
-                "^https?://github\\.com/PHPCSStandards/PHPCSExtra/compare/[0-9\\.]+?\\.{3}[0-9\\.]+"
-            ]
+                "^https?://github\\.com/PHPCSStandards/PHPCSExtra/compare/[0-9\\.]+?\\.{3}[0-9\\.]+",
+                "https://packagist.org/packages/phpcsstandards/phpcsextra#dev-develop"
+            ],
+            "deadOrAliveOptions": {
+                "maxRetries": 3
+            }
         }
     ],
     "remark-lint-no-duplicate-defined-urls",
