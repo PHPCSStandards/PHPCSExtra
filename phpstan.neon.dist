@@ -16,36 +16,41 @@ parameters:
         # Keep to stay in line with parent class.
         -
             message: '`^Constructor of class PHPCSExtra\\Universal\\Helpers\\DummyTokenizer has an unused parameter \$content\.$`'
-            path: Universal\Helpers\DummyTokenizer.php
+            path: Universal/Helpers/DummyTokenizer.php
             count: 1
 
         # Level 4
         # PHPStan doesn't seem to like uninitialized properties...
+        # Ref: https://github.com/phpstan/phpstan/issues/10305
         -
             message: '`^Property \S+Sniff::\$(phpVersion|tabWidth) \(int\) in isset\(\) is not nullable\.$`'
             paths:
-                - Modernize\Sniffs\FunctionCalls\DirnameSniff.php
-                - Universal\Sniffs\Arrays\DuplicateArrayKeySniff.php
-                - Universal\Sniffs\CodeAnalysis\ConstructorDestructorReturnSniff.php
-                - Universal\Sniffs\WhiteSpace\CommaSpacingSniff.php
-                - Universal\Sniffs\WhiteSpace\DisallowInlineTabsSniff.php
-                - Universal\Sniffs\WhiteSpace\PrecisionAlignmentSniff.php
+                - Modernize/Sniffs/FunctionCalls/DirnameSniff.php
+                - Universal/Sniffs/Arrays/DuplicateArrayKeySniff.php
+                - Universal/Sniffs/CodeAnalysis/ConstructorDestructorReturnSniff.php
+                - Universal/Sniffs/WhiteSpace/CommaSpacingSniff.php
+                - Universal/Sniffs/WhiteSpace/DisallowInlineTabsSniff.php
+                - Universal/Sniffs/WhiteSpace/PrecisionAlignmentSniff.php
         -
             message: '`^Strict comparison using === between true and false will always evaluate to false\.$`'
             paths:
-                - Modernize\Sniffs\FunctionCalls\DirnameSniff.php
-                - Universal\Sniffs\Arrays\DuplicateArrayKeySniff.php
-                - Universal\Sniffs\CodeAnalysis\ConstructorDestructorReturnSniff.php
-                - Universal\Sniffs\WhiteSpace\CommaSpacingSniff.php
-                - Universal\Sniffs\WhiteSpace\DisallowInlineTabsSniff.php
-                - Universal\Sniffs\WhiteSpace\PrecisionAlignmentSniff.php
+                - Modernize/Sniffs/FunctionCalls/DirnameSniff.php
+                - Universal/Sniffs/Arrays/DuplicateArrayKeySniff.php
+                - Universal/Sniffs/CodeAnalysis/ConstructorDestructorReturnSniff.php
+                - Universal/Sniffs/WhiteSpace/CommaSpacingSniff.php
+                - Universal/Sniffs/WhiteSpace/DisallowInlineTabsSniff.php
+                - Universal/Sniffs/WhiteSpace/PrecisionAlignmentSniff.php
         -
             message: '`^Property PHPCSExtra\\Universal\\Sniffs\\Arrays\\DuplicateArrayKeySniff\:\:\$currentMaxIntKey[GL]t8 \(int\) in isset\(\) is not nullable\.$`'
-            path: Universal\Sniffs\Arrays\DuplicateArrayKeySniff.php
+            path: Universal/Sniffs/Arrays/DuplicateArrayKeySniff.php
             count: 5
         -
+            message: '`^Strict comparison using === between true and true will always evaluate to true\.$`'
+            path: Universal/Sniffs/Arrays/DuplicateArrayKeySniff.php
+            count: 1
+        -
             message: '`^Result of && is always false\.$`'
-            path: Universal\Sniffs\Arrays\DuplicateArrayKeySniff.php
+            path: Universal/Sniffs/Arrays/DuplicateArrayKeySniff.php
             count: 1
 
         # Level 5

@@ -9,14 +9,14 @@
     ]]>
     </standard>
     <code_comparison>
-        <code title="Valid: no return type declaration.">
+        <code title="Valid: No return type declaration.">
         <![CDATA[
 class Foo {
     public function __construct() {}
 }
         ]]>
         </code>
-        <code title="Invalid: return type declaration.">
+        <code title="Invalid: Return type declaration.">
         <![CDATA[
 class Foo {
     public function __construct()<em>: int</em> {}
@@ -31,7 +31,7 @@ class Foo {
     ]]>
     </standard>
     <code_comparison>
-        <code title="Valid: class constructor/destructor doesn't return anything.">
+        <code title="Valid: Class constructor/destructor doesn't return anything.">
         <![CDATA[
 class Foo {
     public function __construct() {
@@ -45,7 +45,7 @@ class Foo {
 }
         ]]>
         </code>
-        <code title="Invalid: class constructor/destructor returns a value.">
+        <code title="Invalid: Class constructor/destructor returns a value.">
         <![CDATA[
 class Foo {
     public function __construct() {

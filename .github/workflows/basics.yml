@@ -20,7 +20,6 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      XMLLINT_INDENT: '    '
       # - COMPOSER_ROOT_VERSION is needed to get round the recursive dependency when using CI.
       COMPOSER_ROOT_VERSION: '1.99.99'
 
@@ -48,36 +47,41 @@ jobs:
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-php-dependencies-with-composer
       - name: Install Composer dependencies
-        uses: "ramsey/composer-install@v2"
+        uses: "ramsey/composer-install@v3"
         with:
           # Bust the cache at least once a month - output format: YYYY-MM.
           custom-cache-suffix: $(date -u "+%Y-%m")
 
-      - name: Install xmllint
-        run: |
-          sudo apt-get update
-          sudo apt-get install --no-install-recommends -y libxml2-utils
+      # Validate XML files against schema.
+      - name: Validate XML rulesets against schema
+        uses: phpcsstandards/xmllint-validate@v1
+        with:
+          pattern: "./*/ruleset.xml"
+          xsd-file: "vendor/squizlabs/php_codesniffer/phpcs.xsd"
 
-      # Show XML violations inline in the file diff.
-      # @link https://github.com/marketplace/actions/xmllint-problem-matcher
-      - name: Enable showing XML issues inline
-        uses: korelstar/xmllint-problem-matcher@v1
+      - name: Validate documentation XML against schema
+        uses: phpcsstandards/xmllint-validate@v1
+        with:
+          pattern: "./*/Docs/*/*Standard.xml"
+          xsd-file: "vendor/phpcsstandards/phpcsdevtools/DocsXsd/phpcsdocs.xsd"
 
-      # Validate the Ruleset XML file.
-      # @link http://xmlsoft.org/xmllint.html
-      - name: Validate rulesets against schema
-        run: xmllint --noout --schema vendor/squizlabs/php_codesniffer/phpcs.xsd ./*/ruleset.xml
+      - name: Validate Project PHPCS ruleset against schema
+        uses: phpcsstandards/xmllint-validate@v1
+        with:
+          pattern: "phpcs.xml.dist"
+          xsd-file: "vendor/squizlabs/php_codesniffer/phpcs.xsd"
 
-      # Check the code-style consistency of the XML ruleset files.
-      - name: Check XML code style
-        run: |
-          diff -B ./Modernize/ruleset.xml <(xmllint --format "./Modernize/ruleset.xml")
-          diff -B ./NormalizedArrays/ruleset.xml <(xmllint --format "./NormalizedArrays/ruleset.xml")
-          diff -B ./Universal/ruleset.xml <(xmllint --format "./Universal/ruleset.xml")
+      - name: "Validate PHPUnit config for use with PHPUnit 8"
+        uses: phpcsstandards/xmllint-validate@v1
+        with:
+          pattern: "phpunit.xml.dist"
+          xsd-file: "vendor/phpunit/phpunit/schema/8.5.xsd"
 
-      # Validate the Documentation XML files.
-      - name: Validate documentation against schema
-        run: xmllint --noout --schema vendor/phpcsstandards/phpcsdevtools/DocsXsd/phpcsdocs.xsd ./*/Docs/*/*Standard.xml
+      - name: "Validate PHPUnit config for use with PHPUnit 9"
+        uses: phpcsstandards/xmllint-validate@v1
+        with:
+          pattern: "phpunit.xml.dist"
+          xsd-file: "vendor/phpunit/phpunit/schema/9.2.xsd"
 
       # Check the code-style consistency of the PHP files.
       - name: Check PHP code style
@@ -94,107 +98,50 @@ jobs:
       - name: Check sniff feature completeness
         run: composer check-complete
 
-  phpstan:
-    name: "PHPStan"
-    runs-on: "ubuntu-latest"
+  xml-cs:
+    name: 'XML Code style'
+    runs-on: ubuntu-latest
+
+    env:
+      XMLLINT_INDENT: '    '
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: 'latest'
-          coverage: none
-          tools: phpstan
+      # Updating the lists can fail intermittently, typically after Microsoft has released a new package.
+      # This should not be blocking for this job, so ignore any errors from this step.
+      # Ref: https://github.com/dotnet/core/issues/4167
+      - name: Update the available packages list
+        continue-on-error: true
+        run: sudo apt-get update
 
-      # Install dependencies and handle caching in one go.
-      # Dependencies need to be installed to make sure the PHPCS and PHPUnit classes are recognized.
-      # @link https://github.com/marketplace/actions/install-php-dependencies-with-composer
-      - name: Install Composer dependencies
-        uses: "ramsey/composer-install@v2"
-        with:
-          # Bust the cache at least once a month - output format: YYYY-MM.
-          custom-cache-suffix: $(date -u "+%Y-%m")
+      - name: Install xmllint
+        run: sudo apt-get install --no-install-recommends -y libxml2-utils
 
-      - name: Run PHPStan
-        run: phpstan analyse
+      # Show XML violations inline in the file diff.
+      - name: Enable showing XML issues inline
+        uses: korelstar/xmllint-problem-matcher@v1
+
+      # Check the code-style consistency of the XML ruleset files.
+      - name: Check XML code style
+        run: |
+          diff -B ./Modernize/ruleset.xml <(xmllint --format "./Modernize/ruleset.xml")
+          diff -B ./NormalizedArrays/ruleset.xml <(xmllint --format "./NormalizedArrays/ruleset.xml")
+          diff -B ./Universal/ruleset.xml <(xmllint --format "./Universal/ruleset.xml")
+
+  phpstan:
+    name: "PHPStan"
+    uses: PHPCSStandards/.github/.github/workflows/reusable-phpstan.yml@main
+    with:
+      phpstanVersion: '2.x'
 
   remark:
     name: 'QA Markdown'
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up node and enable caching of dependencies
-        uses: actions/setup-node@v4
-        with:
-          node-version: '16'
-
-      # To make the command available on CLI, it needs to be installed globally.
-      - name: Install Remark CLI globally
-        run: npm install --global remark-cli --foreground-scripts true --fund false
-
-      # To allow for creating a custom config which references rules which are included
-      # in the presets, without having to install all rules individually, a local install
-      # works best (and installing the presets in the first place, of course).
-      #
-      # Note: the first group of packages are all part of the mono "Remark lint" repo.
-      # The second group of packages (heading-whitespace and down) are additional
-      # "external" rules/plugins.
-      - name: Install Remark rules locally
-        run: >
-          npm install --foreground-scripts true --fund false
-          remark-lint
-          remark-gfm
-          remark-preset-lint-consistent
-          remark-preset-lint-recommended
-          remark-preset-lint-markdown-style-guide
-          remark-lint-checkbox-content-indent
-          remark-lint-linebreak-style
-          remark-lint-no-duplicate-defined-urls
-          remark-lint-no-empty-url
-          remark-lint-no-heading-like-paragraph
-          remark-lint-no-reference-like-url
-          remark-lint-no-unneeded-full-reference-image
-          remark-lint-no-unneeded-full-reference-link
-          remark-lint-strikethrough-marker
-          remark-lint-heading-whitespace
-          remark-lint-list-item-punctuation
-          remark-lint-match-punctuation
-          remark-lint-no-dead-urls
-          remark-lint-no-hr-after-heading
-          remark-lint-are-links-valid-duplicate
-          remark-validate-links
-
-      - name: Run Remark-lint
-        run: remark . --frail
-
-      # @link https://github.com/reviewdog/action-remark-lint
-      - name: Show Remark-lint annotations in PR
-        if: ${{ failure() && github.event_name == 'pull_request' }}
-        uses: reviewdog/action-remark-lint@v5
-        with:
-          fail_on_error: true
-          install_deps: false
-          level: info
-          reporter: github-pr-check
+    uses: PHPCSStandards/.github/.github/workflows/reusable-remark.yml@main
 
   yamllint:
     name: 'Lint Yaml'
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      # Ref: https://yamllint.readthedocs.io/en/stable/
-      - name: Run Yamllint on all yaml files in repo
-        run: yamllint . --format colored
-
-      - name: Pipe Yamllint results on to GH for inline display
-        if: ${{ failure() }}
-        run: yamllint . --format github
+    uses: PHPCSStandards/.github/.github/workflows/reusable-yamllint.yml@main
+    with:
+      strict: true

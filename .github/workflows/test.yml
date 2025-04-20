@@ -32,12 +32,12 @@ jobs:
         # @link https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstrategymatrix
         #
         # The matrix is set up so as not to duplicate the builds which are run for code coverage.
-        php: ['5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2', '8.4']
+        php: ['5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2', '8.3', '8.5']
         phpcs_version: ['lowest', 'dev-master']
 
     name: "Test${{ matrix.phpcs_version == 'dev-master' && ' + Lint' || '' }}: PHP ${{ matrix.php }} - PHPCS ${{ matrix.phpcs_version }}"
 
-    continue-on-error: ${{ matrix.php == '8.4' }}
+    continue-on-error: ${{ matrix.php == '8.5' }}
 
     steps:
       - name: Checkout code
@@ -49,9 +49,9 @@ jobs:
         id: set_ini
         run: |
           if [[ "${{ matrix.phpcs_version }}" != "dev-master" ]]; then
-            echo 'PHP_INI=error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On' >> $GITHUB_OUTPUT
+            echo 'PHP_INI=error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On' >> "$GITHUB_OUTPUT"
           else
-            echo 'PHP_INI=error_reporting=-1, display_errors=On' >> $GITHUB_OUTPUT
+            echo 'PHP_INI=error_reporting=-1, display_errors=On' >> "$GITHUB_OUTPUT"
           fi
 
       - name: Install PHP
@@ -65,10 +65,14 @@ jobs:
         if: ${{ matrix.phpcs_version != 'lowest' }}
         run: composer require squizlabs/php_codesniffer:"${{ matrix.phpcs_version }}" --no-update --no-scripts --no-interaction
 
+      - name: "Composer: use lock file when necessary"
+        if: ${{ matrix.phpcs_version == 'lowest' }}
+        run: composer config --unset lock
+
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-php-dependencies-with-composer
       - name: Install Composer dependencies
-        uses: "ramsey/composer-install@v2"
+        uses: "ramsey/composer-install@v3"
         with:
           # Bust the cache at least once a month - output format: YYYY-MM.
           custom-cache-suffix: $(date -u "+%Y-%m")
@@ -76,8 +80,9 @@ jobs:
       - name: "Composer: set PHPCS/PHPCSUtils version for tests (lowest)"
         if: ${{ matrix.phpcs_version == 'lowest' }}
         run: >
-          composer update squizlabs/php_codesniffer phpcsstandards/phpcsutils
-          --prefer-lowest --ignore-platform-req=php+ --no-scripts --no-interaction
+          composer update --prefer-lowest --no-scripts --no-interaction
+          squizlabs/php_codesniffer
+          phpcsstandards/phpcsutils
 
       - name: Lint against parse errors
         if: matrix.phpcs_version == 'dev-master'
@@ -100,7 +105,7 @@ jobs:
 
     strategy:
       matrix:
-        php: ['5.4', '8.3']
+        php: ['5.4', '8.4']
         phpcs_version: ['lowest', 'dev-master']
 
     name: "Coverage${{ matrix.phpcs_version == 'dev-master' && ' + Lint' || '' }}: PHP ${{ matrix.php }} - PHPCS ${{ matrix.phpcs_version }}"
@@ -115,9 +120,9 @@ jobs:
         id: set_ini
         run: |
           if [ "${{ matrix.phpcs_version }}" != "dev-master" ]; then
-            echo 'PHP_INI=error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On' >> $GITHUB_OUTPUT
+            echo 'PHP_INI=error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On' >> "$GITHUB_OUTPUT"
           else
-            echo 'PHP_INI=error_reporting=-1, display_errors=On' >> $GITHUB_OUTPUT
+            echo 'PHP_INI=error_reporting=-1, display_errors=On' >> "$GITHUB_OUTPUT"
           fi
 
       - name: Install PHP
@@ -132,10 +137,14 @@ jobs:
         if: ${{ matrix.phpcs_version != 'lowest' }}
         run: composer require squizlabs/php_codesniffer:"${{ matrix.phpcs_version }}" --no-update --no-scripts --no-interaction
 
+      - name: "Composer: use lock file when necessary"
+        if: ${{ matrix.phpcs_version == 'lowest' }}
+        run: composer config --unset lock
+
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-php-dependencies-with-composer
       - name: Install Composer dependencies
-        uses: "ramsey/composer-install@v2"
+        uses: "ramsey/composer-install@v3"
         with:
           # Bust the cache at least once a month - output format: YYYY-MM.
           custom-cache-suffix: $(date -u "+%Y-%m")
@@ -143,8 +152,9 @@ jobs:
       - name: "Composer: set PHPCS/PHPCSUtils version for tests (lowest)"
         if: ${{ matrix.phpcs_version == 'lowest' }}
         run: >
-          composer update squizlabs/php_codesniffer phpcsstandards/phpcsutils
-          --prefer-lowest --ignore-platform-req=php+ --no-scripts --no-interaction
+          composer update --prefer-lowest --no-scripts --no-interaction
+          squizlabs/php_codesniffer
+          phpcsstandards/phpcsutils
 
       - name: Lint against parse errors
         if: matrix.phpcs_version == 'dev-master'

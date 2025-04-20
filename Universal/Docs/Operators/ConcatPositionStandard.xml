@@ -13,14 +13,14 @@
     ]]>
     </standard>
     <code_comparison>
-        <code title="Valid: multi-line concatenation with the concatenation operator at the start of each line.">
+        <code title="Valid: Multi-line concatenation with the concatenation operator at the start of each line.">
         <![CDATA[
 $var = 'text' . $a
     <em>.</em> $b . 'text'
     <em>.</em> $c;
         ]]>
         </code>
-        <code title="Invalid: multi-line concatenation with the concatenation operator not consistently at the start of each line.">
+        <code title="Invalid: Multi-line concatenation with the concatenation operator not consistently at the start of each line.">
         <![CDATA[
 $var = 'text' . $a <em>.</em>
     $b . 'text'

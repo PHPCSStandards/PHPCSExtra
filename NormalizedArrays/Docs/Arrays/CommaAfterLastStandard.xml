@@ -5,25 +5,25 @@
     >
     <standard>
     <![CDATA[
-      For single-line arrays, there should be <em>no</em> comma after the last array item.
+    For single-line arrays, there should be <em>no</em> comma after the last array item.
 
-      However, for multi-line arrays, there <em>should</em> be a comma after the last array item.
+    However, for multi-line arrays, there <em>should</em> be a comma after the last array item.
     ]]>
     </standard>
     <code_comparison>
-        <code title="Valid: Single-line array without a comma after the last item">
+        <code title="Valid: Single-line array without a comma after the last item.">
         <![CDATA[
 $args = array(1, 2, 3);
         ]]>
         </code>
-        <code title="Invalid: Single-line array with a comma after the last item">
+        <code title="Invalid: Single-line array with a comma after the last item.">
         <![CDATA[
 $args = array(1, 2, 3<em>,</em> );
         ]]>
         </code>
     </code_comparison>
     <code_comparison>
-        <code title="Valid: Multi-line array with a comma after the last item">
+        <code title="Valid: Multi-line array with a comma after the last item.">
         <![CDATA[
 $args = [
     1 => 'foo',
@@ -31,7 +31,7 @@ $args = [
 ];
         ]]>
         </code>
-        <code title="Invalid: Multi-line array without a comma after the last item">
+        <code title="Invalid: Multi-line array without a comma after the last item.">
         <![CDATA[
 $args = [
     1 => 'foo',

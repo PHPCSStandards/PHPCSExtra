@@ -41,3 +41,24 @@ $aaaaaaaa = true;
      * @param   int     $var    Description.
      * @param   string  $string Another description.
      */
+
+$a = <<<    TAB_BETWEEN
+text
+TAB_BETWEEN;
+
+$a = <<<        'TABS_BETWEEN'
+text
+TABS_BETWEEN;
+
+function myGenerator() {
+    yield       from tabsBetweenShouldBeFixed();
+
+    yield   /*comment*/     from tabsBetweenShouldBeFixed();
+
+    yield
+    from tabIndentationShouldBeIgnored();
+
+    yield
+    /*comment*/
+    from tabIndentationShouldBeIgnored();
+}

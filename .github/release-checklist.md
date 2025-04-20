@@ -24,4 +24,5 @@ PR for tracking changes for the x.x.x release. Target release date: **DOW MONTH 
 - [ ] Fast-forward `develop` to be equal to `stable`
 
 ### Publicize
+- [ ] Toot about the release.
 - [ ] Tweet about the release.

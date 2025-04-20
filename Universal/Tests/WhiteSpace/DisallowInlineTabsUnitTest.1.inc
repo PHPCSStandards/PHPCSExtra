@@ -59,3 +59,24 @@ $aaaaaaaa = true;
 		// Tab indented, no tabs.
 		// phpcs:ignore Stnd.Cat.SniffName -- testing mixed comment + annotations don't trigger on indentation.
 		// Tab indented, no tabs.
+
+$a = <<<	TAB_BETWEEN
+text
+TAB_BETWEEN;
+
+$a = <<<		'TABS_BETWEEN'
+text
+TABS_BETWEEN;
+
+function myGenerator() {
+	yield		from tabsBetweenShouldBeFixed();
+
+yield	/*comment*/		from tabsBetweenShouldBeFixedEvenWhenKeywordStartsOnColumn1();
+
+	yield
+	from tabIndentationShouldBeIgnored();
+
+	yield
+	/*comment*/
+	from tabIndentationShouldBeIgnored();
+}

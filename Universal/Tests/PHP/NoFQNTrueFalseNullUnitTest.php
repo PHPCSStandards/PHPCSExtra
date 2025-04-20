@@ -8,18 +8,18 @@
  * @link      https://github.com/PHPCSStandards/PHPCSExtra
  */
 
-namespace PHPCSExtra\Universal\Tests\Operators;
+namespace PHPCSExtra\Universal\Tests\PHP;
 
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 /**
- * Unit test class for the TypeSeparatorSpacing sniff.
+ * Unit test class for the NoFQNTrueFalseNull sniff.
  *
- * @covers PHPCSExtra\Universal\Sniffs\Operators\TypeSeparatorSpacingSniff
+ * @covers PHPCSExtra\Universal\Sniffs\PHP\NoFQNTrueFalseNullSniff
  *
- * @since 1.0.0
+ * @since 1.3.0
  */
-final class TypeSeparatorSpacingUnitTest extends AbstractSniffUnitTest
+final class NoFQNTrueFalseNullUnitTest extends AbstractSniffUnitTest
 {
 
     /**
@@ -30,24 +30,15 @@ final class TypeSeparatorSpacingUnitTest extends AbstractSniffUnitTest
     public function getErrorList()
     {
         return [
-            24 => 4,
-            27 => 2,
-            28 => 2,
-            29 => 4,
-            32 => 3,
-            33 => 1,
-            35 => 5,
-            37 => 6,
-            45 => 4,
-            46 => 4,
-            50 => 4,
-            51 => 4,
-            60 => 6,
-            61 => 4,
-            63 => 5,
-            64 => 1,
-            65 => 3,
-            68 => 2,
+            13 => 1,
+            14 => 1,
+            15 => 1,
+            17 => 1,
+            18 => 1,
+            19 => 1,
+            22 => 1,
+            24 => 2,
+            26 => 2,
         ];
     }
 

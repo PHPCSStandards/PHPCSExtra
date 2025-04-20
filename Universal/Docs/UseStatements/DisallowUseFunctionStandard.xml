@@ -15,7 +15,7 @@ use Vendor\Sub\ClassName;
 use const Vendor\Sub\CONST;
         ]]>
         </code>
-        <code title="Invalid: use function import statements.">
+        <code title="Invalid: `use function` import statements.">
         <![CDATA[
 use function Vendor\Sub\functionName;
 use function Vendor\Sub\functionName as other;

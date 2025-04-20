@@ -33,3 +33,17 @@ $aaaaaaaa = true;
 
 		// Tab indented   and inline tabs.
 		// Tab indented   and inline tabs.
+
+$a = <<<  TAB_BETWEEN
+text
+TAB_BETWEEN;
+
+$a = <<<    'TABS_BETWEEN'
+text
+TABS_BETWEEN;
+
+function myGenerator() {
+	yield   from tabsBetweenShouldBeFixed();
+
+yield /*comment*/   from tabsBetweenShouldBeFixedEvenWhenKeywordStartsOnColumn1();
+}

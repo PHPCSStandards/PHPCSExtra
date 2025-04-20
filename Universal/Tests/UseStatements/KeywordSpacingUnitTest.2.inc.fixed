@@ -6,4 +6,4 @@
  * For PHP 8.0+, this will no longer be flagged as keywords are allowed in namespaced names,
  * so the `use` is tokenized as `T_STRING` instead of `T_USE` and won't be flagged.
  */
-use\Util\MyOtherClass;
+use \Util\MyOtherClass;

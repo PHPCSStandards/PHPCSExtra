@@ -121,7 +121,7 @@ final class DisallowLonelyIfSniff implements Sniff
                     if ($tokens[$nextAfter]['code'] === \T_SEMICOLON) {
                         $innerScopeCloser = $nextAfter;
                     } else {
-                        // Missing semi-colon. Report, but don't auto-fix.
+                        // Missing semicolon. Report, but don't auto-fix.
                         $autoFixable = false;
                     }
                 } else {

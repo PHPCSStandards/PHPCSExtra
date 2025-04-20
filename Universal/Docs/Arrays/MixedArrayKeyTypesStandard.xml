@@ -5,7 +5,7 @@
     >
     <standard>
     <![CDATA[
-        In an array where the items have keys, all items should either have a numeric key assigned or a string key. A mix of numeric and string keys is not allowed.
+    In an array where the items have keys, all items should either have a numeric key assigned or a string key. A mix of numeric and string keys is not allowed.
     ]]>
     </standard>
     <code_comparison>

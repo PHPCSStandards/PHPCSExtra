@@ -63,6 +63,9 @@ final class DisallowInlineTabsSniff implements Sniff
         \T_DOC_COMMENT_WHITESPACE => true,
         \T_DOC_COMMENT_STRING     => true,
         \T_COMMENT                => true,
+        \T_START_HEREDOC          => true,
+        \T_START_NOWDOC           => true,
+        \T_YIELD_FROM             => true,
     ];
 
     /**
@@ -102,7 +105,7 @@ final class DisallowInlineTabsSniff implements Sniff
         $dummy  = new DummyTokenizer('', $phpcsFile->config);
 
         for ($i = 0; $i < $phpcsFile->numTokens; $i++) {
-            // Skip all non-whitespace tokens and skip whitespace at the start of a new line.
+            // Skip all non-target tokens and skip whitespace at the start of a new line.
             if (isset($this->find[$tokens[$i]['code']]) === false
                 || (($tokens[$i]['code'] === \T_WHITESPACE
                     || $tokens[$i]['code'] === \T_DOC_COMMENT_WHITESPACE)

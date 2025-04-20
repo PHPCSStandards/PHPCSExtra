@@ -5,7 +5,7 @@
     >
     <standard>
     <![CDATA[
-        There should be no space between the "array" keyword and the array open brace.
+    There should be no space between the "array" keyword and the array open brace.
     ]]>
     </standard>
     <code_comparison>
@@ -22,7 +22,7 @@ $args = array<em>  </em>(1, 2);
     </code_comparison>
     <standard>
     <![CDATA[
-        There should be no space between the array open brace and the array close brace for an empty array.
+    There should be no space between the array open brace and the array close brace for an empty array.
     ]]>
     </standard>
     <code_comparison>
@@ -43,7 +43,7 @@ $args = [<em>  </em>];
     </code_comparison>
     <standard>
     <![CDATA[
-        There should be no space after the array open brace and before the array close brace in a single-line array.
+    There should be no space after the array open brace and before the array close brace in a single-line array.
     ]]>
     </standard>
     <code_comparison>
@@ -64,7 +64,7 @@ $args = [<em>  </em>1, 2<em>  </em>];
     </code_comparison>
     <standard>
     <![CDATA[
-        There should be a new line after the array open brace and before the array close brace in a multi-line array.
+    There should be a new line after the array open brace and before the array close brace in a multi-line array.
     ]]>
     </standard>
     <code_comparison>

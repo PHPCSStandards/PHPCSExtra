@@ -12,12 +12,12 @@
     ]]>
     </standard>
     <code_comparison>
-        <code title="Valid: using unique variables.">
+        <code title="Valid: Using unique variables.">
         <![CDATA[
 foreach ($array as $k => $v ) {}
         ]]>
         </code>
-        <code title="Invalid: using the same variable for both the key as well as the value.">
+        <code title="Invalid: Using the same variable for both the key as well as the value.">
         <![CDATA[
 foreach ($array as $k => $k ) {}
         ]]>

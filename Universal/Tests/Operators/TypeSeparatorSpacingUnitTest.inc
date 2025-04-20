@@ -36,6 +36,38 @@ $closure = function (TypeA      |       TypeB $p, TypeA  &namespace\TypeB $q): \
 
 $arrow = fn (TypeA | TypeB $p, TypeA &  namespace\TypeB $q): string  |  int => $p * $q;
 
+/*
+ * PHP 8.2 DNF types.
+ */
+class DNFTypes {
+    private const (A&B)|false DNF_CORRECT_START = false;
+    protected const false|(A&B) DNF_CORRECT_END = false;
+    public const   ( A&B ) |false DNF_INCORRECT_START = false;
+    final const false|   ( A&B )  DNF_INCORRECT_END = false;
+
+    private (A&B)|false $dnfCorrectStart = false;
+    readonly false|(A&B) $dnfCorrectEnd = false;
+    static   ( A&B ) |false $dnfIncorrectStart = false;
+    final false|   ( A&B )  $dnfIncorrectEnd = false;
+
+    public function DNFCorrect(
+        (A&B)|false $paramA, (A&B)|false $paramB,
+        null|(\FQN&\Partially\Qualified) $paramC,
+    ): (A&B)|(C&D) {
+    }
+
+    public function DNFIncorrect(
+        (  A&B  )  |  false $paramA,  (A&B) |false $paramB,
+        null| ( \FQN&\Partially\Qualified )
+           $paramC,
+    ):   ( A &B )
+         |
+         ( C&D  )   {
+    }
+
+    public function DNFIncorrectReturnTypeNoSpace():(A&B)|(C&D){}
+}
+
 // Live coding.
 // This test should be the last test in the file.
 function foo(int|

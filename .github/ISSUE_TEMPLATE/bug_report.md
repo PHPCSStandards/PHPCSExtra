@@ -60,7 +60,7 @@ You should be able to get the version numbers using the `composer info` command.
 -->
 
 | Environment             | Answer                                                                         |
-|-------------------------|--------------------------------------------------------------------------------|
+| ----------------------- | ------------------------------------------------------------------------------ |
 | PHP version             | x.y.z                                                                          |
 | PHP_CodeSniffer version | x.y.z                                                                          |
 | PHPCSExtra version      | x.y.z                                                                          |

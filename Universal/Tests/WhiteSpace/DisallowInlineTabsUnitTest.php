@@ -10,6 +10,7 @@
 
 namespace PHPCSExtra\Universal\Tests\WhiteSpace;
 
+use PHP_CodeSniffer\Config;
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 /**
@@ -73,6 +74,12 @@ final class DisallowInlineTabsUnitTest extends AbstractSniffUnitTest
      */
     public function getErrorList($testFile = '')
     {
+        // As of PHP 8.3, comments may be tokenized within a "yield from" token, but only for PHPCS < 3.11.0.
+        $commentsInYieldFrom = false;
+        if (\PHP_VERSION_ID >= 80300 && \version_compare(Config::VERSION, '3.11.0', '<')) {
+            $commentsInYieldFrom = true;
+        }
+
         switch ($testFile) {
             case 'DisallowInlineTabsUnitTest.1.inc':
                 return [
@@ -93,6 +100,10 @@ final class DisallowInlineTabsUnitTest extends AbstractSniffUnitTest
                     49 => 1,
                     52 => 1,
                     53 => 1,
+                    63 => 1,
+                    67 => 1,
+                    72 => 1,
+                    74 => ($commentsInYieldFrom === true ? 1 : 2),
                 ];
 
             case 'DisallowInlineTabsUnitTest.2.inc':
@@ -126,6 +137,10 @@ final class DisallowInlineTabsUnitTest extends AbstractSniffUnitTest
                     31 => 1,
                     34 => 1,
                     35 => 1,
+                    37 => 1,
+                    41 => 1,
+                    46 => 1,
+                    48 => ($commentsInYieldFrom === true ? 1 : 2),
                 ];
 
             case 'DisallowInlineTabsUnitTest.5.inc':
@@ -145,6 +160,10 @@ final class DisallowInlineTabsUnitTest extends AbstractSniffUnitTest
                     31 => 1,
                     34 => 1,
                     35 => 1,
+                    37 => 1,
+                    41 => 1,
+                    46 => 1,
+                    48 => ($commentsInYieldFrom === true ? 1 : 2),
                 ];
 
             default:

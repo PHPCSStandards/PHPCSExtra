@@ -9,12 +9,12 @@
     ]]>
     </standard>
     <code_comparison>
-        <code title="Valid: using lowercase.">
+        <code title="Valid: Using lowercase.">
         <![CDATA[
 echo MyClass::class;
         ]]>
         </code>
-        <code title="Invalid: using uppercase or mixed case.">
+        <code title="Invalid: Using uppercase or mixed case.">
         <![CDATA[
 echo <em>MyClass::CLASS</em>;
         ]]>

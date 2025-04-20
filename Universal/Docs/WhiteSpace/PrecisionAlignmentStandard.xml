@@ -9,7 +9,7 @@
     ]]>
     </standard>
     <code_comparison>
-        <code title="Valid: indentation equals (a multiple of) the tab width.">
+        <code title="Valid: Indentation equals (a multiple of) the tab width.">
         <![CDATA[
 // Code samples presume tab width = 4.
 <em>[space][space][space][space]</em>$foo = 'bar';
@@ -17,7 +17,7 @@
 <em>[tab]</em>$foo = 'bar';
         ]]>
         </code>
-        <code title="Invalid: precision alignment used, indentation does not equal (a multiple of) the tab width.">
+        <code title="Invalid: Precision alignment used, indentation does not equal (a multiple of) the tab width.">
         <![CDATA[
 // Code samples presume tab width = 4.
 <em>[space][space]</em>$foo = 'bar';
