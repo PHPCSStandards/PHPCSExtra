@@ -14,6 +14,35 @@ This projects adheres to [Keep a CHANGELOG](https://keepachangelog.com/) and use
 
 _Nothing yet._
 
+
+## [1.3.0] - 2025-04-21
+
+### Added
+
+#### Universal
+
+* :wrench: :books: New `Universal.PHP.NoFQNTrueFalseNull` sniff to forbid using `true`, `false` and `null` as fully qualified constants. Thanks [@rodrigoprimo] for reviewing. [#327]
+* `Universal.Operators.TypeSeparatorSpacing`: support for checking the spacing around the parenetheses used in PHP 8.2+ DNF types. [#329]
+
+### Changed
+
+#### Universal
+
+* The `Universal.WhiteSpace.DisallowInlineTabs` sniff will now also check for inline tabs in heredoc/nowdoc openers and between the `yield` and `from` keywords. [#320]
+
+#### Other
+
+* Composer: The minimum `PHP_CodeSniffer` requirement has been updated to `^3.12.1` (was `^3.8.0`). [#330]
+* Developer happiness: prevent creating a `composer.lock` file. Thanks [@fredden]! [#307]
+* Various housekeeping, including improvements to the documentation and tests.
+
+[#307]: https://github.com/PHPCSStandards/PHPCSExtra/pull/307
+[#320]: https://github.com/PHPCSStandards/PHPCSExtra/pull/320
+[#327]: https://github.com/PHPCSStandards/PHPCSExtra/pull/327
+[#329]: https://github.com/PHPCSStandards/PHPCSExtra/pull/329
+[#330]: https://github.com/PHPCSStandards/PHPCSExtra/pull/330
+
+
 ## [1.2.1] - 2023-12-08
 
 ### Changed
@@ -567,6 +596,7 @@ This initial alpha release contains the following sniffs:
 [php_version-config]:    https://github.com/PHPCSStandards/PHP_CodeSniffer/wiki/Configuration-Options#setting-the-php-version
 
 [Unreleased]: https://github.com/PHPCSStandards/PHPCSExtra/compare/stable...HEAD
+[1.3.0]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.2.1...1.3.0
 [1.2.1]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.2.0...1.2.1
 [1.2.0]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.1.2...1.2.0
 [1.1.2]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.1.1...1.1.2
@@ -581,10 +611,11 @@ This initial alpha release contains the following sniffs:
 [1.0.0-alpha3]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.0-alpha2...1.0.0-alpha3
 [1.0.0-alpha2]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.0.0-alpha1...1.0.0-alpha2
 
-[@anomiex]:     https://github.com/anomiex
-[@derickr]:     https://github.com/derickr
-[@diedexx]:     https://github.com/diedexx
-[@fredden]:     https://github.com/fredden
-[@GaryJones]:   https://github.com/GaryJones
-[@stronk7]:     https://github.com/stronk7
-[@szepeviktor]: https://github.com/szepeviktor
+[@anomiex]:      https://github.com/anomiex
+[@derickr]:      https://github.com/derickr
+[@diedexx]:      https://github.com/diedexx
+[@fredden]:      https://github.com/fredden
+[@GaryJones]:    https://github.com/GaryJones
+[@rodrigoprimo]: https://github.com/rodrigoprimo
+[@stronk7]:      https://github.com/stronk7
+[@szepeviktor]:  https://github.com/szepeviktor

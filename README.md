@@ -403,13 +403,21 @@ This is considered a **_risky_ fixer**.
 
 #### `Universal.Operators.TypeSeparatorSpacing` :wrench: :bar_chart: :books:
 
-Enforce no spaces around the union type and intersection type operators.
+Enforce spacing rules around the union, intersection and DNF type operators.
+* No space on either side of a union or intersection type operator.
+* No space on the inside of DNF type parenthesis or before/after if the previous/next "thing" is part of the type.
+* One space before a DNF open parenthesis when it is at the start of a type.
+* One space after a DNF close parenthesis when it is at the end of a type.
 
-The available error codes are: `UnionTypeSpacesBefore`, `UnionTypeSpacesAfter`, `IntersectionTypeSpacesBefore`, `IntersectionTypeSpacesAfter`.
+The available error codes are: `UnionTypeSpacesBefore`, `UnionTypeSpacesAfter`, `IntersectionTypeSpacesBefore`, `IntersectionTypeSpacesAfter`, `DNFOpenSpacesBefore`, `DNFOpenSpacesAfter`, `DNFCloseTypeSpacesBefore`, `DNFCloseTypeSpacesAfter`.
 
 #### `Universal.PHP.LowercasePHPTag` :wrench: :bar_chart: :books:
 
 Enforces that the "PHP" in a PHP open tag is lowercase.
+
+#### `Universal.PHP.NoFQNTrueFalseNull` :wrench: :books:
+
+Forbids using `true`, `false` and `null` as fully qualified constants.
 
 #### `Universal.PHP.OneStatementInShortEchoTag` :wrench: :books:
 
