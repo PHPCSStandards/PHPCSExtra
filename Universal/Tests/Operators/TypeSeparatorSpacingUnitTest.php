@@ -38,6 +38,16 @@ final class TypeSeparatorSpacingUnitTest extends AbstractSniffUnitTest
             33 => 1,
             35 => 5,
             37 => 6,
+            45 => 4,
+            46 => 4,
+            50 => 4,
+            51 => 4,
+            60 => 6,
+            61 => 4,
+            63 => 5,
+            64 => 1,
+            65 => 3,
+            68 => 2,
         ];
     }
 
