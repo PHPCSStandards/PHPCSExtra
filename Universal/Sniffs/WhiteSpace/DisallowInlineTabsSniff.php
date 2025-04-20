@@ -150,16 +150,6 @@ final class DisallowInlineTabsSniff implements Sniff
                 }
             }
 
-            /*
-             * For "yield from", we should only handle tabs _between_ the keywords (single token),
-             * not indentation for those situations where the keyword is split in multiple tokens.
-             */
-            if ($tokens[$i]['code'] === \T_YIELD_FROM
-                && \preg_match('`^yield.+from$`i', $tokens[$i]['content']) !== 1
-            ) {
-                continue;
-            }
-
             $fix = $phpcsFile->addFixableError(
                 'Spaces must be used for mid-line alignment; tabs are not allowed',
                 $i,

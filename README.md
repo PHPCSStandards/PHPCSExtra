@@ -46,7 +46,7 @@ Minimum Requirements
 -------------------------------------------
 
 * PHP 5.4 or higher.
-* [PHP_CodeSniffer][phpcs-gh] version **3.8.0** or higher.
+* [PHP_CodeSniffer][phpcs-gh] version **3.12.1** or higher.
 * [PHPCSUtils][phpcsutils-gh] version **1.0.9** or higher.
 
 
