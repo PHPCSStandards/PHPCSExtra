@@ -5,25 +5,31 @@
     >
     <standard>
     <![CDATA[
-    There should be no spacing around the union type separator or the intersection type separator.
+    Enforce spacing rules around the union, intersection and DNF type operators.
+    - No space on either side of a union or intersection type operator.
+    - No space on the inside of DNF type parenthesis or before/after if the previous/next "thing" is part of the type.
+    - One space before a DNF open parenthesis when it is at the start of a type.
+    - One space after a DNF close parenthesis when it is at the end of a type.
 
-    This applies to all locations where type declarations can be used, i.e. property types, parameter types and return types.
+    This applies to all locations where type declarations can be used, i.e. property types, constant types, parameter types and return types.
     ]]>
     </standard>
     <code_comparison>
-        <code title="Valid: No space around the separators.">
+        <code title="Valid: Correct spacing around the separators.">
         <![CDATA[
 function foo(
     int<em>|</em>string $paramA,
-    TypeA<em>&</em>TypeB $paramB
+    TypeA<em>&</em>TypeB $paramB,
+    <em>(</em>TypeA&TypeB<em>)</em>|null $paramC
 ): int<em>|</em>false {}
         ]]>
         </code>
-        <code title="Invalid: Space around the separators.">
+        <code title="Invalid: Incorrect spacing around the separators.">
         <![CDATA[
 function foo(
     int<em> | </em>string $paramA,
-    TypeA<em> & </em>TypeB $paramB
+    TypeA<em> & </em>TypeB $paramB,
+    <em>( </em>TypeA&TypeB<em> ) </em>|null $paramC
 ): int<em>
    |
    </em>false {}
