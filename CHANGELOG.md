@@ -22,7 +22,7 @@ _Nothing yet._
 #### Universal
 
 * :wrench: :books: New `Universal.PHP.NoFQNTrueFalseNull` sniff to forbid using `true`, `false` and `null` as fully qualified constants. Thanks [@rodrigoprimo] for reviewing. [#327]
-* `Universal.Operators.TypeSeparatorSpacing`: support for checking the spacing around the parenetheses used in PHP 8.2+ DNF types. [#329]
+* `Universal.Operators.TypeSeparatorSpacing`: support for checking the spacing around the parentheses used in PHP 8.2+ DNF types. [#329]
 
 ### Changed
 
