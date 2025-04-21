@@ -1,6 +1,7 @@
 ---
 name: "\U0001F41B Bug report for sniffs"
 about: I got unexpected behavior and think it is a bug.
+title: ''
 
 ---
 
@@ -73,4 +74,5 @@ You should be able to get the version numbers using the `composer info` command.
 
 
 ## Tested Against `develop` branch?
+
 - [ ] I have verified the issue still exists in the `develop` branch of PHPCSExtra.
