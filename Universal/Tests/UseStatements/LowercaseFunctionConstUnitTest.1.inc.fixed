@@ -6,11 +6,11 @@ use \Util\MyOtherClass;
 
 // Function/const import use statements.
 use function Util\functionA;
-use function\Util\functionB;
+use function \Util\functionB;
 use function \Util\functionC;
 
 use const Util\MyClass\CONSTANT_X;
-use const\Util\MyClass\CONSTANT_Y;
+use const \Util\MyClass\CONSTANT_Y;
 use const Util\MyClass\CONSTANT_Z;
 
 use \some\namespacing\{
