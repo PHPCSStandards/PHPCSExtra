@@ -11,6 +11,7 @@
 namespace PHPCSExtra\Universal\Tests\UseStatements;
 
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffTestCase;
+use PHPCSUtils\BackCompat\Helper;
 
 /**
  * Unit test class for the KeywordSpacing sniff.
@@ -33,17 +34,28 @@ final class KeywordSpacingUnitTest extends AbstractSniffTestCase
     {
         $testFiles = parent::getTestFiles($testFileBase);
 
-        if (\PHP_VERSION_ID < 80000) {
-            return $testFiles;
+        if (\PHP_VERSION_ID >= 80000) {
+            // The issue being tested in the "2" test case file cannot be flagged/fixed on PHP 8.0+.
+            $target = 'KeywordSpacingUnitTest.2.inc';
+            $length = \strlen($target);
+            foreach ($testFiles as $i => $fileName) {
+                if (\substr($fileName, -$length) === $target) {
+                    unset($testFiles[$i]);
+                    break;
+                }
+            }
         }
 
-        // The issue being tested in the "2" test case file cannot be flagged/fixed on PHP 8.0+.
-        $target = 'KeywordSpacingUnitTest.2.inc';
-        $length = \strlen($target);
-        foreach ($testFiles as $i => $fileName) {
-            if (\substr($fileName, -$length) === $target) {
-                unset($testFiles[$i]);
-                break;
+        if (\version_compare(Helper::getVersion(), '3.99.99', '>') === true) {
+            // The issues being tested in the "2" and "5" test case files cannot be flagged/fixed on PHPCS 4.0+.
+            $length = \strlen('KeywordSpacingUnitTest.#.inc');
+            foreach ($testFiles as $i => $fileName) {
+                $substring = \substr($fileName, -$length);
+                if ($substring === 'KeywordSpacingUnitTest.2.inc'
+                    || $substring === 'KeywordSpacingUnitTest.5.inc'
+                ) {
+                    unset($testFiles[$i]);
+                }
             }
         }
 
@@ -85,6 +97,12 @@ final class KeywordSpacingUnitTest extends AbstractSniffTestCase
             case 'KeywordSpacingUnitTest.2.inc':
                 return [
                     9 => 1,
+                ];
+
+            case 'KeywordSpacingUnitTest.5.inc':
+                return [
+                    9  => 1,
+                    10 => 1,
                 ];
 
             default:
