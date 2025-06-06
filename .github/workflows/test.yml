@@ -74,6 +74,8 @@ jobs:
       - name: Install Composer dependencies
         uses: "ramsey/composer-install@v3"
         with:
+          # For the PHP "nightly", we need to install with ignore platform reqs as not all dependencies may allow it yet.
+          composer-options: ${{ matrix.php == '8.5' && '--ignore-platform-req=php+' || '' }}
           # Bust the cache at least once a month - output format: YYYY-MM.
           custom-cache-suffix: $(date -u "+%Y-%m")
 
