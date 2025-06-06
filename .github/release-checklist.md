@@ -7,6 +7,8 @@ PR for tracking changes for the x.x.x release. Target release date: **DOW MONTH 
 ### General
 
 - [ ] Verify, and if necessary, update the allowed version ranges for various dependencies in the `composer.json` - PR #xxx
+- [ ] Go through changelog PHPCS looking for updates to the Tokenizer.
+    Review if there are sniffs which need updating in relation to the Tokenizer changes (support for new PHP syntaxes, bugs fixed etc).
 - [ ] Add changelog for the release - PR #xxx
     :pencil2: Remember to add a release link at the bottom!
 - [ ] Update sniff list in `README` (if applicable) - PR #xxx.
