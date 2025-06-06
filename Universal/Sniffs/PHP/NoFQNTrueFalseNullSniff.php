@@ -32,13 +32,16 @@ final class NoFQNTrueFalseNullSniff implements Sniff
     public function register()
     {
         return [
-            // PHP < 8.0.
+            // PHPCS 3.x on PHP < 8.0.
             \T_TRUE,
             \T_FALSE,
             \T_NULL,
 
-            // PHP >= 8.0.
+            // PHPCS 3.x on PHP >= 8.0.
             \T_STRING,
+
+            // PHPCS 4.x.
+            \T_NAME_FULLY_QUALIFIED,
         ];
     }
 
@@ -59,34 +62,48 @@ final class NoFQNTrueFalseNullSniff implements Sniff
         $content   = $tokens[$stackPtr]['content'];
         $contentLC = \strtolower($content);
 
-        if ($contentLC !== 'true' && $contentLC !== 'false' && $contentLC !== 'null') {
-            return;
-        }
+        if ($tokens[$stackPtr]['code'] === \T_NAME_FULLY_QUALIFIED) {
+            // PHPCS 4.x.
+            if ($contentLC !== '\true' && $contentLC !== '\false' && $contentLC !== '\null') {
+                return;
+            }
+        } else {
+            // PHPCS 3.x.
+            if ($contentLC !== 'true' && $contentLC !== 'false' && $contentLC !== 'null') {
+                return;
+            }
 
-        $prev = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true);
-        if ($tokens[$prev]['code'] !== \T_NS_SEPARATOR) {
-            return;
-        }
+            $prev = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true);
+            if ($tokens[$prev]['code'] !== \T_NS_SEPARATOR) {
+                return;
+            }
 
-        $prevPrev = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($prev - 1), null, true);
-        if ($tokens[$prevPrev]['code'] === \T_STRING || $tokens[$prevPrev]['code'] === \T_NAMESPACE) {
-            return;
-        }
+            $prevPrev = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($prev - 1), null, true);
+            if ($tokens[$prevPrev]['code'] === \T_STRING || $tokens[$prevPrev]['code'] === \T_NAMESPACE) {
+                return;
+            }
 
-        $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
-        if ($tokens[$next]['code'] === \T_NS_SEPARATOR) {
-            return;
+            $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
+            if ($tokens[$next]['code'] === \T_NS_SEPARATOR) {
+                return;
+            }
         }
 
         $fix = $phpcsFile->addFixableError(
             'The special PHP constant "%s" should not be fully qualified.',
-            $prev,
+            $stackPtr,
             'Found',
             [$contentLC]
         );
 
         if ($fix === true) {
-            $phpcsFile->fixer->replaceToken($prev, '');
+            if ($tokens[$stackPtr]['code'] === \T_NAME_FULLY_QUALIFIED) {
+                // PHPCS 4.x.
+                $phpcsFile->fixer->replaceToken($stackPtr, \ltrim($tokens[$stackPtr]['content'], '\\'));
+            } else {
+                // PHPCS 3.x.
+                $phpcsFile->fixer->replaceToken($prev, '');
+            }
         }
     }
 }
