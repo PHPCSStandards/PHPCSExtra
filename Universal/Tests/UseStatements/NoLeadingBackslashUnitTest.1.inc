@@ -8,7 +8,7 @@ use function Util\functionA;
 use FUNCTION \Util\functionB as functionC;
 
 use const Util\MyClass\CONSTANT_X;
-use Const\Util\MyClass\CONSTANT_Y;
+use Const \Util\MyClass\CONSTANT_Y;
 
 use Vendor\Foo\ClassA as ClassABC,
     /*comment*/ \Vendor\Bar\InterfaceB,

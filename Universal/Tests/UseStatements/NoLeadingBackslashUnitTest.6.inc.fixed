@@ -1,0 +1,10 @@
+<?php
+
+/*
+ * The behaviour of the sniff for this code sample will be different depending on the PHPCS version.
+ * On PHPCS < 4.0, these will correctly be flagged for "no space" after the `function`/`const` keyword.
+ * On PHPCS 4.0, this will no longer be flagged as keywords are allowed in namespaced names,
+ * so the `function`/`const` is tokenized as part of the namespaced name and won't be flagged.
+ */
+use FuncTion Util\functionB;
+use Const Util\MyClass\CONSTANT_Y;
