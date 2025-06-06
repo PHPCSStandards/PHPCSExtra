@@ -57,7 +57,7 @@ pointing to the PHPCS directory and that PHPCSUtils is included in the `installe
 for that PHPCS install.
 ';
 
-    die(1);
+    exit(1);
 }
 
 /*
