@@ -33,6 +33,7 @@ use PHPCSUtils\Tokens\Collections;
  *   `Generic.WhiteSpace.DisallowSpaceIndent` sniff to clean up the results if so desired.
  *
  * @since 1.0.0
+ * @since 1.4.0 Support for scanning JS and CSS files is deprecated and will be removed in the next major.
  */
 final class PrecisionAlignmentSniff implements Sniff
 {
