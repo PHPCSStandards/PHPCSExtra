@@ -33,9 +33,17 @@ use const PHP_VERSION_ID as version_id; // Alias for global import.
 use const PHP_VERSION as php_version; // Alias for global import to same name.
 
 // Test reporting on the correct line. Contrived example, but is valid PHP.
-use const My
-    \php_version
-    \PHP_VERSION as php_version;
+use const
+    My\php_version\PHP_VERSION
+    as php_version;
+
+// Test reporting on the correct token with group use.
+use const prefix\{
+    UNQUALIFIED_INNER_NAME,
+    partially\qualified\INNER_NAME,
+    // Intentional parse error.
+    \fully\qualified\Inner\NAME,
+};
 
 // Ignore as not import use.
 $closure = function() use($bar) {
