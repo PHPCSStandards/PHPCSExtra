@@ -48,6 +48,10 @@ final class NoUselessAliasesUnitTest extends AbstractSniffTestCase
             69 => 1,
             72 => 1,
             76 => 1,
+            81 => 1,
+            85 => 1,
+            89 => 1,
+            93 => 1,
         ];
     }
 
