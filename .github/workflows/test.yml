@@ -19,6 +19,41 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  lint:
+    if: ${{ github.ref != 'refs/heads/develop' }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php: ['5.4', '7.0', '7.4', '8.0', '8.4', '8.5']
+
+    name: "Lint: PHP ${{ matrix.php }}"
+
+    continue-on-error: ${{ matrix.php == '8.5' }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          ini-file: 'development'
+          coverage: none
+          tools: cs2pr
+
+      - name: Install Composer dependencies
+        uses: "ramsey/composer-install@v3"
+        with:
+          # For the PHP "nightly", we need to install with ignore platform reqs as not all dependencies may allow it yet.
+          composer-options: ${{ matrix.php == '8.5' && '--ignore-platform-req=php+' || '' }}
+          # Bust the cache at least once a month - output format: YYYY-MM.
+          custom-cache-suffix: $(date -u "+%Y-%m")
+
+      - name: "Lint against parse errors"
+        run: composer lint -- --checkstyle | cs2pr
+
   #### TEST STAGE ####
   test:
     if: ${{ github.ref != 'refs/heads/develop' }}
@@ -35,7 +70,7 @@ jobs:
         php: ['5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2', '8.3', '8.5']
         phpcs_version: ['lowest', 'dev-master']
 
-    name: "Test${{ matrix.phpcs_version == 'dev-master' && ' + Lint' || '' }}: PHP ${{ matrix.php }} - PHPCS ${{ matrix.phpcs_version }}"
+    name: "Test: PHP ${{ matrix.php }} - PHPCS ${{ matrix.phpcs_version }}"
 
     continue-on-error: ${{ matrix.php == '8.5' }}
 
@@ -86,10 +121,6 @@ jobs:
           squizlabs/php_codesniffer
           phpcsstandards/phpcsutils
 
-      - name: Lint against parse errors
-        if: matrix.phpcs_version == 'dev-master'
-        run: composer lint
-
       - name: Run the unit tests
         run: composer test
 
@@ -110,7 +141,7 @@ jobs:
         php: ['5.4', '8.4']
         phpcs_version: ['lowest', 'dev-master']
 
-    name: "Coverage${{ matrix.phpcs_version == 'dev-master' && ' + Lint' || '' }}: PHP ${{ matrix.php }} - PHPCS ${{ matrix.phpcs_version }}"
+    name: "Coverage: PHP ${{ matrix.php }} - PHPCS ${{ matrix.phpcs_version }}"
 
     steps:
       - name: Checkout code
@@ -133,7 +164,6 @@ jobs:
           php-version: ${{ matrix.php }}
           ini-values: ${{ steps.set_ini.outputs.PHP_INI }}
           coverage: xdebug
-          tools: cs2pr
 
       - name: "Composer: set PHPCS version for tests (master)"
         if: ${{ matrix.phpcs_version != 'lowest' }}
@@ -157,10 +187,6 @@ jobs:
           composer update --prefer-lowest --no-scripts --no-interaction
           squizlabs/php_codesniffer
           phpcsstandards/phpcsutils
-
-      - name: Lint against parse errors
-        if: matrix.phpcs_version == 'dev-master'
-        run: composer lint -- --checkstyle | cs2pr
 
       - name: Run the unit tests with code coverage
         run: composer coverage
