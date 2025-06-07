@@ -51,7 +51,7 @@ final class DisallowUseFunctionUnitTest extends AbstractSniffTestCase
                     34 => 1, // Note: alias same as name, so not counted as aliased.
                     35 => 1, // GlobalNamespaceWithAlias.
                     36 => 1, // GlobalNamespace. Note: alias same as name, so not counted as aliased.
-                    42 => 1,
+                    40 => 1,
                 ];
 
             case 'DisallowUseFunctionUnitTest.2.inc':
