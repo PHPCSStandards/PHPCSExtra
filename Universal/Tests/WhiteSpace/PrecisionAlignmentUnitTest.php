@@ -42,6 +42,34 @@ final class PrecisionAlignmentUnitTest extends AbstractSniffUnitTest
     ];
 
     /**
+     * Get a list of all test files to check.
+     *
+     * @param string $testFileBase The base path that the unit tests files will have.
+     *
+     * @return array<string>
+     */
+    protected function getTestFiles($testFileBase)
+    {
+        $testFiles = parent::getTestFiles($testFileBase);
+
+        if (\version_compare(Helper::getVersion(), '3.99.99', '>') === true) {
+            /*
+             * Support for scanning CSS/JS files has been removed in PHPCS 4.0.
+             * While scanning the CSS/JS files will work and not throw errors on PHPCS 4.0+
+             * (as the content is seen as inline HTML), running CSS/JS test on PHPCS 4.0+
+             * makes no sense, so let's not.
+             */
+            foreach ($testFiles as $i => $fileName) {
+                if (\substr($fileName, -4) === '.css' || \substr($fileName, -3) === '.js') {
+                    unset($testFiles[$i]);
+                }
+            }
+        }
+
+        return $testFiles;
+    }
+
+    /**
      * Set CLI values before the file is tested.
      *
      * @param string                  $testFile The name of the file being tested.
@@ -84,9 +112,6 @@ final class PrecisionAlignmentUnitTest extends AbstractSniffUnitTest
      */
     public function getWarningList($testFile = '')
     {
-        $phpcsVersion = Helper::getVersion();
-        $isPhpcs4     = \version_compare($phpcsVersion, '3.99.99', '>');
-
         switch ($testFile) {
             case 'PrecisionAlignmentUnitTest.1.inc': // Space-based, default indent.
             case 'PrecisionAlignmentUnitTest.2.inc': // Space-based, custom indent 4.
@@ -203,15 +228,15 @@ final class PrecisionAlignmentUnitTest extends AbstractSniffUnitTest
             case 'PrecisionAlignmentUnitTest.1.css': // Space-based.
             case 'PrecisionAlignmentUnitTest.2.css': // Tab-based.
                 return [
-                    5 => ($isPhpcs4 === true ? 0 : 1),
+                    5 => 1,
                 ];
 
             case 'PrecisionAlignmentUnitTest.1.js': // Space-based.
             case 'PrecisionAlignmentUnitTest.2.js': // Tab-based.
                 return [
-                    5 => ($isPhpcs4 === true ? 0 : 1),
-                    6 => ($isPhpcs4 === true ? 0 : 1),
-                    7 => ($isPhpcs4 === true ? 0 : 1),
+                    5 => 1,
+                    6 => 1,
+                    7 => 1,
                 ];
 
             default:
