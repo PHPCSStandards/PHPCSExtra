@@ -1,5 +1,4 @@
-PHPCSExtra
-=====================================================
+# PHPCSExtra
 
 <div aria-hidden="true">
 
@@ -24,34 +23,31 @@ PHPCSExtra
 * [Introduction](#introduction)
 * [Minimum Requirements](#minimum-requirements)
 * [Installation](#installation)
-    + [Composer Project-based Installation](#composer-project-based-installation)
-    + [Composer Global Installation](#composer-global-installation)
-    + [Updating to a newer version](#updating-to-a-newer-version)
+    - [Composer Project-based Installation](#composer-project-based-installation)
+    - [Composer Global Installation](#composer-global-installation)
+    - [Updating to a newer version](#updating-to-a-newer-version)
 * [Features](#features)
 * [Sniffs](#sniffs)
-    + [Modernize](#modernize)
-    + [NormalizedArrays](#normalizedarrays)
-    + [Universal](#universal)
+    - [Modernize](#modernize)
+    - [NormalizedArrays](#normalizedarrays)
+    - [Universal](#universal)
 * [Contributing](#contributing)
 * [License](#license)
 
 
-Introduction
--------------------------------------------
+## Introduction
 
 PHPCSExtra is a collection of sniffs and standards for use with [PHP_CodeSniffer][phpcs-gh].
 
 
-Minimum Requirements
--------------------------------------------
+## Minimum Requirements
 
 * PHP 5.4 or higher.
 * [PHP_CodeSniffer][phpcs-gh] version **3.12.1** or higher.
-* [PHPCSUtils][phpcsutils-gh] version **1.0.9** or higher.
+* [PHPCSUtils][phpcsutils-gh] version **1.0.12** or higher.
 
 
-Installation
--------------------------------------------
+## Installation
 
 Installing via Composer is highly recommended.
 
@@ -93,8 +89,7 @@ composer global update phpcsstandards/phpcsextra --with-dependencies
 > (and potential other external PHPCS standards you use), manage the version requirements for these packages.
 
 
-Features
--------------------------------------------
+## Features
 
 Once this project is installed, you will see three new rulesets in the list of installed standards when you run `vendor/bin/phpcs -i`: `Modernize`, `NormalizedArrays` and `Universal`.
 
@@ -105,8 +100,7 @@ Once this project is installed, you will see three new rulesets in the list of i
     Instead include individual sniffs from this standard in a custom project/company ruleset to use them.
 
 
-Sniffs
--------------------------------------------
+## Sniffs
 
 **Legend**:
 * :wrench: = Includes auto-fixer.
@@ -138,13 +132,13 @@ In effect, this means that the sniff will only report on modernizations which ca
 Enforce consistent spacing for the open/close braces of array declarations.
 
 The sniff allows for having different settings for:
-- Space between the array keyword and the open parenthesis for long arrays via the `keywordSpacing` property.
+* Space between the array keyword and the open parenthesis for long arrays via the `keywordSpacing` property.
     Accepted values: (int) number of spaces or `false` to turn this check off. Defaults to `0` spaces.
-- Spaces on the inside of the braces for empty arrays via the `spacesWhenEmpty` property.
+* Spaces on the inside of the braces for empty arrays via the `spacesWhenEmpty` property.
     Accepted values: (string) `newline`, (int) number of spaces or `false` to turn this check off. Defaults to `0` spaces.
-- Spaces on the inside of the braces for single-line arrays via the `spacesSingleLine` property;
+* Spaces on the inside of the braces for single-line arrays via the `spacesSingleLine` property;
     Accepted values: (int) number of spaces or `false` to turn this check off. Defaults to `0` spaces.
-- Spaces on the inside of the braces for multi-line arrays via the `spacesMultiLine` property.
+* Spaces on the inside of the braces for multi-line arrays via the `spacesMultiLine` property.
     Accepted values: (string) `newline`, (int) number of spaces or `false` to turn this check off. Defaults to `newline`.
 
 Note: if any of the above properties are set to `newline`, it is recommended to also include an array indentation sniff. This sniff will not handle the indentation.
@@ -539,7 +533,7 @@ The behaviour of the sniff is customizable via the following properties:
     If this property is not set, the sniff will look to the `--tab-width` CLI value.
     If that also isn't set, the default tab-width of `4` will be used.
 * `ignoreAlignmentBefore`: allows for providing a list of token names for which (preceding) precision alignment should be ignored.
-    Accepted values: (array<string>) token constant names. Defaults to an empty array.
+    Accepted values: (`array<string>`) token constant names. Defaults to an empty array.
     Usage example:
     ```xml
     <rule ref="Universal.WhiteSpace.PrecisionAlignment">
@@ -559,14 +553,15 @@ The behaviour of the sniff is customizable via the following properties:
     Accepted values: (bool)`true`|`false`. Defaults to `true`.
 
 
-Contributing
--------
+## Contributing
+
 Contributions to this project are welcome. Clone the repo, branch off from `develop`, make your changes, commit them and send in a pull request.
 
 If unsure whether the changes you are proposing would be welcome, open an issue first to discuss your proposal.
 
-License
--------
+
+## License
+
 This code is released under the [GNU Lesser General Public License (LGPLv3)](LICENSE).
 
 

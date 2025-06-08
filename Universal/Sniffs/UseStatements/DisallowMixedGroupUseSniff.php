@@ -157,14 +157,18 @@ final class DisallowMixedGroupUseSniff implements Sniff
          * Fix it.
          *
          * This fixer complies with the following (arbitrary) requirements:
-         * - It will re-use the original base "group" name, i.e. the part before \{.
-         * - It take take aliases into account, but only when something is aliased to a different name.
+         * - It will re-use the original base "group" name, i.e. the part before \{,
+         *   though it will remove a potential leading backslash from it.
+         * - It takes aliases into account, but only when something is aliased to a different name.
          *   Aliases re-using the original name will be removed.
          * - The fix will not add a trailing comma after the last group use sub-statement.
          *   This is a PHP 7.2+ feature.
          *   If a standard wants to enforce trailing commas, they should use a separate sniff for that.
          * - If there is only 1 statement of a certain type, the replacement will be a single
          *   import use statement, not a group use statement.
+         * - If any of the partial use statements within a group contain leading backslashes,
+         *   the sniff will not correct for this. This is a parse error and the fixed version will
+         *   still contain a parse error.
          */
 
         $phpcsFile->fixer->beginChangeset();
@@ -187,7 +191,7 @@ final class DisallowMixedGroupUseSniff implements Sniff
         $useIndent    = \str_repeat(' ', ($tokens[$stackPtr]['column'] - 1));
         $insideIndent = $useIndent . \str_repeat(' ', 4);
 
-        $baseGroupName = GetTokensAsString::noEmpties($phpcsFile, ($stackPtr + 1), ($groupStart - 1));
+        $baseGroupName = \ltrim(GetTokensAsString::noEmpties($phpcsFile, ($stackPtr + 1), ($groupStart - 1)), '\\');
 
         foreach ($useStatements as $type => $statements) {
             $count = \count($statements);
@@ -201,12 +205,12 @@ final class DisallowMixedGroupUseSniff implements Sniff
             }
 
             if ($count === 1) {
-                $fqName = \reset($statements);
-                $alias  = \key($statements);
+                $qualifiedName = \reset($statements);
+                $alias         = \key($statements);
 
-                $newStatement = 'use ' . $typeName . $fqName;
+                $newStatement = 'use ' . $typeName . $qualifiedName;
 
-                $unqualifiedName = \ltrim(\substr($fqName, \strrpos($fqName, '\\')), '\\');
+                $unqualifiedName = \ltrim(\substr($qualifiedName, (int) \strrpos($qualifiedName, '\\')), '\\');
                 if ($unqualifiedName !== $alias) {
                     $newStatement .= ' as ' . $alias;
                 }
@@ -220,11 +224,11 @@ final class DisallowMixedGroupUseSniff implements Sniff
             // Multiple statements, add a single-type group use statement.
             $newStatement = 'use ' . $typeName . $baseGroupName . '{' . $phpcsFile->eolChar;
 
-            foreach ($statements as $alias => $fqName) {
-                $partialName   = \str_replace($baseGroupName, '', $fqName);
+            foreach ($statements as $alias => $qualifiedName) {
+                $partialName   = \str_replace($baseGroupName, '', $qualifiedName);
                 $newStatement .= $insideIndent . $partialName;
 
-                $unqualifiedName = \ltrim(\substr($partialName, \strrpos($partialName, '\\')), '\\');
+                $unqualifiedName = \ltrim(\substr($partialName, (int) \strrpos($partialName, '\\')), '\\');
                 if ($unqualifiedName !== $alias) {
                     $newStatement .= ' as ' . $alias;
                 }

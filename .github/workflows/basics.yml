@@ -136,6 +136,10 @@ jobs:
     with:
       phpstanVersion: '2.x'
 
+  markdownlint:
+    name: 'Lint Markdown'
+    uses: PHPCSStandards/.github/.github/workflows/reusable-markdownlint.yml@main
+
   remark:
     name: 'QA Markdown'
     uses: PHPCSStandards/.github/.github/workflows/reusable-remark.yml@main

@@ -99,5 +99,11 @@ $anon = new class
 // Reset property.
 // phpcs:set Universal.WhiteSpace.AnonClassKeywordSpacing spacing 0
 
+/*
+ * Safeguard handling of PHP 8.3 readonly anon classes.
+ */
+$anon = new readonly class() {};
+$anon = new readonly class () {};
+
 // Live coding - this has to be the last test in the file without a new line after it.
 $anon = new class

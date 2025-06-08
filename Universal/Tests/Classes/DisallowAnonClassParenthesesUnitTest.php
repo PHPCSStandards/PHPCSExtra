@@ -39,6 +39,7 @@ final class DisallowAnonClassParenthesesUnitTest extends AbstractSniffUnitTest
                     24 => 1,
                     27 => 1,
                     35 => 1,
+                    45 => 1,
                 ];
 
             default:

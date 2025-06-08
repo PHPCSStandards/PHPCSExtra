@@ -22,7 +22,7 @@ foreach ($a   as   $k => $v) {}
 
 // Ignore, spacing is already correct.
 use Vendor\Package\Name as OtherName;
-use function Vendor\Package\functionName as otherFunction;
+use function \Vendor\Package\functionName as otherFunction;
 use const Vendor\Package\CONSTANT_NAME as OTHER_CONSTANT;
 
 use Vendor\Package\MultiStatement as Multi,
@@ -40,7 +40,7 @@ USE Some\NS\ {
 // Ignore, "function", "const", "as" are used as part of a name (PHP 8.0+), not as the keyword.
 use Vendor\Package\As\Name as Something;
 use function Vendor\Function\Name as some_function;
-use Vendor\Const\Name as CONSTANT_HANDLER;
+use \Vendor\Const\Name as CONSTANT_HANDLER;
 
 /*
  * Error.
