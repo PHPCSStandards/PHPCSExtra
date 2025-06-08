@@ -108,6 +108,16 @@ class IncorrectOrderUsingDefaultOrderPref {
 // Reset to default.
 // phpcs:set Universal.Constants.ModifierKeywordOrder order final visibility
 
+/*
+ * Safeguard to ensure there are no side-effects when PHP 8.3 typed properties are used.
+ */
+class PHP83TypedProperties {
+    final public const ?string FINAL_PUBLIC = 'foo';
+
+    #[SomeAttribute]
+    Protected Final const SomeClass|string PROTECTED_FINAL = 'foo', PROTECTED_FINAL_TOO = 'bar';
+}
+
 // Live coding. Ignore as class boundaries cannot be determined yet. This must be the last test in the file.
 class LiveCoding {
     protected final const

@@ -37,6 +37,7 @@ final class ModifierKeywordOrderUnitTest extends AbstractSniffUnitTest
             81  => 1,
             83  => 1,
             105 => 1,
+            118 => 1,
         ];
     }
 
