@@ -92,8 +92,8 @@ final class NoUselessAliasesSniff implements Sniff
 
         // Now check the names in each use statement for useless aliases.
         foreach ($useStatements as $type => $statements) {
-            foreach ($statements as $alias => $fqName) {
-                $unqualifiedName = \ltrim(\substr($fqName, \strrpos($fqName, '\\')), '\\');
+            foreach ($statements as $alias => $qualifiedName) {
+                $unqualifiedName = \ltrim(\substr($qualifiedName, (int) \strrpos($qualifiedName, '\\')), '\\');
 
                 $uselessAlias = false;
                 if ($type === 'const') {
@@ -125,7 +125,7 @@ final class NoUselessAliasesSniff implements Sniff
 
                     $error = 'Useless alias "%s" found for import of "%s"';
                     $code  = 'Found';
-                    $data  = [$alias, $fqName];
+                    $data  = [$alias, $qualifiedName];
 
                     // Okay, so this is the one which should be flagged.
                     $hasComments = $phpcsFile->findNext(Tokens::$commentTokens, ($prev + 1), $aliasPtr);
