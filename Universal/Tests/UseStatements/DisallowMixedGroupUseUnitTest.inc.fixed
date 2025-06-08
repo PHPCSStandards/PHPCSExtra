@@ -128,6 +128,19 @@ use One\OfEach\ClassName;
 use function One\OfEach\SubLevel\functionName;
 use const One\OfEach\Constants\CONSTANT_NAME as SOME_CONSTANT;
 
+use function LeadingBackslash\OnPrefix\SubLevel\functionName;
+use const LeadingBackslash\OnPrefix\{
+    Constants\CONSTANT_NAME as SOME_CONSTANT,
+    ANOTHER_NAME
+};
+
+// Intentional parse error: leading backslash on partial statements within the group is a parse error in all PHP versions.
+// The sniff does not correct for this (not its job), so the fixed version will also contain this parse error.
+use function LeadingBackslash\WithinGroup\{
+    \SubLevel\functionName,
+    \SubLevel\anotherFunction
+};
+use const LeadingBackslash\WithinGroup\\Constants\CONSTANT_NAME as SOME_CONSTANT;
 
 // Intentional parse error.
 // This has to be the last test in the file.
