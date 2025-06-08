@@ -34,6 +34,12 @@ $anon = new
 #[MyAttribute, AnotherAttribute]
 class {}; // Bad.
 
+/*
+ * Safeguard handling of PHP 8.3 readonly anon classes.
+ */
+$anon = new   readonly   class {};
+$anon = new readonly class() {};
+
 // Live coding.
 // Intentional parse error. This has to be the last test in the file.
 $anon = new class
