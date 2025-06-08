@@ -127,7 +127,7 @@ final class DisallowUseConstSniff implements Sniff
 
         $endOfStatement = $phpcsFile->findNext([\T_SEMICOLON, \T_CLOSE_TAG], ($stackPtr + 1));
 
-        foreach ($statements['const'] as $alias => $fullName) {
+        foreach ($statements['const'] as $alias => $qualifiedName) {
             $reportPtr = $stackPtr;
             do {
                 $reportPtr = $phpcsFile->findNext(\T_STRING, ($reportPtr + 1), $endOfStatement, false, $alias);
@@ -163,20 +163,19 @@ final class DisallowUseConstSniff implements Sniff
             $errorCode = 'Found';
             $data      = [
                 '',
-                $fullName,
+                $qualifiedName,
             ];
 
             $globalNamespace = false;
             $sameNamespace   = false;
-            if (\strpos($fullName, '\\', 1) === false) {
+            if (\strpos($qualifiedName, '\\') === false) {
                 $globalNamespace = true;
                 $errorCode       = 'FromGlobalNamespace';
                 $data[0]         = ' from the global namespace';
 
                 $phpcsFile->recordMetric($reportPtr, self::METRIC_NAME_SRC, 'global namespace');
             } elseif ($this->currentNamespace !== ''
-                && (\stripos($fullName, $this->currentNamespace . '\\') === 0
-                    || \stripos($fullName, '\\' . $this->currentNamespace . '\\') === 0)
+                && \stripos($qualifiedName, $this->currentNamespace . '\\') === 0
             ) {
                 $sameNamespace = true;
                 $errorCode     = 'FromSameNamespace';
@@ -188,7 +187,7 @@ final class DisallowUseConstSniff implements Sniff
             }
 
             $hasAlias = false;
-            $lastLeaf = \strtolower(\substr($fullName, -(\strlen($alias) + 1)));
+            $lastLeaf = \strtolower(\substr($qualifiedName, -(\strlen($alias) + 1)));
             $aliasLC  = \strtolower($alias);
             if ($lastLeaf !== $aliasLC && $lastLeaf !== '\\' . $aliasLC) {
                 $hasAlias   = true;
