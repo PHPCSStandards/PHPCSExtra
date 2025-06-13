@@ -20,7 +20,7 @@ concurrency:
 jobs:
   #### QUICK TEST STAGE ####
   # This is a much quicker test which only runs the unit tests and linting against the low/high
-  # supported PHP/PHPCS combinations.
+  # supported PHP/PHPCS/PHPCSUtils combinations.
   # These are basically the same builds as in the Test->Coverage workflow, but then without doing
   # the code-coverage.
   quicktest:
@@ -29,38 +29,25 @@ jobs:
     strategy:
       matrix:
         php: ['5.4', 'latest']
-        phpcs_version: ['lowest', 'dev-master']
+        dependencies: ['lowest', 'stable']
 
-    name: "QTest${{ matrix.phpcs_version == 'dev-master' && ' + Lint' || '' }}: PHP ${{ matrix.php }} - PHPCS ${{ matrix.phpcs_version }}"
+    name: "QTest${{ matrix.dependencies == 'stable' && ' + Lint' || '' }}: PHP ${{ matrix.php }} - PHPCS ${{ matrix.dependencies }}"
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # On stable PHPCS versions, allow for PHP deprecation notices.
-      # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
-      - name: Setup ini config
-        id: set_ini
-        run: |
-          if [ "${{ matrix.phpcs_version }}" != "dev-master" ]; then
-            echo 'PHP_INI=error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On' >> "$GITHUB_OUTPUT"
-          else
-            echo 'PHP_INI=error_reporting=-1, display_errors=On' >> "$GITHUB_OUTPUT"
-          fi
-
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          ini-values: ${{ steps.set_ini.outputs.PHP_INI }}
+          # With stable PHPCS dependencies, allow for PHP deprecation notices.
+          # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
+          ini-values: error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On
           coverage: none
 
-      - name: "Composer: set PHPCS version for tests (master)"
-        if: ${{ matrix.phpcs_version != 'lowest' }}
-        run: composer require squizlabs/php_codesniffer:"${{ matrix.phpcs_version }}" --no-update --no-scripts --no-interaction
-
       - name: "Composer: use lock file when necessary"
-        if: ${{ matrix.phpcs_version == 'lowest' }}
+        if: ${{ matrix.dependencies == 'lowest' }}
         run: composer config --unset lock
 
       # Install dependencies and handle caching in one go.
@@ -72,14 +59,14 @@ jobs:
           custom-cache-suffix: $(date -u "+%Y-%m")
 
       - name: "Composer: set PHPCS/PHPCSUtils version for tests (lowest)"
-        if: ${{ matrix.phpcs_version == 'lowest' }}
+        if: ${{ matrix.dependencies == 'lowest' }}
         run: >
           composer update --prefer-lowest --no-scripts --no-interaction
           squizlabs/php_codesniffer
           phpcsstandards/phpcsutils
 
       - name: Lint against parse errors
-        if: matrix.phpcs_version == 'dev-master'
+        if: matrix.dependencies == 'stable'
         run: composer lint
 
       - name: Run the unit tests
