@@ -10,7 +10,7 @@
 
 namespace PHPCSExtra\Universal\Tests\FunctionDeclarations;
 
-use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
+use PHP_CodeSniffer\Tests\Standards\AbstractSniffTestCase;
 
 /**
  * Unit test class for the NoLongClosures sniff.
@@ -19,7 +19,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @since 1.1.0
  */
-final class NoLongClosuresUnitTest extends AbstractSniffUnitTest
+final class NoLongClosuresUnitTest extends AbstractSniffTestCase
 {
 
     /**
