@@ -21,7 +21,7 @@ interface ExtendsTwoUnqualifiedOK extends Countable, Throwable {}
 /*
  * OK with the default orderby "name" setting.
  */
-class ImplementsThreeMixedOk implements Sub\Bar, \Vendor\Package\Boo, Foo {}
+class ImplementsThreeMixedOk implements Sub\Bar, namespace\Baz, \Vendor\Package\Boo, Foo {}
 
 /*
  * Incorrect order with the default orderby "name" setting.
@@ -30,8 +30,8 @@ class ImplementsThreeMixedOk implements Sub\Bar, \Vendor\Package\Boo, Foo {}
 class ImplementsTwoUnqualifiedIncorrect implements Foo, Bar {}
 interface ExtendsTwoUnqualifiedIncorrect extends Throwable, Countable {}
 
-class ImplementsThreeMixedIncorrect implements Sub\Bar, Foo, \Vendor\Package\Boo {}
-interface ExtendsThreeMixedIncorrect extends Foo, Sub\Bar, \Vendor\Package\Boo {}
+class ImplementsThreeMixedIncorrect implements Sub\Bar, Foo, namespace\Baz, \Vendor\Package\Boo {}
+interface ExtendsThreeMixedIncorrect extends Foo, Sub\Bar, \Vendor\Package\Boo, namespace\Baz {}
 
 class ImplementsThreeUnqualifiedMixedCase implements Foo, Bar, boo {}
 
@@ -41,7 +41,7 @@ class ImplementsThreeUnqualifiedMixedCase implements Foo, Bar, boo {}
 /*
  * OK with the alternative orderby "full" setting.
  */
-interface ExtendsThreeFullMixedOK extends Foo, Sub\Bar, \Vendor\Package\Boo {}
+interface ExtendsThreeFullMixedOK extends Foo, namespace\Baz, Sub\Bar, \Vendor\Package\Boo {}
 
 /*
  * Incorrect order with the alternative orderby "full" setting.
@@ -50,8 +50,8 @@ interface ExtendsThreeFullMixedOK extends Foo, Sub\Bar, \Vendor\Package\Boo {}
 class ImplementsTwoFullUnqualifiedIncorrect IMPLEMENTS Foo, Bar {}
 interface ExtendsTwoFullUnqualifiedIncorrect extends Throwable, Countable {}
 
-class ImplementsThreeFullMixedIncorrect implements Sub\Bar, \Vendor\Package\Boo, Foo {}
-interface ExtendsThreeFullMixedIncorrect extends Sub\Bar, Foo, \Vendor\Package\Boo {}
+class ImplementsThreeFullMixedIncorrect implements Sub\Bar, \Vendor\Package\Boo, Foo, namespace\Baz {}
+interface ExtendsThreeFullMixedIncorrect extends Sub\Bar, namespace\Baz, Foo, \Vendor\Package\Boo {}
 
 
 // Pass incorrect setting. Should use the "name" default.
