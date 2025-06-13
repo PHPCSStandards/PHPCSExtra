@@ -12,8 +12,7 @@ namespace PHPCSExtra\Universal\Sniffs\Constants;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
-use PHP_CodeSniffer\Util\Tokens;
-use PHPCSUtils\Tokens\Collections;
+use PHPCSUtils\Utils\Constants;
 use PHPCSUtils\Utils\Scopes;
 
 /**
@@ -95,35 +94,18 @@ final class ModifierKeywordOrderSniff implements Sniff
             return;
         }
 
-        $tokens = $phpcsFile->getTokens();
-        $valid  = Collections::constantModifierKeywords() + Tokens::$emptyTokens;
+        $constantInfo = Constants::getProperties($phpcsFile, $stackPtr);
 
-        $finalPtr      = false;
-        $visibilityPtr = false;
-
-        for ($i = ($stackPtr - 1); $i > 0; $i--) {
-            if (isset($valid[$tokens[$i]['code']]) === false) {
-                break;
-            }
-
-            if (isset(Tokens::$emptyTokens[$tokens[$i]['code']]) === true) {
-                continue;
-            }
-
-            if ($tokens[$i]['code'] === \T_FINAL) {
-                $finalPtr = $i;
-            } else {
-                $visibilityPtr = $i;
-            }
-        }
-
-        if ($finalPtr === false || $visibilityPtr === false) {
+        if ($constantInfo['final_token'] === false || $constantInfo['scope_token'] === false) {
             /*
              * Either no modifier keywords found at all; or only one type of modifier
              * keyword (final or visibility) declared, but not both. No ordering needed.
              */
             return;
         }
+
+        $finalPtr      = $constantInfo['final_token'];
+        $visibilityPtr = $constantInfo['scope_token'];
 
         if ($visibilityPtr < $finalPtr) {
             $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, self::VISIBILITY_FINAL);
