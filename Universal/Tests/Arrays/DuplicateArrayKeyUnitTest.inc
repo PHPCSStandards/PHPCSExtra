@@ -54,7 +54,7 @@ $everythingZero = [
     0.               => 'r',
     .0               => 's',
     (true) ? 0 : 1   => 't',
-    ! true           => 'u',
+    ! \true          => 'u',
 ];
 
 $everythingOne = [
@@ -80,7 +80,7 @@ $everythingOne = [
     1.               => 'q',
     001.             => 'r',
     (true) ? 1 : 0   => 's',
-    ! false          => 't',
+    ! \false         => 't',
     (string) true    => 'u',
 ];
 
