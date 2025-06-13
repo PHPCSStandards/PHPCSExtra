@@ -54,7 +54,7 @@ $everythingZero = [
     0.               => 'r',
     .0               => 's',
     (true) ? 0 : 1   => 't',
-    ! true           => 'u',
+    ! \true          => 'u',
 ];
 
 $everythingOne = [
@@ -80,7 +80,7 @@ $everythingOne = [
     1.               => 'q',
     001.             => 'r',
     (true) ? 1 : 0   => 's',
-    ! false          => 't',
+    ! \false         => 't',
     (string) true    => 'u',
 ];
 
@@ -164,4 +164,14 @@ $testPHPLt8VsPHP8 = array(
     0   => 'i', // Duplicate in PHP < 8, not in PHP 8.
     1   => 'j', // Duplicate in PHP < 8, not in PHP 8.
     2   => 'k', // Duplicate in PHP < 8, not in PHP 8.
+);
+
+// Issue PHPCSExtra#316, PHPCSStandards/PHPCSUtils#619 no false positive for numeric string keys starting/ending with an underscore.
+$validStringKeys = array(
+    '_1'  => 'value1',
+    '_2'  => 'value2',
+    '3_'  => 'value3',
+    '4_'  => 'value4',
+    '_5_' => 'value5',
+    '_6_' => 'value6',
 );
