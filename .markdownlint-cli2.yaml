@@ -93,7 +93,7 @@ config:
   # MD044/proper-names - Proper names should have the correct capitalization.
   MD044:
     # List of proper names.
-    names: ["PHPCSUtils", "PHP", "PHP_CodeSniffer", "CodeSniffer", "PHPUnit"]
+    names: ["PHPCSExtra", "Modernize", "NormalizedArrays", "Universal", "PHPCSUtils", "PHP", "PHP_CodeSniffer", "CodeSniffer", "PHPUnit"]
     # Include code blocks.
     code_blocks: false
 

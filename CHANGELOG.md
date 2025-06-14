@@ -576,7 +576,7 @@ The upgrade to PHPCSUtils 1.0.0-alpha4 took care of a number of bugs, which pote
 
 Initial alpha release containing:
 * A `NormalizedArrays` standard which will contain a full set of sniffs to check the formatting of array declarations.
-* A `Universal` standard which will contain a collection of universal sniffs.
+* A `Universal` standard which will contain a collection of universally applicable sniffs.
     DO NOT INCLUDE THIS AS A STANDARD.
     `Universal`, like the upstream PHPCS `Generic` standard, contains sniffs which contradict each other.
     Include individual sniffs from this standard in a custom project/company ruleset to use them.
