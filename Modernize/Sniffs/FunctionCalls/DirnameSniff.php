@@ -44,7 +44,10 @@ final class DirnameSniff implements Sniff
      */
     public function register()
     {
-        return [\T_STRING];
+        return [
+            \T_STRING,
+            \T_NAME_FULLY_QUALIFIED,
+        ];
     }
 
     /**
@@ -75,9 +78,13 @@ final class DirnameSniff implements Sniff
             return;
         }
 
-        $tokens = $phpcsFile->getTokens();
+        $tokens   = $phpcsFile->getTokens();
+        $contents = $tokens[$stackPtr]['content'];
+        if ($tokens[$stackPtr]['code'] === \T_NAME_FULLY_QUALIFIED) {
+            $contents = \ltrim($contents, '\\');
+        }
 
-        if (\strtolower($tokens[$stackPtr]['content']) !== 'dirname') {
+        if (\strtolower($contents) !== 'dirname') {
             // Not our target.
             return;
         }
@@ -224,7 +231,7 @@ final class DirnameSniff implements Sniff
          * Note: the findNext() calls are safe and will always match the dirname() function call
          * as otherwise the above regex wouldn't have matched.
          */
-        $innerDirnamePtr = $phpcsFile->findNext(\T_STRING, $pathParam['start'], ($pathParam['end'] + 1));
+        $innerDirnamePtr = $phpcsFile->findNext($this->register(), $pathParam['start'], ($pathParam['end'] + 1));
         $innerOpener     = $phpcsFile->findNext(\T_OPEN_PARENTHESIS, ($innerDirnamePtr + 1), ($pathParam['end'] + 1));
         if (isset($tokens[$innerOpener]['parenthesis_closer']) === false) {
             // Shouldn't be possible.

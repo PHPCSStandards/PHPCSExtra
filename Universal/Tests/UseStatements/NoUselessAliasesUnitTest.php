@@ -10,7 +10,7 @@
 
 namespace PHPCSExtra\Universal\Tests\UseStatements;
 
-use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
+use PHP_CodeSniffer\Tests\Standards\AbstractSniffTestCase;
 
 /**
  * Unit test class for the NoUselessAliases sniff.
@@ -19,7 +19,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @since 1.1.0
  */
-final class NoUselessAliasesUnitTest extends AbstractSniffUnitTest
+final class NoUselessAliasesUnitTest extends AbstractSniffTestCase
 {
 
     /**
@@ -48,6 +48,10 @@ final class NoUselessAliasesUnitTest extends AbstractSniffUnitTest
             69 => 1,
             72 => 1,
             76 => 1,
+            81 => 1,
+            85 => 1,
+            89 => 1,
+            93 => 1,
         ];
     }
 

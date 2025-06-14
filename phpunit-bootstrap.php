@@ -4,7 +4,7 @@
  *
  * Bootstrap file for running the tests.
  *
- * - Load the PHPCS PHPUnit bootstrap file providing cross-version PHPUnit support.
+ * - Load the PHPCS PHPUnit bootstrap file to set up the PHPCS native autoloading and some constants.
  *   {@link https://github.com/squizlabs/PHP_CodeSniffer/pull/1384}
  * - Allows for a `PHPCS_DIR` environment variable to be set to point to a different
  *   PHPCS install than the one in the `vendor` directory to allow for testing with
@@ -58,6 +58,16 @@ for that PHPCS install.
 ';
 
     exit(1);
+}
+
+// Alias the PHPCS 3.x test case to the PHPCS 4.x name.
+if (class_exists('PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest') === true
+    && class_exists('PHP_CodeSniffer\Tests\Standards\AbstractSniffTestCase') === false
+) {
+    class_alias(
+        'PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest',
+        'PHP_CodeSniffer\Tests\Standards\AbstractSniffTestCase'
+    );
 }
 
 /*

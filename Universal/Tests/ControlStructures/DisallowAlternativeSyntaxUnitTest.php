@@ -10,7 +10,7 @@
 
 namespace PHPCSExtra\Universal\Tests\ControlStructures;
 
-use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
+use PHP_CodeSniffer\Tests\Standards\AbstractSniffTestCase;
 
 /**
  * Unit test class for the DisallowAlternativeSyntax sniff.
@@ -19,7 +19,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @since 1.0.0
  */
-final class DisallowAlternativeSyntaxUnitTest extends AbstractSniffUnitTest
+final class DisallowAlternativeSyntaxUnitTest extends AbstractSniffTestCase
 {
 
     /**

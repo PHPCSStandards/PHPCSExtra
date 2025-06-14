@@ -10,7 +10,7 @@
 
 namespace PHPCSExtra\Modernize\Tests\FunctionCalls;
 
-use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
+use PHP_CodeSniffer\Tests\Standards\AbstractSniffTestCase;
 use PHPCSUtils\BackCompat\Helper;
 
 /**
@@ -20,7 +20,7 @@ use PHPCSUtils\BackCompat\Helper;
  *
  * @since 1.0.0
  */
-final class DirnameUnitTest extends AbstractSniffUnitTest
+final class DirnameUnitTest extends AbstractSniffTestCase
 {
 
     /**

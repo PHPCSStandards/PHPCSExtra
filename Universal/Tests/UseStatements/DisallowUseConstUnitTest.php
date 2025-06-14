@@ -10,7 +10,7 @@
 
 namespace PHPCSExtra\Universal\Tests\UseStatements;
 
-use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
+use PHP_CodeSniffer\Tests\Standards\AbstractSniffTestCase;
 
 /**
  * Unit test class for the DisallowUseConst sniff.
@@ -22,7 +22,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @since 1.0.0
  */
-final class DisallowUseConstUnitTest extends AbstractSniffUnitTest
+final class DisallowUseConstUnitTest extends AbstractSniffTestCase
 {
 
     /**
@@ -49,6 +49,9 @@ final class DisallowUseConstUnitTest extends AbstractSniffUnitTest
                     32 => 1, // GlobalNamespaceWithAlias.
                     33 => 1, // GlobalNamespace. Note: alias same as name, so not counted as aliased.
                     38 => 1,
+                    42 => 1,
+                    43 => 1,
+                    45 => 1,
                 ];
 
             case 'DisallowUseConstUnitTest.2.inc':

@@ -71,14 +71,22 @@ final class NoEchoSprintfSniff implements Sniff
 
         $next = $phpcsFile->findNext($skip, ($stackPtr + 1), null, true);
         if ($next === false
-            || $tokens[$next]['code'] !== \T_STRING
-            || isset($this->targetFunctions[\strtolower($tokens[$next]['content'])]) === false
+            || ($tokens[$next]['code'] !== \T_STRING
+            && $tokens[$next]['code'] !== \T_NAME_FULLY_QUALIFIED)
         ) {
-            // Not our target.
+            // Definitely not our target.
             return;
         }
 
         $detectedFunction = \strtolower($tokens[$next]['content']);
+        if ($tokens[$next]['code'] === \T_NAME_FULLY_QUALIFIED) {
+            $detectedFunction = \ltrim($detectedFunction, '\\');
+        }
+
+        if (isset($this->targetFunctions[$detectedFunction]) === false) {
+            // Not one of our target functions.
+            return;
+        }
 
         $openParens = $phpcsFile->findNext(Tokens::$emptyTokens, ($next + 1), null, true);
         if ($openParens === false
@@ -123,7 +131,12 @@ final class NoEchoSprintfSniff implements Sniff
                 $phpcsFile->fixer->replaceToken($i, '');
             }
 
-            $phpcsFile->fixer->replaceToken($next, $this->targetFunctions[$detectedFunction]);
+            $replacement = $this->targetFunctions[$detectedFunction];
+            if ($tokens[$next]['code'] === \T_NAME_FULLY_QUALIFIED) {
+                $replacement = '\\' . $replacement;
+            }
+
+            $phpcsFile->fixer->replaceToken($next, $replacement);
 
             $phpcsFile->fixer->endChangeset();
         }
