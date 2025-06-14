@@ -25,11 +25,11 @@ jobs:
 
     strategy:
       matrix:
-        php: ['5.4', '7.0', '7.4', '8.0', '8.4', '8.5']
+        php: ['5.4', '7.0', '7.4', '8.0', '8.4', 'nightly']
 
     name: "Lint: PHP ${{ matrix.php }}"
 
-    continue-on-error: ${{ matrix.php == '8.5' }}
+    continue-on-error: ${{ matrix.php == 'nightly' }}
 
     steps:
       - name: Checkout code
@@ -47,7 +47,7 @@ jobs:
         uses: "ramsey/composer-install@v3"
         with:
           # For the PHP "nightly", we need to install with ignore platform reqs as not all dependencies may allow it yet.
-          composer-options: ${{ matrix.php == '8.5' && '--ignore-platform-req=php+' || '' }}
+          composer-options: ${{ matrix.php == 'nightly' && '--ignore-platform-req=php+' || '' }}
           # Bust the cache at least once a month - output format: YYYY-MM.
           custom-cache-suffix: $(date -u "+%Y-%m")
 
