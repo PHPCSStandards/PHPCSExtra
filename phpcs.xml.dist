@@ -33,11 +33,7 @@
     -->
 
     <rule ref="PHPCSDev">
-        <!-- Allow for the file docblock on the line directly following the PHP open tag.
-             As the sniff in PHPCS does not use modular error codes (yet - see PR #2729),
-             the complete error code needs to be disabled, not just the bit involving
-             the file docblocks.
-        -->
+        <!-- Only needed for PHPCS 3.x. This exclusion can be removed when PHPCSDevCS drops support for PHPCS 3.x. -->
         <exclude name="PSR12.Files.FileHeader.SpacingAfterBlock"/>
     </rule>
 

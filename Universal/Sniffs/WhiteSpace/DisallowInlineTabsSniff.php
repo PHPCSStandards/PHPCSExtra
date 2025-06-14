@@ -135,9 +135,9 @@ final class DisallowInlineTabsSniff implements Sniff
             $multiLineComment = false;
             if (($tokens[$i]['code'] === \T_COMMENT
                 || isset(Tokens::$phpcsCommentTokens[$tokens[$i]['code']]))
-                 && $tokens[$i]['column'] === 1
-                 && ($tokens[($i - 1)]['code'] === \T_COMMENT
-                 || isset(Tokens::$phpcsCommentTokens[$tokens[($i - 1)]['code']]))
+                && $tokens[$i]['column'] === 1
+                && ($tokens[($i - 1)]['code'] === \T_COMMENT
+                || isset(Tokens::$phpcsCommentTokens[$tokens[($i - 1)]['code']]))
             ) {
                 $multiLineComment = true;
             }
