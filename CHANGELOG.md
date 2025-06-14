@@ -14,6 +14,23 @@ This projects adheres to [Keep a CHANGELOG](https://keepachangelog.com/) and use
 
 _Nothing yet._
 
+## [1.4.1] - 2025-09-05
+
+### Changed
+
+#### Other
+
+* Various housekeeping.
+
+
+### Fixed
+
+#### Universal
+
+* `Universal.PHP.NoFQNTrueFalseNull`: fix breakage due to upstream change in tokenization. [#375]
+
+[#375]: https://github.com/PHPCSStandards/PHPCSExtra/pull/375
+
 
 ## [1.4.0] - 2025-06-14
 
@@ -662,6 +679,7 @@ This initial alpha release contains the following sniffs:
 [php_version-config]:    https://github.com/PHPCSStandards/PHP_CodeSniffer/wiki/Configuration-Options#setting-the-php-version
 
 [Unreleased]: https://github.com/PHPCSStandards/PHPCSExtra/compare/stable...HEAD
+[1.4.1]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.4.0...1.4.1
 [1.4.0]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.3.1...1.4.0
 [1.3.1]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.3.0...1.3.1
 [1.3.0]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.2.1...1.3.0
