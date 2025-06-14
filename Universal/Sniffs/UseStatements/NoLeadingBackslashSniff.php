@@ -141,7 +141,9 @@ final class NoLeadingBackslashSniff implements Sniff
             }
         }
 
-        if ($tokens[$nextNonEmpty]['code'] === \T_NS_SEPARATOR) {
+        if ($tokens[$nextNonEmpty]['code'] === \T_NS_SEPARATOR
+            || $tokens[$nextNonEmpty]['code'] === \T_NAME_FULLY_QUALIFIED
+        ) {
             $phpcsFile->recordMetric($nextNonEmpty, self::METRIC_NAME, 'yes');
 
             $error = 'An import use statement should never start with a leading backslash';
@@ -155,10 +157,16 @@ final class NoLeadingBackslashSniff implements Sniff
             $fix = $phpcsFile->addFixableError($error, $nextNonEmpty, $code);
 
             if ($fix === true) {
-                if ($tokens[$nextNonEmpty - 1]['code'] !== \T_WHITESPACE) {
-                    $phpcsFile->fixer->replaceToken($nextNonEmpty, ' ');
+                if ($tokens[$nextNonEmpty]['code'] === \T_NS_SEPARATOR) {
+                    // PHPCS 3.x.
+                    if ($tokens[$nextNonEmpty - 1]['code'] !== \T_WHITESPACE) {
+                        $phpcsFile->fixer->replaceToken($nextNonEmpty, ' ');
+                    } else {
+                        $phpcsFile->fixer->replaceToken($nextNonEmpty, '');
+                    }
                 } else {
-                    $phpcsFile->fixer->replaceToken($nextNonEmpty, '');
+                    // PHPCS 4.x / T_NAME_FULLY_QUALIFIED.
+                    $phpcsFile->fixer->replaceToken($nextNonEmpty, \ltrim($tokens[$nextNonEmpty]['content'], '\\'));
                 }
             }
         } else {

@@ -64,7 +64,7 @@ use Some\NS\ {
 
 // Verify handling of non-ascii names.
 use Vendor\Package\Déjàvü as Dejavu; // OK.
-use Vendor\Package\Déjàvü as DÉJÀVÜ; // Ok.
+use Vendor\Package\Déjàvü as DÉJÀVÜ; // OK.
 use Vendor\Package\Déjàvü as Déjàvü; // Error.
 use Vendor\Package\Déjàvü as déJàVü; // Error.
 
@@ -74,6 +74,23 @@ use function 💩💩 as 💩💩; // Error.
 // Verify handing with (illegal) duplicate aliases.
 use function foo\math\sin as Cos, // OK.
     foo\math\cos as Cos; // Error.
+
+// Duplicate aliases, but that's not our concern - this test is about flagging the correct alias pointer.
+use function foo,
+    bar as baz,
+    baz as baz; // Error.
+
+use function partial\foo,
+    partial\bar as baz,
+    partial\baz as baz; // Error.
+
+use function \foo,
+    \bar as baz,
+    \baz as baz; // Error.
+
+use function \full\foo,
+    \full\bar as baz,
+    \full\baz as baz; // Error.
 
 // Intentional parse error.
 use function as ;

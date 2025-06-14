@@ -39,10 +39,12 @@ jobs:
       - name: Validate Composer installation
         run: composer validate --no-check-all --strict
 
+      # Use the WIP/develop branches of the Extra CS dependencies as an early detection system for bugs upstream.
       - name: 'Composer: adjust dependencies'
-        run: |
-          # Using PHPCS `master` as an early detection system for bugs upstream.
-          composer require --no-update squizlabs/php_codesniffer:"dev-master" --no-interaction
+        run: >
+          composer require --no-update --no-scripts --no-interaction
+          squizlabs/php_codesniffer:"dev-master"
+          phpcsstandards/phpcsutils:"dev-develop"
 
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-php-dependencies-with-composer

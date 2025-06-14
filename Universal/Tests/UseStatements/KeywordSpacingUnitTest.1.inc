@@ -55,9 +55,9 @@ use
    as
 
    otherFunction;
-use FuncTion\Util\functionB;
+use FuncTion  \Util\functionB;
 use  CONST  Vendor\Package\CONSTANT_NAME   as  /*comment*/ OTHER_CONSTANT;
-use Const\Util\MyClass\CONSTANT_Y;
+use Const  \Util\MyClass\CONSTANT_Y;
 
 use Vendor\Package\MultiStatement as   Multi,
     DateTime   AS   dateT;

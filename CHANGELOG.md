@@ -1,4 +1,4 @@
-# Change Log for the PHPCSExtra standard for PHP CodeSniffer
+# Change Log for the PHPCSExtra standard for PHP_CodeSniffer
 
 All notable changes to this project will be documented in this file.
 
@@ -13,6 +13,41 @@ This projects adheres to [Keep a CHANGELOG](https://keepachangelog.com/) and use
 ## [Unreleased]
 
 _Nothing yet._
+
+
+## [1.4.0] - 2025-06-14
+
+### Added
+
+* All sniffs: compatibility with the new PHP_CodeSniffer `4.x` branch in anticipation of the PHP_CodeSniffer 4.0 release. [#367]
+    PHPCSExtra should now be fully compatible with PHP_CodeSniffer 4.0. If you still find an issue, please report it.
+
+### Changed
+
+#### Other
+
+* Composer: The minimum `PHP_CodeSniffer` requirement has been updated to `^3.13.0` (was `^3.12.1`). [#361]
+* Composer: The minimum `PHPCSUtils` requirement has been updated to `^1.1.0` (was `^1.0.12`). [#361]
+* Various housekeeping.
+
+### Deprecated
+
+#### Universal
+
+* `Universal.WhiteSpace.PrecisionAlignment`: support for scanning JS/CSS files via this sniff is now deprecated. [#367]
+
+### Fixed
+
+#### Universal
+
+* `Universal.Arrays.DuplicateArrayKey`: false positives for numeric strings with leading/trailing underscores. Fixed via the update to PHPCSUtils 1.1.0.  [#363]
+* `Universal.Arrays.DuplicateArrayKey`: false negatives for fully qualified `true`/`false`/`null` arrays keys. Fixed via the update to PHPCSUtils 1.1.0. [#363]
+* `Universal.WhiteSpace.CommaSpacing`: wrong errorcode for comma's in closure use statements after the update to PHPCSUtils 1.1.0. [#362]
+
+[#361]: https://github.com/PHPCSStandards/PHPCSExtra/pull/361
+[#362]: https://github.com/PHPCSStandards/PHPCSExtra/pull/362
+[#363]: https://github.com/PHPCSStandards/PHPCSExtra/pull/363
+[#367]: https://github.com/PHPCSStandards/PHPCSExtra/pull/367
 
 
 ## [1.3.1] - 2025-06-08
@@ -576,7 +611,7 @@ The upgrade to PHPCSUtils 1.0.0-alpha4 took care of a number of bugs, which pote
 
 Initial alpha release containing:
 * A `NormalizedArrays` standard which will contain a full set of sniffs to check the formatting of array declarations.
-* A `Universal` standard which will contain a collection of universal sniffs.
+* A `Universal` standard which will contain a collection of universally applicable sniffs.
     DO NOT INCLUDE THIS AS A STANDARD.
     `Universal`, like the upstream PHPCS `Generic` standard, contains sniffs which contradict each other.
     Include individual sniffs from this standard in a custom project/company ruleset to use them.
@@ -627,6 +662,7 @@ This initial alpha release contains the following sniffs:
 [php_version-config]:    https://github.com/PHPCSStandards/PHP_CodeSniffer/wiki/Configuration-Options#setting-the-php-version
 
 [Unreleased]: https://github.com/PHPCSStandards/PHPCSExtra/compare/stable...HEAD
+[1.4.0]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.3.1...1.4.0
 [1.3.1]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.3.0...1.3.1
 [1.3.0]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.2.1...1.3.0
 [1.2.1]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.2.0...1.2.1

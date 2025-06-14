@@ -10,7 +10,7 @@
 
 namespace PHPCSExtra\Universal\Tests\PHP;
 
-use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
+use PHP_CodeSniffer\Tests\Standards\AbstractSniffTestCase;
 
 /**
  * Unit test class for the LowercasePHPTag sniff.
@@ -19,7 +19,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @since 1.2.0
  */
-final class LowercasePHPTagUnitTest extends AbstractSniffUnitTest
+final class LowercasePHPTagUnitTest extends AbstractSniffTestCase
 {
 
     /**

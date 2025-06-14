@@ -10,7 +10,7 @@
 
 namespace PHPCSExtra\Universal\Tests\PHP;
 
-use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
+use PHP_CodeSniffer\Tests\Standards\AbstractSniffTestCase;
 
 /**
  * Unit test class for the NoFQNTrueFalseNull sniff.
@@ -19,7 +19,7 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @since 1.3.0
  */
-final class NoFQNTrueFalseNullUnitTest extends AbstractSniffUnitTest
+final class NoFQNTrueFalseNullUnitTest extends AbstractSniffTestCase
 {
 
     /**

@@ -13,6 +13,7 @@ namespace PHPCSExtra\Universal\Sniffs\UseStatements;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Tokens\Collections;
 use PHPCSUtils\Utils\NamingConventions;
 use PHPCSUtils\Utils\UseStatements;
 
@@ -117,8 +118,21 @@ final class NoUselessAliasesSniff implements Sniff
 
                     // Make sure this is really the right one.
                     $prev = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($asPtr - 1), null, true);
-                    if ($tokens[$prev]['code'] !== \T_STRING
-                        || $tokens[$prev]['content'] !== $unqualifiedName
+                    if (isset(Collections::nameTokens()[$tokens[$prev]['code']]) === false) {
+                        // Shouldn't be possible.
+                        continue; // @codeCoverageIgnore
+                    } elseif ($tokens[$prev]['code'] === \T_STRING
+                        && $tokens[$prev]['content'] !== $unqualifiedName
+                    ) {
+                        continue;
+                    } elseif ($tokens[$prev]['code'] === \T_NAME_QUALIFIED
+                        && $tokens[$prev]['content'] !== $qualifiedName
+                        && \substr($qualifiedName, -(\strlen($tokens[$prev]['content']))) !== $tokens[$prev]['content']
+                    ) {
+                        continue;
+                    } elseif ($tokens[$prev]['code'] === \T_NAME_FULLY_QUALIFIED
+                        && $tokens[$prev]['content'] !== '\\' . $qualifiedName
+                        && \substr($qualifiedName, -(\strlen($tokens[$prev]['content']))) !== $tokens[$prev]['content']
                     ) {
                         continue;
                     }

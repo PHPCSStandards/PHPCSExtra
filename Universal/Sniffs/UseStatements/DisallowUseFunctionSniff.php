@@ -10,10 +10,10 @@
 
 namespace PHPCSExtra\Universal\Sniffs\UseStatements;
 
-use PHP_CodeSniffer\Exceptions\RuntimeException;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Exceptions\ValueError;
 use PHPCSUtils\Utils\Namespaces;
 use PHPCSUtils\Utils\UseStatements;
 
@@ -115,7 +115,7 @@ final class DisallowUseFunctionSniff implements Sniff
         // Ok, so this is a T_USE token.
         try {
             $statements = UseStatements::splitImportUseStatement($phpcsFile, $stackPtr);
-        } catch (RuntimeException $e) {
+        } catch (ValueError $e) {
             // Not an import use statement. Bow out.
             return;
         }
@@ -128,12 +128,19 @@ final class DisallowUseFunctionSniff implements Sniff
         $endOfStatement = $phpcsFile->findNext([\T_SEMICOLON, \T_CLOSE_TAG], ($stackPtr + 1));
 
         foreach ($statements['function'] as $alias => $qualifiedName) {
+            /*
+             * Determine which token to flag.
+             *
+             * - If there is an alias, the alias should be flagged.
+             * - If there isn't an alias, the function name at the end of the qualified name should be flagged
+             *   on PHPCS 3.x and the complete qualified function name on PHPCS 4.x.
+             */
             $reportPtr = $stackPtr;
             do {
                 $reportPtr = $phpcsFile->findNext(\T_STRING, ($reportPtr + 1), $endOfStatement, false, $alias);
                 if ($reportPtr === false) {
-                    // Shouldn't be possible.
-                    continue 2; // @codeCoverageIgnore
+                    // Shouldn't be possible on 3.x, but perfectly possible on 4.x when the class is not aliased.
+                    break;
                 }
 
                 $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($reportPtr + 1), $endOfStatement, true);
@@ -144,6 +151,54 @@ final class DisallowUseFunctionSniff implements Sniff
 
                 break;
             } while (true);
+
+            if ($reportPtr === false) {
+                // Find the non-aliased name on PHPCS 4.x.
+                $reportPtr = $phpcsFile->findNext(
+                    [\T_NAME_QUALIFIED],
+                    ($stackPtr + 1),
+                    $endOfStatement,
+                    false,
+                    $qualifiedName
+                );
+
+                if ($reportPtr === false) {
+                    // This may be an imported function (incorrectly) passed as an FQN.
+                    $reportPtr = $phpcsFile->findNext(
+                        [\T_NAME_FULLY_QUALIFIED],
+                        ($stackPtr + 1),
+                        $endOfStatement,
+                        false,
+                        '\\' . $qualifiedName
+                    );
+
+                    if ($reportPtr === false) {
+                        // This may be a partial name in a group use statement.
+                        $groupStart = $phpcsFile->findNext(\T_OPEN_USE_GROUP, ($stackPtr + 1), $endOfStatement);
+                        if ($groupStart === false) {
+                            // Shouldn't be possible.
+                            continue; // @codeCoverageIgnore
+                        }
+
+                        for ($i = ($groupStart + 1); $i < $endOfStatement; $i++) {
+                            if ($tokens[$i]['code'] === \T_NAME_QUALIFIED
+                                || $tokens[$i]['code'] === \T_NAME_FULLY_QUALIFIED
+                            ) {
+                                $contentLength = \strlen($tokens[$i]['content']);
+                                if (\substr($qualifiedName, -$contentLength) === $tokens[$i]['content']) {
+                                    $reportPtr = $i;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if ($reportPtr === false) {
+                            // Shouldn't be possible.
+                            continue; // @codeCoverageIgnore
+                        }
+                    }
+                }
+            }
 
             /*
              * Build the error message and code.

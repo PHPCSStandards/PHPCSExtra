@@ -357,6 +357,9 @@ final class CommaSpacingSniff implements Sniff
                 case \T_FN:
                     return 'InFunctionDeclaration';
 
+                case \T_USE:
+                    return 'InClosureUse';
+
                 case \T_DECLARE:
                     return 'InDeclare';
 
@@ -365,7 +368,7 @@ final class CommaSpacingSniff implements Sniff
                 case \T_UNSET:
                     return 'InFunctionCall';
 
-                // Long array, long list, isset, unset, empty, exit, eval, control structures.
+                // Long array, long list, empty, exit, eval, control structures.
                 default:
                     return '';
             }
@@ -378,9 +381,6 @@ final class CommaSpacingSniff implements Sniff
         }
 
         switch ($tokens[$prevNonEmpty]['code']) {
-            case \T_USE:
-                return 'InClosureUse';
-
             case \T_VARIABLE:
             case \T_SELF:
             case \T_STATIC:
