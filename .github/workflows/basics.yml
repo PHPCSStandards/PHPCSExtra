@@ -43,7 +43,7 @@ jobs:
       - name: 'Composer: adjust dependencies'
         run: >
           composer require --no-update --no-scripts --no-interaction
-          squizlabs/php_codesniffer:"dev-master"
+          squizlabs/php_codesniffer:"3.x-dev"
           phpcsstandards/phpcsutils:"dev-develop"
 
       # Install dependencies and handle caching in one go.
