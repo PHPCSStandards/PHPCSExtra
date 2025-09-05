@@ -10,6 +10,7 @@
 
 namespace PHPCSExtra\Universal\Sniffs\PHP;
 
+use PHP_CodeSniffer\Config;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
@@ -31,18 +32,17 @@ final class NoFQNTrueFalseNullSniff implements Sniff
      */
     public function register()
     {
-        return [
-            // PHPCS 3.x on PHP < 8.0.
+        $targets =  [
             \T_TRUE,
             \T_FALSE,
             \T_NULL,
-
-            // PHPCS 3.x on PHP >= 8.0.
-            \T_STRING,
-
-            // PHPCS 4.x.
-            \T_NAME_FULLY_QUALIFIED,
         ];
+
+        if (\version_compare(Config::VERSION, '4.0.0', '>=') === true) {
+            $targets[] = \T_NS_SEPARATOR;
+        }
+
+        return $targets;
     }
 
     /**
@@ -62,17 +62,21 @@ final class NoFQNTrueFalseNullSniff implements Sniff
         $content   = $tokens[$stackPtr]['content'];
         $contentLC = \strtolower($content);
 
-        if ($tokens[$stackPtr]['code'] === \T_NAME_FULLY_QUALIFIED) {
+        if ($contentLC === '\true' || $contentLC === '\false' || $contentLC === '\null') {
             // PHPCS 4.x.
-            if ($contentLC !== '\true' && $contentLC !== '\false' && $contentLC !== '\null') {
+        } elseif ($tokens[$stackPtr]['code'] === \T_NS_SEPARATOR) {
+            // PHPCS 4.x for code which is a parse error on PHP 8.0+.
+            $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
+            if ($tokens[$next]['code'] !== \T_STRING) {
+                return;
+            }
+
+            $nextContentLC = \strtolower($tokens[$next]['content']);
+            if ($nextContentLC !== 'true' && $nextContentLC !== 'false' && $nextContentLC !== 'null') {
                 return;
             }
         } else {
             // PHPCS 3.x.
-            if ($contentLC !== 'true' && $contentLC !== 'false' && $contentLC !== 'null') {
-                return;
-            }
-
             $prev = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true);
             if ($tokens[$prev]['code'] !== \T_NS_SEPARATOR) {
                 return;
@@ -97,9 +101,12 @@ final class NoFQNTrueFalseNullSniff implements Sniff
         );
 
         if ($fix === true) {
-            if ($tokens[$stackPtr]['code'] === \T_NAME_FULLY_QUALIFIED) {
+            if ($contentLC === '\true' || $contentLC === '\false' || $contentLC === '\null') {
                 // PHPCS 4.x.
                 $phpcsFile->fixer->replaceToken($stackPtr, \ltrim($tokens[$stackPtr]['content'], '\\'));
+            } elseif ($tokens[$stackPtr]['code'] === \T_NS_SEPARATOR) {
+                // PHPCS 4.x for code which is a parse error on PHP 8.0+.
+                $phpcsFile->fixer->replaceToken($stackPtr, '');
             } else {
                 // PHPCS 3.x.
                 $phpcsFile->fixer->replaceToken($prev, '');

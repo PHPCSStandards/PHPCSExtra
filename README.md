@@ -43,8 +43,8 @@ PHPCSExtra is a collection of sniffs and standards for use with [PHP_CodeSniffer
 ## Minimum Requirements
 
 * PHP 5.4 or higher.
-* [PHP_CodeSniffer][phpcs-gh] version **3.13.0** or higher.
-* [PHPCSUtils][phpcsutils-gh] version **1.1.0** or higher.
+* [PHP_CodeSniffer][phpcs-gh] version **3.13.4** or higher.
+* [PHPCSUtils][phpcsutils-gh] version **1.1.2** or higher.
 
 
 ## Installation
@@ -58,7 +58,7 @@ Installing via Composer is highly recommended.
 Run the following from the root of your project:
 ```bash
 composer config allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
-composer require --dev phpcsstandards/phpcsextra:"^1.2.0"
+composer require --dev phpcsstandards/phpcsextra:"^1.3.0"
 ```
 
 ### Composer Global Installation
@@ -66,7 +66,7 @@ composer require --dev phpcsstandards/phpcsextra:"^1.2.0"
 Alternatively, you may want to install this standard globally:
 ```bash
 composer global config allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
-composer global require --dev phpcsstandards/phpcsextra:"^1.2.0"
+composer global require --dev phpcsstandards/phpcsextra:"^1.3.0"
 ```
 
 ### Updating to a newer version
