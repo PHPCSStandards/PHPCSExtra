@@ -33,7 +33,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -113,7 +113,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       # On stable PHPCS versions, allow for PHP deprecation notices.
       # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
@@ -122,9 +122,9 @@ jobs:
         # yamllint disable rule:line-length
         run: |
           if [[ "${{ contains( matrix.phpcs_version, 'dev') }}" == "false" && "${{ contains( matrix.phpcsutils_version, 'dev') }}" == "false" ]]; then
-            echo 'PHP_INI=error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On' >> "$GITHUB_OUTPUT"
+            echo 'PHP_INI=error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On, display_startup_errors=On' >> "$GITHUB_OUTPUT"
           else
-            echo 'PHP_INI=error_reporting=-1, display_errors=On' >> "$GITHUB_OUTPUT"
+            echo 'PHP_INI=error_reporting=-1, display_errors=On, display_startup_errors=On' >> "$GITHUB_OUTPUT"
           fi
           # yamllint enable rule:line-length
 
@@ -215,7 +215,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       # On stable PHPCS versions, allow for PHP deprecation notices.
       # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
@@ -224,9 +224,9 @@ jobs:
         # yamllint disable rule:line-length
         run: |
           if [ "${{ matrix.dependencies == 'dev' }}" == "false" ]; then
-            echo 'PHP_INI=error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On' >> "$GITHUB_OUTPUT"
+            echo 'PHP_INI=error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On, display_startup_errors=On' >> "$GITHUB_OUTPUT"
           else
-            echo 'PHP_INI=error_reporting=-1, display_errors=On' >> "$GITHUB_OUTPUT"
+            echo 'PHP_INI=error_reporting=-1, display_errors=On, display_startup_errors=On' >> "$GITHUB_OUTPUT"
           fi
           # yamllint enable rule:line-length
 
