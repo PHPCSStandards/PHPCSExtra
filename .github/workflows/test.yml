@@ -68,18 +68,30 @@ jobs:
         #
         # The matrix is set up so as not to duplicate the builds which are run for code coverage.
         php: ['5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2', '8.3', '8.5']
-        phpcs_version: ['lowest', 'stable', '4.x-dev']
+        phpcs_version: ['lowest', '^3.13', '4.0.0', 'stable']
         phpcsutils_version: ['stable']
 
         exclude:
+          # Note, since the release of PHPCS 4.0, 'stable' == latest 4.x.
           - php: '5.5'
-            phpcs_version: '4.x-dev'
+            phpcs_version: '4.0.0'
+          - php: '5.5'
+            phpcs_version: 'stable'
           - php: '5.6'
-            phpcs_version: '4.x-dev'
+            phpcs_version: '4.0.0'
+          - php: '5.6'
+            phpcs_version: 'stable'
           - php: '7.0'
-            phpcs_version: '4.x-dev'
+            phpcs_version: '4.0.0'
+          - php: '7.0'
+            phpcs_version: 'stable'
           - php: '7.1'
-            phpcs_version: '4.x-dev'
+            phpcs_version: '4.0.0'
+          - php: '7.1'
+            phpcs_version: 'stable'
+          # Also exclude the 7.2/stable build as that's already run in code coverage, no need to duplicate.
+          - php: '7.2'
+            phpcs_version: 'stable'
 
         include:
           # Add some builds with variations of the dependency versions.
@@ -87,7 +99,13 @@ jobs:
           # And the PHPCS low + Utils low combi is run in the code coverage builds.
           # So these are the only combis missing.
           - php: '5.4'
+            phpcs_version: '^3.13'
+            phpcsutils_version: 'lowest'
+          - php: '7.2'
             phpcs_version: 'stable'
+            phpcsutils_version: 'lowest'
+          - php: '8.4'
+            phpcs_version: '^3.13'
             phpcsutils_version: 'lowest'
           - php: '8.4'
             phpcs_version: 'stable'
@@ -95,15 +113,15 @@ jobs:
 
           # Test against dev versions of all dependencies with select PHP versions for early detection of issues.
           - php: '5.4'
-            phpcs_version: 'dev-master'
+            phpcs_version: '3.x-dev'
             phpcsutils_version: 'dev-develop'
           - php: '7.2'
-            phpcs_version: 'dev-master'
-            phpcsutils_version: 'dev-develop'
-          - php: '7.4'
             phpcs_version: '4.x-dev'
             phpcsutils_version: 'dev-develop'
-          - php: '8.2'
+          - php: '8.4'
+            phpcs_version: '3.x-dev'
+            phpcsutils_version: 'dev-develop'
+          - php: '8.4'
             phpcs_version: '4.x-dev'
             phpcsutils_version: 'dev-develop'
 
@@ -199,17 +217,18 @@ jobs:
 
     strategy:
       matrix:
+        # Note, since the release of PHPCS 4.0, 'stable' == latest 4.x.
         php: ['5.4', '8.4']
-        dependencies: ['lowest', 'stable', 'dev']
+        dependencies: ['lowest', 'stable']
 
         exclude:
           - php: '5.4'
-            dependencies: 'dev'
+            dependencies: 'stable'
 
         include:
-          # Replace the "low PHP" dev build for PHPCS 4.x.
+          # Replace the "low PHP" stable build for PHPCS 4.x.
           - php: '7.2'
-            dependencies: 'dev'
+            dependencies: 'stable'
 
     name: "Coverage: PHP ${{ matrix.php }} - PHPCS ${{ matrix.dependencies }}"
 
@@ -217,36 +236,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
 
-      # On stable PHPCS versions, allow for PHP deprecation notices.
-      # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
-      - name: Setup ini config
-        id: set_ini
-        # yamllint disable rule:line-length
-        run: |
-          if [ "${{ matrix.dependencies == 'dev' }}" == "false" ]; then
-            echo 'PHP_INI=error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On, display_startup_errors=On' >> "$GITHUB_OUTPUT"
-          else
-            echo 'PHP_INI=error_reporting=-1, display_errors=On, display_startup_errors=On' >> "$GITHUB_OUTPUT"
-          fi
-          # yamllint enable rule:line-length
-
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          ini-values: ${{ steps.set_ini.outputs.PHP_INI }}
+          # On stable PHPCS versions, allow for PHP deprecation notices.
+          # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
+          ini-values: PHP_INI=error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On
           coverage: xdebug
 
       # Remove PHPCSDevCS as it would (for now) prevent the tests from being able to run against PHPCS 4.x.
       - name: 'Composer: remove PHPCSDevCS'
         run: composer remove --dev phpcsstandards/phpcsdevcs --no-update --no-interaction
-
-      - name: "Composer: set PHPCS version for tests (dev)"
-        if: ${{ matrix.dependencies == 'dev' }}
-        run: >
-          composer require --no-scripts --no-interaction
-          squizlabs/php_codesniffer:"4.x-dev"
-          phpcsstandards/phpcsutils:"dev-develop"
 
       - name: "Composer: use lock file when necessary"
         if: ${{ matrix.dependencies == 'lowest' }}
