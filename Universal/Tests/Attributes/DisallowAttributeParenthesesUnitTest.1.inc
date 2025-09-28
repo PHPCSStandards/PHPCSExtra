@@ -1,0 +1,51 @@
+<?php
+
+/*
+ * OK.
+ */
+// No attributes, nothing to do.
+#[]
+
+// No parentheses.
+#[MyAttribute]
+#[\MyAttribute /*comment*/]
+#[MyAttribute, Partial\AnotherAttribute, namespace\AndAnotherOne]
+#[
+    MyAttribute,
+    \Fully\Qualified\AnotherAttribute,
+    AndAnotherOne,
+]
+#[
+    MyAttribute // Comment
+]
+
+// Parentheses, but with arguments.
+#[MyAttribute('foo')]
+#[\MyAttribute /*comment*/ (1)]
+#[MyAttribute(self::BAZ), Partial\AnotherAttribute ([]), namespace\AndAnotherOne  (1, 2, 3)]
+#[
+    MyAttribute(
+        new stdClass // No parentheses, but not an attribute class instantiation.
+    ),
+    \Fully\Qualified\AnotherAttribute(self::BAZ),
+    AndAnotherOne("foo"),
+]
+#[
+    MyAttribute(10) // Comment
+]
+function foo() {}
+
+
+/*
+ * Bad.
+ */
+#[MyAttribute()]
+#[\MyAttribute( )]
+#[MyAttribute(), Partial\AnotherAttribute , namespace\AndAnotherOne    ()   ]
+#[MyAttribute(
+)]
+#[
+    MyAttribute // Comment
+    ( /*comment*/  )
+]
+function foo() {}
