@@ -182,8 +182,8 @@ final class AlphabeticExtendsImplementsSniff implements Sniff
         $data   = [
             $tokens[$stackPtr]['content'],
             $tokens[$keywordPtr]['content'],
-            \implode(', ', $names),
             \implode(', ', $sorted),
+            \implode(', ', $names),
         ];
 
         if ($fixable === false) {

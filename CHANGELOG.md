@@ -14,6 +14,27 @@ This projects adheres to [Keep a CHANGELOG](https://keepachangelog.com/) and use
 
 _Nothing yet._
 
+
+## [1.4.2] - 2025-10-28
+
+### Changed
+
+#### Other
+
+* Various housekeeping.
+
+### Fixed
+
+#### Universal
+
+* `Universal.OOStructures.AlphabeticExtendsImplements` incorrectly displayed the "expected" and "found" names. [#378]
+* `Universal.WhiteSpace.CommaSpacing` could accidentally cause a fatal error if the content adjacent to the comma was a text string containing percentage signs. Thanks [@westonruter] for reporting! [#400], [#401]
+
+[#378]: https://github.com/PHPCSStandards/PHPCSExtra/pull/378
+[#400]: https://github.com/PHPCSStandards/PHPCSExtra/issues/400
+[#401]: https://github.com/PHPCSStandards/PHPCSExtra/pull/401
+
+
 ## [1.4.1] - 2025-09-05
 
 ### Changed
@@ -679,6 +700,7 @@ This initial alpha release contains the following sniffs:
 [php_version-config]:    https://github.com/PHPCSStandards/PHP_CodeSniffer/wiki/Configuration-Options#setting-the-php-version
 
 [Unreleased]: https://github.com/PHPCSStandards/PHPCSExtra/compare/stable...HEAD
+[1.4.2]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.4.1...1.4.2
 [1.4.1]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.4.0...1.4.1
 [1.4.0]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.3.1...1.4.0
 [1.3.1]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.3.0...1.3.1
@@ -705,3 +727,4 @@ This initial alpha release contains the following sniffs:
 [@rodrigoprimo]: https://github.com/rodrigoprimo
 [@stronk7]:      https://github.com/stronk7
 [@szepeviktor]:  https://github.com/szepeviktor
+[@westonruter]:  https://github.com/westonruter

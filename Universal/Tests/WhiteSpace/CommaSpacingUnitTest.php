@@ -135,6 +135,7 @@ final class CommaSpacingUnitTest extends AbstractSniffTestCase
                     197 => 1,
                     201 => 1,
                     202 => 1,
+                    206 => 1,
                 ];
 
             // Modular error code check.

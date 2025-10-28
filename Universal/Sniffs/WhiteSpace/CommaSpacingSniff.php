@@ -320,7 +320,13 @@ final class CommaSpacingSniff implements Sniff
      */
     private function escapePlaceholders($text)
     {
-        return \preg_replace('`(?:^|[^%])(%)(?:[^%]|$)`', '%%', \trim($text));
+        $escapeSinglePercentSign = function ($text) {
+            return \preg_replace('`(^|[^%])%([^%]|$)`', '\1%%\2', \trim($text));
+        };
+
+        // We need to "double" escape to make sure chars involved in the `\2` match will
+        // be taken into account for the decision on whether or not to escape the char _after_ that.
+        return $escapeSinglePercentSign($escapeSinglePercentSign($text));
     }
 
     /**

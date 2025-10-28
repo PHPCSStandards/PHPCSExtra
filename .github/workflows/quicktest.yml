@@ -28,54 +28,39 @@ jobs:
 
     strategy:
       matrix:
+        # Note, since the release of PHPCS 4.0, 'stable' == latest 4.x.
         php: ['5.4', 'latest']
-        dependencies: ['lowest', 'stable', 'dev']
+        dependencies: ['lowest', 'stable']
 
         exclude:
           - php: '5.4'
-            dependencies: 'dev'
+            dependencies: 'stable'
 
         include:
-          # Replace the "low PHP" dev build for PHPCS 4.x.
+          # Replace the "low PHP" stable build for PHPCS 4.x.
           - php: '7.2'
-            dependencies: 'dev'
+            dependencies: 'stable'
 
     name: "QTest${{ matrix.dependencies == 'stable' && ' + Lint' || '' }}: PHP ${{ matrix.php }} - PHPCS ${{ matrix.dependencies }}"
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
-
-      # On stable PHPCS versions, allow for PHP deprecation notices.
-      # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
-      - name: Setup ini config
-        id: set_ini
-        # yamllint disable rule:line-length
-        run: |
-          if [ "${{ matrix.dependencies == 'dev' }}" == "false" ]; then
-            echo 'PHP_INI=error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On, display_startup_errors=On' >> "$GITHUB_OUTPUT"
-          else
-            echo 'PHP_INI=error_reporting=-1, display_errors=On, display_startup_errors=On' >> "$GITHUB_OUTPUT"
-          fi
-          # yamllint enable rule:line-length
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
 
       - name: Install PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f # 2.35.5
         with:
           php-version: ${{ matrix.php }}
-          ini-values: ${{ steps.set_ini.outputs.PHP_INI }}
+          # With stable PHPCS dependencies, allow for PHP deprecation notices.
+          # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
+          ini-values: error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On
           coverage: none
 
       # Remove PHPCSDevCS as it would (for now) prevent the tests from being able to run against PHPCS 4.x.
       - name: 'Composer: remove PHPCSDevCS'
         run: composer remove --dev phpcsstandards/phpcsdevcs --no-update --no-interaction
-
-      - name: "Composer: set PHPCS version for tests (dev)"
-        if: ${{ matrix.dependencies == 'dev' }}
-        run: >
-          composer require --no-scripts --no-interaction
-          squizlabs/php_codesniffer:"4.x-dev"
-          phpcsstandards/phpcsutils:"dev-develop"
 
       - name: "Composer: use lock file when necessary"
         if: ${{ matrix.dependencies == 'lowest' }}
@@ -84,7 +69,7 @@ jobs:
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-php-dependencies-with-composer
       - name: Install Composer dependencies
-        uses: "ramsey/composer-install@v3"
+        uses: "ramsey/composer-install@3cf229dc2919194e9e36783941438d17239e8520" # 3.1.1
         with:
           # Bust the cache at least once a month - output format: YYYY-MM.
           custom-cache-suffix: $(date -u "+%Y-%m")
