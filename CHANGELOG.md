@@ -15,6 +15,56 @@ This projects adheres to [Keep a CHANGELOG](https://keepachangelog.com/) and use
 _Nothing yet._
 
 
+## [1.5.0] - 2025-11-12
+
+### Added
+
+#### Universal
+
+* :wrench: :bar_chart: :books: New `Universal.Attributes.BracketSpacing` sniff to enforce a fixed number of spaces on the inside of attribute block brackets. [#386], [#406]
+    The sniff offers the following properties to influence its behaviour:
+    - `spacing` (defaults to `0`).
+    - `ignoreNewlines` (defaults to `false`).
+        When new lines are allowed (`ignoreNewlines`=`true`) and a new line is found, the sniff will verify that there are no superfluous blank lines at the start/end of an attribute block.
+* :wrench: :bar_chart: :books: New `Universal.Attributes.DisallowAttributeParentheses` sniff to forbid parentheses for attribute instantiations without arguments. [#387], [#409]
+* :wrench: :bar_chart: :books: New `Universal.Attributes.RequireAttributeParentheses` sniff to demand that all attribute instantiations always use parentheses, even if no argument is passed. [#387], [#410]
+* :wrench: :bar_chart: :books: New `Universal.Attributes.TrailingComma` sniff to demand a trailing comma for multi-line, multi-attribute attribute blocks and forbid trailing commas in single-line attribute blocks and in multi-line attributes containing only a single attribute. [#397], [#413]
+* :wrench: :bar_chart: :books: New `Universal.PHP.DisallowExitDieParentheses` sniff to forbid invocations of `exit`/`die` with parentheses when no argument is passed. [#399]
+* :wrench: :bar_chart: :books: New `Universal.PHP.RequireExitDieParentheses` sniff to demand that invocations of `exit`/`die` always use parentheses, even if no argument is passed. [#398]
+* :wrench: :books: New `Universal.WhiteSpace.FirstClassCallableSpacing` sniff to enforce the spacing around the ellipses for first class callables. [#385]
+    The sniff offers the following property to influence its behaviour: `spacing` (defaults to `0`).
+
+### Changed
+
+#### Universal
+
+* `Universal.WhiteSpace.CommaSpacing`: improved handling of commas in PHP attributes. [#391], [#412]
+    - The spacing after a trailing comma (after the last attribute in a block) will no longer be checked to prevent potential conflicts with attribute bracket spacing sniffs.
+    - Spacing errors for commas between attributes in an attribute block will now get an `*InAttributeBlock` error code suffix, so in-/excluding them selectively is more straight-forward.
+        Note: spacing around commas between _parameters passed to an attribute_ will still be reported with the `*InFunctionCall` error code suffix, same as before.
+    - Metrics for comma spacing in attribute blocks is now also measured and reported separately.
+
+#### Other
+
+* Composer: The minimum `PHP_CodeSniffer` requirement has been updated to `^3.13.5 || ^4.0.1` (was `^3.13.4 || ^4.0.0`). [#408]
+* Composer: The minimum `PHPCSUtils` requirement has been updated to `^1.2.0` (was `^1.1.2`). [#408]
+* Various housekeeping.
+
+[#385]: https://github.com/PHPCSStandards/PHPCSExtra/pull/385
+[#386]: https://github.com/PHPCSStandards/PHPCSExtra/issues/386
+[#387]: https://github.com/PHPCSStandards/PHPCSExtra/issues/387
+[#391]: https://github.com/PHPCSStandards/PHPCSExtra/issues/391
+[#397]: https://github.com/PHPCSStandards/PHPCSExtra/issues/397
+[#398]: https://github.com/PHPCSStandards/PHPCSExtra/pull/398
+[#399]: https://github.com/PHPCSStandards/PHPCSExtra/pull/399
+[#406]: https://github.com/PHPCSStandards/PHPCSExtra/pull/406
+[#408]: https://github.com/PHPCSStandards/PHPCSExtra/pull/408
+[#409]: https://github.com/PHPCSStandards/PHPCSExtra/pull/409
+[#410]: https://github.com/PHPCSStandards/PHPCSExtra/pull/410
+[#412]: https://github.com/PHPCSStandards/PHPCSExtra/pull/412
+[#413]: https://github.com/PHPCSStandards/PHPCSExtra/pull/413
+
+
 ## [1.4.2] - 2025-10-28
 
 ### Changed
@@ -700,6 +750,7 @@ This initial alpha release contains the following sniffs:
 [php_version-config]:    https://github.com/PHPCSStandards/PHP_CodeSniffer/wiki/Configuration-Options#setting-the-php-version
 
 [Unreleased]: https://github.com/PHPCSStandards/PHPCSExtra/compare/stable...HEAD
+[1.5.0]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.4.2...1.5.0
 [1.4.2]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.4.1...1.4.2
 [1.4.1]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.4.0...1.4.1
 [1.4.0]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.3.1...1.4.0
