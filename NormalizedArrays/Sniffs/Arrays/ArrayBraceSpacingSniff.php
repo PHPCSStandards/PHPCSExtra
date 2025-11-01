@@ -109,7 +109,7 @@ final class ArrayBraceSpacingSniff implements Sniff
         return Collections::arrayOpenTokensBC();
     }
 
-   /**
+    /**
      * Processes this test when one of its tokens is encountered.
      *
      * @since 1.0.0
