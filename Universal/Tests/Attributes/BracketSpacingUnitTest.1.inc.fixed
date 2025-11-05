@@ -1,0 +1,145 @@
+<?php
+
+#[] // Nothing to do.
+
+/*
+ * OK with default settings.
+ */
+#[NoSpacesInsideBrackets]
+#[NoSpacesInsideBrackets()]
+#[NoSpacesInsideBrackets(),]
+#[/*comment*/ NoSpacesInsideBrackets() /*comment*/]
+#[NoSpacesInsideBracketsMultilineParamList(
+)]
+#[NoSpacesInsideBracketsMultilineParamList(
+    10,
+    [],
+)]
+
+/*
+ * Bad with default settings.
+ */
+#[SpacesInsideBrackets]
+#[SpacesAfterOpener()]
+#[SpacesBeforeCloser()]
+#[/*comment*/ SpacesInsideBrackets() /*comment*/]
+#[SpacesInsideBrackets(),]
+#[SpacesInsideBracketsMultilineParamList(
+)]
+#[SpacesInsideBracketsMultilineParamList(
+        10,
+        [],
+    )]
+
+/*
+ * OK with spacing 1.
+ */
+// phpcs:set Universal.Attributes.BracketSpacing spacing 1
+
+#[ OneSpaceInsideBrackets ]
+#[ OneSpaceInsideBrackets() ]
+#[ OneSpaceInsideBrackets(), ]
+#[ /*comment*/ OneSpaceInsideBrackets /*comment*/ ]
+#[ OneSpaceInsideBracketsMultilineParamList(
+) ]
+#[ OneSpaceInsideBracketsMultilineParamList(
+    10,
+    [],
+) ]
+
+/*
+ * Bad with spacing 1.
+ */
+#[ NoSpacesInsideBrackets ]
+#[ /*comment*/ NoSpacesInsideBrackets() /*comment*/ ]
+#[ NoSpacesInsideBracketsMultilineParamList(
+) ]
+
+#[ TooManySpacesInsideBrackets ]
+#[ /*comment*/ TooManySpacesAndTabsInsideBrackets() /*comment*/ ]
+#[ TooManySpacesInsideBrackets() ]
+
+/*
+ * OK with spacing 2.
+ */
+// phpcs:set Universal.Attributes.BracketSpacing spacing 2
+
+#[  TwoSpacesInsideBrackets  ]
+#[  TwoSpacesInsideBrackets()  ]
+#[  TwoSpacesInsideBrackets(),  ]
+#[  /*comment*/ TwoSpacesInsideBrackets /*comment*/  ]
+#[  TwoSpacesInsideBracketsMultilineParamList(
+)  ]
+#[  TwoSpacesInsideBracketsMultilineParamList(
+    10,
+    [],
+)  ]
+
+/*
+ * Bad with spacing 2.
+ */
+#[  NoSpacesInsideBrackets  ]
+#[  /*comment*/ NoSpacesInsideBrackets() /*comment*/  ]
+#[  NoSpacesInsideBracketsMultilineParamList(
+)  ]
+
+#[  TooLittleSpacesInsideBrackets  ]
+#[  /*comment*/ TooLittleSpacesInsideBrackets() /*comment*/  ]
+
+#[  TooManySpacesInsideBrackets  ]
+#[  /*comment*/ TooManySpacesInsideBrackets() /*comment*/  ]
+#[  TooManySpacesInsideBrackets()  ]
+
+
+/*
+ * Test ignoring new lines.
+ */
+// phpcs:set Universal.Attributes.BracketSpacing spacing 0
+// phpcs:set Universal.Attributes.BracketSpacing ignoreNewlines true
+#[SpacesInsideBrackets]
+#[SpacesInsideBrackets()]
+#[SpacesInsideBracketsMultilineParamList(
+)]
+#[// comment.
+    SpacingWithCommentsOnOpenerCloserLineShouldBeHandled(
+        10
+    )
+/*comment */]
+
+/*
+ * OK while ignoring new lines.
+ */
+#[
+    TheSpacingHereShouldBeIgnored(),
+]
+#[
+    // comment.
+    CommentsOnOtherLinesShouldHaveNoInfluence(
+        10,
+        [],
+    )
+    /*comment */
+]
+
+/*
+ * Bad while ignoring new lines - blank lines at start/end.
+ */
+#[
+    FlagBlankLinesAtStartEndOfAttributeBlock(),
+]
+#[
+    MakeSureFixerHandlesMultipleLinesCorrectly(
+        10,
+        [],
+    )
+
+    /*comment */
+]
+
+        #[
+            MakeSureFixerDoesntRemoveIndentation(),
+        ]
+
+// phpcs:set Universal.Attributes.BracketSpacing ignoreNewlines false
+
+function foo() {}
