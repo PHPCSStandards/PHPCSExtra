@@ -62,3 +62,7 @@ $value = match($value) {
 
 // Parse error, but not our concern.
 print ($item1, $item2, $item3);
+
+// *InAttribute suffix.
+#[AttributeOne, AttributeTwo, AttributeThree]
+function hasAttribute() {}

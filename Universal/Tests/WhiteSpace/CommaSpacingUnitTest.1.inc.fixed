@@ -192,3 +192,24 @@ $provider[] = ['jklmnopqrstuvwz', '2.2.0-DEV'];
 
 // Issue #400 - handling of text in error message.
 define( 'SALT', 'c^&7%D%D%D%DIT' );
+
+/*
+ * Improve handling of PHP 8.0 comma's in attribute blocks which instantiate multiple attributes.
+ */
+// All Okay.
+#[,] // Parse error, but not our concern.
+#[SingleAttributeTrailingComma(),]
+#[SingleAttributeTrailingComma(), ]
+#[AttributeOne(), AttributeTwo, AttributeThree()]
+#[AttributeOne,
+    AttributeTwo,
+    AttributeThree,
+]
+// Incorrect.
+#[SingleAttributeTrailingCommaTooMuchSpaceAfterIsIgnoredInFavourOfBlockSpacingSniff(),    ]
+#[AttributeOne(), AttributeTwo, AttributeThree()]
+#[AttributeOne,
+    AttributeTwo,
+    AttributeThree,
+]
+function hasAttributes() {}
