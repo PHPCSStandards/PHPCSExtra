@@ -494,7 +494,7 @@ For the spacing part, the sniff makes the following exceptions:
 
 * The sniff has a separate error code - `TooMuchSpaceAfterCommaBeforeTrailingComment` - for when a comma is found with more than one space after it, followed by a trailing comment.
     Exclude this error code to allow trailing comment alignment.
-* The other error codes the sniff uses, `SpaceBefore`, `TooMuchSpaceAfter` and `NoSpaceAfter`, may be suffixed with a context indicator - `*InFunctionDeclaration`, `*InFunctionCall`, `*InClosureUse` or `*InDeclare` -.
+* The other error codes the sniff uses, `SpaceBefore`, `TooMuchSpaceAfter` and `NoSpaceAfter`, may be suffixed with a context indicator - `*InFunctionDeclaration`, `*InFunctionCall`, `*InClosureUse`, `*InAttributeBlock` or `*InDeclare` -.
     This allows for disabling the sniff in any of these contexts by excluding the specific suffixed error codes.
 * The sniff will respect a potentially set [`php_version` configuration option][php_version-config] when deciding how to handle the spacing after a heredoc/nowdoc closer.
     In effect, this means that the sniff will enforce a new line between the closer and a comma if the configured PHP version is less than 7.3.
