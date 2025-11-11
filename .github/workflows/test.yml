@@ -74,25 +74,25 @@ jobs:
         #
         # The matrix is set up so as not to duplicate the builds which are run for code coverage.
         php: ['5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2', '8.3', '8.5']
-        phpcs_version: ['lowest', '^3.13', '4.0.0', 'stable']
+        phpcs_version: ['lowest', '^3.13', '4.0.1', 'stable']
         phpcsutils_version: ['stable']
 
         exclude:
           # Note, since the release of PHPCS 4.0, 'stable' == latest 4.x.
           - php: '5.5'
-            phpcs_version: '4.0.0'
+            phpcs_version: '4.0.1'
           - php: '5.5'
             phpcs_version: 'stable'
           - php: '5.6'
-            phpcs_version: '4.0.0'
+            phpcs_version: '4.0.1'
           - php: '5.6'
             phpcs_version: 'stable'
           - php: '7.0'
-            phpcs_version: '4.0.0'
+            phpcs_version: '4.0.1'
           - php: '7.0'
             phpcs_version: 'stable'
           - php: '7.1'
-            phpcs_version: '4.0.0'
+            phpcs_version: '4.0.1'
           - php: '7.1'
             phpcs_version: 'stable'
           # Also exclude the 7.2/stable build as that's already run in code coverage, no need to duplicate.

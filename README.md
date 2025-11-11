@@ -43,8 +43,8 @@ PHPCSExtra is a collection of sniffs and standards for use with [PHP_CodeSniffer
 ## Minimum Requirements
 
 * PHP 5.4 or higher.
-* [PHP_CodeSniffer][phpcs-gh] version **3.13.4** or higher.
-* [PHPCSUtils][phpcsutils-gh] version **1.1.2** or higher.
+* [PHP_CodeSniffer][phpcs-gh] version **3.13.5**/**4.0.1** or higher.
+* [PHPCSUtils][phpcsutils-gh] version **1.2.0** or higher.
 
 
 ## Installation
