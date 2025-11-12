@@ -136,6 +136,10 @@ final class CommaSpacingUnitTest extends AbstractSniffTestCase
                     201 => 1,
                     202 => 1,
                     206 => 1,
+                    221 => 1,
+                    222 => 3,
+                    223 => 1,
+                    224 => 1,
                 ];
 
             // Modular error code check.
@@ -170,6 +174,7 @@ final class CommaSpacingUnitTest extends AbstractSniffTestCase
                     55 => 3,
                     60 => 3,
                     64 => 3,
+                    67 => 3,
                 ];
 
             // Comma before trailing comment.

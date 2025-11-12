@@ -18,6 +18,10 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  # - COMPOSER_ROOT_VERSION is needed to get round the recursive dependency when using CI.
+  COMPOSER_ROOT_VERSION: '1.99.99'
+
 jobs:
   lint:
     if: ${{ github.ref != 'refs/heads/develop' }}
@@ -70,25 +74,25 @@ jobs:
         #
         # The matrix is set up so as not to duplicate the builds which are run for code coverage.
         php: ['5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2', '8.3', '8.5']
-        phpcs_version: ['lowest', '^3.13', '4.0.0', 'stable']
+        phpcs_version: ['lowest', '^3.13', '4.0.1', 'stable']
         phpcsutils_version: ['stable']
 
         exclude:
           # Note, since the release of PHPCS 4.0, 'stable' == latest 4.x.
           - php: '5.5'
-            phpcs_version: '4.0.0'
+            phpcs_version: '4.0.1'
           - php: '5.5'
             phpcs_version: 'stable'
           - php: '5.6'
-            phpcs_version: '4.0.0'
+            phpcs_version: '4.0.1'
           - php: '5.6'
             phpcs_version: 'stable'
           - php: '7.0'
-            phpcs_version: '4.0.0'
+            phpcs_version: '4.0.1'
           - php: '7.0'
             phpcs_version: 'stable'
           - php: '7.1'
-            phpcs_version: '4.0.0'
+            phpcs_version: '4.0.1'
           - php: '7.1'
             phpcs_version: 'stable'
           # Also exclude the 7.2/stable build as that's already run in code coverage, no need to duplicate.
@@ -156,10 +160,6 @@ jobs:
           php-version: ${{ matrix.php }}
           ini-values: ${{ steps.set_ini.outputs.PHP_INI }}
           coverage: none
-
-      # Remove PHPCSDevCS as it would (for now) prevent the tests from being able to run against PHPCS 4.x.
-      - name: 'Composer: remove PHPCSDevCS'
-        run: composer remove --dev phpcsstandards/phpcsdevcs --no-update --no-interaction
 
       - name: "Composer: set PHPCS version for tests (dev/specific version)"
         if: ${{ matrix.phpcs_version != 'lowest' && matrix.phpcs_version != 'stable' }}
@@ -250,10 +250,6 @@ jobs:
           # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
           ini-values: PHP_INI=error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On
           coverage: xdebug
-
-      # Remove PHPCSDevCS as it would (for now) prevent the tests from being able to run against PHPCS 4.x.
-      - name: 'Composer: remove PHPCSDevCS'
-        run: composer remove --dev phpcsstandards/phpcsdevcs --no-update --no-interaction
 
       - name: "Composer: use lock file when necessary"
         if: ${{ matrix.dependencies == 'lowest' }}

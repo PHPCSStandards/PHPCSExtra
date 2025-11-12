@@ -16,6 +16,7 @@ use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\BackCompat\Helper;
 use PHPCSUtils\Fixers\SpacesFixer;
 use PHPCSUtils\Tokens\Collections;
+use PHPCSUtils\Utils\Context;
 use PHPCSUtils\Utils\Parentheses;
 
 /**
@@ -26,8 +27,8 @@ use PHPCSUtils\Utils\Parentheses;
  * - Demands that when there is a trailing comment, the comma follows the code, not the comment.
  *
  * The following exclusions are in place:
- * - A comma preceded or followed by a parenthesis, curly or square bracket.
- *   These will not be flagged to prevent conflicts with sniffs handling spacing around braces.
+ * - A comma preceded or followed by a parenthesis, curly or square bracket, including attribute brackets.
+ *   These will not be flagged to prevent conflicts with sniffs handling spacing around braces/brackets.
  * - A comma preceded or followed by another comma, like for skipping items in a list assignment.
  *   These will not be flagged.
  * - A comma preceded by a non-indented heredoc/nowdoc closer.
@@ -170,6 +171,7 @@ final class CommaSpacingSniff implements Sniff
         if (isset(Tokens::$blockOpeners[$tokens[$prevNonWhitespace]['code']]) === true
             || $tokens[$prevNonWhitespace]['code'] === \T_OPEN_SHORT_ARRAY
             || $tokens[$prevNonWhitespace]['code'] === \T_OPEN_USE_GROUP
+            || $tokens[$prevNonWhitespace]['code'] === \T_ATTRIBUTE
         ) {
             // Should only realistically be possible for lists. Leave for a block brace spacing sniff to sort out.
             return;
@@ -246,6 +248,7 @@ final class CommaSpacingSniff implements Sniff
             || $tokens[$nextNonWhitespace]['code'] === \T_CLOSE_PARENTHESIS
             || $tokens[$nextNonWhitespace]['code'] === \T_CLOSE_SHORT_ARRAY
             || $tokens[$nextNonWhitespace]['code'] === \T_CLOSE_USE_GROUP
+            || $tokens[$nextNonWhitespace]['code'] === \T_ATTRIBUTE_END
         ) {
             // Ignore. Leave for a block spacing sniff to sort out.
             return;
@@ -350,6 +353,10 @@ final class CommaSpacingSniff implements Sniff
     {
         $opener = Parentheses::getLastOpener($phpcsFile, $stackPtr);
         if ($opener === false) {
+            if (Context::inAttribute($phpcsFile, $stackPtr) === true) {
+                return 'InAttributeBlock';
+            }
+
             return '';
         }
 

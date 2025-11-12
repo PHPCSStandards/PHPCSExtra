@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
 /**
- * Require that an anonymous class declaration/instantiation has parentheses, i.e. `new class().
+ * Require that an anonymous class declaration/instantiation has parentheses, i.e. `new class()`.
  *
  * @since 1.0.0
  */

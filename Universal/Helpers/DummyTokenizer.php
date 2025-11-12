@@ -40,11 +40,11 @@ final class DummyTokenizer extends Tokenizer
     /**
      * Creates an array of tokens when given some content.
      *
-     * @param string $string The string to tokenize.
+     * @param string $code The code to tokenize.
      *
      * @return array<int, array<string, mixed>>
      */
-    protected function tokenize($string)
+    protected function tokenize($code)
     {
         return [];
     }

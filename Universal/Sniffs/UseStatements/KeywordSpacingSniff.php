@@ -19,7 +19,7 @@ use PHPCSUtils\Utils\UseStatements;
 /**
  * Enforce a single space after the keywords in import `use` statements.
  *
- * The keywords this sniff check are `use`, `function`, `const` and `as`.
+ * The keywords this sniff checks are `use`, `function`, `const` and `as`.
  * For `as`, the space *before* the keyword is also checked to be a single space.
  *
  * @since 1.1.0
