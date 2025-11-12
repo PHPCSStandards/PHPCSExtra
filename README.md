@@ -184,6 +184,29 @@ Best practice sniff: don't use a mix of integer and string keys for array items.
 
 Best practice sniff: don't use a mix of keyed and unkeyed array items.
 
+#### `Universal.Attributes.BracketSpacing` :wrench: :bar_chart: :books:
+
+Standardize the amount of spaces on the inside of attribute block brackets.
+
+* This sniff contains an `spacing` property to set the amount of spaces the sniff should check for.
+    Accepted values: (int) number of spaces. Defaults to `0` (spaces).
+* By default, the sniff does not make an exception for a new line after the attribute opener or before the attribute closer.
+    This can be changed by setting the `ignoreNewlines` property to `true`.
+    Accepted values: (bool) `true`|`false`. Defaults to `false`.
+    When the `ignoreNewlines` property is set to `true` and a new line is found, the sniff will flag stray blank lines at the start and/or end of an attribute block.
+
+#### `Universal.Attributes.DisallowAttributeParentheses` :wrench: :bar_chart: :books:
+
+Disallow the use of parentheses when instantiating an attribute without passing parameters.
+
+#### `Universal.Attributes.RequireAttributeParentheses` :wrench: :bar_chart: :books:
+
+Require the use of parentheses when instantiating an attribute, whether parameters are passed or not.
+
+#### `Universal.Attributes.TrailingComma` :wrench: :bar_chart: :books:
+
+Require a trailing comma for multi-line, multi-attribute attribute blocks and forbid trailing commas in single-line attribute blocks and in multi-line attributes containing only a single attribute.
+
 #### `Universal.Classes.DisallowAnonClassParentheses` :wrench: :bar_chart: :books:
 
 Disallow the use of parentheses when declaring an anonymous class without passing parameters.
@@ -405,6 +428,14 @@ Enforce spacing rules around the union, intersection and DNF type operators.
 
 The available error codes are: `UnionTypeSpacesBefore`, `UnionTypeSpacesAfter`, `IntersectionTypeSpacesBefore`, `IntersectionTypeSpacesAfter`, `DNFOpenSpacesBefore`, `DNFOpenSpacesAfter`, `DNFCloseTypeSpacesBefore`, `DNFCloseTypeSpacesAfter`.
 
+#### `Universal.PHP.DisallowExitDieParentheses` :wrench: :bar_chart: :books:
+
+Disallow the use of parentheses when calling `exit` or `die` without passing parameters.
+
+#### `Universal.PHP.RequireExitDieParentheses` :wrench: :bar_chart: :books:
+
+Require the use of parentheses when calling `exit` or `die`, whether parameters are passed or not.
+
 #### `Universal.PHP.LowercasePHPTag` :wrench: :bar_chart: :books:
 
 Enforces that the "PHP" in a PHP open tag is lowercase.
@@ -516,6 +547,13 @@ While tab versus space based indentation is a question of preference, for mid-li
 > The PHPCS native `Generic.Whitespace.DisallowTabIndent` sniff (used for space-based standards) oversteps its reach and silently does mid-line tab to space replacements as well.
 > However, the sister-sniff `Generic.Whitespace.DisallowSpaceIndent` leaves mid-line tabs/spaces alone.
 > This sniff fills that gap.
+
+#### `Universal.WhiteSpace.FirstClassCallableSpacing` :wrench: :bar_chart: :books:
+
+Standardize the amount of spacing around the `...` in a first class callable.
+
+* This sniff contains an `spacing` property to set the amount of spaces the sniff should check for.
+    Accepted values: (int) number of spaces. Defaults to `0` (spaces).
 
 #### `Universal.WhiteSpace.PrecisionAlignment` :wrench: :books:
 
