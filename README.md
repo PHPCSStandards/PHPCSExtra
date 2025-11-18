@@ -13,7 +13,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/PHPCSStandards/PHPCSExtra/badge.svg)](https://coveralls.io/github/PHPCSStandards/PHPCSExtra)
 
 [![Minimum PHP Version](https://img.shields.io/packagist/dependency-v/phpcsstandards/phpcsextra/php.svg)][phpcsextra-packagist]
-[![Tested on PHP 5.4 to 8.4](https://img.shields.io/badge/tested%20on-PHP%205.4%20|%205.5%20|%205.6%20|%207.0%20|%207.1%20|%207.2%20|%207.3%20|%207.4%20|%208.0%20|%208.1%20|%208.2%20|%208.3%20|%208.4-brightgreen.svg?maxAge=2419200)][gha-test-results]
+[![Tested on PHP 5.4 to 8.5](https://img.shields.io/badge/tested%20on-PHP%205.4%20|%205.5%20|%205.6%20|%207.0%20|%207.1%20|%207.2%20|%207.3%20|%207.4%20|%208.0%20|%208.1%20|%208.2%20|%208.3%20|%208.4%20|%208.5-brightgreen.svg?maxAge=2419200)][gha-test-results]
 
 [![License: LGPLv3](https://img.shields.io/github/license/PHPCSStandards/PHPCSExtra)](https://github.com/PHPCSStandards/PHPCSExtra/blob/stable/LICENSE)
 ![Awesome](https://img.shields.io/badge/awesome%3F-yes!-brightgreen.svg)
