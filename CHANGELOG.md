@@ -15,7 +15,7 @@ This projects adheres to [Keep a CHANGELOG](https://keepachangelog.com/) and use
 _Nothing yet._
 
 
-## [1.5.0] - 2025-11-12
+## [1.5.0] - 2025-11-13
 
 ### Added
 
@@ -31,7 +31,7 @@ _Nothing yet._
 * :wrench: :bar_chart: :books: New `Universal.Attributes.TrailingComma` sniff to demand a trailing comma for multi-line, multi-attribute attribute blocks and forbid trailing commas in single-line attribute blocks and in multi-line attributes containing only a single attribute. [#397], [#413]
 * :wrench: :bar_chart: :books: New `Universal.PHP.DisallowExitDieParentheses` sniff to forbid invocations of `exit`/`die` with parentheses when no argument is passed. [#399]
 * :wrench: :bar_chart: :books: New `Universal.PHP.RequireExitDieParentheses` sniff to demand that invocations of `exit`/`die` always use parentheses, even if no argument is passed. [#398]
-* :wrench: :books: New `Universal.WhiteSpace.FirstClassCallableSpacing` sniff to enforce the spacing around the ellipses for first class callables. [#385]
+* :wrench: :books: New `Universal.WhiteSpace.FirstClassCallableSpacing` sniff to enforce consistent spacing around the ellipses for first class callables. [#385]
     The sniff offers the following property to influence its behaviour: `spacing` (defaults to `0`).
 
 ### Changed
@@ -92,7 +92,6 @@ _Nothing yet._
 #### Other
 
 * Various housekeeping.
-
 
 ### Fixed
 

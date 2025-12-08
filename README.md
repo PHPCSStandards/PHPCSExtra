@@ -93,7 +93,7 @@ composer global update phpcsstandards/phpcsextra --with-dependencies
 
 Once this project is installed, you will see three new rulesets in the list of installed standards when you run `vendor/bin/phpcs -i`: `Modernize`, `NormalizedArrays` and `Universal`.
 
-* The `Modernize` ruleset is a standard which checks code for modernization opportunaties.
+* The `Modernize` ruleset is a standard which checks code for modernization opportunities.
 * The `NormalizedArrays` ruleset is a standard to check the formatting of array declarations.
 * The `Universal` ruleset is **NOT** a standard, but a sniff collection.
     It should **NOT** be included in custom rulesets as a standard as it contains contradictory rules.
@@ -107,7 +107,7 @@ Once this project is installed, you will see three new rulesets in the list of i
     _Use the `phpcbf` command to run the fixers._
 * :bar_chart: = Includes metrics.
     _Use `phpcs` with `--report=info` to see the metrics._
-* :books: = Includes CLI documentation.
+* :books: = Includes documentation.
     _Use `phpcs` with `--generator=Text` to see the documentation._
 
 
