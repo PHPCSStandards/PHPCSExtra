@@ -248,7 +248,7 @@ jobs:
           php-version: ${{ matrix.php }}
           # On stable PHPCS versions, allow for PHP deprecation notices.
           # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
-          ini-values: PHP_INI=error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On
+          ini-values: error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On, display_startup_errors=On
           coverage: xdebug
 
       - name: "Composer: use lock file when necessary"
