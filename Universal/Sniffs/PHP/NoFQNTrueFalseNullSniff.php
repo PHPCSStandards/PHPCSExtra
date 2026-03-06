@@ -107,7 +107,7 @@ final class NoFQNTrueFalseNullSniff implements Sniff
             } elseif ($tokens[$stackPtr]['code'] === \T_NS_SEPARATOR) {
                 // PHPCS 4.x for code which is a parse error on PHP 8.0+.
                 $phpcsFile->fixer->replaceToken($stackPtr, '');
-            } else {
+            } elseif (isset($prev) === true) {
                 // PHPCS 3.x.
                 $phpcsFile->fixer->replaceToken($prev, '');
             }
