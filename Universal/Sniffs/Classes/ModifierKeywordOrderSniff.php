@@ -120,8 +120,6 @@ final class ModifierKeywordOrderSniff implements Sniff
             $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, self::EXTEND_READONLY);
         }
 
-        $message = 'Class modifier keywords are not in the correct order. Expected: "%s", found: "%s"';
-
         switch ($this->order) {
             case self::READONLY_EXTEND:
                 if ($readonly < $extendability) {
