@@ -1,0 +1,38 @@
+<?php
+
+/*
+ * Valid spacing (using the default property values).
+ */
+foo(name: $value);
+$obj->method(label: /* comment */ $value);
+new MyClass(
+    first: $a,
+    second: $b,
+);
+
+/*
+ * Invalid spacing.
+ */
+foo(name: $value);
+$obj->method(name: $value);
+Foo::bar(first: $a, second: $b);
+new MyClass(argument: $value);
+#[MyAttribute(
+    key: 'value'
+)]
+class Baz {}
+
+// Comments around the colon are reported, but not auto-fixed.
+foo(name  /* comment */ : $value);
+foo(name:  /* comment */ $value);
+
+// phpcs:set Universal.WhiteSpace.NamedArgumentSpacing spacingBefore 1
+foo(name : $value);
+foo(name : $value);
+foo(name : $value);
+// phpcs:set Universal.WhiteSpace.NamedArgumentSpacing spacingBefore 0
+
+// phpcs:set Universal.WhiteSpace.NamedArgumentSpacing spacingAfter 0
+foo(name:$value);
+foo(name:$value);
+// phpcs:set Universal.WhiteSpace.NamedArgumentSpacing spacingAfter 1

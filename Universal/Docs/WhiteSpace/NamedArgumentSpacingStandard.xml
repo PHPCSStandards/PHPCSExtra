@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<documentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://phpcsstandards.github.io/PHPCSDevTools/phpcsdocs.xsd"
+    title="Named Argument Spacing"
+    >
+    <standard>
+    <![CDATA[
+    When using named arguments, there should be no space between the argument name and the colon, and a single space between the colon and the argument value.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: No space before the colon and a single space after it.">
+        <![CDATA[
+foo(name<em></em>:<em> </em>$value);
+        ]]>
+        </code>
+        <code title="Invalid: Space before the colon and no space after it.">
+        <![CDATA[
+foo(name<em> </em>:<em></em>$value);
+        ]]>
+        </code>
+    </code_comparison>
+</documentation>
