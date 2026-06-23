@@ -34,17 +34,24 @@ final class NamedArgumentSpacingUnitTest extends AbstractSniffTestCase
         switch ($testFile) {
             case 'NamedArgumentSpacingUnitTest.1.inc':
                 return [
-                    16 => 1,
-                    17 => 1,
-                    18 => 2,
-                    19 => 2,
-                    21 => 1,
-                    22 => 1,
+                    19 => 1,
+                    20 => 1,
+                    21 => 2,
+                    22 => 2,
+                    23 => 2,
+                    24 => 2,
+                    25 => 2,
+                    27 => 1,
                     28 => 1,
-                    29 => 1,
-                    33 => 1,
-                    34 => 1,
-                    39 => 1,
+                    34 => 2,
+                    35 => 1,
+                    36 => 2,
+                    40 => 1,
+                    41 => 1,
+                    45 => 1,
+                    46 => 1,
+                    51 => 1,
+                    57 => 2,
                 ];
 
             default:
