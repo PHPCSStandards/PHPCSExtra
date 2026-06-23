@@ -19,10 +19,6 @@ use PHPCSUtils\Utils\Parentheses;
 /**
  * Checks the spacing around the colon for named arguments in function calls.
  *
- * By default, the sniff enforces the PER Coding Style rule that there must be no space
- * between the argument name and the colon, and exactly one space between the colon and
- * the argument value.
- *
  * @since 1.6.0
  */
 final class NamedArgumentSpacingSniff implements Sniff
@@ -73,14 +69,14 @@ final class NamedArgumentSpacingSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        // The colon is guaranteed to be the next non-empty token after the T_PARAM_NAME token.
-        $colon = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
-
         $parenthesisCloser = Parentheses::getLastCloser($phpcsFile, $stackPtr);
         if ($parenthesisCloser === false) {
             // Parse error/live coding: the named argument is not inside a closed set of parentheses.
             return;
         }
+
+        // The colon is guaranteed to be the next non-empty token after the T_PARAM_NAME token.
+        $colon = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
 
         // Find the start of the value being passed, which must sit inside the parentheses.
         $afterColonNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($colon + 1), $parenthesisCloser, true);
