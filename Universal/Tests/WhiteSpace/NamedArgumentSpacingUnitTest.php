@@ -46,12 +46,15 @@ final class NamedArgumentSpacingUnitTest extends AbstractSniffTestCase
                     34 => 2,
                     35 => 1,
                     36 => 2,
-                    40 => 1,
-                    41 => 1,
-                    45 => 1,
-                    46 => 1,
-                    51 => 1,
-                    57 => 2,
+                    40 => 2,
+                    41 => 3,
+                    42 => 1,
+                    49 => 1,
+                    50 => 1,
+                    54 => 1,
+                    55 => 1,
+                    61 => 1,
+                    66 => 2,
                 ];
 
             default:
