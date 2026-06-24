@@ -67,22 +67,22 @@ final class NamedArgumentSpacingSniff implements Sniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
-        $tokens = $phpcsFile->getTokens();
-
         $parenthesisCloser = Parentheses::getLastCloser($phpcsFile, $stackPtr);
         if ($parenthesisCloser === false) {
-            // Parse error/live coding: the named argument is not inside a closed set of parentheses.
+            // Parse error/live coding: not inside a closed set of parentheses.
             return;
         }
 
         // The colon is guaranteed to be the next non-empty token after the T_PARAM_NAME token.
         $colon = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
 
-        // Find the start of the value being passed, which must sit inside the parentheses.
-        $afterColonNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($colon + 1), $parenthesisCloser, true);
-        if ($afterColonNonEmpty === false || $tokens[$afterColonNonEmpty]['code'] === \T_COMMA) {
-            // Parse error or live coding: no named argument value. Bail out here to prevent fixer conflicts with comma
-            // or closing parenthesis spacing sniffs.
+        // Find the start of the value being passed.
+        $afterColonNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($colon + 1), null, true);
+
+        $tokens = $phpcsFile->getTokens();
+        if ($afterColonNonEmpty === $parenthesisCloser || $tokens[$afterColonNonEmpty]['code'] === \T_COMMA) {
+            // Parse error or live coding: missing argument value.
+            // Bail out to prevent fixer conflicts with comma or closing parenthesis spacing sniffs.
             return;
         }
 
@@ -95,7 +95,7 @@ final class NamedArgumentSpacingSniff implements Sniff
             $stackPtr,
             $colon,
             $spacingBefore,
-            'Expected %s between the named argument name and the colon. Found: %s.',
+            'Expected %s between the argument name and the colon. Found: %s.',
             'SpacingBefore',
             'error',
             0,
@@ -108,7 +108,7 @@ final class NamedArgumentSpacingSniff implements Sniff
             $colon,
             $afterColonNonEmpty,
             $spacingAfter,
-            'Expected %s between the named argument colon and the value. Found: %s.',
+            'Expected %s between the colon and the argument value. Found: %s.',
             'SpacingAfter',
             'error',
             0,

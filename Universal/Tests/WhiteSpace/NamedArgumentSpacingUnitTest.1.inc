@@ -35,6 +35,15 @@ foo(
     second:$b, // Comment.
     third  :  $c,
 );
+foo(
+    // Comment.
+    first :$a,
+            second:$b /* Comment. */ , third  :  $c
+    , fourth:
+        1
+                + // phpcs:ignore Stnd.Cat.Sniff -- for reasons
+$d
+);
 
 // Comments around the colon are reported, but not auto-fixed.
 foo(name  /* comment */ : $value);
@@ -44,16 +53,17 @@ foo(name:  /* comment */ $value);
 foo(name : $value);
 foo(name: $value);
 foo(name  : $value);
+// Resetting to the default value.
 // phpcs:set Universal.WhiteSpace.NamedArgumentSpacing spacingBefore 0
 
 // phpcs:set Universal.WhiteSpace.NamedArgumentSpacing spacingAfter 0
 foo(name:$value);
 foo(name: $value);
-// phpcs:set Universal.WhiteSpace.NamedArgumentSpacing spacingAfter 1
 
 // phpcs:set Universal.WhiteSpace.NamedArgumentSpacing spacingBefore 2
 // phpcs:set Universal.WhiteSpace.NamedArgumentSpacing spacingAfter 3
 foo(name  :   $value);
 foo(name:$value);
+// Resetting to the default value.
 // phpcs:set Universal.WhiteSpace.NamedArgumentSpacing spacingBefore 0
 // phpcs:set Universal.WhiteSpace.NamedArgumentSpacing spacingAfter 1
