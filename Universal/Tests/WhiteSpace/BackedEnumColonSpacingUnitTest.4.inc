@@ -1,0 +1,6 @@
+<?php
+
+// Intentional parse error (a backed enum without a backing type with a space before the colon and no space after it).
+// This should be the only test in the file.
+
+enum SpaceBeforeNoBackingType :{}
