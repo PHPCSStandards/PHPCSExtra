@@ -61,6 +61,8 @@ jobs:
           # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
           ini-values: error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On
           coverage: none
+        env:
+          fail-fast: true
 
       - name: "Composer: use lock file when necessary"
         if: ${{ matrix.dependencies == 'lowest' }}
