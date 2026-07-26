@@ -48,6 +48,8 @@ jobs:
           ini-file: 'development'
           coverage: none
           tools: cs2pr
+        env:
+          fail-fast: true
 
       - name: Install Composer dependencies
         uses: "ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda" # 4.0.0
@@ -160,6 +162,8 @@ jobs:
           php-version: ${{ matrix.php }}
           ini-values: ${{ steps.set_ini.outputs.PHP_INI }}
           coverage: none
+        env:
+          fail-fast: true
 
       - name: "Composer: set PHPCS version for tests (dev/specific version)"
         if: ${{ matrix.phpcs_version != 'lowest' && matrix.phpcs_version != 'stable' }}
@@ -250,6 +254,8 @@ jobs:
           # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
           ini-values: error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On, display_startup_errors=On
           coverage: xdebug
+        env:
+          fail-fast: true
 
       - name: "Composer: use lock file when necessary"
         if: ${{ matrix.dependencies == 'lowest' }}
