@@ -113,8 +113,6 @@ final class ModifierKeywordOrderSniff implements Sniff
             $phpcsFile->recordMetric($stackPtr, self::METRIC_NAME, self::FINAL_VISIBILITY);
         }
 
-        $message = 'OO constant modifier keywords are not in the correct order. Expected: "%s", found: "%s"';
-
         switch ($this->order) {
             case self::VISIBILITY_FINAL:
                 if ($visibilityPtr < $finalPtr) {

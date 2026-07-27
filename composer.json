@@ -1,46 +1,59 @@
 {
-    "name" : "phpcsstandards/phpcsextra",
-    "description" : "A collection of sniffs and standards for use with PHP_CodeSniffer.",
-    "type" : "phpcodesniffer-standard",
-    "keywords" : [ "phpcs", "phpcbf", "standards", "static analysis", "php_codesniffer", "phpcodesniffer-standard" ],
-    "license" : "LGPL-3.0-or-later",
-    "authors" : [
+    "name": "phpcsstandards/phpcsextra",
+    "description": "A collection of sniffs and standards for use with PHP_CodeSniffer.",
+    "license": "LGPL-3.0-or-later",
+    "type": "phpcodesniffer-standard",
+    "keywords": [
+        "phpcs",
+        "phpcbf",
+        "standards",
+        "static analysis",
+        "php_codesniffer",
+        "phpcodesniffer-standard"
+    ],
+    "authors": [
         {
-            "name" : "Juliette Reinders Folmer",
-            "role" : "lead",
-            "homepage" : "https://github.com/jrfnl"
+            "name": "Juliette Reinders Folmer",
+            "homepage": "https://github.com/jrfnl",
+            "role": "lead"
         },
         {
-            "name" : "Contributors",
-            "homepage" : "https://github.com/PHPCSStandards/PHPCSExtra/graphs/contributors"
+            "name": "Contributors",
+            "homepage": "https://github.com/PHPCSStandards/PHPCSExtra/graphs/contributors"
         }
     ],
-    "support" : {
-        "issues" : "https://github.com/PHPCSStandards/PHPCSExtra/issues",
-        "source" : "https://github.com/PHPCSStandards/PHPCSExtra",
+    "support": {
+        "issues": "https://github.com/PHPCSStandards/PHPCSExtra/issues",
+        "source": "https://github.com/PHPCSStandards/PHPCSExtra",
         "security": "https://github.com/PHPCSStandards/PHPCSExtra/security/policy"
     },
-    "require" : {
-        "php" : ">=5.4",
-        "squizlabs/php_codesniffer" : "^3.13.5 || ^4.0.1",
-        "phpcsstandards/phpcsutils" : "^1.2.0"
+    "require": {
+        "php": ">=5.4",
+        "phpcsstandards/phpcsutils": "^1.2.3",
+        "squizlabs/php_codesniffer": "^3.13.5 || ^4.0.1"
     },
-    "require-dev" : {
-        "php-parallel-lint/php-parallel-lint": "^1.4.0",
+    "require-dev": {
         "php-parallel-lint/php-console-highlighter": "^1.0",
+        "php-parallel-lint/php-parallel-lint": "^1.4.0",
         "phpcsstandards/phpcsdevcs": "^1.2.0",
         "phpcsstandards/phpcsdevtools": "^1.2.1",
         "phpunit/phpunit": "^4.5 || ^5.0 || ^6.0 || ^7.0 || ^8.0 || ^9.3.4"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        },
+        "lock": false
+    },
     "extra": {
         "branch-alias": {
-            "dev-stable": "1.x-dev",
-            "dev-develop": "1.x-dev"
+            "dev-develop": "1.x-dev",
+            "dev-stable": "1.x-dev"
         }
     },
-    "scripts" : {
+    "scripts": {
         "lint": [
             "@php ./vendor/php-parallel-lint/php-parallel-lint/parallel-lint . --show-deprecated -e php --exclude vendor --exclude .git"
         ],
@@ -71,11 +84,5 @@
         "coverage-phpcs4-local": [
             "@php ./vendor/phpunit/phpunit/phpunit --coverage-html ./build/coverage-html"
         ]
-    },
-    "config": {
-        "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": true
-        },
-        "lock": false
     }
 }

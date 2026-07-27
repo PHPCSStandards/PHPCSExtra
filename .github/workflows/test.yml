@@ -29,7 +29,7 @@ jobs:
 
     strategy:
       matrix:
-        php: ['5.4', '7.0', '7.4', '8.0', '8.4', 'nightly']
+        php: ['5.4', '7.0', '7.4', '8.0', '8.5', 'nightly']
 
     name: "Lint: PHP ${{ matrix.php }}"
 
@@ -37,20 +37,22 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
       - name: Install PHP
-        uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f # 2.35.5
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
         with:
           php-version: ${{ matrix.php }}
           ini-file: 'development'
           coverage: none
           tools: cs2pr
+        env:
+          fail-fast: true
 
       - name: Install Composer dependencies
-        uses: "ramsey/composer-install@3cf229dc2919194e9e36783941438d17239e8520" # 3.1.1
+        uses: "ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda" # 4.0.0
         with:
           # For the PHP "nightly", we need to install with ignore platform reqs as not all dependencies may allow it yet.
           composer-options: ${{ matrix.php == 'nightly' && '--ignore-platform-req=php+' || '' }}
@@ -73,7 +75,7 @@ jobs:
         # @link https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstrategymatrix
         #
         # The matrix is set up so as not to duplicate the builds which are run for code coverage.
-        php: ['5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2', '8.3', '8.5']
+        php: ['5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2', '8.3', '8.4', '8.6']
         phpcs_version: ['lowest', '^3.13', '4.0.1', 'stable']
         phpcsutils_version: ['stable']
 
@@ -110,10 +112,10 @@ jobs:
           - php: '7.2'
             phpcs_version: 'stable'
             phpcsutils_version: 'lowest'
-          - php: '8.4'
+          - php: '8.5'
             phpcs_version: '^3.13'
             phpcsutils_version: 'lowest'
-          - php: '8.4'
+          - php: '8.5'
             phpcs_version: 'stable'
             phpcsutils_version: 'lowest'
 
@@ -124,20 +126,20 @@ jobs:
           - php: '7.2'
             phpcs_version: '4.x-dev'
             phpcsutils_version: 'dev-develop'
-          - php: '8.4'
+          - php: '8.5'
             phpcs_version: '3.x-dev'
             phpcsutils_version: 'dev-develop'
-          - php: '8.4'
+          - php: '8.5'
             phpcs_version: '4.x-dev'
             phpcsutils_version: 'dev-develop'
 
     name: "Test: PHP ${{ matrix.php }} - PHPCS ${{ matrix.phpcs_version }} - Utils ${{ matrix.phpcsutils_version }}"
 
-    continue-on-error: ${{ matrix.php == '8.5' }}
+    continue-on-error: ${{ matrix.php == '8.6' }}
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
@@ -155,11 +157,13 @@ jobs:
           # yamllint enable rule:line-length
 
       - name: Install PHP
-        uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f # 2.35.5
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
         with:
           php-version: ${{ matrix.php }}
           ini-values: ${{ steps.set_ini.outputs.PHP_INI }}
           coverage: none
+        env:
+          fail-fast: true
 
       - name: "Composer: set PHPCS version for tests (dev/specific version)"
         if: ${{ matrix.phpcs_version != 'lowest' && matrix.phpcs_version != 'stable' }}
@@ -175,10 +179,10 @@ jobs:
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-php-dependencies-with-composer
       - name: Install Composer dependencies
-        uses: "ramsey/composer-install@3cf229dc2919194e9e36783941438d17239e8520" # 3.1.1
+        uses: "ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda" # 4.0.0
         with:
           # For the PHP "nightly", we need to install with ignore platform reqs as not all dependencies may allow it yet.
-          composer-options: ${{ matrix.php == '8.5' && '--ignore-platform-req=php+' || '' }}
+          composer-options: ${{ matrix.php == '8.6' && '--ignore-platform-req=php+' || '' }}
           # Bust the cache at least once a month - output format: YYYY-MM.
           custom-cache-suffix: $(date -u "+%Y-%m")
 
@@ -222,7 +226,7 @@ jobs:
     strategy:
       matrix:
         # Note, since the release of PHPCS 4.0, 'stable' == latest 4.x.
-        php: ['5.4', '8.4']
+        php: ['5.4', '8.5']
         dependencies: ['lowest', 'stable']
 
         exclude:
@@ -238,18 +242,20 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
       - name: Install PHP
-        uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f # 2.35.5
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
         with:
           php-version: ${{ matrix.php }}
           # On stable PHPCS versions, allow for PHP deprecation notices.
           # Unit tests don't need to fail on those for stable releases where those issues won't get fixed anymore.
-          ini-values: PHP_INI=error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On
+          ini-values: error_reporting=E_ALL & ~E_DEPRECATED, display_errors=On, display_startup_errors=On
           coverage: xdebug
+        env:
+          fail-fast: true
 
       - name: "Composer: use lock file when necessary"
         if: ${{ matrix.dependencies == 'lowest' }}
@@ -258,7 +264,7 @@ jobs:
       # Install dependencies and handle caching in one go.
       # @link https://github.com/marketplace/actions/install-php-dependencies-with-composer
       - name: Install Composer dependencies
-        uses: "ramsey/composer-install@3cf229dc2919194e9e36783941438d17239e8520" # 3.1.1
+        uses: "ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda" # 4.0.0
         with:
           # Bust the cache at least once a month - output format: YYYY-MM.
           custom-cache-suffix: $(date -u "+%Y-%m")
@@ -285,7 +291,7 @@ jobs:
 
       - name: Upload coverage results to Coveralls
         if: ${{ success() }}
-        uses: coverallsapp/github-action@648a8eb78e6d50909eff900e4ec85cab4524a45b # v2.3.6
+        uses: coverallsapp/github-action@5cbfd81b66ca5d10c19b062c04de0199c215fb6e # v2.3.7
         with:
           format: clover
           file: build/logs/clover.xml
@@ -302,6 +308,6 @@ jobs:
 
     steps:
       - name: Coveralls Finished
-        uses: coverallsapp/github-action@648a8eb78e6d50909eff900e4ec85cab4524a45b # v2.3.6
+        uses: coverallsapp/github-action@5cbfd81b66ca5d10c19b062c04de0199c215fb6e # v2.3.7
         with:
           parallel-finished: true

@@ -13,7 +13,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/PHPCSStandards/PHPCSExtra/badge.svg)](https://coveralls.io/github/PHPCSStandards/PHPCSExtra)
 
 [![Minimum PHP Version](https://img.shields.io/packagist/dependency-v/phpcsstandards/phpcsextra/php.svg)][phpcsextra-packagist]
-[![Tested on PHP 5.4 to 8.4](https://img.shields.io/badge/tested%20on-PHP%205.4%20|%205.5%20|%205.6%20|%207.0%20|%207.1%20|%207.2%20|%207.3%20|%207.4%20|%208.0%20|%208.1%20|%208.2%20|%208.3%20|%208.4-brightgreen.svg?maxAge=2419200)][gha-test-results]
+[![Tested on PHP 5.4 to 8.5](https://img.shields.io/badge/tested%20on-PHP%205.4%20|%205.5%20|%205.6%20|%207.0%20|%207.1%20|%207.2%20|%207.3%20|%207.4%20|%208.0%20|%208.1%20|%208.2%20|%208.3%20|%208.4%20|%208.5-brightgreen.svg?maxAge=2419200)][gha-test-results]
 
 [![License: LGPLv3](https://img.shields.io/github/license/PHPCSStandards/PHPCSExtra)](https://github.com/PHPCSStandards/PHPCSExtra/blob/stable/LICENSE)
 ![Awesome](https://img.shields.io/badge/awesome%3F-yes!-brightgreen.svg)
@@ -93,7 +93,7 @@ composer global update phpcsstandards/phpcsextra --with-dependencies
 
 Once this project is installed, you will see three new rulesets in the list of installed standards when you run `vendor/bin/phpcs -i`: `Modernize`, `NormalizedArrays` and `Universal`.
 
-* The `Modernize` ruleset is a standard which checks code for modernization opportunaties.
+* The `Modernize` ruleset is a standard which checks code for modernization opportunities.
 * The `NormalizedArrays` ruleset is a standard to check the formatting of array declarations.
 * The `Universal` ruleset is **NOT** a standard, but a sniff collection.
     It should **NOT** be included in custom rulesets as a standard as it contains contradictory rules.
@@ -107,7 +107,7 @@ Once this project is installed, you will see three new rulesets in the list of i
     _Use the `phpcbf` command to run the fixers._
 * :bar_chart: = Includes metrics.
     _Use `phpcs` with `--report=info` to see the metrics._
-* :books: = Includes CLI documentation.
+* :books: = Includes documentation.
     _Use `phpcs` with `--generator=Text` to see the documentation._
 
 
