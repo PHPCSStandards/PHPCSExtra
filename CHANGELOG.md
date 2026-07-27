@@ -15,6 +15,18 @@ This projects adheres to [Keep a CHANGELOG](https://keepachangelog.com/) and use
 _Nothing yet._
 
 
+## [1.5.1] - 2026-07-27
+
+### Changed
+
+#### Other
+
+* Composer: The minimum `PHPCSUtils` requirement has been updated to `1.2.3` (was `1.2.0`). [#464]
+* Various housekeeping. Including a contribution by [@rodrigoprimo].
+
+[#464]: https://github.com/PHPCSStandards/PHPCSExtra/pull/464
+
+
 ## [1.5.0] - 2025-11-13
 
 ### Added
@@ -749,6 +761,7 @@ This initial alpha release contains the following sniffs:
 [php_version-config]:    https://github.com/PHPCSStandards/PHP_CodeSniffer/wiki/Configuration-Options#setting-the-php-version
 
 [Unreleased]: https://github.com/PHPCSStandards/PHPCSExtra/compare/stable...HEAD
+[1.5.1]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.5.0...1.5.1
 [1.5.0]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.4.2...1.5.0
 [1.4.2]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.4.1...1.4.2
 [1.4.1]: https://github.com/PHPCSStandards/PHPCSExtra/compare/1.4.0...1.4.1
