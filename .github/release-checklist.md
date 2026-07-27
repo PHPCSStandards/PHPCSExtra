@@ -12,6 +12,7 @@ PR for tracking changes for the x.x.x release. Target release date: **DOW MONTH 
 - [ ] Add changelog for the release - PR #xxx
     :pencil2: Remember to add a release link at the bottom!
 - [ ] Update sniff list in `README` (if applicable) - PR #xxx.
+- [ ] Open PR to merge the `develop` branch to `stable` (= this PR).
 
 ### Release
 
