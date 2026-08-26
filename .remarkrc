@@ -15,7 +15,8 @@
                 "https://www.php.net/",
                 "^https?://github\\.com/PHPCSStandards/PHPCSExtra/compare/[0-9\\.]+?\\.{3}[0-9\\.]+",
                 "^https?://github\\.com/PHPCSStandards/PHPCSExtra/commits/develop",
-                "https://packagist.org/packages/phpcsstandards/phpcsextra#dev-develop"
+                "https://packagist.org/packages/phpcsstandards/phpcsextra#dev-develop",
+                "^https://coveralls\\.io/github/PHPCSStandards/PHPCSExtra"
             ],
             "deadOrAliveOptions": {
                 "maxRetries": 3
