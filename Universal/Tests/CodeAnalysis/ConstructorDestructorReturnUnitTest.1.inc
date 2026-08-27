@@ -132,7 +132,7 @@ class NestedFunctions {
         }
     }
 
-    public function __construct() {
+    public function __destruct() {
         function global_function($foo) {
             return $foo;
         }
@@ -148,7 +148,7 @@ class NestedClosures {
         );
     }
 
-    public function __construct() {
+    public function __destruct() {
         $this->callback = function () {
             return 10;
         };
