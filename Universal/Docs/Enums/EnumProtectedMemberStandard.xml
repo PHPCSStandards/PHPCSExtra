@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<documentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://phpcsstandards.github.io/PHPCSDevTools/phpcsdocs.xsd"
+    title="Enum Protected Member"
+    >
+    <standard>
+    <![CDATA[
+    Non-public enum constants and methods should be declared `private`, not `protected` as enums cannot be extended.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: Non-public enum members declared 'private'.">
+        <![CDATA[
+enum Suit
+{
+    <em>private</em> const DEFAULT_LABEL = 'unknown';
+
+    <em>private</em> function describe() {}
+}
+        ]]>
+        </code>
+        <code title="Invalid: Non-public enum members declared 'protected'.">
+        <![CDATA[
+enum Suit
+{
+    <em>protected</em> const DEFAULT_LABEL = 'unknown';
+
+    <em>protected</em> function describe() {}
+}
+        ]]>
+        </code>
+    </code_comparison>
+</documentation>
