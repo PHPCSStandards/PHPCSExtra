@@ -1,0 +1,79 @@
+<?php
+
+/*
+ * Non-enum scope is ignored.
+ */
+
+class Foo {
+    protected const VALID_CONST = 1;
+    protected function validMethod() {}
+}
+
+enum EnumWithNestedAnonClass {
+    public function wrapper() {
+        return new class {
+            protected const NESTED = 1;
+            protected function nestedMethod() {}
+        };
+    }
+}
+
+
+/*
+ * Valid enum constant and method visibility modifiers.
+ */
+
+enum ValidEnum {
+    case Foo;
+
+    private const PRIVATE = 1;
+    const IMPLICIT_PUBLIC = 2;
+    final public const FINAL_PUBLIC = 3;
+
+    private function privateMethod() {}
+    public static function publicStaticMethod() {}
+}
+
+enum ValidBackedEnum: string {
+    case Foo = 'foo';
+
+    private const string TYPED_PRIVATE = 'x';
+    final private function finalPrivateMethod() {}
+}
+
+/*
+ * Invalid enum constant and method visibility modifiers.
+ */
+
+enum InvalidEnum {
+    case Foo;
+
+    private const PROTECTED = 1;
+    private final const PROTECTED_FINAL = 2;
+    final private const PROTECTED_FINAL_2 = 3;
+    private const A = 1, B = 2;
+    public const PUBLIC_AFTER_PROTECTED = 4;
+
+    private
+    // phpcs:ignore Stdn.Cat.SniffName -- for reasons.
+    final
+    /* comment */
+    const MULTILINE = 5;
+
+    private function protectedMethod() {}
+    private /* comment */ static function protectedStaticMethod() {}
+
+    private
+    /* comment */
+    static
+    // phpcs:ignore Stdn.Cat.SniffName -- for reasons.
+    function multiLineModifiers() {}
+}
+
+enum InvalidBackedEnum: int {
+    case Foo = 1;
+
+    private const int TYPED_PROT = 1;
+    static private function staticProtectedMethod() {}
+    final private function finalProtectedMethod() {}
+}
