@@ -25,15 +25,15 @@ env:
 jobs:
   lint:
     if: ${{ github.ref != 'refs/heads/develop' }}
-    runs-on: ubuntu-latest
 
     strategy:
       matrix:
         php: ['5.4', '7.0', '7.4', '8.0', '8.5', 'nightly']
 
-    name: "Lint: PHP ${{ matrix.php }}"
-
     continue-on-error: ${{ matrix.php == 'nightly' }}
+
+    name: "Lint: PHP ${{ matrix.php }}"
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
@@ -65,7 +65,6 @@ jobs:
   #### TEST STAGE ####
   test:
     if: ${{ github.ref != 'refs/heads/develop' }}
-    runs-on: ubuntu-latest
 
     strategy:
       matrix:
@@ -133,9 +132,10 @@ jobs:
             phpcs_version: '4.x-dev'
             phpcsutils_version: 'dev-develop'
 
-    name: "Test: PHP ${{ matrix.php }} - PHPCS ${{ matrix.phpcs_version }} - Utils ${{ matrix.phpcsutils_version }}"
-
     continue-on-error: ${{ matrix.php == '8.6' }}
+
+    name: "Test: PHP ${{ matrix.php }} - PHPCS ${{ matrix.phpcs_version }} - Utils ${{ matrix.phpcsutils_version }}"
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
@@ -221,8 +221,6 @@ jobs:
     # The default condition is success(), but this is false when one of the previous jobs is skipped
     if: always() && (needs.test.result == 'success' || needs.test.result == 'skipped')
 
-    runs-on: ubuntu-latest
-
     strategy:
       matrix:
         # Note, since the release of PHPCS 4.0, 'stable' == latest 4.x.
@@ -239,6 +237,7 @@ jobs:
             dependencies: 'stable'
 
     name: "Coverage: PHP ${{ matrix.php }} - PHPCS ${{ matrix.dependencies }}"
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
@@ -302,9 +301,8 @@ jobs:
     needs: coverage
     if: always() && needs.coverage.result == 'success'
 
-    runs-on: ubuntu-latest
-
     name: Coveralls Finish
+    runs-on: ubuntu-latest
 
     steps:
       - name: Coveralls Finished
