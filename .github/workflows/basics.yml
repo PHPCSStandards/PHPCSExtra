@@ -14,8 +14,14 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+# Permissions should be configured at the job level.
+permissions: {}
+
 jobs:
   checkcs:
+    permissions:
+      contents: read # To clone the repo.
+
     name: 'Basic CS and QA checks'
     runs-on: ubuntu-latest
 
@@ -103,6 +109,9 @@ jobs:
         run: composer check-complete
 
   xml-cs:
+    permissions:
+      contents: read # To clone the repo.
+
     name: 'XML Code style'
     runs-on: ubuntu-latest
 
@@ -137,20 +146,32 @@ jobs:
           diff -B ./Universal/ruleset.xml <(xmllint --format "./Universal/ruleset.xml")
 
   phpstan:
+    permissions:
+      contents: read # To clone the repo.
+
     name: "PHPStan"
     uses: PHPCSStandards/.github/.github/workflows/reusable-phpstan.yml@c535983699986d1c538d4e47f33e813fcfbcc8a0 # v1.2.2
     with:
       phpstanVersion: '2.x'
 
   markdownlint:
+    permissions:
+      contents: read # To clone the repo.
+
     name: 'Lint Markdown'
     uses: PHPCSStandards/.github/.github/workflows/reusable-markdownlint.yml@c535983699986d1c538d4e47f33e813fcfbcc8a0 # v1.2.2
 
   remark:
+    permissions:
+      contents: read # To clone the repo.
+
     name: 'QA Markdown'
     uses: PHPCSStandards/.github/.github/workflows/reusable-remark.yml@c535983699986d1c538d4e47f33e813fcfbcc8a0 # v1.2.2
 
   yamllint:
+    permissions:
+      contents: read # To clone the repo.
+
     name: 'Lint Yaml'
     uses: PHPCSStandards/.github/.github/workflows/reusable-yamllint.yml@c535983699986d1c538d4e47f33e813fcfbcc8a0 # v1.2.2
     with:
