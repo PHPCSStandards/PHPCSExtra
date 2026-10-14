@@ -24,8 +24,6 @@ jobs:
   # These are basically the same builds as in the Test->Coverage workflow, but then without doing
   # the code-coverage.
   quicktest:
-    runs-on: ubuntu-latest
-
     env:
       # - COMPOSER_ROOT_VERSION is needed to get round the recursive dependency when using CI.
       COMPOSER_ROOT_VERSION: '1.99.99'
@@ -46,6 +44,7 @@ jobs:
             dependencies: 'stable'
 
     name: "QTest${{ matrix.dependencies == 'stable' && ' + Lint' || '' }}: PHP ${{ matrix.php }} - PHPCS ${{ matrix.dependencies }}"
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
