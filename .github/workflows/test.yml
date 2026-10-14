@@ -34,7 +34,7 @@ jobs:
 
     strategy:
       matrix:
-        php: ['5.4', '7.0', '7.4', '8.0', '8.5', 'nightly']
+        php: ['5.4', '7.0', '7.4', '8.0', '8.6', 'nightly']
 
     continue-on-error: ${{ matrix.php == 'nightly' }}
 
@@ -83,7 +83,7 @@ jobs:
         # @link https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstrategymatrix
         #
         # The matrix is set up so as not to duplicate the builds which are run for code coverage.
-        php: ['5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2', '8.3', '8.4', '8.6']
+        php: ['5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2', '8.3', '8.4', '8.5', '8.7']
         phpcs_version: ['lowest', '^3.13', '4.0.2', 'stable']
         phpcsutils_version: ['stable']
 
@@ -120,10 +120,10 @@ jobs:
           - php: '7.2'
             phpcs_version: 'stable'
             phpcsutils_version: 'lowest'
-          - php: '8.5'
+          - php: '8.6'
             phpcs_version: '^3.13'
             phpcsutils_version: 'lowest'
-          - php: '8.5'
+          - php: '8.6'
             phpcs_version: 'stable'
             phpcsutils_version: 'lowest'
 
@@ -134,14 +134,14 @@ jobs:
           - php: '7.2'
             phpcs_version: '4.x-dev'
             phpcsutils_version: 'dev-develop'
-          - php: '8.5'
+          - php: '8.6'
             phpcs_version: '3.x-dev'
             phpcsutils_version: 'dev-develop'
-          - php: '8.5'
+          - php: '8.6'
             phpcs_version: '4.x-dev'
             phpcsutils_version: 'dev-develop'
 
-    continue-on-error: ${{ matrix.php == '8.6' }}
+    continue-on-error: ${{ matrix.php == '8.7' }}
 
     name: "Test: PHP ${{ matrix.php }} - PHPCS ${{ matrix.phpcs_version }} - Utils ${{ matrix.phpcsutils_version }}"
     runs-on: ubuntu-latest
@@ -191,7 +191,7 @@ jobs:
         uses: "ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda" # 4.0.0
         with:
           # For the PHP "nightly", we need to install with ignore platform reqs as not all dependencies may allow it yet.
-          composer-options: ${{ matrix.php == '8.6' && '--ignore-platform-req=php+' || '' }}
+          composer-options: ${{ matrix.php == '8.7' && '--ignore-platform-req=php+' || '' }}
           # Bust the cache at least once a month - output format: YYYY-MM.
           custom-cache-suffix: $(date -u "+%Y-%m")
 
@@ -237,7 +237,7 @@ jobs:
     strategy:
       matrix:
         # Note, since the release of PHPCS 4.0, 'stable' == latest 4.x.
-        php: ['5.4', '8.5']
+        php: ['5.4', '8.6']
         dependencies: ['lowest', 'stable']
 
         exclude:
