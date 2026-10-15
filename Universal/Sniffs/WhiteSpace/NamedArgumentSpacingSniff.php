@@ -73,14 +73,15 @@ final class NamedArgumentSpacingSniff implements Sniff
             return;
         }
 
-        // The colon is guaranteed to be the next non-empty token after the T_PARAM_NAME token.
+        // The colon is guaranteed to be the next non-empty token after the T_PARAM_NAME token
+        // otherwise the Tokenizer wouldn't have retokenized to T_PARAM_NAME.
         $colon = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
 
         // Find the start of the value being passed.
-        $afterColonNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($colon + 1), null, true);
+        $firstNonEmptyAfterColon = $phpcsFile->findNext(Tokens::$emptyTokens, ($colon + 1), null, true);
 
         $tokens = $phpcsFile->getTokens();
-        if ($afterColonNonEmpty === $parenthesisCloser || $tokens[$afterColonNonEmpty]['code'] === \T_COMMA) {
+        if ($firstNonEmptyAfterColon === $parenthesisCloser || $tokens[$firstNonEmptyAfterColon]['code'] === \T_COMMA) {
             // Parse error or live coding: missing argument value.
             // Bail out to prevent fixer conflicts with comma or closing parenthesis spacing sniffs.
             return;
@@ -106,7 +107,7 @@ final class NamedArgumentSpacingSniff implements Sniff
         SpacesFixer::checkAndFix(
             $phpcsFile,
             $colon,
-            $afterColonNonEmpty,
+            $firstNonEmptyAfterColon,
             $spacingAfter,
             'Expected %s between the colon and the argument value. Found: %s.',
             'SpacingAfter',
