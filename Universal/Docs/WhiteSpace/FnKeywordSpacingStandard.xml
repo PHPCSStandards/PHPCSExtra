@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<documentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://phpcsstandards.github.io/PHPCSDevTools/phpcsdocs.xsd"
+    title="Fn Keyword Spacing"
+    >
+    <standard>
+    <![CDATA[
+    The `fn` keyword of an arrow function should not be succeeded by a space.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: No space after the `fn` keyword.">
+        <![CDATA[
+$fn = fn<em></em>($x) => $x + 1;
+        ]]>
+        </code>
+        <code title="Invalid: Space after the `fn` keyword.">
+        <![CDATA[
+$fn = fn<em> </em>($x) => $x + 1;
+        ]]>
+        </code>
+    </code_comparison>
+</documentation>
