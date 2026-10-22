@@ -13,7 +13,7 @@
         <![CDATA[
 enum Suit {
     case <em>Hearts</em>;
-    case <em>JsonValue</em>;
+    case <em>DiamondRed</em>;
 }
         ]]>
         </code>
@@ -21,7 +21,7 @@ enum Suit {
         <![CDATA[
 enum Suit {
     case <em>hearts</em>;
-    case <em>JSONValue</em>;
+    case <em>DIAMOND_RED</em>;
 }
         ]]>
         </code>
