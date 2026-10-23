@@ -25,7 +25,7 @@ use PHPCSUtils\Utils\Scopes;
  *
  * @since 1.6.0
  */
-final class EnumProtectedMemberSniff implements Sniff
+final class NoProtectedMembersSniff implements Sniff
 {
 
     /**

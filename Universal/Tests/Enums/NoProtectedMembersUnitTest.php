@@ -13,13 +13,13 @@ namespace PHPCSExtra\Universal\Tests\Enums;
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffTestCase;
 
 /**
- * Unit test class for the EnumProtectedMember sniff.
+ * Unit test class for the NoProtectedMembers sniff.
  *
- * @covers PHPCSExtra\Universal\Sniffs\Enums\EnumProtectedMemberSniff
+ * @covers PHPCSExtra\Universal\Sniffs\Enums\NoProtectedMembersSniff
  *
  * @since 1.6.0
  */
-final class EnumProtectedMemberUnitTest extends AbstractSniffTestCase
+final class NoProtectedMembersUnitTest extends AbstractSniffTestCase
 {
 
     /**
@@ -32,7 +32,7 @@ final class EnumProtectedMemberUnitTest extends AbstractSniffTestCase
     public function getErrorList($testFile = '')
     {
         switch ($testFile) {
-            case 'EnumProtectedMemberUnitTest.1.inc':
+            case 'NoProtectedMembersUnitTest.1.inc':
                 return [
                     56 => 1,
                     57 => 1,
