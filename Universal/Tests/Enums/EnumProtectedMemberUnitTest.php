@@ -34,17 +34,20 @@ final class EnumProtectedMemberUnitTest extends AbstractSniffTestCase
         switch ($testFile) {
             case 'EnumProtectedMemberUnitTest.1.inc':
                 return [
-                    51 => 1,
-                    52 => 1,
-                    53 => 1,
-                    54 => 1,
+                    56 => 1,
                     57 => 1,
-                    63 => 1,
-                    64 => 1,
-                    66 => 1,
-                    76 => 1,
-                    77 => 1,
-                    78 => 1,
+                    58 => 1,
+                    59 => 1,
+                    62 => 1,
+                    68 => 1,
+                    69 => 1,
+                    71 => 1,
+                    81 => 1,
+                    82 => 1,
+                    83 => 1,
+                    84 => 1,
+                    85 => 1,
+                    86 => 1,
                 ];
 
             default:

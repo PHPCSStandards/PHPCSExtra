@@ -9,12 +9,16 @@ class Foo {
     protected function validMethod() {}
 }
 
-enum EnumWithNestedAnonClass {
-    public function wrapper() {
+enum EnumWithNestedDeclarations {
+    public function wrapperAnonClass() {
         return new class {
             protected const NESTED = 1;
             protected function nestedMethod() {}
         };
+    }
+
+    public function wrapperFunction() {
+        function nestedFunction() {}
     }
 }
 
@@ -38,6 +42,7 @@ enum ValidBackedEnum: string {
     case Foo = 'foo';
 
     private const string TYPED_PRIVATE = 'x';
+    private const (UnitEnum&BackedEnum)|null DNF_TYPE_PRIVATE = null;
     final private function finalPrivateMethod() {}
 }
 
@@ -65,7 +70,7 @@ enum InvalidEnum {
 
     protected
     /* comment */
-    static
+    final
     // phpcs:ignore Stdn.Cat.SniffName -- for reasons.
     function multiLineModifiers() {}
 }
@@ -74,6 +79,9 @@ enum InvalidBackedEnum: int {
     case Foo = 1;
 
     protected const int TYPED_PROT = 1;
+    protected const int|string UNION_TYPE = 1;
+    protected const UnitEnum&BackedEnum INTERSECTION_TYPE = self::Foo;
+    protected const (UnitEnum&BackedEnum)|null DNF_TYPE = null;
     static protected function staticProtectedMethod() {}
     final protected function finalProtectedMethod() {}
 }
