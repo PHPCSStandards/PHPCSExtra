@@ -54,7 +54,7 @@ final class NoProtectedMembersSniff implements Sniff
     {
         $constants = ObjectDeclarations::getDeclaredConstants($phpcsFile, $stackPtr);
 
-        foreach ($constants as $constantPtr) {
+        foreach ($constants as $constantName => $constantPtr) {
             try {
                 $properties = Constants::getProperties($phpcsFile, $constantPtr);
             } catch (ValueError $e) {
@@ -69,12 +69,12 @@ final class NoProtectedMembersSniff implements Sniff
 
             $protectedPtr = $properties['scope_token'];
 
-            $this->handleProtectedMember($phpcsFile, $protectedPtr, 'ConstantFound', 'constant');
+            $this->handleProtectedMember($phpcsFile, $protectedPtr, 'ConstantFound', 'constant', $constantName);
         }
 
         $methods = ObjectDeclarations::getDeclaredMethods($phpcsFile, $stackPtr);
 
-        foreach ($methods as $methodPtr) {
+        foreach ($methods as $methodName => $methodPtr) {
             $properties = FunctionDeclarations::getProperties($phpcsFile, $methodPtr);
             if ($properties['scope'] !== 'protected') {
                 // Not a "protected" method. Nothing to do.
@@ -83,7 +83,7 @@ final class NoProtectedMembersSniff implements Sniff
 
             $protectedPtr = $phpcsFile->findPrevious(\T_PROTECTED, ($methodPtr - 1));
 
-            $this->handleProtectedMember($phpcsFile, $protectedPtr, 'MethodFound', 'method');
+            $this->handleProtectedMember($phpcsFile, $protectedPtr, 'MethodFound', 'method', $methodName . '()');
         }
     }
 
@@ -96,16 +96,17 @@ final class NoProtectedMembersSniff implements Sniff
      * @param int                         $protectedPtr The position of the "protected" token in the stack.
      * @param string                      $errorCode    The error code to use.
      * @param string                      $memberType   The type of the member ("constant" or "method").
+     * @param string                      $memberName   The name of the member, including "()" for methods.
      *
      * @return void
      */
-    private function handleProtectedMember(File $phpcsFile, $protectedPtr, $errorCode, $memberType)
+    private function handleProtectedMember(File $phpcsFile, $protectedPtr, $errorCode, $memberType, $memberName)
     {
         $fix = $phpcsFile->addFixableError(
-            'An enum %s should be declared "private" instead of "protected".',
+            'The enum %s "%s" should be declared "private" instead of "protected".',
             $protectedPtr,
             $errorCode,
-            [$memberType]
+            [$memberType, $memberName]
         );
 
         if ($fix === true) {
