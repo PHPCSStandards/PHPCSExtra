@@ -15,7 +15,7 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 use PHPCSUtils\Exceptions\ValueError;
 use PHPCSUtils\Utils\Constants;
 use PHPCSUtils\Utils\FunctionDeclarations;
-use PHPCSUtils\Utils\Scopes;
+use PHPCSUtils\Utils\ObjectDeclarations;
 
 /**
  * Require non-public enum members to be declared "private", not "protected".
@@ -37,10 +37,7 @@ final class NoProtectedMembersSniff implements Sniff
      */
     public function register()
     {
-        return [
-            \T_FUNCTION,
-            \T_CONST,
-        ];
+        return [\T_ENUM];
     }
 
     /**
@@ -55,41 +52,55 @@ final class NoProtectedMembersSniff implements Sniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
-        if (Scopes::validDirectScope($phpcsFile, $stackPtr, \T_ENUM) === false) {
-            // Not a direct member of an enum.
-            return;
-        }
+        $constants = ObjectDeclarations::getDeclaredConstants($phpcsFile, $stackPtr);
 
-        if ($phpcsFile->getTokens()[$stackPtr]['code'] === \T_CONST) {
-            $errorCode  = 'ConstantFound';
-            $memberType = 'constant';
-
+        foreach ($constants as $constantPtr) {
             try {
-                $properties = Constants::getProperties($phpcsFile, $stackPtr);
+                $properties = Constants::getProperties($phpcsFile, $constantPtr);
             } catch (ValueError $e) {
                 // Parse error/live coding.
-                return;
+                continue;
             }
 
             if ($properties['scope'] !== 'protected') {
                 // Not a "protected" constant. Nothing to do.
-                return;
+                continue;
             }
 
             $protectedPtr = $properties['scope_token'];
-        } else {
-            $errorCode  = 'MethodFound';
-            $memberType = 'method';
 
-            $properties = FunctionDeclarations::getProperties($phpcsFile, $stackPtr);
-            if ($properties['scope'] !== 'protected') {
-                // Not a "protected" method. Nothing to do.
-                return;
-            }
-
-            $protectedPtr = $phpcsFile->findPrevious(\T_PROTECTED, ($stackPtr - 1));
+            $this->handleProtectedMember($phpcsFile, $protectedPtr, 'ConstantFound', 'constant');
         }
 
+        $methods = ObjectDeclarations::getDeclaredMethods($phpcsFile, $stackPtr);
+
+        foreach ($methods as $methodPtr) {
+            $properties = FunctionDeclarations::getProperties($phpcsFile, $methodPtr);
+            if ($properties['scope'] !== 'protected') {
+                // Not a "protected" method. Nothing to do.
+                continue;
+            }
+
+            $protectedPtr = $phpcsFile->findPrevious(\T_PROTECTED, ($methodPtr - 1));
+
+            $this->handleProtectedMember($phpcsFile, $protectedPtr, 'MethodFound', 'method');
+        }
+    }
+
+    /**
+     * Handles a protected enum member.
+     *
+     * @since 1.6.0
+     *
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile    The file being scanned.
+     * @param int                         $protectedPtr The position of the "protected" token in the stack.
+     * @param string                      $errorCode    The error code to use.
+     * @param string                      $memberType   The type of the member ("constant" or "method").
+     *
+     * @return void
+     */
+    private function handleProtectedMember(File $phpcsFile, $protectedPtr, $errorCode, $memberType)
+    {
         $fix = $phpcsFile->addFixableError(
             'An enum %s should be declared "private" instead of "protected".',
             $protectedPtr,

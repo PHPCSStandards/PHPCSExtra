@@ -1,8 +1,8 @@
 <?php
 
-// Intentional parse error (constant declared without a value).
+// Intentional parse error (close tag between the const keyword and the constant name).
 // This should be the only test in the file.
 
 enum ParseError {
-    protected const NO_VALUE;
+    protected const ?><?php Y = 1;
 }
