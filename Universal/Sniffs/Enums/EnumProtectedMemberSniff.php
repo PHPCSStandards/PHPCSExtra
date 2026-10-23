@@ -12,7 +12,6 @@ namespace PHPCSExtra\Universal\Sniffs\Enums;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
-use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\Exceptions\ValueError;
 use PHPCSUtils\Utils\Constants;
 use PHPCSUtils\Utils\FunctionDeclarations;
@@ -88,7 +87,7 @@ final class EnumProtectedMemberSniff implements Sniff
                 return;
             }
 
-            $protectedPtr = $phpcsFile->findPrevious(Tokens::$scopeModifiers, ($stackPtr - 1));
+            $protectedPtr = $phpcsFile->findPrevious(\T_PROTECTED, ($stackPtr - 1));
         }
 
         $fix = $phpcsFile->addFixableError(
