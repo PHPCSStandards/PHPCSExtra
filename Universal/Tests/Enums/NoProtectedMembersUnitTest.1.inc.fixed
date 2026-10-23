@@ -1,0 +1,87 @@
+<?php
+
+/*
+ * Non-enum scope is ignored.
+ */
+
+class Foo {
+    protected const VALID_CONST = 1;
+    protected function validMethod() {}
+}
+
+enum EnumWithNestedDeclarations {
+    public function wrapperAnonClass() {
+        return new class {
+            protected const NESTED = 1;
+            protected function nestedMethod() {}
+        };
+    }
+
+    public function wrapperFunction() {
+        function nestedFunction() {}
+    }
+}
+
+
+/*
+ * Valid enum constant and method visibility modifiers.
+ */
+
+enum ValidEnum {
+    case Foo;
+
+    private const PRIVATE = 1;
+    const IMPLICIT_PUBLIC = 2;
+    final public const FINAL_PUBLIC = 3;
+
+    private function privateMethod() {}
+    public static function publicStaticMethod() {}
+}
+
+enum ValidBackedEnum: string {
+    case Foo = 'foo';
+
+    private const string TYPED_PRIVATE = 'x';
+    private const (UnitEnum&BackedEnum)|null DNF_TYPE_PRIVATE = null;
+    final private function finalPrivateMethod() {}
+}
+
+/*
+ * Invalid enum constant and method visibility modifiers.
+ */
+
+enum InvalidEnum {
+    case Foo;
+
+    private const PROTECTED = 1;
+    private final const PROTECTED_FINAL = 2;
+    final private const PROTECTED_FINAL_2 = 3;
+    private const A = 1, B = 2;
+    public const PUBLIC_AFTER_PROTECTED = 4;
+
+    private
+    // phpcs:ignore Stdn.Cat.SniffName -- for reasons.
+    final
+    /* comment */
+    const MULTILINE = 5;
+
+    private function protectedMethod() {}
+    private /* comment */ static function protectedStaticMethod() {}
+
+    private
+    /* comment */
+    final
+    // phpcs:ignore Stdn.Cat.SniffName -- for reasons.
+    function multiLineModifiers() {}
+}
+
+enum InvalidBackedEnum: int {
+    case Foo = 1;
+
+    private const int TYPED_PROT = 1;
+    private const int|string UNION_TYPE = 1;
+    private const UnitEnum&BackedEnum INTERSECTION_TYPE = self::Foo;
+    private const (UnitEnum&BackedEnum)|null DNF_TYPE = null;
+    static private function staticProtectedMethod() {}
+    final private function finalProtectedMethod() {}
+}
