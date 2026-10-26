@@ -13,13 +13,13 @@ namespace PHPCSExtra\Universal\Tests\FunctionUse;
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffTestCase;
 
 /**
- * Unit test class for the NamedArgumentSpacing sniff.
+ * Unit test class for the NamedArgumentColonSpacing sniff.
  *
- * @covers PHPCSExtra\Universal\Sniffs\FunctionUse\NamedArgumentSpacingSniff
+ * @covers PHPCSExtra\Universal\Sniffs\FunctionUse\NamedArgumentColonSpacingSniff
  *
  * @since 1.6.0
  */
-final class NamedArgumentSpacingUnitTest extends AbstractSniffTestCase
+final class NamedArgumentColonSpacingUnitTest extends AbstractSniffTestCase
 {
 
     /**
@@ -32,7 +32,7 @@ final class NamedArgumentSpacingUnitTest extends AbstractSniffTestCase
     public function getErrorList($testFile = '')
     {
         switch ($testFile) {
-            case 'NamedArgumentSpacingUnitTest.1.inc':
+            case 'NamedArgumentColonSpacingUnitTest.1.inc':
                 return [
                     19 => 1,
                     20 => 1,

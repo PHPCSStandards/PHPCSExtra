@@ -21,7 +21,7 @@ use PHPCSUtils\Utils\Parentheses;
  *
  * @since 1.6.0
  */
-final class NamedArgumentSpacingSniff implements Sniff
+final class NamedArgumentColonSpacingSniff implements Sniff
 {
 
     /**
