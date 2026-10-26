@@ -8,14 +8,14 @@
  * @link      https://github.com/PHPCSStandards/PHPCSExtra
  */
 
-namespace PHPCSExtra\Universal\Tests\WhiteSpace;
+namespace PHPCSExtra\Universal\Tests\FunctionUse;
 
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffTestCase;
 
 /**
  * Unit test class for the NamedArgumentSpacing sniff.
  *
- * @covers PHPCSExtra\Universal\Sniffs\WhiteSpace\NamedArgumentSpacingSniff
+ * @covers PHPCSExtra\Universal\Sniffs\FunctionUse\NamedArgumentSpacingSniff
  *
  * @since 1.6.0
  */

@@ -8,7 +8,7 @@
  * @link      https://github.com/PHPCSStandards/PHPCSExtra
  */
 
-namespace PHPCSExtra\Universal\Sniffs\WhiteSpace;
+namespace PHPCSExtra\Universal\Sniffs\FunctionUse;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;

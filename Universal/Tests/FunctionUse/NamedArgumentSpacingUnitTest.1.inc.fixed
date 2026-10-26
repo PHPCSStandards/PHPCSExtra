@@ -46,21 +46,21 @@ $d
 foo(name  /* comment */ : $value);
 foo(name:  /* comment */ $value);
 
-// phpcs:set Universal.WhiteSpace.NamedArgumentSpacing spacingBefore 1
+// phpcs:set Universal.FunctionUse.NamedArgumentSpacing spacingBefore 1
 foo(name : $value);
 foo(name : $value);
 foo(name : $value);
 // Resetting to the default value.
-// phpcs:set Universal.WhiteSpace.NamedArgumentSpacing spacingBefore 0
+// phpcs:set Universal.FunctionUse.NamedArgumentSpacing spacingBefore 0
 
-// phpcs:set Universal.WhiteSpace.NamedArgumentSpacing spacingAfter 0
+// phpcs:set Universal.FunctionUse.NamedArgumentSpacing spacingAfter 0
 foo(name:$value);
 foo(name:$value);
 
-// phpcs:set Universal.WhiteSpace.NamedArgumentSpacing spacingBefore 2
-// phpcs:set Universal.WhiteSpace.NamedArgumentSpacing spacingAfter 3
+// phpcs:set Universal.FunctionUse.NamedArgumentSpacing spacingBefore 2
+// phpcs:set Universal.FunctionUse.NamedArgumentSpacing spacingAfter 3
 foo(name  :   $value);
 foo(name  :   $value);
 // Resetting to the default value.
-// phpcs:set Universal.WhiteSpace.NamedArgumentSpacing spacingBefore 0
-// phpcs:set Universal.WhiteSpace.NamedArgumentSpacing spacingAfter 1
+// phpcs:set Universal.FunctionUse.NamedArgumentSpacing spacingBefore 0
+// phpcs:set Universal.FunctionUse.NamedArgumentSpacing spacingAfter 1
