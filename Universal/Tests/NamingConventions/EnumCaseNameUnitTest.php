@@ -39,6 +39,8 @@ final class EnumCaseNameUnitTest extends AbstractSniffTestCase
                     28 => 1,
                     31 => 1,
                     35 => 1,
+                    51 => 1,
+                    52 => 1,
                 ];
 
             default:

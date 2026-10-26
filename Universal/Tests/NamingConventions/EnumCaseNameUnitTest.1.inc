@@ -34,3 +34,23 @@ enum InvalidCaseNames {
 enum InvalidBackedEnum: int {
     case _Hidden = 2;
 }
+
+/*
+ * Allowing consecutive uppercase letters.
+ */
+
+// phpcs:set Universal.NamingConventions.EnumCaseName allowConsecutiveCaps true
+
+enum ValidWithConsecutiveCaps {
+    case JSONValue;
+    case Base64URL;
+    case HEARTS;
+}
+
+enum InvalidWithConsecutiveCaps {
+    case diamondsRed;
+    case DIAMONDS_RED;
+}
+
+// Reset to the default value.
+// phpcs:set Universal.NamingConventions.EnumCaseName allowConsecutiveCaps false

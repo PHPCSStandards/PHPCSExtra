@@ -6,6 +6,8 @@
     <standard>
     <![CDATA[
     Enum case declarations must use PascalCase capitalization.
+
+    By default, consecutive uppercase letters are not allowed, but this can be changed via the sniff configuration.
     ]]>
     </standard>
     <code_comparison>
