@@ -65,7 +65,7 @@ final class EnumCaseNameSniff implements Sniff
             $phpcsFile->addError(
                 'Enum case name "%s" is not in PascalCase',
                 $caseNamePtr,
-                'Invalid',
+                'NotPascalCase',
                 [$caseName]
             );
         }
