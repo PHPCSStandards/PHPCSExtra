@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<documentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://phpcsstandards.github.io/PHPCSDevTools/phpcsdocs.xsd"
+    title="Declare Statements Block Mode"
+    >
+    <standard>
+    <![CDATA[
+    Defines the block mode usage of declare directives.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: Declare statement written in non-block mode.">
+        <![CDATA[
+declare(strict_types=1);
+
+declare(encoding='utf-8');
+
+declare(ticks=10):
+    // Code.
+enddeclare;
+        ]]>
+        </code>
+        <code title="Invalid: Declare statement written with curly braces or alternative syntax.">
+        <![CDATA[
+declare(encoding='ISO-8859-1', ticks=1) {
+    // Code.
+}
+
+declare(encoding='ISO-8859-1', ticks=10):
+    declare(encoding='utf-8'):
+    // Code.
+    enddeclare;
+enddeclare;
+        ]]>
+        </code>
+    </code_comparison>
+    <standard>
+    <![CDATA[
+    A declare statement for the `strict_types` directive is not allowed to be written using curly braces or with alternative syntax.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: strict_types statement not using block mode.">
+        <![CDATA[
+declare(strict_types=1);
+        ]]>
+        </code>
+        <code title="Invalid: strict_types statement using alternative syntax/curly braces.">
+        <![CDATA[
+declare(strict_types=1) <em>{</em>
+    // Code.
+<em>}</em>
+
+declare(strict_types=1) <em>:</em>
+    // Code.
+<em>enddeclare</em>;
+        ]]>
+        </code>
+    </code_comparison>
+</documentation>
