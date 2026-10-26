@@ -97,7 +97,7 @@ final class NamedArgumentColonSpacingSniff implements Sniff
             $colon,
             $spacingBefore,
             'Expected %s between the argument name and the colon. Found: %s.',
-            'SpacingBefore',
+            'SpaceBefore',
             'error',
             0,
             'Named argument: space before colon'
@@ -110,7 +110,7 @@ final class NamedArgumentColonSpacingSniff implements Sniff
             $firstNonEmptyAfterColon,
             $spacingAfter,
             'Expected %s between the colon and the argument value. Found: %s.',
-            'SpacingAfter',
+            'SpaceAfter',
             'error',
             0,
             'Named argument: space after colon'
