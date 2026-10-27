@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<documentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://phpcsstandards.github.io/PHPCSDevTools/phpcsdocs.xsd"
+    title="Enum Case Name"
+    >
+    <standard>
+    <![CDATA[
+    Enum case declarations must use PascalCase capitalization.
+
+    By default, consecutive uppercase letters are not allowed, but this can be changed via the sniff configuration.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: Enum case name in PascalCase.">
+        <![CDATA[
+enum Suit {
+    case <em>Hearts</em>;
+    case <em>DiamondRed</em>;
+}
+        ]]>
+        </code>
+        <code title="Invalid: Enum case name not in PascalCase.">
+        <![CDATA[
+enum Suit {
+    case <em>hearts</em>;
+    case <em>DIAMOND_RED</em>;
+}
+        ]]>
+        </code>
+    </code_comparison>
+</documentation>
