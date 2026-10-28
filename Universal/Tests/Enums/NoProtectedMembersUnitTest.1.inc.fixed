@@ -43,7 +43,7 @@ enum ValidBackedEnum: string {
 
     private const string TYPED_PRIVATE = 'x';
     private const (UnitEnum&BackedEnum)|null DNF_TYPE_PRIVATE = null;
-    final private function finalPrivateMethod() {}
+    private static function privateStaticMethod() {}
 }
 
 /*
