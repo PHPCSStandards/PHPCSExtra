@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<documentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://phpcsstandards.github.io/PHPCSDevTools/phpcsdocs.xsd"
+    title="Group Use Trailing Comma"
+    >
+    <standard>
+    <![CDATA[
+    For single-line group use statements, there should be no comma after the last import.
+
+    For multi-line group use statements, there should be a comma after the last import.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: Single-line group use statement without a comma after the last import.">
+        <![CDATA[
+use Vendor\Package\{ClassA, ClassB<em></em>};
+        ]]>
+        </code>
+        <code title="Invalid: Single-line group use statement with a comma after the last import.">
+        <![CDATA[
+use Vendor\Package\{ClassA, ClassB<em>,</em>};
+        ]]>
+        </code>
+    </code_comparison>
+    <code_comparison>
+        <code title="Valid: Multi-line group use statement with a comma after the last import.">
+        <![CDATA[
+use Vendor\Package\{
+    ClassA,
+    ClassB<em>,</em>
+};
+        ]]>
+        </code>
+        <code title="Invalid: Multi-line group use statement without a comma after the last import.">
+        <![CDATA[
+use Vendor\Package\{
+    ClassA,
+    ClassB<em></em>
+};
+        ]]>
+        </code>
+    </code_comparison>
+</documentation>
