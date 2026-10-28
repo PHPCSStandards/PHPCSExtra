@@ -68,8 +68,16 @@ final class NoProtectedMembersSniff implements Sniff
             }
 
             $protectedPtr = $properties['scope_token'];
+            $finalPtr     = $properties['final_token'];
 
-            $this->handleProtectedMember($phpcsFile, $protectedPtr, 'ConstantFound', 'constant', $constantName);
+            $this->handleProtectedMember(
+                $phpcsFile,
+                $protectedPtr,
+                $finalPtr,
+                'ConstantFound',
+                'constant',
+                $constantName
+            );
         }
 
         $methods = ObjectDeclarations::getDeclaredMethods($phpcsFile, $stackPtr);
@@ -82,8 +90,19 @@ final class NoProtectedMembersSniff implements Sniff
             }
 
             $protectedPtr = $phpcsFile->findPrevious(\T_PROTECTED, ($methodPtr - 1));
+            $finalPtr     = false;
+            if ($properties['is_final'] === true) {
+                $finalPtr = $phpcsFile->findPrevious(\T_FINAL, ($methodPtr - 1));
+            }
 
-            $this->handleProtectedMember($phpcsFile, $protectedPtr, 'MethodFound', 'method', $methodName . '()');
+            $this->handleProtectedMember(
+                $phpcsFile,
+                $protectedPtr,
+                $finalPtr,
+                'MethodFound',
+                'method',
+                $methodName . '()'
+            );
         }
     }
 
@@ -94,23 +113,52 @@ final class NoProtectedMembersSniff implements Sniff
      *
      * @param \PHP_CodeSniffer\Files\File $phpcsFile    The file being scanned.
      * @param int                         $protectedPtr The position of the "protected" token in the stack.
+     * @param int|false                   $finalPtr     The position of the "final" token in the stack
+     *                                                  or FALSE if the member is not declared as final.
      * @param string                      $errorCode    The error code to use.
      * @param string                      $memberType   The type of the member ("constant" or "method").
      * @param string                      $memberName   The name of the member, including "()" for methods.
      *
      * @return void
      */
-    private function handleProtectedMember(File $phpcsFile, $protectedPtr, $errorCode, $memberType, $memberName)
-    {
+    private function handleProtectedMember(
+        File $phpcsFile,
+        $protectedPtr,
+        $finalPtr,
+        $errorCode,
+        $memberType,
+        $memberName
+    ) {
+        $error = 'The enum %s "%s" should be declared "private" instead of "protected".';
+        if ($finalPtr !== false) {
+            $error .= ' The "final" modifier should be removed as "private" members are implicitly final.';
+        }
+
         $fix = $phpcsFile->addFixableError(
-            'The enum %s "%s" should be declared "private" instead of "protected".',
+            $error,
             $protectedPtr,
             $errorCode,
             [$memberType, $memberName]
         );
 
         if ($fix === true) {
+            $phpcsFile->fixer->beginChangeset();
+
             $phpcsFile->fixer->replaceToken($protectedPtr, 'private');
+
+            // Private members are implicitly final, so remove the redundant "final" keyword.
+            if ($finalPtr !== false) {
+                $tokens = $phpcsFile->getTokens();
+
+                $phpcsFile->fixer->replaceToken($finalPtr, '');
+
+                // Prevent leaving behind trailing whitespace.
+                for ($i = ($finalPtr + 1); $tokens[$i]['code'] === \T_WHITESPACE; $i++) {
+                    $phpcsFile->fixer->replaceToken($i, '');
+                }
+            }
+
+            $phpcsFile->fixer->endChangeset();
         }
     }
 }

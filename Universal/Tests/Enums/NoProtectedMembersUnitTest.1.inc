@@ -67,6 +67,8 @@ enum InvalidEnum {
 
     protected function protectedMethod() {}
     protected /* comment */ static function protectedStaticMethod() {}
+    protected final function protectedFinalMethod() {}
+    protected final /* comment */ static function protectedFinalStaticMethod() {}
 
     protected
     /* comment */

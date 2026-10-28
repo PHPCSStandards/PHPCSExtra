@@ -54,23 +54,23 @@ enum InvalidEnum {
     case Foo;
 
     private const PROTECTED = 1;
-    private final const PROTECTED_FINAL = 2;
-    final private const PROTECTED_FINAL_2 = 3;
+    private const PROTECTED_FINAL = 2;
+    private const PROTECTED_FINAL_2 = 3;
     private const A = 1, B = 2;
     public const PUBLIC_AFTER_PROTECTED = 4;
 
     private
     // phpcs:ignore Stdn.Cat.SniffName -- for reasons.
-    final
     /* comment */
     const MULTILINE = 5;
 
     private function protectedMethod() {}
     private /* comment */ static function protectedStaticMethod() {}
+    private function protectedFinalMethod() {}
+    private /* comment */ static function protectedFinalStaticMethod() {}
 
     private
     /* comment */
-    final
     // phpcs:ignore Stdn.Cat.SniffName -- for reasons.
     function multiLineModifiers() {}
 }
@@ -83,5 +83,5 @@ enum InvalidBackedEnum: int {
     private const UnitEnum&BackedEnum INTERSECTION_TYPE = self::Foo;
     private const (UnitEnum&BackedEnum)|null DNF_TYPE = null;
     static private function staticProtectedMethod() {}
-    final private function finalProtectedMethod() {}
+    private function finalProtectedMethod() {}
 }

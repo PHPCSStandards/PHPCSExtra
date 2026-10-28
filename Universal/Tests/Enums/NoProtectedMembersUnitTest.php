@@ -41,13 +41,15 @@ final class NoProtectedMembersUnitTest extends AbstractSniffTestCase
                     62 => 1,
                     68 => 1,
                     69 => 1,
+                    70 => 1,
                     71 => 1,
-                    81 => 1,
-                    82 => 1,
+                    73 => 1,
                     83 => 1,
                     84 => 1,
                     85 => 1,
                     86 => 1,
+                    87 => 1,
+                    88 => 1,
                 ];
 
             default:

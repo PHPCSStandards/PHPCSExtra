@@ -16,6 +16,8 @@ enum Suit
     <em>private</em> const DEFAULT_LABEL = 'unknown';
 
     <em>private</em> function describe() {}
+
+    <em>private</em> function format() {}
 }
         ]]>
         </code>
@@ -26,6 +28,8 @@ enum Suit
     <em>protected</em> const DEFAULT_LABEL = 'unknown';
 
     <em>protected</em> function describe() {}
+
+    <em>final protected</em> function format() {}
 }
         ]]>
         </code>
