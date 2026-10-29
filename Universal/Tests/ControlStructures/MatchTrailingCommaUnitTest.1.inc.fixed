@@ -1,0 +1,124 @@
+<?php
+
+/*
+ * Valid (using the default property values).
+ */
+$validA = match ($x) { 1 => 'a', 2 => 'b' };
+$validB = match ($x)
+    { 1 => 'a', default => 'b' };
+
+$validC = match ($x) {
+    default => 'b',
+    1 => 'a',
+};
+$validD = match ($x) {
+    1 => 'a',
+    2, 3 => 'b', // Comment.
+};
+$validE = match ($x) {
+    // Empty but valid.
+};
+
+/*
+ * Invalid (using the default property values).
+ */
+$foundA = match ($x) { 'a' => 1, 'b' => 2 };
+$foundB = match ($x) { 1 => 'a', default => 'b'  /* phpcs:ignore Standard.Category.Sniff */ };
+
+$missingA = match ($x) {
+    default => [1, 2],
+    1, 2 => foo($a, $b), // Comment.
+};
+
+$missingB = match ($x) {
+    1 => 'a', 2 => 'b',};
+
+$missingC = match ($x) { 1 => 'a', default => 'b',
+};
+
+$missingD = match ($x) {
+    1 => 'a',
+    default => match ($y) { 2 => 'c' },
+};
+
+/*
+ * Non-default property values: enforce for single-line, skip for multi-line.
+ */
+// phpcs:set Universal.ControlStructures.MatchTrailingComma singleLine enforce
+// phpcs:set Universal.ControlStructures.MatchTrailingComma multiLine skip
+$validF = match (true) { $x > 1 => 'a', default => 'b', };
+$missingE = foo(match ($x) { 1 => 'a', 2 => 'b', });
+
+$validG = match ($x) {
+    1 => 'a',
+    default => 'b'
+};
+
+/*
+ * Non-default property values: skip for single-line, forbid for multi-line.
+ */
+// phpcs:set Universal.ControlStructures.MatchTrailingComma singleLine skip
+// phpcs:set Universal.ControlStructures.MatchTrailingComma multiLine forbid
+$validH = match ($x) { 1 => 'a', default => 'b', };
+
+$validI = match ($x) {
+    1 => 'a',
+    2 => 'b'
+};
+
+$foundD = match ($x) {
+    default => 'b',
+    1 => 'a' 
+};
+
+$foundE = match ($x) {
+    1 => 'a',
+    default => 'b'
+};
+
+$foundF = match ($x) {
+    1 => 'a',
+    2 => 'b' /* Comment. */
+};
+
+$foundG = match ($x) {
+    1 => 'a',
+    default => 'b' // Comment.
+    /* Comment. */
+};
+
+$foundH = match ($x) {
+    1 => 'a',
+    default => 'b' // Comment.
+    };
+
+$foundI = match ($x) {
+    1 => 'a',
+    default => 'b'
+    // Comment.
+};
+// Resetting to the default value.
+// phpcs:set Universal.ControlStructures.MatchTrailingComma multiLine enforce
+
+/*
+ * Invalid property values are treated as skip, without affecting the other property.
+ */
+// phpcs:set Universal.ControlStructures.MatchTrailingComma singleLine invalidValue
+$validJ = match ($x) { 1 => 'a', default => 'b', };
+
+$missingF = match ($x) {
+    1 => 'a',
+    default => function () {},
+};
+// Resetting to the default value.
+// phpcs:set Universal.ControlStructures.MatchTrailingComma singleLine forbid
+
+// phpcs:set Universal.ControlStructures.MatchTrailingComma multiLine invalidValue
+$validK = match ($x) {
+    1 => 'a',
+    default => 'b'
+};
+
+$foundJ = match ($x) { 1 => 'a', default => 'b' };
+// Resetting to the default value.
+// phpcs:set Universal.ControlStructures.MatchTrailingComma multiLine enforce
