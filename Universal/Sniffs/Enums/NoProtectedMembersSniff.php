@@ -129,16 +129,19 @@ final class NoProtectedMembersSniff implements Sniff
         $memberType,
         $memberName
     ) {
-        $error = 'The enum %s "%s" should be declared "private" instead of "protected".';
-        if ($finalPtr !== false) {
-            $error .= ' The "final" modifier should be removed as "private" members are implicitly final.';
-        }
+        $error = 'The enum %s "%s" should be declared "private" instead of "%sprotected" as enums cannot be extended.';
+        $data  = [
+            $memberType,
+            $memberName,
+        ];
+
+        $data[] = ($finalPtr !== false) ? 'final ' : '';
 
         $fix = $phpcsFile->addFixableError(
             $error,
             $protectedPtr,
             $errorCode,
-            [$memberType, $memberName]
+            $data
         );
 
         if ($fix === true) {
