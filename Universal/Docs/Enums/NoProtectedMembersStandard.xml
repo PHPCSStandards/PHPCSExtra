@@ -21,7 +21,7 @@ enum Suit
 }
         ]]>
         </code>
-        <code title="Invalid: Non-public enum members not declared as `private`.">
+        <code title="Invalid: Non-public enum members not declared as 'private'.">
         <![CDATA[
 enum Suit
 {
