@@ -8,7 +8,7 @@
  * @link      https://github.com/PHPCSStandards/PHPCSExtra
  */
 
-namespace PHPCSExtra\Universal\Sniffs\NamingConventions;
+namespace PHPCSExtra\Universal\Sniffs\Enums;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
@@ -24,7 +24,7 @@ use PHP_CodeSniffer\Util\Tokens;
  *
  * @since 1.6.0
  */
-final class EnumCaseNameSniff implements Sniff
+final class CaseNameSniff implements Sniff
 {
 
     /**

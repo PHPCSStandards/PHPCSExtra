@@ -8,18 +8,18 @@
  * @link      https://github.com/PHPCSStandards/PHPCSExtra
  */
 
-namespace PHPCSExtra\Universal\Tests\NamingConventions;
+namespace PHPCSExtra\Universal\Tests\Enums;
 
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffTestCase;
 
 /**
- * Unit test class for the EnumCaseName sniff.
+ * Unit test class for the CaseName sniff.
  *
- * @covers PHPCSExtra\Universal\Sniffs\NamingConventions\EnumCaseNameSniff
+ * @covers PHPCSExtra\Universal\Sniffs\Enums\CaseNameSniff
  *
  * @since 1.6.0
  */
-final class EnumCaseNameUnitTest extends AbstractSniffTestCase
+final class CaseNameUnitTest extends AbstractSniffTestCase
 {
 
     /**
@@ -32,7 +32,7 @@ final class EnumCaseNameUnitTest extends AbstractSniffTestCase
     public function getErrorList($testFile = '')
     {
         switch ($testFile) {
-            case 'EnumCaseNameUnitTest.1.inc':
+            case 'CaseNameUnitTest.1.inc':
                 return [
                     26 => 1,
                     27 => 1,

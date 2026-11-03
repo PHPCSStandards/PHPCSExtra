@@ -39,7 +39,7 @@ enum InvalidBackedEnum: int {
  * Allowing consecutive uppercase letters.
  */
 
-// phpcs:set Universal.NamingConventions.EnumCaseName allowConsecutiveCaps true
+// phpcs:set Universal.Enums.CaseName allowConsecutiveCaps true
 
 enum ValidWithConsecutiveCaps {
     case JSONValue;
@@ -53,4 +53,4 @@ enum InvalidWithConsecutiveCaps {
 }
 
 // Reset to the default value.
-// phpcs:set Universal.NamingConventions.EnumCaseName allowConsecutiveCaps false
+// phpcs:set Universal.Enums.CaseName allowConsecutiveCaps false
