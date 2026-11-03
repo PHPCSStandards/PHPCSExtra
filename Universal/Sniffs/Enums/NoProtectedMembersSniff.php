@@ -129,7 +129,7 @@ final class NoProtectedMembersSniff implements Sniff
         $memberType,
         $memberName
     ) {
-        $error = 'The enum %s "%s" should be declared "private" instead of "%sprotected" as enums cannot be extended.';
+        $error = 'The enum %s "%s" should be declared "private", instead of "%sprotected", as enums cannot be extended.';
         $data  = [
             $memberType,
             $memberName,
