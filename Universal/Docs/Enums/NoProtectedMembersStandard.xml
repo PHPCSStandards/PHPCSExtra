@@ -5,7 +5,7 @@
     >
     <standard>
     <![CDATA[
-    Non-public enum constants and methods should be declared `private`, not `protected` as enums cannot be extended.
+    Non-public enum constants and methods should be declared `private`, not `protected`, as enums cannot be extended.
     ]]>
     </standard>
     <code_comparison>
@@ -21,7 +21,7 @@ enum Suit
 }
         ]]>
         </code>
-        <code title="Invalid: Non-public enum members declared 'protected'.">
+        <code title="Invalid: Non-public enum members not declared as `private`.">
         <![CDATA[
 enum Suit
 {
