@@ -34,13 +34,17 @@ final class CaseNameUnitTest extends AbstractSniffTestCase
         switch ($testFile) {
             case 'CaseNameUnitTest.1.inc':
                 return [
-                    26 => 1,
                     27 => 1,
                     28 => 1,
-                    31 => 1,
-                    35 => 1,
-                    51 => 1,
-                    52 => 1,
+                    29 => 1,
+                    32 => 1,
+                    36 => 1,
+                    44 => 1,
+                    45 => 1,
+                    46 => 1,
+                    47 => 1,
+                    55 => 2,
+                    56 => 2,
                 ];
 
             default:

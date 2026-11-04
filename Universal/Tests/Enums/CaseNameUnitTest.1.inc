@@ -8,6 +8,7 @@ enum ValidCaseNames {
     case Hearts;
     case DiamondsRed;
     case Base64Url;
+    case JsonValue;
     case /* comment */ Spades;
     case
         // Name on the next line.
@@ -19,38 +20,38 @@ enum ValidBackedEnum: string {
 }
 
 /*
- * Invalid enum case names.
+ * Invalid enum case names: not in PascalCase.
  */
 
-enum InvalidCaseNames {
+enum NotPascalCase {
     case diamondsRed;
     case diamonds_red;
-    case HEARTS;
+    case Diamonds_Red;
     case
         // Name on the next line.
-        Base64URL;
+        diamondsred;
 }
 
-enum InvalidBackedEnum: int {
+enum NotPascalCaseBackedEnum: int {
     case _Hidden = 2;
 }
 
 /*
- * Allowing consecutive uppercase letters.
+ * Invalid enum case names: consecutive uppercase letters.
  */
 
-// phpcs:set Universal.Enums.CaseName allowConsecutiveCaps true
-
-enum ValidWithConsecutiveCaps {
-    case JSONValue;
-    case Base64URL;
+enum HasConsecutiveCaps {
     case HEARTS;
+    case JSONValue;
+    case InvalidPHPName;
+    case Base64URL;
 }
 
-enum InvalidWithConsecutiveCaps {
-    case diamondsRed;
-    case DIAMONDS_RED;
-}
+/*
+ * Invalid enum case names: both not in PascalCase and consecutive uppercase letters.
+ */
 
-// Reset to the default value.
-// phpcs:set Universal.Enums.CaseName allowConsecutiveCaps false
+enum NotPascalCaseAndHasConsecutiveCaps {
+    case invalidPHPName;
+    case Invalid_PHP_Name;
+}

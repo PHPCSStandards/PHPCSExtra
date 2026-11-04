@@ -18,25 +18,15 @@ use PHP_CodeSniffer\Util\Tokens;
 /**
  * Verifies that enum case names are declared using PascalCase.
  *
- * By default, PascalCase is interpreted strictly: a name must start with an uppercase letter and
- * must not contain two consecutive uppercase letters, so "JsonValue" is accepted while "JSONValue"
- * is not. This can be changed via the `allowConsecutiveCaps` property.
+ * A name must start with an uppercase letter and may only contain letters and digits.
+ * Additionally, consecutive uppercase letters are not allowed, so "JsonValue" is accepted
+ * while "JSONValue" is not. This last check uses a separate error code, which can be
+ * excluded to allow consecutive uppercase letters.
  *
  * @since 1.6.0
  */
 final class CaseNameSniff implements Sniff
 {
-
-    /**
-     * Whether to allow consecutive uppercase letters in enum case names.
-     *
-     * Defaults to `false`. When set to `true`, names like "JSONValue" are accepted as well.
-     *
-     * @since 1.6.0
-     *
-     * @var bool
-     */
-    public $allowConsecutiveCaps = false;
 
     /**
      * Registers the tokens that this sniff wants to listen for.
@@ -72,25 +62,22 @@ final class CaseNameSniff implements Sniff
 
         $caseName = $tokens[$caseNamePtr]['content'];
 
-        $strict = ($this->allowConsecutiveCaps !== true);
-
-        if (Common::isCamelCaps($caseName, true, true, $strict) === true) {
-            return;
+        if (Common::isCamelCaps($caseName, true, true, false) === false) {
+            $phpcsFile->addError(
+                'Enum case name "%s" is not in PascalCase',
+                $caseNamePtr,
+                'NotPascalCase',
+                [$caseName]
+            );
         }
 
-        $errorMessage = 'Enum case name "%s" is not in PascalCase';
-        $errorCode    = 'NotPascalCaseAllowConsecutiveCaps';
-
-        if ($strict === true) {
-            $errorCode = 'NotPascalCase';
-
-            // Check the name again in non-strict mode. If it passes, the only problem is the
-            // consecutive uppercase letters, so let the user know.
-            if (Common::isCamelCaps($caseName, true, true, false) === true) {
-                $errorMessage .= ' (consecutive uppercase letters are not allowed)';
-            }
+        if (preg_match('`[A-Z]{2,}`', $caseName) === 1) {
+            $phpcsFile->addError(
+                'Enum case name "%s" contains consecutive uppercase letters',
+                $caseNamePtr,
+                'HasConsecutiveCaps',
+                [$caseName]
+            );
         }
-
-        $phpcsFile->addError($errorMessage, $caseNamePtr, $errorCode, [$caseName]);
     }
 }

@@ -6,8 +6,6 @@
     <standard>
     <![CDATA[
     Enum case declarations must use PascalCase capitalization.
-
-    By default, consecutive uppercase letters are not allowed, but this can be changed via the sniff configuration.
     ]]>
     </standard>
     <code_comparison>
@@ -23,7 +21,28 @@ enum Suit {
         <![CDATA[
 enum Suit {
     case <em>hearts</em>;
-    case <em>DIAMOND_RED</em>;
+    case <em>Diamond_Red</em>;
+}
+        ]]>
+        </code>
+    </code_comparison>
+    <standard>
+    <![CDATA[
+    Enum case names should not contain consecutive uppercase letters.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: Enum case name without consecutive uppercase letters.">
+        <![CDATA[
+enum Format {
+    case <em>JsonValue</em>;
+}
+        ]]>
+        </code>
+        <code title="Invalid: Enum case name with consecutive uppercase letters.">
+        <![CDATA[
+enum Format {
+    case <em>JSONValue</em>;
 }
         ]]>
         </code>
