@@ -64,31 +64,31 @@ jobs:
 
       # Validate XML files against schema.
       - name: Validate XML rulesets against schema
-        uses: phpcsstandards/xmllint-validate@5189514594c8d5f4cf21b7e5af50f54d697973d7 # v2.0.0
+        uses: phpcsstandards/xmllint-validate@d0ee207a94a9539f5d14e78e3b13a81385252c88 # v2.0.1
         with:
           pattern: "./*/ruleset.xml"
           xsd-file: "vendor/squizlabs/php_codesniffer/phpcs.xsd"
 
       - name: Validate documentation XML against schema
-        uses: phpcsstandards/xmllint-validate@5189514594c8d5f4cf21b7e5af50f54d697973d7 # v2.0.0
+        uses: phpcsstandards/xmllint-validate@d0ee207a94a9539f5d14e78e3b13a81385252c88 # v2.0.1
         with:
           pattern: "./*/Docs/*/*Standard.xml"
           xsd-file: "vendor/phpcsstandards/phpcsdevtools/DocsXsd/phpcsdocs.xsd"
 
       - name: Validate Project PHPCS ruleset against schema
-        uses: phpcsstandards/xmllint-validate@5189514594c8d5f4cf21b7e5af50f54d697973d7 # v2.0.0
+        uses: phpcsstandards/xmllint-validate@d0ee207a94a9539f5d14e78e3b13a81385252c88 # v2.0.1
         with:
           pattern: "phpcs.xml.dist"
           xsd-file: "vendor/squizlabs/php_codesniffer/phpcs.xsd"
 
       - name: "Validate PHPUnit config for use with PHPUnit 8"
-        uses: phpcsstandards/xmllint-validate@5189514594c8d5f4cf21b7e5af50f54d697973d7 # v2.0.0
+        uses: phpcsstandards/xmllint-validate@d0ee207a94a9539f5d14e78e3b13a81385252c88 # v2.0.1
         with:
           pattern: "phpunit.xml.dist"
           xsd-file: "vendor/phpunit/phpunit/schema/8.5.xsd"
 
       - name: "Validate PHPUnit config for use with PHPUnit 9"
-        uses: phpcsstandards/xmllint-validate@5189514594c8d5f4cf21b7e5af50f54d697973d7 # v2.0.0
+        uses: phpcsstandards/xmllint-validate@d0ee207a94a9539f5d14e78e3b13a81385252c88 # v2.0.1
         with:
           pattern: "phpunit.xml.dist"
           xsd-file: "vendor/phpunit/phpunit/schema/9.2.xsd"
@@ -150,7 +150,7 @@ jobs:
       contents: read # To clone the repo.
 
     name: "PHPStan"
-    uses: PHPCSStandards/.github/.github/workflows/reusable-phpstan.yml@559f40470dbce9f7faeab31f82c0be7dfb93228e # v1.3.0
+    uses: PHPCSStandards/.github/.github/workflows/reusable-phpstan.yml@5a8a6fcf1ac33b3ec6d7b826c0f319eaa83581ff # v1.3.1
     with:
       phpstanVersion: '2.x'
 
@@ -159,27 +159,27 @@ jobs:
       contents: read # To clone the repo.
 
     name: 'Lint Markdown'
-    uses: PHPCSStandards/.github/.github/workflows/reusable-markdownlint.yml@559f40470dbce9f7faeab31f82c0be7dfb93228e # v1.3.0
+    uses: PHPCSStandards/.github/.github/workflows/reusable-markdownlint.yml@5a8a6fcf1ac33b3ec6d7b826c0f319eaa83581ff # v1.3.1
 
   remark:
     permissions:
       contents: read # To clone the repo.
 
     name: 'QA Markdown'
-    uses: PHPCSStandards/.github/.github/workflows/reusable-remark.yml@559f40470dbce9f7faeab31f82c0be7dfb93228e # v1.3.0
+    uses: PHPCSStandards/.github/.github/workflows/reusable-remark.yml@5a8a6fcf1ac33b3ec6d7b826c0f319eaa83581ff # v1.3.1
 
   pinact:
     permissions:
       contents: read # To clone the repo.
 
     name: 'Run Pinact'
-    uses: PHPCSStandards/.github/.github/workflows/reusable-pinact.yml@559f40470dbce9f7faeab31f82c0be7dfb93228e # v1.3.0
+    uses: PHPCSStandards/.github/.github/workflows/reusable-pinact.yml@5a8a6fcf1ac33b3ec6d7b826c0f319eaa83581ff # v1.3.1
 
   yamllint:
     permissions:
       contents: read # To clone the repo.
 
     name: 'Lint Yaml'
-    uses: PHPCSStandards/.github/.github/workflows/reusable-yamllint.yml@559f40470dbce9f7faeab31f82c0be7dfb93228e # v1.3.0
+    uses: PHPCSStandards/.github/.github/workflows/reusable-yamllint.yml@5a8a6fcf1ac33b3ec6d7b826c0f319eaa83581ff # v1.3.1
     with:
       strict: true
