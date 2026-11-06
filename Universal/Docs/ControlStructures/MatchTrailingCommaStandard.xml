@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<documentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://phpcsstandards.github.io/PHPCSDevTools/phpcsdocs.xsd"
+    title="Match Trailing Comma"
+    >
+    <standard>
+    <![CDATA[
+    For single-line match expressions, there should be no comma after the last arm.
+
+    For multi-line match expressions, there should be a comma after the last arm.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: Single-line match expression without a comma after the last arm.">
+        <![CDATA[
+$fee = match ($tier) { 1 => 0, default => 5<em></em> };
+        ]]>
+        </code>
+        <code title="Invalid: Single-line match expression with a comma after the last arm.">
+        <![CDATA[
+$fee = match ($tier) { 1 => 0, default => 5<em>,</em> };
+        ]]>
+        </code>
+    </code_comparison>
+    <code_comparison>
+        <code title="Valid: Multi-line match expression with a comma after the last arm.">
+        <![CDATA[
+$fee = match ($plan) {
+    'premium' => 0,
+    default => 5<em>,</em>
+};
+        ]]>
+        </code>
+        <code title="Invalid: Multi-line match expression without a comma after the last arm.">
+        <![CDATA[
+$fee = match ($plan) {
+    'premium' => 0,
+    default => 5<em></em>
+};
+        ]]>
+        </code>
+    </code_comparison>
+</documentation>
