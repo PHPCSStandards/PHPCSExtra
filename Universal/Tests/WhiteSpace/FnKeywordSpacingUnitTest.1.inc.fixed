@@ -1,0 +1,30 @@
+<?php
+
+/*
+ * Valid spacing.
+ */
+
+$fn = fn($x) => $x + 1;
+$fn = fn&() => doSomething();
+$fn = static fn($x) => fn($y) => $x + $y;
+
+/*
+ * Invalid spacing.
+ */
+
+$fn = fn($x) => $x + 1;
+$fn = fn&($x) => $x + 1;
+$fn = static fn($x) => $x + 1;
+$fn = fn() => doSomething();
+
+$fn = fn($x) => fn($y) => $x + $y;
+
+$fn = fn
+    /* comment */
+    ($x) => $x + 1;
+
+// phpcs:set Universal.WhiteSpace.FnKeywordSpacing spacingAfterKeyword 1
+$fn = fn ($x) => $x + 1; // Error.
+$fn = fn ($x) => $x + 1; // OK.
+// Resetting to the default value.
+// phpcs:set Universal.WhiteSpace.FnKeywordSpacing spacingAfterKeyword 0
