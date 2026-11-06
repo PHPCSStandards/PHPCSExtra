@@ -1,0 +1,116 @@
+<?php
+
+/*
+ * Valid (using the default property values).
+ */
+use Vendor\Valid\{ValidA, ValidB};
+use function
+    Vendor\Valid\{validFuncA, validFuncB};
+
+use Vendor\Valid\{
+    ValidC,
+    ValidD /* Comment. */,
+};
+use const Vendor\Valid\{
+    VALID_A,
+    VALID_B as ALIAS_B, // Comment.
+};
+
+/*
+ * Invalid (using the default property values).
+ */
+use const
+    Vendor\Found\{FOUND_A, FOUND_B};
+use function Vendor\Found\{foundFuncA, foundFuncB  /* phpcs:ignore Standard.Category.Sniff */ };
+
+use Vendor\Missing\{
+    MissingA,
+    function missingFuncA,
+    const MISSING_A as ALIAS_A, // Comment.
+};
+
+use const Vendor\Missing\{
+    MISSING_B, Sub\MISSING_C,};
+
+use function Vendor\Missing\{missingFuncB, missingFuncC,
+};
+
+use Vendor\Missing\{
+    MissingB,
+};
+
+/*
+ * Non-default property values: enforce for single-line, skip for multi-line.
+ */
+// phpcs:set Universal.UseStatements.TrailingComma singleLine enforce
+// phpcs:set Universal.UseStatements.TrailingComma multiLine skip
+use Vendor\SingleEnforce\{ValidE, ValidF,};
+use \Vendor\SingleEnforce\{MissingC, MissingD,};
+
+use Vendor\MultiSkip\{
+    ValidG,
+    ValidH
+};
+
+/*
+ * Non-default property values: skip for single-line, forbid for multi-line.
+ */
+// phpcs:set Universal.UseStatements.TrailingComma singleLine skip
+// phpcs:set Universal.UseStatements.TrailingComma multiLine forbid
+use Vendor\SingleSkip\{ValidI, ValidJ,};
+
+use Vendor\MultiForbid\{
+    ValidK,
+    ValidL
+};
+
+use Vendor\MultiForbid\{
+    FoundA,
+    FoundB
+};
+
+use Vendor\MultiForbid\{
+    FoundC,
+    FoundD
+};
+
+use Vendor\MultiForbid\{
+    FoundE,
+    FoundF /* Comment. */
+};
+
+use Vendor\MultiForbid\{
+    FoundG,
+    FoundH // Comment.
+    /* Comment. */
+};
+
+use Vendor\MultiForbid\{
+    FoundI,
+    FoundJ // Comment.
+    };
+// Resetting to the default value.
+// phpcs:set Universal.UseStatements.TrailingComma multiLine enforce
+
+/*
+ * Invalid property values are treated as skip, without affecting the other property.
+ */
+// phpcs:set Universal.UseStatements.TrailingComma singleLine invalidValue
+use Vendor\Invalid\{ValidM, ValidN,};
+
+use Vendor\Invalid\{
+    MissingE,
+    MissingF,
+};
+// Resetting to the default value.
+// phpcs:set Universal.UseStatements.TrailingComma singleLine forbid
+
+// phpcs:set Universal.UseStatements.TrailingComma multiLine invalidValue
+use Vendor\Invalid\{
+    ValidO,
+    ValidP
+};
+
+use Vendor\Invalid\{FoundK, FoundL};
+// Resetting to the default value.
+// phpcs:set Universal.UseStatements.TrailingComma multiLine enforce
