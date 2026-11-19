@@ -35,6 +35,12 @@
     <rule ref="PHPCSDev">
         <!-- Only needed for PHPCS 3.x. This exclusion can be removed when PHPCSDevCS drops support for PHPCS 3.x. -->
         <exclude name="PSR12.Files.FileHeader.SpacingAfterBlock"/>
+
+        <!-- Temporary exclusion until the trim()/ltrim()/rtrim() calls have been reviewed for the PHP 8.6
+             change to the default value of the $characters parameter.
+             Ref: https://github.com/PHPCSStandards/PHPCSExtra/issues/481
+        -->
+        <exclude name="PHPCompatibility.ParameterValues.NewTrimCharactersDefault"/>
     </rule>
 
     <!-- Set minimum PHP version supported to PHP 5.4. -->
