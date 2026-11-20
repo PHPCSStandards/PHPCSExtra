@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<documentation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://phpcsstandards.github.io/PHPCSDevTools/phpcsdocs.xsd"
+    title="Backed Enum Colon Spacing"
+    >
+    <standard>
+    <![CDATA[
+    In a backed enum declaration, there should be no space between the enum name and the colon, and a single space between the colon and the backing type.
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: No space before the colon and a single space after it.">
+        <![CDATA[
+enum Suit<em></em>:<em> </em>string {}
+        ]]>
+        </code>
+        <code title="Invalid: Space before the colon and no space after it.">
+        <![CDATA[
+enum Suit<em> </em>:<em></em>string {}
+        ]]>
+        </code>
+    </code_comparison>
+</documentation>
