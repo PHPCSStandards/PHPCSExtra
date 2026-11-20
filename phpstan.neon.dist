@@ -28,6 +28,7 @@ parameters:
                 - Modernize/Sniffs/FunctionCalls/DirnameSniff.php
                 - Universal/Sniffs/Arrays/DuplicateArrayKeySniff.php
                 - Universal/Sniffs/CodeAnalysis/ConstructorDestructorReturnSniff.php
+                - Universal/Sniffs/UseStatements/TrailingCommaSniff.php
                 - Universal/Sniffs/WhiteSpace/CommaSpacingSniff.php
                 - Universal/Sniffs/WhiteSpace/DisallowInlineTabsSniff.php
                 - Universal/Sniffs/WhiteSpace/PrecisionAlignmentSniff.php
@@ -37,6 +38,7 @@ parameters:
                 - Modernize/Sniffs/FunctionCalls/DirnameSniff.php
                 - Universal/Sniffs/Arrays/DuplicateArrayKeySniff.php
                 - Universal/Sniffs/CodeAnalysis/ConstructorDestructorReturnSniff.php
+                - Universal/Sniffs/UseStatements/TrailingCommaSniff.php
                 - Universal/Sniffs/WhiteSpace/CommaSpacingSniff.php
                 - Universal/Sniffs/WhiteSpace/DisallowInlineTabsSniff.php
                 - Universal/Sniffs/WhiteSpace/PrecisionAlignmentSniff.php
